@@ -1,9 +1,9 @@
 const path = require('path');
-const nodeExternals = require('webpack-node-externals');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-    target: 'node',
-    entry: './src/back/lobby/server.ts',
+    target: 'web',
+    entry: './src/front/boardhouse/main.ts',
     mode: 'development',
     devtool: 'inline-source-map',
     module: {
@@ -15,12 +15,16 @@ module.exports = {
             }
         ]
     },
+    plugins: [
+        new CopyWebpackPlugin([
+            { from: './views/game.html', to: './../'}
+        ])
+    ],
     resolve: {
         extensions: ['.tsx', '.ts', '.js']
     },
     output: {
-        filename: 'lobby-server.bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        filename: 'boardhouse-front.bundle.js',
+        path: path.resolve(__dirname, 'dist/views/scripts')
     },
-    externals: [nodeExternals()],
 };

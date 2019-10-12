@@ -11,6 +11,10 @@ app.get('/', function(req, res) {
     res.sendFile('/views/lobby.html', { root: './'});
 });
 
+app.get('/game', function(req, res) {
+    res.sendFile('/views/game.html', { root: './'});
+});
+
 server.listen(PORT, function () {
     console.log(`app listening on port ${PORT}`);
 });
