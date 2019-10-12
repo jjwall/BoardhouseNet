@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build-lobby-server && npm run build-lobby-front && npm run build-boardhouse-front",
+    "build": "npm run build-lobby-server && npm run build-lobby-front && npm run build-boardhouse-back && npm run build-boardhouse-front",
     "build-lobby-server": "webpack --config webpack-lobby-server.config.js",
     "build-lobby-front": "webpack --config webpack-lobby-front.config.js",
+    "build-boardhouse-back": "webpack --config webpack-boardhouse-back.config.js",
     "build-boardhouse-front": "webpack --config webpack-boardhouse-front.config.js"
   },
   "repository": {
