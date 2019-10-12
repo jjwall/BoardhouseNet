@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 8080;
 app.use(express.static('./views'));
 
 app.get('/', function(req, res) {
-    res.sendFile('/views/home.html', { root: './'});
+    res.sendFile('/views/lobby.html', { root: './'});
 });
 
 server.listen(PORT, function () {

@@ -17,14 +17,14 @@ module.exports = {
     },
     plugins: [
         new CopyWebpackPlugin([
-            { from: './views/home.html', to: './../'}
+            { from: './views/lobby.html', to: './../'}
         ])
     ],
     resolve: {
         extensions: ['.tsx', '.ts', '.js']
     },
     output: {
-        filename: 'bundle-front.js',
+        filename: 'bundle-lobby-front.js',
         path: path.resolve(__dirname, 'dist/views/scripts')
     },
 };

@@ -19,7 +19,7 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js']
     },
     output: {
-        filename: 'bundle-server.js',
+        filename: 'bundle-lobby-server.js',
         path: path.resolve(__dirname, 'dist')
     },
     externals: [nodeExternals()],

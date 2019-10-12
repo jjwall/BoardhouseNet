@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-front": "webpack --config webpack-front.config.js",
-    "build-server": "webpack --config webpack-server.config.js"
+    "build": "npm run build-lobby-server && npm run build-lobby-front",
+    "build-lobby-server": "webpack --config webpack-lobby-server.config.js",
+    "build-lobby-front": "webpack --config webpack-lobby-front.config.js"
   },
   "repository": {
     "type": "git",
