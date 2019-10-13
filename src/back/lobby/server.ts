@@ -5,6 +5,8 @@ import * as WebSocket from 'ws';
 import * as bodyParser from 'body-parser';
 import { findOpenPort } from './findopenport';
 import { IPortToConnectionsMap, IPortToPendingRequestsMap } from './interfaces';
+import { isEmpty } from './helpers';
+import { requestConnections } from './requestconnections';
 
 const app = express();
 const server = createServer(app);
@@ -14,7 +16,8 @@ const wss = new WebSocket.Server({ server });
 // Global server variable.
 const globalServer = {
     portToConnectionsMap: <IPortToConnectionsMap> {},
-    portToPendingRequestsMap: <IPortToPendingRequestsMap> {}
+    portToPendingRequestsMap: <IPortToPendingRequestsMap> {},
+    getConnsArray: <Array<() => void>> []
 }
 
 wss.on('connection', function(connection) {
@@ -31,6 +34,22 @@ app.get('/', function(req, res) {
 
 app.get('/game', function(req: Request, res: Response) {
     res.sendFile('/views/game.html', { root: './'});
+});
+
+app.get("/getportconnections", function(req, res) {
+    // ping all servers so our request can be resolved
+
+    requestConnections(wss);
+
+	if (isEmpty(globalServer.portToConnectionsMap)) {
+		res.send(globalServer.portToConnectionsMap);
+	}
+	else {
+		// push response param onto getConnsArray
+		globalServer.getConnsArray.push(function(){
+			res.send(globalServer.portToConnectionsMap);
+		});
+	}
 });
 
 app.post('/creategameroom', function(req, res: Response) {
