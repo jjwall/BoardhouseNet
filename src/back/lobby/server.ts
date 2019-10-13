@@ -4,7 +4,9 @@ import * as express from 'express';
 import * as WebSocket from 'ws';
 import * as bodyParser from 'body-parser';
 import { findOpenPort } from './findopenport';
-import { IPortToConnectionsMap, IPortToPendingRequestsMap, IGameServerInfo } from './interfaces';
+import { IPortToPendingRequestsMap } from './interfaces';
+import { GameServerInfo } from "./../../packets/gameserverinfo";
+import { PortToConnectionsMap } from "./../../packets/porttoconnectionsmap";
 import { isEmpty } from './helpers';
 import { requestConnections } from './requestconnections';
 
@@ -15,7 +17,7 @@ const wss = new WebSocket.Server({ server });
 
 // Global server variable.
 const globalServer = {
-    portToConnectionsMap: <IPortToConnectionsMap> {},
+    portToConnectionsMap: <PortToConnectionsMap> {},
     portToPendingRequestsMap: <IPortToPendingRequestsMap> {},
     getConnsArray: <Array<() => void>> []
 }
@@ -28,7 +30,7 @@ wss.on('connection', function(connection) {
 
 	// listens for connection info from game servers
 	connection.on('message', function(message: string) {
-		const currentGameServerInfo: IGameServerInfo = JSON.parse(message);
+		const currentGameServerInfo: GameServerInfo = JSON.parse(message);
 		const currentPort = currentGameServerInfo["port"];
 		const numberOfConnections = currentGameServerInfo["connections"];
 

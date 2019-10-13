@@ -5,15 +5,3 @@ export interface IGlobalLobby {
     gameRooms: HTMLElement,
     currentLoginUserId: number,
 }
-
-export interface IGameServerInfo {
-    port: string;
-    connections: number;
-}
-
-export interface IPortToConnectionsMap {
-    [port: string]: {
-        name: string,
-        connections: number
-    }
-}

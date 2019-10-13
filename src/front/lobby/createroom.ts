@@ -1,4 +1,5 @@
-import { IGlobalLobby, IPortToConnectionsMap } from "./interfaces";
+import { IGlobalLobby } from "./interfaces";
+import { PortToConnectionsMap } from "./../../packets/porttoconnectionsmap";
 import { isNullOrWhitespace } from "./helpers";
 import { populateRoomList } from "./populateroomlist";
 
@@ -28,7 +29,7 @@ export function createRoom(globalLobby: IGlobalLobby) {
     .catch(function(error):void {
         console.log('Error: ' + error);
     })
-    .then(function(portsToConnectionsMap: IPortToConnectionsMap):void {
+    .then(function(portsToConnectionsMap: PortToConnectionsMap):void {
         globalLobby.createRoomButton.disabled = false;
         globalLobby.roomNameInput.disabled = false;
         globalLobby.createRoomText.innerHTML = 'Room created successfully!';
