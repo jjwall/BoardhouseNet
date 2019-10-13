@@ -8,3 +8,8 @@ export interface IPortToConnectionsMap {
 export interface IPortToPendingRequestsMap {
     [port: string]: () => void;
 }
+
+export interface IGameServerInfo {
+    port: string;
+    connections: number;
+}

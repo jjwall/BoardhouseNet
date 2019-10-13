@@ -4,7 +4,7 @@ import * as express from 'express';
 import * as WebSocket from 'ws';
 import * as bodyParser from 'body-parser';
 import { findOpenPort } from './findopenport';
-import { IPortToConnectionsMap, IPortToPendingRequestsMap } from './interfaces';
+import { IPortToConnectionsMap, IPortToPendingRequestsMap, IGameServerInfo } from './interfaces';
 import { isEmpty } from './helpers';
 import { requestConnections } from './requestconnections';
 
@@ -22,6 +22,34 @@ const globalServer = {
 
 wss.on('connection', function(connection) {
     console.log("Lobby server is connected to new instance of a game server.");
+
+    	// ping all game servers so we can resolve the requests set up by "/creategameroom" POST
+	requestConnections(wss);
+
+	// listens for connection info from game servers
+	connection.on('message', function(message: string) {
+		const currentGameServerInfo: IGameServerInfo = JSON.parse(message);
+		const currentPort = currentGameServerInfo["port"];
+		const numberOfConnections = currentGameServerInfo["connections"];
+
+		// update port connection struct with new connection info
+		globalServer.portToConnectionsMap[currentPort]["connections"] = numberOfConnections;
+
+		for (var key in globalServer.portToPendingRequestsMap) {
+			// resolve request
+			globalServer.portToPendingRequestsMap[key]();
+			// delete value as request is no longer pending
+			delete globalServer.portToPendingRequestsMap[key];
+		}
+
+		// iterate through getConnsArray and resolve each request
+		for (var i = 0; i < globalServer.getConnsArray.length; i++) {
+			// resolve request
+			globalServer.getConnsArray[i]();
+			// delete value at index i as request has been resolved
+			globalServer.getConnsArray.splice(i, 1);
+        }
+    });
 });
 
 // Sets up the Express app to handle data parsing

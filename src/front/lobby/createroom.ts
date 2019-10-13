@@ -1,5 +1,6 @@
-import { IGlobalLobby } from "./interfaces";
+import { IGlobalLobby, IPortToConnectionsMap } from "./interfaces";
 import { isNullOrWhitespace } from "./helpers";
+import { populateRoomList } from "./populateroomlist";
 
 export function createRoom(globalLobby: IGlobalLobby) {
     if (isNullOrWhitespace(globalLobby.roomNameInput.value)) {
@@ -20,4 +21,17 @@ export function createRoom(globalLobby: IGlobalLobby) {
             'Content-Type': 'application/json'
         })
     })
+    .then(function(response):Promise<any> {
+        console.log("creating game room...");
+        return response.json();
+    })
+    .catch(function(error):void {
+        console.log('Error: ' + error);
+    })
+    .then(function(portsToConnectionsMap: IPortToConnectionsMap):void {
+        globalLobby.createRoomButton.disabled = false;
+        globalLobby.roomNameInput.disabled = false;
+        globalLobby.createRoomText.innerHTML = 'Room created successfully!';
+        populateRoomList(globalLobby, portsToConnectionsMap);
+    });
 }
