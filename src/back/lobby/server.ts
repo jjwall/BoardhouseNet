@@ -17,6 +17,10 @@ const globalServer = {
     portToPendingRequestsMap: <IPortToPendingRequestsMap> {}
 }
 
+wss.on('connection', function(connection) {
+    console.log("Lobby server is connected to new instance of a game server.");
+});
+
 // Sets up the Express app to handle data parsing
 app.use(bodyParser.json());
 app.use(express.static('./views'));

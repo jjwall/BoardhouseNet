@@ -1,6 +1,8 @@
 const path = require('path');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
+    target: 'node',
     entry: './src/back/boardhouse/main.ts',
     mode: 'development',
     devtool: 'inline-source-map',
@@ -20,4 +22,5 @@ module.exports = {
         filename: 'boardhouse-back.bundle.js',
         path: path.resolve(__dirname, 'dist/engine')
     },
+    externals: [nodeExternals()],
 };
