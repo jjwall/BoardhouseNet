@@ -1,7 +1,7 @@
 import { IGlobalLobby } from "./interfaces";
 import { createRoom } from "./createroom";
 
-// Global home variable.
+// Global lobby variable.
 const globalLobby: IGlobalLobby = {
     createRoomButton: <HTMLButtonElement>document.getElementById('createRoomButton'),
     roomNameInput: <HTMLButtonElement>document.getElementById('roomNameInput'),
