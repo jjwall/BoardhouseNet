@@ -2,6 +2,9 @@ import * as WebSocket from "ws";
 import { IBoardhouseBack } from "./interfaces";
 import { setUpClientToLobbyConnection } from "./setupclienttolobbyconnection";
 import { setUpGameServer } from "./setupgameserver";
+import { last } from "./helpers";
+import { BaseState } from "./basestate";
+import { GameState } from "./gamestate";
 
 // Consider: making this a singleton
 // Handle client to lobby server connection.
@@ -14,3 +17,23 @@ const boardhouseBack: IBoardhouseBack = {
 setUpClientToLobbyConnection(boardhouseBack);
 
 setUpGameServer(boardhouseBack);
+
+main();
+
+function main() {
+    // initialize state stack
+    let stateStack: BaseState[] = [];
+    let mainMenuState = new GameState(stateStack);
+    stateStack.push(mainMenuState);
+
+    // logic update loop
+    setInterval(function (): void {
+        if (stateStack.length > 0) {
+            // call update on last element in state stack
+            last(stateStack).update();
+        }
+        else {
+            throw "No states to update";
+        }
+    }, 16);
+}
