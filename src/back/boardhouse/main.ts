@@ -2,34 +2,36 @@ import * as WebSocket from 'ws';
 import { GameServerInfo } from "./../../packets/gameserverinfo";
 
 // Consider: making this a singleton
-const globalBoardhouse = {
+// Handle client to lobby server connection.
+const boardhouseBack = {
     connection: new WebSocket('ws://localhost:8080/', { origin: 'localhost:8080'}),
     gameServerPort: process.argv[2],
     connections: 0
 }
 
-globalBoardhouse.connection.onopen = function() {
+boardhouseBack.connection.onopen = function() {
     console.log("New Game Server connection opened");
 }
 
-globalBoardhouse.connection.onmessage = function(messageEvent: WebSocket.MessageEvent) {
+boardhouseBack.connection.onmessage = function(messageEvent: WebSocket.MessageEvent) {
     const jsonData = messageEvent.data;
 
     if (jsonData == "get connections") {
         const gameServerData: GameServerInfo = {
-            port: globalBoardhouse.gameServerPort,
-            connections: 3
+            port: boardhouseBack.gameServerPort,
+            connections: boardhouseBack.connections,
         }
 
-        globalBoardhouse.connection.send(JSON.stringify(gameServerData));
+        boardhouseBack.connection.send(JSON.stringify(gameServerData));
     }
 }
 
-const wss = new WebSocket.Server({ port: Number(globalBoardhouse.gameServerPort) });
+// Set up game server.
+const wss = new WebSocket.Server({ port: Number(boardhouseBack.gameServerPort) });
 
 wss.on('connection', function connection(ws) {
     console.log("player connected");
-    globalBoardhouse.connections++;
+    boardhouseBack.connections++;
 
     ws.on('message', function incoming(message) {
         console.log('received: %s', message);
