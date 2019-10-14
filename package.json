@@ -26,6 +26,7 @@
   "devDependencies": {
     "@types/express": "^4.17.1",
     "@types/node": "^12.7.12",
+    "@types/three": "^0.93.31",
     "@types/ws": "^6.0.3",
     "child_process": "^1.0.2",
     "copy-webpack-plugin": "^5.0.4",
