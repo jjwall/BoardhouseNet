@@ -1,6 +1,6 @@
 import { Resources, loadTextures, loadAudioElements, loadFonts } from "./resourcemanager";
 import { setEventListeners } from "./seteventlisteners";
-import { WebGLRenderer } from "three";
+import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
 
@@ -9,6 +9,8 @@ const boardhouseFront = {
     currentPort: <number>parseInt(params.get("port")),
     currentLoginUserId: <number>parseInt(params.get("loginUserId")),
     hostName: <string>window.location.hostname != "" ? window.location.hostname : "localhost",
+    gameScene: new Scene(),
+    gameCamera: new OrthographicCamera(0, 1280, 720, 0, -1000, 1000),
 }
 
 boardhouseFront.connection = new WebSocket("ws://" + 
@@ -57,16 +59,10 @@ function main(canvasContainer: HTMLElement) {
     const renderer = new WebGLRenderer();
     renderer.setSize(1280, 720);
     renderer.autoClear = false;
+    boardhouseFront.gameScene.background = new Color("#FFFFFF");
 
     // append canvas element to canvas container
     canvasContainer.append(renderer.domElement);
-
-    // initialize state stack
-    // let stateStack: BaseState[] = [];
-    // let mainMenuState = new MainMenuState(stateStack);
-    // stateStack.push(mainMenuState);
-    // let gameState = new GameState(stateStack);
-    // stateStack.push(gameState);
 
     let fps: number = 0;
     let totalTime: number = 0;
@@ -77,21 +73,6 @@ function main(canvasContainer: HTMLElement) {
     // set up event listeners
     setEventListeners(renderer.domElement);
 
-    // logic update loop
-    // setInterval(function (): void {
-    //     if (stateStack.length > 0) {
-    //         // call update on last element in state stack
-    //         last(stateStack).update();
-    //     }
-    //     else {
-    //         throw "No states to update";
-    //     }
-
-        // log FPS
-        // fpsWidget.setText("FPS: " + Math.round(fps));
-        // BoardhouseUI.ReconcilePixiDom(fpsWidget, app.stage);
-    // }, 16);
-
     // render update loop
     function renderLoop(timeStamp: number) {
         requestAnimationFrame(renderLoop);
@@ -99,15 +80,14 @@ function main(canvasContainer: HTMLElement) {
         totalTime = timeStamp;
         fps = 1 / (currentTime / 1000);
                 
-        // if (stateStack.length > 0) {
-            // call render on last element in state stack
-            // last(stateStack).render(renderer);
-        // }
-        // else {
-            // throw "No states to render";
-        // }
+        render(renderer);
     }
 
     // start the render loop
     renderLoop(0);
+
+    function render(renderer: WebGLRenderer) {
+        renderer.clear();
+        renderer.render(boardhouseFront.gameScene, boardhouseFront.gameCamera);
+    }
 }
