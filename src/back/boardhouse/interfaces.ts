@@ -2,9 +2,10 @@ import * as WebSocket from "ws";
 import { BaseState } from "./basestate";
 
 export interface IBoardhouseBack {
-    connection: WebSocket,
+    clientConnection: WebSocket,
     gameServerPort: string,
-    connections: number
+    connections: number,
+    gameServerSocket: WebSocket,
 }
 
 export interface RegistryKeyToSystemMap {

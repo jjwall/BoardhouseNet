@@ -1,10 +1,12 @@
 import { Resources, loadTextures, loadAudioElements, loadFonts } from "./resourcemanager";
 import { setEventListeners } from "./seteventlisteners";
 import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
+import { IBoardHouseFront } from "./interfaces";
+import { messageHandlerSystem } from "./messagehandlersystem";
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
 
-const boardhouseFront = {
+const boardhouseFront: IBoardHouseFront = {
     connection: <WebSocket> null,
     currentPort: <number>parseInt(params.get("port")),
     currentLoginUserId: <number>parseInt(params.get("loginUserId")),
@@ -90,4 +92,6 @@ function main(canvasContainer: HTMLElement) {
         renderer.clear();
         renderer.render(boardhouseFront.gameScene, boardhouseFront.gameCamera);
     }
+
+    messageHandlerSystem(boardhouseFront);
 }

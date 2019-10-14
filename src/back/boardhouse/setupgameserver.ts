@@ -5,6 +5,7 @@ export function setUpGameServer(boardhouseBack: IBoardhouseBack) {
     const wss = new WebSocket.Server({ port: Number(boardhouseBack.gameServerPort) });
 
     wss.on("connection", function connection(ws) {
+        boardhouseBack.gameServerSocket = ws;
         console.log("player connected");
         boardhouseBack.connections++;
 
