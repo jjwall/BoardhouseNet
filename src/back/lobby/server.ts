@@ -56,14 +56,14 @@ wss.on('connection', function(connection) {
 
 // Sets up the Express app to handle data parsing
 app.use(bodyParser.json());
-app.use(express.static('./views'));
+app.use(express.static('./public'));
 
 app.get('/', function(req, res) {
-    res.sendFile('/views/lobby.html', { root: './'});
+    res.sendFile('/public/lobby.html', { root: './'});
 });
 
 app.get('/playgame', function(req: Request, res: Response) {
-    res.sendFile('/views/game.html', { root: './'});
+    res.sendFile('/public/game.html', { root: './'});
 });
 
 app.get("/getportconnections", function(req, res) {

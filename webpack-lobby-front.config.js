@@ -17,7 +17,7 @@ module.exports = {
     },
     plugins: [
         new CopyWebpackPlugin([
-            { from: './views/lobby.html', to: './../'}
+            { from: './public/lobby.html', to: './../'}
         ])
     ],
     resolve: {
@@ -25,6 +25,6 @@ module.exports = {
     },
     output: {
         filename: 'lobby-front.bundle.js',
-        path: path.resolve(__dirname, 'dist/views/scripts')
+        path: path.resolve(__dirname, 'dist/public/scripts')
     },
 };

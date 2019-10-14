@@ -17,8 +17,8 @@ module.exports = {
     },
     plugins: [
         new CopyWebpackPlugin([
-            { from: './views/game.html', to: './../'},
-            { from: './views/style.css', to: './../'},
+            { from: './public/game.html', to: './../'},
+            { from: './public/style.css', to: './../'},
             { from: './data', to: './../data' },
             { from: './node_modules/three/build/three.min.js' }
         ])
@@ -28,7 +28,7 @@ module.exports = {
     },
     output: {
         filename: 'boardhouse-front.bundle.js',
-        path: path.resolve(__dirname, 'dist/views/scripts')
+        path: path.resolve(__dirname, 'dist/public/scripts')
     },
     externals: {
         three: 'THREE',
