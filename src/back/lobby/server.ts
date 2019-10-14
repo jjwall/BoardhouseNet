@@ -62,7 +62,7 @@ app.get('/', function(req, res) {
     res.sendFile('/views/lobby.html', { root: './'});
 });
 
-app.get('/game', function(req: Request, res: Response) {
+app.get('/playgame', function(req: Request, res: Response) {
     res.sendFile('/views/game.html', { root: './'});
 });
 
