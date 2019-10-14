@@ -73,7 +73,7 @@ function main(canvasContainer: HTMLElement) {
     // fpsWidget.setText("FPS:");
 
     // set up event listeners
-    setEventListeners(renderer.domElement);
+    setEventListeners(renderer.domElement, boardhouseFront);
 
     // render update loop
     function renderLoop(timeStamp: number) {

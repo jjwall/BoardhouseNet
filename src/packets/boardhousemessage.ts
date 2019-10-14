@@ -1,5 +1,6 @@
 export interface BoardhouseMessage {
-    player: number,
-    left: boolean,
-    right: boolean,
+    [loginUserId: string]: {
+        left?: boolean;
+        right?: boolean;
+    }
 }

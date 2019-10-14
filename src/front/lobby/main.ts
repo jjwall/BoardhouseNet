@@ -9,7 +9,7 @@ const globalLobby: IGlobalLobby = {
     roomNameInput: <HTMLButtonElement>document.getElementById("roomNameInput"),
     createRoomText: <HTMLElement>document.getElementById("createRoomText"),
     gameRooms: <HTMLElement>document.getElementById("gameRooms"),
-    currentLoginUserId: 100000, // test id
+    currentLoginUserId: window.navigator.userAgent.replace(/\D+/g, '')
 }
 
 globalLobby.createRoomButton.onclick = function() {
