@@ -10,16 +10,16 @@ export function createRoom(globalLobby: IGlobalLobby) {
 
     globalLobby.createRoomButton.disabled = true;
     globalLobby.roomNameInput.disabled = true;
-    globalLobby.createRoomText.innerHTML = 'Creating Room...';
+    globalLobby.createRoomText.innerHTML = "Creating Room...";
 
-    const url = <string>window.location.href + 'creategameroom';
+    const url = <string>window.location.href + "creategameroom";
     const data = <object>{name: globalLobby.roomNameInput.value};
 
     fetch(url, {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify(data),
         headers: new Headers({
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         })
     })
     .then(function(response):Promise<any> {
@@ -27,12 +27,13 @@ export function createRoom(globalLobby: IGlobalLobby) {
         return response.json();
     })
     .catch(function(error):void {
-        console.log('Error: ' + error);
+        console.log("Error: " + error);
     })
     .then(function(portsToConnectionsMap: PortToConnectionsMap):void {
         globalLobby.createRoomButton.disabled = false;
         globalLobby.roomNameInput.disabled = false;
-        globalLobby.createRoomText.innerHTML = 'Room created successfully!';
+        globalLobby.createRoomText.innerHTML = "Room created successfully!";
+        globalLobby.roomNameInput.value = "";
         populateRoomList(globalLobby, portsToConnectionsMap);
     });
 }
