@@ -4,21 +4,23 @@ console.log("listen on port: " + process.argv[2]);
 import * as WebSocket from 'ws';
 import { GameServerInfo } from "./../../packets/gameserverinfo";
 
-const connection = new WebSocket('ws://localhost:8080/');
+const globalBoardhouse = {
+    connection: new WebSocket('ws://localhost:8080/', { origin: 'localhost:8080'})
+}
 
-connection.onopen = function() {
+globalBoardhouse.connection.onopen = function() {
     console.log("opened connection");
 }
 
-connection.onmessage = function(messageEvent) {
+globalBoardhouse.connection.onmessage = function(messageEvent: WebSocket.MessageEvent) {
     const jsonData = messageEvent.data;
-    console.log(messageEvent);
+    console.log(messageEvent.data);
 
-    if (jsonData === "get connections") {
+    if (jsonData == "get connections") {
         const gameServerData: GameServerInfo = {
-            port: "5000",
+            port: "9001",
             connections: 3
         }
-        connection.send(gameServerData);
+        globalBoardhouse.connection.send(JSON.stringify(gameServerData));
     }
 }
