@@ -1,11 +1,19 @@
 import * as WebSocket from "ws";
 import { BaseState } from "./basestate";
+import { Entity } from "./entity";
 
 export interface IBoardhouseBack {
     clientConnection: WebSocket,
     gameServerPort: string,
     connections: number,
-    gameServerSocket: WebSocket,
+    boardhouseSocket: WebSocket, // prob don't need
+    boardhouseServer: WebSocket.Server,
+    currentNetId: number,
+    netIdToEntityMap: NetIdToEntityMap,
+}
+
+export interface NetIdToEntityMap {
+    [netId: number]: EntityData;
 }
 
 export interface RegistryKeyToSystemMap {

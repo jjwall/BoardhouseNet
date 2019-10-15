@@ -2,13 +2,14 @@ import { BaseState } from "./basestate";
 import { initializeControls } from "./initializers";
 import { controlSystem } from "./coresystems";
 import { Entity } from "./entity";
+import { IBoardhouseBack } from "./interfaces";
 
 /**
  * GameState that handles updating of all game-related systems.
  */
 export class GameState extends BaseState {
     // public rootWidget: Widget;
-    constructor(stateStack: BaseState[]) {
+    constructor(stateStack: BaseState[], boardhouseBack :IBoardhouseBack) {
         super(stateStack);
         // Set up ui widget and instance.
         // this.rootWidget = createWidget("root");
@@ -26,7 +27,7 @@ export class GameState extends BaseState {
         player.sprite = { url: "./data/textures/msknight.png", pixelRatio: 4 };
         player.control = initializeControls();
 
-        this.registerEntity(player);
+        this.registerEntity(player, boardhouseBack);
     }
 
     public update() : void {

@@ -12,7 +12,10 @@ const boardhouseBack: IBoardhouseBack = {
     clientConnection: new WebSocket("ws://localhost:8080/", { origin: "localhost:8080"}),
     gameServerPort: process.argv[2],
     connections: 0,
-    gameServerSocket: <WebSocket> null,
+    boardhouseSocket: <WebSocket> null, // prob don't need
+    boardhouseServer: <WebSocket.Server> null,
+    currentNetId: 0,
+    netIdToEntityMap: {}
 }
 
 setUpClientToLobbyConnection(boardhouseBack);
@@ -24,7 +27,7 @@ main();
 function main() {
     // initialize state stack
     let stateStack: BaseState[] = [];
-    let mainMenuState = new GameState(stateStack);
+    let mainMenuState = new GameState(stateStack, boardhouseBack);
     stateStack.push(mainMenuState);
 
     // logic update loop

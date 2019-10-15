@@ -19,9 +19,9 @@ boardhouseFront.connection = new WebSocket("ws://" +
                                            boardhouseFront.hostName + ":" +
                                            boardhouseFront.currentPort);
 
-// boardhouseFront.connection.onopen = function() {
-
-// }
+boardhouseFront.connection.onopen = function() {
+    console.log("conn opened");
+}
 
 loadTextures([
     "./data/textures/cottage.png",
