@@ -13,6 +13,8 @@ const boardhouseFront: IBoardHouseFront = {
     hostName: <string>window.location.hostname != "" ? window.location.hostname : "localhost",
     gameScene: new Scene(),
     gameCamera: new OrthographicCamera(0, 1280, 720, 0, -1000, 1000),
+    keyLeftIsDown: false,
+    keyRightIsDown: false,
 }
 
 boardhouseFront.connection = new WebSocket("ws://" + 

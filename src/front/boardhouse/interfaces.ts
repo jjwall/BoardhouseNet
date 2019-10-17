@@ -27,4 +27,6 @@ export interface IBoardHouseFront {
     hostName: string;
     gameScene: Scene;
     gameCamera: Camera;
+    keyLeftIsDown: boolean;
+    keyRightIsDown: boolean;
 }

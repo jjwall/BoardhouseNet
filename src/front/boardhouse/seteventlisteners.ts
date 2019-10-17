@@ -18,45 +18,49 @@ export function setEventListeners(canvas: HTMLCanvasElement, boardhouseFront: IB
     // keyboard controls
     window.onkeydown = function(e: KeyboardEvent) {
         // left
-        if (e.keyCode === 37) {
+        if (e.keyCode === 37 && !boardhouseFront.keyLeftIsDown) {
             const message: PlayerMessage = {
                 eventType: PlayerEventTypes.LEFT_KEY_DOWN,
                 playerId: boardhouseFront.currentLoginUserId
             }
 
+            boardhouseFront.keyLeftIsDown = true;
             boardhouseFront.connection.send(JSON.stringify(message));
         }
 
 
         // right
-        if (e.keyCode === 39) {
+        if (e.keyCode === 39 && !boardhouseFront.keyRightIsDown) {
             const message: PlayerMessage = {
                 eventType: PlayerEventTypes.RIGHT_KEY_DOWN,
                 playerId: boardhouseFront.currentLoginUserId
             }
             
+            boardhouseFront.keyRightIsDown = true;
             boardhouseFront.connection.send(JSON.stringify(message));
         }
     }
 
     window.onkeyup = function(e: KeyboardEvent) {
         // left
-        if (e.keyCode === 37) {
+        if (e.keyCode === 37 && boardhouseFront.keyLeftIsDown) {
             const message: PlayerMessage = {
                 eventType: PlayerEventTypes.LEFT_KEY_UP,
                 playerId: boardhouseFront.currentLoginUserId
             }
             
+            boardhouseFront.keyLeftIsDown = false;
             boardhouseFront.connection.send(JSON.stringify(message));
         }
 
         // right
-        if (e.keyCode === 39) {
+        if (e.keyCode === 39 && boardhouseFront.keyRightIsDown) {
             const message: PlayerMessage = {
                 eventType: PlayerEventTypes.RIGHT_KEY_UP,
                 playerId: boardhouseFront.currentLoginUserId
             }
             
+            boardhouseFront.keyRightIsDown = false;
             boardhouseFront.connection.send(JSON.stringify(message));
         }
     }
