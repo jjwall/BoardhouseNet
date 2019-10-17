@@ -17,6 +17,7 @@ const boardhouseFront: IBoardHouseFront = {
     gameCamera: new OrthographicCamera(0, 1280, 720, 0, -1000, 1000),
     keyLeftIsDown: false,
     keyRightIsDown: false,
+    // netIdToEntDataMap: Array<NetIdToEntDataMap> // TODO: Implement
 }
 
 boardhouseFront.connection = new WebSocket("ws://" + 

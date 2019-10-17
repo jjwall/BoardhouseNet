@@ -19,11 +19,16 @@ export class GameState extends BaseState {
         // let rootComponent = renderGameUi(this.uiScene, this.rootWidget);
 
         // Register systems.
-        // this.registerSystem(controlSystem, "control");
+        this.registerSystem(controlSystem, "control");
         // this.registerSystem(positionSystem);
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 
+        // TODO: Make it where you don't have to do this, delay on entity creation breaks stuff
+        // I guess just create other ents first
+        let ent = new Entity();
+        ent.control = initializeControls();
+        this.registerEntity(ent, boardhouseBack);
     }
 
     public update() : void {

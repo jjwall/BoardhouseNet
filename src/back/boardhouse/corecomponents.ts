@@ -1,3 +1,7 @@
+export interface PlayerComponent {
+    id: number;
+}
+
 /**
  * Control component.
  */

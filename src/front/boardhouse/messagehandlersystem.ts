@@ -9,12 +9,18 @@ export function messageHandlerSystem(boardHouseFront: IBoardHouseFront) {
         console.log("boardhouse: back to front message");
 
         if (message.eventType === EntityEventTypes.CREATE_OR_UPDATE) {
-            createEntity(message, boardHouseFront);
+            createOrUpdateEntity(message, boardHouseFront);
         }
     }
 }
 
-function createEntity(message: EntityMessage, boardHouseFront: IBoardHouseFront) {
+// TODO: implement this
+function createOrUpdateEntity(message: EntityMessage, boardHouseFront: IBoardHouseFront) {
     console.log("create entity front");
     console.log(message.data);
+}
+
+// TODO: implement
+function destroyEntity() {
+
 }

@@ -1,8 +1,8 @@
-import { ControlComponent, PositionComponent, SpriteComponent, AnimationComponent } from "./corecomponents";
+import { ControlComponent, PositionComponent, SpriteComponent, AnimationComponent, PlayerComponent } from "./corecomponents";
 
 export class Entity {
     netId: number;
-    playerId: number;
+    player: PlayerComponent;
     pos: PositionComponent;
     sprite: SpriteComponent;
     anim: AnimationComponent;

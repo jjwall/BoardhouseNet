@@ -53,7 +53,7 @@ export abstract class BaseState {
      */
     public registerEntity(ent: Entity, boardhouseBack: IBoardhouseBack) {
         let entityComponents: Array<string> = [];
-        ent.netId = boardhouseBack.currentNetId + 1;
+        ent.netId = ++boardhouseBack.currentNetId;
         boardhouseBack.netIdToEntityMap[boardhouseBack.currentNetId] = ent;
 
         for (var component in ent) {

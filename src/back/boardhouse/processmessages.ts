@@ -8,8 +8,22 @@ import { sendCreateOrUpdateEntityMessage } from "./sendmessages";
 
 export function processMessages(ents: ReadonlyArray<Entity>, boardhouseBack: IBoardhouseBack, state: GameState) {
     boardhouseBack.messagesToProcess.forEach(message => {
-        if (message.eventType === PlayerEventTypes.PLAYER_JOINED) {
-            processPlayerJoinedMessage(message, boardhouseBack, state);
+        switch (message.eventType) {
+            case PlayerEventTypes.PLAYER_JOINED:
+                processPlayerJoinedMessage(message, boardhouseBack, state);
+                break;
+            case PlayerEventTypes.LEFT_KEY_DOWN:
+                processLeftKeyDownMessage(ents, message);
+                break;
+            case PlayerEventTypes.LEFT_KEY_UP:
+                processLeftKeyUpMessage(ents, message);
+                break;
+            case PlayerEventTypes.RIGHT_KEY_DOWN:
+                processRightKeyDownMessage(ents, message);
+                break;
+            case PlayerEventTypes.RIGHT_KEY_UP:
+                processRightKeyUpMessage(ents, message);
+                break;
         }
     });
 
@@ -27,7 +41,7 @@ function processPlayerJoinedMessage(message: PlayerMessage, boardhouseBack: IBoa
     console.log("create player entity");
     // Set up player entity.
     let player = new Entity();
-    player.playerId = message.playerId;
+    player.player = { id: message.playerId };
     player.pos = { x: 500, y: 300 };
     player.sprite = { url: "./data/textures/msknight.png", pixelRatio: 4 };
     player.anim = { sequence: "blah", currentFrame: 0 };
@@ -41,10 +55,42 @@ function processPlayerJoinedMessage(message: PlayerMessage, boardhouseBack: IBoa
     }, 5000);
 }
 
-function processLeftKeyMessage() {
-
+function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: PlayerMessage) {
+    ents.forEach(ent => {
+        if (ent.player && ent.control) {
+            if (ent.player.id === message.playerId) {
+                ent.control.left = true;
+            }
+        }
+    });
 }
 
-function processRightKeyMessage() {
+function processLeftKeyUpMessage(ents: ReadonlyArray<Entity>, message: PlayerMessage) {
+    ents.forEach(ent => {
+        if (ent.player && ent.control) {
+            if (ent.player.id === message.playerId) {
+                ent.control.left = false;
+            }
+        }
+    });
+}
 
+function processRightKeyDownMessage(ents: ReadonlyArray<Entity>, message: PlayerMessage) {
+    ents.forEach(ent => {
+        if (ent.player && ent.control) {
+            if (ent.player.id === message.playerId) {
+                ent.control.right = true;
+            }
+        }
+    });
+}
+
+function processRightKeyUpMessage(ents: ReadonlyArray<Entity>, message: PlayerMessage) {
+    ents.forEach(ent => {
+        if (ent.player && ent.control) {
+            if (ent.player.id === message.playerId) {
+                ent.control.right = false;
+            }
+        }
+    });
 }
