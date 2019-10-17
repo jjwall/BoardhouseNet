@@ -1,6 +1,8 @@
 import * as WebSocket from "ws";
 import { IBoardhouseBack } from "./interfaces";
 import { EntityMessage } from "../../packets/entitymessage";
+import { sendCreateOrUpdateEntityMessage } from "./sendmessages";
+import { Entity } from "./entity";
 
 export function setUpGameServer(boardhouseBack: IBoardhouseBack) {
     boardhouseBack.boardhouseServer = new WebSocket.Server({ port: Number(boardhouseBack.gameServerPort) });
@@ -22,19 +24,14 @@ export function setUpGameServer(boardhouseBack: IBoardhouseBack) {
         // Should be able to update clients without setTimeout
         // on "open" doesn't work either
         setTimeout(function() {
-            // boardhouseBack.boardhouseServer.clients.forEach(client => {
-            //     let msg: EventMessage = {
-            //         eventType: "createEntity",
-            //         data: boardhouseBack.netIdToEntityMap[1]
-            //         //     pos: {
-            //         //         x: 5,
-            //         //         y: 5,
-            //         //     }
-            //         // }
-            //     };
-            //     console.log(msg);
-            //     client.send(JSON.stringify(msg));
-            // })
+            // test ent... WOULD NEVER CREATE AN ENTITY HERE, need to register and all that
+            let ent = new Entity();
+            ent.netId = 1;
+            ent.anim = { sequence: "idle", currentFrame: 0 };
+            ent.sprite = { url: "blah", pixelRatio: 4 };
+            ent.pos = { x: 5, y: 5};
+
+            sendCreateOrUpdateEntityMessage(ent, boardhouseBack);
         }, 5000);
     });
 }

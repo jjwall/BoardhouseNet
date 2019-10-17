@@ -3,15 +3,22 @@ import { IBoardhouseBack } from "./interfaces";
 import { EntityMessage } from "../../packets/entitymessage";
 import { EntityEventTypes } from "../../packets/entityeventtypes";
 
-export function sendCreateeOrUpdateEntityMessage(ent: Entity, boardhouseBack: IBoardhouseBack) {
-    boardhouseBack.boardhouseServer.clients.forEach(client => {
-        const message: EntityMessage = {
-            eventType: EntityEventTypes.CREATE_OR_UPDATE,
-            data: ent
+export function sendCreateOrUpdateEntityMessage(ent: Entity, boardhouseBack: IBoardhouseBack) {
+    if (ent.netId && ent.pos && ent.sprite && ent.anim) {
+        const entData: EntityData = {
+            netId: ent.netId,
+            pos: ent.pos,
+            sprite: ent.sprite,
+            anim: ent.anim
         }
 
-        client.send(JSON.stringify(message));
-    });
+        boardhouseBack.boardhouseServer.clients.forEach(client => {
+            const message: EntityMessage = {
+                eventType: EntityEventTypes.CREATE_OR_UPDATE,
+                data: entData
+            }
 
-    boardhouseBack.netIdToEntityMap[boardhouseBack.currentNetId] = ent;
+            client.send(JSON.stringify(message));
+        });
+    }
 }

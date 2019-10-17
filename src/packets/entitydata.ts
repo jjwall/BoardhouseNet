@@ -1,14 +1,14 @@
 interface EntityData {
-    netId?: number;
-    pos?: {
+    netId: number;
+    pos: {
         x: number;
         y: number;
     },
-    sprite?: {
+    sprite: {
         url: string;
         pixelRatio: number;
     },
-    anim?: {
+    anim: {
         sequence: string;
     }
 }

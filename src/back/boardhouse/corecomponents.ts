@@ -10,12 +10,26 @@ export interface ControlComponent {
     down: boolean;
 }
 
+/**
+ * Position component.
+ */
 export interface PositionComponent {
     x: number,
     y: number
 }
 
+/**
+ * Sprite component.
+ */
 export interface SpriteComponent {
     url: string,
     pixelRatio: number,
+}
+
+/**
+ * Animation component.
+ */
+export interface AnimationComponent {
+    sequence: string,
+    currentFrame: number,
 }

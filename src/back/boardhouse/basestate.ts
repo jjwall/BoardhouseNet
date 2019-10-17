@@ -1,4 +1,5 @@
 import { RegistryKeyToSystemMap, RegistryKeyToEntityListMap, IBoardhouseBack } from "./interfaces";
+import { Entity } from "./entity";
 // import { Widget } from "./ui/widget";
 
 export abstract class BaseState {
@@ -50,9 +51,10 @@ export abstract class BaseState {
      * and every specific registry for each ecsKey component match.
      * @param ent 
      */
-    protected registerEntity<E extends any>(ent: E, boardhouseBack: IBoardhouseBack) {
+    protected registerEntity(ent: Entity, boardhouseBack: IBoardhouseBack) {
         let entityComponents: Array<string> = [];
         ent.netId = boardhouseBack.currentNetId++;
+        boardhouseBack.netIdToEntityMap[boardhouseBack.currentNetId] = ent;
 
         for (var component in ent) {
             entityComponents.push(component);
@@ -73,7 +75,7 @@ export abstract class BaseState {
             }
 
             // If registered to specified list, but component is undefined, remove entity from list due to re-registering.
-            if (this.entityRegistry[key].indexOf(ent) !== -1 && !ent[key]) {
+            if (this.entityRegistry[key].indexOf(ent) !== -1 && !(ent as any)[key]) {
                 this.entityRegistry[key].splice(this.entityRegistry[key].indexOf(ent), 1);
             }
         });

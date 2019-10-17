@@ -13,7 +13,7 @@ export interface IBoardhouseBack {
 }
 
 export interface NetIdToEntityMap {
-    [netId: number]: EntityData;
+    [netId: number]: Entity;
 }
 
 export interface RegistryKeyToSystemMap {
