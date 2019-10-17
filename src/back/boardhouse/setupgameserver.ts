@@ -23,18 +23,5 @@ export function setUpGameServer(boardhouseBack: IBoardhouseBack) {
             console.log("player disconnected");
             boardhouseBack.connections--;
         })
-
-        // Should be able to update clients without setTimeout
-        // on "open" doesn't work either
-        setTimeout(function() {
-            // test ent... WOULD NEVER CREATE AN ENTITY HERE, need to register and all that
-            let ent = new Entity();
-            ent.netId = 1;
-            ent.anim = { sequence: "idle", currentFrame: 0 };
-            ent.sprite = { url: "blah", pixelRatio: 4 };
-            ent.pos = { x: 5, y: 5};
-
-            sendCreateOrUpdateEntityMessage(ent, boardhouseBack);
-        }, 5000);
     });
 }

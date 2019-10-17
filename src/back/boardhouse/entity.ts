@@ -2,6 +2,7 @@ import { ControlComponent, PositionComponent, SpriteComponent, AnimationComponen
 
 export class Entity {
     netId: number;
+    playerId: number;
     pos: PositionComponent;
     sprite: SpriteComponent;
     anim: AnimationComponent;

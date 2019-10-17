@@ -19,18 +19,11 @@ export class GameState extends BaseState {
         // let rootComponent = renderGameUi(this.uiScene, this.rootWidget);
 
         // Register systems.
-        this.registerSystem(controlSystem, "control");
+        // this.registerSystem(controlSystem, "control");
         // this.registerSystem(positionSystem);
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 
-        // Set up player entity.
-        let player = new Entity();
-        player.pos = { x: 500, y: 300 };
-        player.sprite = { url: "./data/textures/msknight.png", pixelRatio: 4 };
-        player.control = initializeControls();
-
-        this.registerEntity(player, boardhouseBack);
     }
 
     public update() : void {

@@ -51,9 +51,9 @@ export abstract class BaseState {
      * and every specific registry for each ecsKey component match.
      * @param ent 
      */
-    protected registerEntity(ent: Entity, boardhouseBack: IBoardhouseBack) {
+    public registerEntity(ent: Entity, boardhouseBack: IBoardhouseBack) {
         let entityComponents: Array<string> = [];
-        ent.netId = boardhouseBack.currentNetId++;
+        ent.netId = boardhouseBack.currentNetId + 1;
         boardhouseBack.netIdToEntityMap[boardhouseBack.currentNetId] = ent;
 
         for (var component in ent) {

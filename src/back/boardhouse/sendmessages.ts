@@ -4,7 +4,7 @@ import { EntityMessage } from "../../packets/entitymessage";
 import { EntityEventTypes } from "../../packets/entityeventtypes";
 
 export function sendCreateOrUpdateEntityMessage(ent: Entity, boardhouseBack: IBoardhouseBack) {
-    if (ent.netId && ent.pos && ent.sprite && ent.anim) {
+    if (ent.pos && ent.sprite && ent.anim) {
         const entData: EntityData = {
             netId: ent.netId,
             pos: ent.pos,
