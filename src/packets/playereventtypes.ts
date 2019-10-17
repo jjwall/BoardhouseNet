@@ -1,4 +1,5 @@
 export enum PlayerEventTypes {
+    PLAYER_JOINED = "PLAYER_JOINED",
     LEFT_KEY_DOWN = "LEFT_KEY_DOWN",
     LEFT_KEY_UP = "LEFT_KEY_UP",
     RIGHT_KEY_DOWN = "RIGHT_KEY_DOWN",

@@ -3,13 +3,15 @@ import { setEventListeners } from "./seteventlisteners";
 import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 import { IBoardHouseFront } from "./interfaces";
 import { messageHandlerSystem } from "./messagehandlersystem";
+import { PlayerMessage } from "../../packets/playermessage";
+import { PlayerEventTypes } from "../../packets/playereventtypes";
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
 
 const boardhouseFront: IBoardHouseFront = {
     connection: <WebSocket> null,
     currentPort: <number>parseInt(params.get("port")),
-    currentLoginUserId: <number>parseInt(params.get("loginUserId")),
+    currentPlayerId: <number>parseInt(params.get("loginUserId")),
     hostName: <string>window.location.hostname != "" ? window.location.hostname : "localhost",
     gameScene: new Scene(),
     gameCamera: new OrthographicCamera(0, 1280, 720, 0, -1000, 1000),
@@ -23,6 +25,13 @@ boardhouseFront.connection = new WebSocket("ws://" +
 
 boardhouseFront.connection.onopen = function() {
     console.log("conn opened");
+
+    const message: PlayerMessage = {
+        eventType: PlayerEventTypes.PLAYER_JOINED,
+        playerId: boardhouseFront.currentPlayerId
+    }
+    
+    boardhouseFront.connection.send(JSON.stringify(message));
 }
 
 loadTextures([

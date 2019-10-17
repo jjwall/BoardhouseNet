@@ -23,7 +23,7 @@ export interface UrlToAudioMap {
 export interface IBoardHouseFront {
     connection: WebSocket;
     currentPort: number;
-    currentLoginUserId: number;
+    currentPlayerId: number;
     hostName: string;
     gameScene: Scene;
     gameCamera: Camera;

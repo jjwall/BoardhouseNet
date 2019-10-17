@@ -21,7 +21,7 @@ export function setEventListeners(canvas: HTMLCanvasElement, boardhouseFront: IB
         if (e.keyCode === 37 && !boardhouseFront.keyLeftIsDown) {
             const message: PlayerMessage = {
                 eventType: PlayerEventTypes.LEFT_KEY_DOWN,
-                playerId: boardhouseFront.currentLoginUserId
+                playerId: boardhouseFront.currentPlayerId
             }
 
             boardhouseFront.keyLeftIsDown = true;
@@ -33,7 +33,7 @@ export function setEventListeners(canvas: HTMLCanvasElement, boardhouseFront: IB
         if (e.keyCode === 39 && !boardhouseFront.keyRightIsDown) {
             const message: PlayerMessage = {
                 eventType: PlayerEventTypes.RIGHT_KEY_DOWN,
-                playerId: boardhouseFront.currentLoginUserId
+                playerId: boardhouseFront.currentPlayerId
             }
             
             boardhouseFront.keyRightIsDown = true;
@@ -46,7 +46,7 @@ export function setEventListeners(canvas: HTMLCanvasElement, boardhouseFront: IB
         if (e.keyCode === 37 && boardhouseFront.keyLeftIsDown) {
             const message: PlayerMessage = {
                 eventType: PlayerEventTypes.LEFT_KEY_UP,
-                playerId: boardhouseFront.currentLoginUserId
+                playerId: boardhouseFront.currentPlayerId
             }
             
             boardhouseFront.keyLeftIsDown = false;
@@ -57,7 +57,7 @@ export function setEventListeners(canvas: HTMLCanvasElement, boardhouseFront: IB
         if (e.keyCode === 39 && boardhouseFront.keyRightIsDown) {
             const message: PlayerMessage = {
                 eventType: PlayerEventTypes.RIGHT_KEY_UP,
-                playerId: boardhouseFront.currentLoginUserId
+                playerId: boardhouseFront.currentPlayerId
             }
             
             boardhouseFront.keyRightIsDown = false;

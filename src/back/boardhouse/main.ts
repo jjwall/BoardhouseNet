@@ -15,7 +15,8 @@ const boardhouseBack: IBoardhouseBack = {
     boardhouseSocket: <WebSocket> null, // prob don't need
     boardhouseServer: <WebSocket.Server> null,
     currentNetId: 0,
-    netIdToEntityMap: {}
+    netIdToEntityMap: {},
+    messagesToProcess: [],
 }
 
 setUpClientToLobbyConnection(boardhouseBack);
