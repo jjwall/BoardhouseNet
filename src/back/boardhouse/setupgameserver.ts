@@ -1,6 +1,6 @@
 import * as WebSocket from "ws";
 import { IBoardhouseBack } from "./interfaces";
-import { Message } from "../../packets/message";
+import { EntityMessage } from "../../packets/entitymessage";
 
 export function setUpGameServer(boardhouseBack: IBoardhouseBack) {
     boardhouseBack.boardhouseServer = new WebSocket.Server({ port: Number(boardhouseBack.gameServerPort) });
@@ -15,25 +15,26 @@ export function setUpGameServer(boardhouseBack: IBoardhouseBack) {
         });
 
         ws.on("close", function() {
+            console.log("player disconnected");
             boardhouseBack.connections--;
         })
 
         // Should be able to update clients without setTimeout
         // on "open" doesn't work either
         setTimeout(function() {
-            boardhouseBack.boardhouseServer.clients.forEach(client => {
-                let msg: Message = {
-                    type: "createEntity",
-                    data: boardhouseBack.netIdToEntityMap[1]
-                    //     pos: {
-                    //         x: 5,
-                    //         y: 5,
-                    //     }
-                    // }
-                };
-                console.log(msg);
-                client.send(JSON.stringify(msg));
-            })
+            // boardhouseBack.boardhouseServer.clients.forEach(client => {
+            //     let msg: EventMessage = {
+            //         eventType: "createEntity",
+            //         data: boardhouseBack.netIdToEntityMap[1]
+            //         //     pos: {
+            //         //         x: 5,
+            //         //         y: 5,
+            //         //     }
+            //         // }
+            //     };
+            //     console.log(msg);
+            //     client.send(JSON.stringify(msg));
+            // })
         }, 5000);
     });
 }

@@ -4,7 +4,8 @@ import { scaleToWindow } from "./scaletowindow";
 // import { Entity } from "./entity";
 import { last } from "./helpers";
 import { IBoardHouseFront } from "./interfaces";
-import { BoardhouseMessage } from "../../packets/boardhousemessage";
+import { PlayerMessage } from "../../packets/playermessage";
+import { PlayerEventTypes } from "../../packets/playereventtypes";
 
 export function setEventListeners(canvas: HTMLCanvasElement, boardhouseFront: IBoardHouseFront) {
     // call first to scale to current window dimensions
@@ -18,21 +19,20 @@ export function setEventListeners(canvas: HTMLCanvasElement, boardhouseFront: IB
     window.onkeydown = function(e: KeyboardEvent) {
         // left
         if (e.keyCode === 37) {
-            const message: BoardhouseMessage = {
-                [boardhouseFront.currentLoginUserId]: {
-                    left: true,
-                }
+            const message: PlayerMessage = {
+                eventType: PlayerEventTypes.LEFT_KEY_DOWN,
+                playerId: boardhouseFront.currentLoginUserId
             }
 
             boardhouseFront.connection.send(JSON.stringify(message));
         }
 
+
         // right
         if (e.keyCode === 39) {
-            const message: BoardhouseMessage = {
-                [boardhouseFront.currentLoginUserId]: {
-                    right: true,
-                }
+            const message: PlayerMessage = {
+                eventType: PlayerEventTypes.RIGHT_KEY_DOWN,
+                playerId: boardhouseFront.currentLoginUserId
             }
             
             boardhouseFront.connection.send(JSON.stringify(message));
@@ -42,10 +42,9 @@ export function setEventListeners(canvas: HTMLCanvasElement, boardhouseFront: IB
     window.onkeyup = function(e: KeyboardEvent) {
         // left
         if (e.keyCode === 37) {
-            const message: BoardhouseMessage = {
-                [boardhouseFront.currentLoginUserId]: {
-                    left: false,
-                }
+            const message: PlayerMessage = {
+                eventType: PlayerEventTypes.LEFT_KEY_UP,
+                playerId: boardhouseFront.currentLoginUserId
             }
             
             boardhouseFront.connection.send(JSON.stringify(message));
@@ -53,10 +52,9 @@ export function setEventListeners(canvas: HTMLCanvasElement, boardhouseFront: IB
 
         // right
         if (e.keyCode === 39) {
-            const message: BoardhouseMessage = {
-                [boardhouseFront.currentLoginUserId]: {
-                    right: false,
-                }
+            const message: PlayerMessage = {
+                eventType: PlayerEventTypes.RIGHT_KEY_UP,
+                playerId: boardhouseFront.currentLoginUserId
             }
             
             boardhouseFront.connection.send(JSON.stringify(message));

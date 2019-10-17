@@ -1,5 +1,4 @@
 import { RegistryKeyToSystemMap, RegistryKeyToEntityListMap, IBoardhouseBack } from "./interfaces";
-import { Message } from "../../packets/message";
 // import { Widget } from "./ui/widget";
 
 export abstract class BaseState {
@@ -88,15 +87,6 @@ export abstract class BaseState {
         if (this.entityRegistry["global"].indexOf(ent) === -1) {
             this.entityRegistry["global"].push(ent);
         }
-
-        boardhouseBack.boardhouseServer.clients.forEach(client => {
-            let message: Message;
-            message.type = "createEntity";
-            message.data = ent;
-            client.send(JSON.stringify(message));
-        });
-
-        boardhouseBack.netIdToEntityMap[boardhouseBack.currentNetId] = ent;
     }
 
     /**

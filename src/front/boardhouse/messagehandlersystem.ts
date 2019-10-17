@@ -1,19 +1,20 @@
 import { IBoardHouseFront } from "./interfaces";
-import { BoardhouseMessage } from "../../packets/boardhousemessage";
-import { Message } from "../../packets/message";
+import { PlayerMessage } from "../../packets/playermessage";
+import { EntityMessage } from "../../packets/entitymessage";
+import { EntityEventTypes } from "../../packets/entityeventtypes";
 
 export function messageHandlerSystem(boardHouseFront: IBoardHouseFront) {
     boardHouseFront.connection.onmessage = function(messageEvent: MessageEvent) {
-        const message: Message = JSON.parse(messageEvent.data);
+        const message: EntityMessage = JSON.parse(messageEvent.data);
         console.log("boardhouse: back to front message");
 
-        if (message.type === "createEntity") {
+        if (message.eventType === EntityEventTypes.CREATE_OR_UPDATE) {
             createEntity(message, boardHouseFront);
         }
     }
 }
 
-function createEntity(message: Message, boardHouseFront: IBoardHouseFront) {
+function createEntity(message: EntityMessage, boardHouseFront: IBoardHouseFront) {
     console.log("create entity front");
     console.log(message.data);
 }
