@@ -1,6 +1,7 @@
 import * as WebSocket from "ws";
 import { IBoardhouseBack } from "./interfaces";
 import { EntityMessage } from "../../packets/entitymessage";
+import { PlayerMessage } from "../../packets/playermessage";
 import { sendCreateOrUpdateEntityMessage } from "./sendmessages";
 import { Entity } from "./entity";
 
@@ -14,6 +15,8 @@ export function setUpGameServer(boardhouseBack: IBoardhouseBack) {
 
         ws.on("message", function incoming(message) {
             console.log("received: %s", message);
+            const playerMessage: PlayerMessage = JSON.parse(message.toString());
+            boardhouseBack.messagesToProcess.push(playerMessage);
         });
 
         ws.on("close", function() {

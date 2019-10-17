@@ -24,7 +24,7 @@ export abstract class BaseState {
      * registered under the provided key.
      * @param ecsKey 
      */
-    public getEntitiesByKey<E>(ecsKey: keyof E) {
+    public getEntitiesByKey<E>(ecsKey: keyof E | "global") {
         return this.entityRegistry[ecsKey.toString()] as E[];
     }
 
