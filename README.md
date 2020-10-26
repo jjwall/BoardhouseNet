@@ -7,7 +7,8 @@ ___
 ```
 npm install
 npm run build
-node dist/lobby-server.bundle.js
+cd dist
+node lobby-server.bundle.js
 ```
 
 Go to ``localhost:8080`` to test it out. All production files will be contained in the ``dist`` folder.
