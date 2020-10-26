@@ -17,6 +17,7 @@ const boardhouseBack: IBoardhouseBack = {
     currentNetId: 0,
     netIdToEntityMap: {},
     messagesToProcess: [],
+    // entityChangeList: []
 }
 
 setUpClientToLobbyConnection(boardhouseBack);

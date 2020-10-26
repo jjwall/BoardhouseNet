@@ -14,13 +14,13 @@ export function messageHandlerSystem(boardHouseFront: IBoardHouseFront) {
     }
 }
 
-// TODO: implement this
+// TODO: implement this!!
 function createOrUpdateEntity(message: EntityMessage, boardHouseFront: IBoardHouseFront) {
     console.log("create entity front");
     console.log(message.data);
 }
 
-// TODO: implement
+// TODO: implement!!
 function destroyEntity() {
 
 }

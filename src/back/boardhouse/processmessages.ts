@@ -53,6 +53,8 @@ function processPlayerJoinedMessage(message: PlayerMessage, boardhouseBack: IBoa
     setTimeout(function() {
         sendCreateOrUpdateEntityMessage(player, boardhouseBack);
     }, 5000);
+
+    // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages
 }
 
 function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: PlayerMessage) {
