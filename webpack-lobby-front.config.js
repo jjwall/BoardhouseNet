@@ -16,9 +16,11 @@ module.exports = {
         ]
     },
     plugins: [
-        new CopyWebpackPlugin([
-            { from: './public/lobby.html', to: './../'}
-        ])
+        new CopyWebpackPlugin({
+            patterns:[
+                { from: './public/lobby.html', to: './../'}
+            ]
+        })
     ],
     resolve: {
         extensions: ['.tsx', '.ts', '.js']

@@ -16,12 +16,14 @@ module.exports = {
         ]
     },
     plugins: [
-        new CopyWebpackPlugin([
-            { from: './public/game.html', to: './../'},
-            { from: './public/style.css', to: './../'},
-            { from: './data', to: './../data' },
-            { from: './node_modules/three/build/three.min.js' }
-        ])
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: './public/game.html', to: './../'},
+                { from: './public/style.css', to: './../'},
+                { from: './data', to: './../data' },
+                { from: './node_modules/three/build/three.min.js' }
+            ]
+        })
     ],
     resolve: {
         extensions: ['.tsx', '.ts', '.js']
