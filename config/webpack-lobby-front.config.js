@@ -3,7 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     target: 'web',
-    entry: './src/front/boardhouse/main.ts',
+    entry: './src/front/lobby/main.ts',
     mode: 'development',
     devtool: 'inline-source-map',
     module: {
@@ -17,11 +17,8 @@ module.exports = {
     },
     plugins: [
         new CopyWebpackPlugin({
-            patterns: [
-                { from: './public/game.html', to: './../'},
-                { from: './public/style.css', to: './../'},
-                { from: './data', to: './../data' },
-                { from: './node_modules/three/build/three.min.js' }
+            patterns:[
+                { from: './public/lobby.html', to: './../'}
             ]
         })
     ],
@@ -29,10 +26,7 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js']
     },
     output: {
-        filename: 'boardhouse-front.bundle.js',
-        path: path.resolve(__dirname, 'dist/public/scripts')
-    },
-    externals: {
-        three: 'THREE',
+        filename: 'lobby-front.bundle.js',
+        path: path.resolve(__dirname, '../dist/public/scripts')
     },
 };

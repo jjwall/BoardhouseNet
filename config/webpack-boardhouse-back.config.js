@@ -3,7 +3,7 @@ const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
     target: 'node',
-    entry: './src/back/lobby/server.ts',
+    entry: './src/back/boardhouse/main.ts',
     mode: 'development',
     devtool: 'inline-source-map',
     module: {
@@ -19,8 +19,8 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js']
     },
     output: {
-        filename: 'lobby-server.bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        filename: 'boardhouse-back.bundle.js',
+        path: path.resolve(__dirname, '../dist/engine')
     },
     externals: [nodeExternals()],
 };
