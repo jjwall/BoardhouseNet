@@ -1,9 +1,9 @@
-import { Entity } from "./entity";
-import { GameState } from "./gamestate";
-import { PlayerMessage } from "../../packets/playermessage";
-import { PlayerEventTypes } from "../../packets/playereventtypes";
-import { IBoardhouseBack } from "./interfaces";
-import { initializeControls } from "./initializers";
+import { Entity } from "../states/gameplay/entity";
+import { GameState } from "../states/gameplay/gamestate";
+import { PlayerMessage } from "../../../packets/playermessage";
+import { PlayerEventTypes } from "../../../packets/playereventtypes";
+import { IBoardhouseBack } from "../engine/interfaces";
+import { initializeControls } from "../components/initializers";
 import { sendCreateOrUpdateEntityMessage } from "./sendmessages";
 
 export function processMessages(ents: ReadonlyArray<Entity>, boardhouseBack: IBoardhouseBack, state: GameState) {

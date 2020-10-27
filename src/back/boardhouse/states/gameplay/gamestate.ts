@@ -1,9 +1,9 @@
-import { BaseState } from "./basestate";
-import { initializeControls } from "./initializers";
-import { controlSystem } from "./coresystems";
+import { BaseState } from "../../engine/basestate";
+import { initializeControls } from "../../components/initializers";
+import { controlSystem } from "../../systems/coresystems";
 import { Entity } from "./entity";
-import { IBoardhouseBack } from "./interfaces";
-import { processMessages } from "./processmessages";
+import { IBoardhouseBack } from "../../engine/interfaces";
+import { processMessages } from "../../messaging/processmessages";
 
 /**
  * GameState that handles updating of all game-related systems.

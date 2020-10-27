@@ -1,4 +1,4 @@
-import { Entity } from "./entity";
+import { Entity } from "../states/gameplay/entity";
 
 /**
  * Control system.

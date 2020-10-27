@@ -1,7 +1,7 @@
 import * as WebSocket from "ws";
 import { BaseState } from "./basestate";
-import { Entity } from "./entity";
-import { PlayerMessage } from "../../packets/playermessage";
+import { Entity } from "../states/gameplay/entity";
+import { PlayerMessage } from "../../../packets/playermessage";
 
 export interface IBoardhouseBack {
     clientConnection: WebSocket,

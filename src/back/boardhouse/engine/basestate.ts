@@ -1,5 +1,5 @@
 import { RegistryKeyToSystemMap, RegistryKeyToEntityListMap, IBoardhouseBack } from "./interfaces";
-import { Entity } from "./entity";
+import { Entity } from "../states/gameplay/entity";
 // import { Widget } from "./ui/widget";
 
 export abstract class BaseState {

@@ -4,7 +4,7 @@ import { setUpClientToLobbyConnection } from "./setupclienttolobbyconnection";
 import { setUpGameServer } from "./setupgameserver";
 import { last } from "./helpers";
 import { BaseState } from "./basestate";
-import { GameState } from "./gamestate";
+import { GameState } from "../states/gameplay/gamestate";
 
 // Consider: making this a singleton
 // Handle client to lobby server connection.
