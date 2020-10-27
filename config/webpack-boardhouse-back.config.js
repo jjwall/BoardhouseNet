@@ -3,7 +3,7 @@ const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
     target: 'node',
-    entry: './src/back/boardhouse/engine/main.ts',
+    entry: './src/back/engine/main.ts',
     mode: 'development',
     devtool: 'inline-source-map',
     module: {

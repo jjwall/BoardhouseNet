@@ -1,6 +1,6 @@
-import { PlayerMessage } from "../../../packets/playermessage";
-import { EntityMessage } from "../../../packets/entitymessage";
-import { EntityEventTypes } from "../../../packets/entityeventtypes";
+import { PlayerMessage } from "../../packets/playermessage";
+import { EntityMessage } from "../../packets/entitymessage";
+import { EntityEventTypes } from "../../packets/entityeventtypes";
 import { FrontEngine } from "../engine/frontengine";
 
 export function messageHandlerSystem(engine: FrontEngine) {

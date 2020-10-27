@@ -1,7 +1,7 @@
 import { Entity } from "../states/gameplay/entity";
 import { GameState } from "../states/gameplay/gamestate";
-import { PlayerMessage } from "../../../packets/playermessage";
-import { PlayerEventTypes } from "../../../packets/playereventtypes";
+import { PlayerMessage } from "../../packets/playermessage";
+import { PlayerEventTypes } from "../../packets/playereventtypes";
 import { IBoardhouseBack } from "../engine/interfaces";
 import { initializeControls } from "../components/initializers";
 import { sendCreateOrUpdateEntityMessage } from "./sendmessages";

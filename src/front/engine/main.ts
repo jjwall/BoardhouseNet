@@ -1,8 +1,8 @@
 import { setEventListeners } from "./seteventlisteners";
 import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 import { messageHandlerSystem } from "../messaging/messagehandlersystem";
-import { PlayerMessage } from "../../../packets/playermessage";
-import { PlayerEventTypes } from "../../../packets/playereventtypes";
+import { PlayerMessage } from "../../packets/playermessage";
+import { PlayerEventTypes } from "../../packets/playereventtypes";
 import { FrontEngine, FrontEngineConfig } from "./frontengine";
 import { FrontGamePlayState } from "../states/gameplay/frontstate";
 import { last } from "./helpers";

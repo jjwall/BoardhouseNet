@@ -3,8 +3,8 @@ import { scaleToWindow } from "./scaletowindow";
 // import { Widget } from "../ui/widget";
 // import { Entity } from "./entity";
 import { last } from "./helpers";
-import { PlayerMessage } from "../../../packets/playermessage";
-import { PlayerEventTypes } from "../../../packets/playereventtypes";
+import { PlayerMessage } from "../../packets/playermessage";
+import { PlayerEventTypes } from "../../packets/playereventtypes";
 import { FrontEngine } from "./frontengine";
 
 export function setEventListeners(canvas: HTMLCanvasElement, engine: FrontEngine) {

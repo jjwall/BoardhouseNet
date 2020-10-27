@@ -1,7 +1,7 @@
 import * as WebSocket from "ws";
 import { IBoardhouseBack } from "./interfaces";
-import { EntityMessage } from "../../../packets/entitymessage";
-import { PlayerMessage } from "../../../packets/playermessage";
+import { EntityMessage } from "../../packets/entitymessage";
+import { PlayerMessage } from "../../packets/playermessage";
 import { sendCreateOrUpdateEntityMessage } from "../messaging/sendmessages";
 import { Entity } from "../states/gameplay/entity";
 

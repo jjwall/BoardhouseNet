@@ -1,7 +1,7 @@
 import { Entity } from "../states/gameplay/entity";
 import { IBoardhouseBack } from "../engine/interfaces";
-import { EntityMessage } from "../../../packets/entitymessage";
-import { EntityEventTypes } from "../../../packets/entityeventtypes";
+import { EntityMessage } from "../../packets/entitymessage";
+import { EntityEventTypes } from "../../packets/entityeventtypes";
 
 export function sendCreateOrUpdateEntityMessage(ent: Entity, boardhouseBack: IBoardhouseBack) {
     if (ent.pos && ent.sprite && ent.anim) {

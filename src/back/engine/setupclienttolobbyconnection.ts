@@ -1,6 +1,6 @@
 import * as WebSocket from "ws";
 import { IBoardhouseBack } from "./interfaces";
-import { GameServerInfo } from "../../../packets/gameserverinfo";
+import { GameServerInfo } from "../../packets/gameserverinfo";
 
 export function setUpClientToLobbyConnection(boardhouseBack: IBoardhouseBack) {
     boardhouseBack.clientConnection.onopen = function() {
