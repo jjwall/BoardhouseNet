@@ -1,26 +1,26 @@
-import { IBoardHouseFront } from "../engine/interfaces";
 import { PlayerMessage } from "../../../packets/playermessage";
 import { EntityMessage } from "../../../packets/entitymessage";
 import { EntityEventTypes } from "../../../packets/entityeventtypes";
+import { FrontEngine } from "../engine/frontengine";
 
-export function messageHandlerSystem(boardHouseFront: IBoardHouseFront) {
-    boardHouseFront.connection.onmessage = function(messageEvent: MessageEvent) {
+export function messageHandlerSystem(engine: FrontEngine) {
+    engine.connection.onmessage = function(messageEvent: MessageEvent) {
         const message: EntityMessage = JSON.parse(messageEvent.data);
         console.log("boardhouse: back to front message");
 
         if (message.eventType === EntityEventTypes.CREATE_OR_UPDATE) {
-            createOrUpdateEntity(message, boardHouseFront);
+            createOrUpdateEntity(message, engine);
         }
     }
 }
 
-// TODO: implement this!!
-function createOrUpdateEntity(message: EntityMessage, boardHouseFront: IBoardHouseFront) {
+// TODO: implement this!! // -> i.e. create or update a front end version of an entity
+function createOrUpdateEntity(message: EntityMessage, engine: FrontEngine) {
     console.log("create entity front");
     console.log(message.data);
 }
 
-// TODO: implement!!
+// TODO: implement!! // -> i.e. destroy a front end version of an entity
 function destroyEntity() {
 
 }

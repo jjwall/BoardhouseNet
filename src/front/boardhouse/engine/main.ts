@@ -1,14 +1,13 @@
-import { Resources, loadTextures, loadAudioElements, loadFonts } from "./resourcemanager";
 import { setEventListeners } from "./seteventlisteners";
 import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
-import { IBoardHouseFront } from "./interfaces";
 import { messageHandlerSystem } from "../messaging/messagehandlersystem";
 import { PlayerMessage } from "../../../packets/playermessage";
 import { PlayerEventTypes } from "../../../packets/playereventtypes";
+import { FrontEngine, FrontEngineConfig } from "./frontengine";
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
 
-const boardhouseFront: IBoardHouseFront = {
+const config: FrontEngineConfig = {
     connection: <WebSocket> null,
     currentPort: <number>parseInt(params.get("port")),
     currentPlayerId: <number>parseInt(params.get("loginUserId")),
@@ -18,47 +17,45 @@ const boardhouseFront: IBoardHouseFront = {
     keyLeftIsDown: false,
     keyRightIsDown: false,
     // netIdToEntMap: Array<NetIdToEntMap> // TODO: Implement!! (FrontEnt vs BackEnt, EntData is separate)
+    /// ----
+    screenWidth: 1280,
+    screenHeight: 720,
+    // gameTicksPerSecond: 60,
+    // displayFPS: true,
+    // displayHitBoxes: true,
+    // globalErrorHandling: true,
+    fontUrls: [
+        "./data/fonts/helvetiker_regular_typeface.json"
+    ],
+    textureUrls: [
+        "./data/textures/cottage.png",
+        "./data/textures/msknight.png",
+        "./data/textures/snow.png",
+    ],
+    audioUrls: [
+        "./data/audio/Pale_Blue.mp3",
+    ],
 }
 
-boardhouseFront.connection = new WebSocket("ws://" + 
-                                           boardhouseFront.hostName + ":" +
-                                           boardhouseFront.currentPort);
+const engine = new FrontEngine(config);
 
-boardhouseFront.connection.onopen = function() {
+engine.connection = new WebSocket("ws://" + 
+                                           engine.hostName + ":" +
+                                           engine.currentPort);
+
+engine.connection.onopen = function() {
     console.log("conn opened");
 
     const message: PlayerMessage = {
         eventType: PlayerEventTypes.PLAYER_JOINED,
-        playerId: boardhouseFront.currentPlayerId
+        playerId: engine.currentPlayerId
     }
     
-    boardhouseFront.connection.send(JSON.stringify(message));
+    engine.connection.send(JSON.stringify(message));
 }
 
-loadTextures([
-    "./data/textures/cottage.png",
-    "./data/textures/msknight.png",
-    "./data/textures/snow.png",
-]).then((textures) => {
-    // cache off textures
-    Resources.instance.setTextures(textures);
-
-    loadFonts([
-        "./data/fonts/helvetiker_regular_typeface.json"
-    ]).then((fonts) => {
-        // cache off fonts
-        Resources.instance.setFonts(fonts);
-
-        loadAudioElements([
-            "./data/audio/Pale_Blue.mp3"
-        ]).then((audioElements) => {
-            // cache off audio elements
-            Resources.instance.setAudioElements(audioElements);
-
-            // start game
-            main(<HTMLElement>document.getElementById("canvasContainer"));
-        });
-    });
+engine.loadAssets().then(() => {
+    main(<HTMLElement>document.getElementById("canvasContainer"));
 });
 
 /**
@@ -73,7 +70,7 @@ function main(canvasContainer: HTMLElement) {
     const renderer = new WebGLRenderer();
     renderer.setSize(1280, 720);
     renderer.autoClear = false;
-    boardhouseFront.gameScene.background = new Color("#FFFFFF");
+    engine.gameScene.background = new Color("#FFFFFF");
 
     // append canvas element to canvas container
     canvasContainer.append(renderer.domElement);
@@ -85,7 +82,7 @@ function main(canvasContainer: HTMLElement) {
     // fpsWidget.setText("FPS:");
 
     // set up event listeners
-    setEventListeners(renderer.domElement, boardhouseFront);
+    setEventListeners(renderer.domElement, engine);
 
     // render update loop
     function renderLoop(timeStamp: number) {
@@ -102,8 +99,8 @@ function main(canvasContainer: HTMLElement) {
 
     function render(renderer: WebGLRenderer) {
         renderer.clear();
-        renderer.render(boardhouseFront.gameScene, boardhouseFront.gameCamera);
+        renderer.render(engine.gameScene, engine.gameCamera);
     }
 
-    messageHandlerSystem(boardhouseFront);
+    messageHandlerSystem(engine);
 }

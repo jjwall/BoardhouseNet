@@ -3,11 +3,11 @@ import { scaleToWindow } from "./scaletowindow";
 // import { Widget } from "../ui/widget";
 // import { Entity } from "./entity";
 import { last } from "./helpers";
-import { IBoardHouseFront } from "./interfaces";
 import { PlayerMessage } from "../../../packets/playermessage";
 import { PlayerEventTypes } from "../../../packets/playereventtypes";
+import { FrontEngine } from "./frontengine";
 
-export function setEventListeners(canvas: HTMLCanvasElement, boardhouseFront: IBoardHouseFront) {
+export function setEventListeners(canvas: HTMLCanvasElement, engine: FrontEngine) {
     // call first to scale to current window dimensions
     scaleToWindow(canvas);
 
@@ -18,50 +18,50 @@ export function setEventListeners(canvas: HTMLCanvasElement, boardhouseFront: IB
     // keyboard controls
     window.onkeydown = function(e: KeyboardEvent) {
         // left
-        if (e.keyCode === 37 && !boardhouseFront.keyLeftIsDown) {
+        if (e.keyCode === 37 && !engine.keyLeftIsDown) {
             const message: PlayerMessage = {
                 eventType: PlayerEventTypes.LEFT_KEY_DOWN,
-                playerId: boardhouseFront.currentPlayerId
+                playerId: engine.currentPlayerId
             }
 
-            boardhouseFront.keyLeftIsDown = true;
-            boardhouseFront.connection.send(JSON.stringify(message));
+            engine.keyLeftIsDown = true;
+            engine.connection.send(JSON.stringify(message));
         }
 
 
         // right
-        if (e.keyCode === 39 && !boardhouseFront.keyRightIsDown) {
+        if (e.keyCode === 39 && !engine.keyRightIsDown) {
             const message: PlayerMessage = {
                 eventType: PlayerEventTypes.RIGHT_KEY_DOWN,
-                playerId: boardhouseFront.currentPlayerId
+                playerId: engine.currentPlayerId
             }
             
-            boardhouseFront.keyRightIsDown = true;
-            boardhouseFront.connection.send(JSON.stringify(message));
+            engine.keyRightIsDown = true;
+            engine.connection.send(JSON.stringify(message));
         }
     }
 
     window.onkeyup = function(e: KeyboardEvent) {
         // left
-        if (e.keyCode === 37 && boardhouseFront.keyLeftIsDown) {
+        if (e.keyCode === 37 && engine.keyLeftIsDown) {
             const message: PlayerMessage = {
                 eventType: PlayerEventTypes.LEFT_KEY_UP,
-                playerId: boardhouseFront.currentPlayerId
+                playerId: engine.currentPlayerId
             }
             
-            boardhouseFront.keyLeftIsDown = false;
-            boardhouseFront.connection.send(JSON.stringify(message));
+            engine.keyLeftIsDown = false;
+            engine.connection.send(JSON.stringify(message));
         }
 
         // right
-        if (e.keyCode === 39 && boardhouseFront.keyRightIsDown) {
+        if (e.keyCode === 39 && engine.keyRightIsDown) {
             const message: PlayerMessage = {
                 eventType: PlayerEventTypes.RIGHT_KEY_UP,
-                playerId: boardhouseFront.currentPlayerId
+                playerId: engine.currentPlayerId
             }
             
-            boardhouseFront.keyRightIsDown = false;
-            boardhouseFront.connection.send(JSON.stringify(message));
+            engine.keyRightIsDown = false;
+            engine.connection.send(JSON.stringify(message));
         }
     }
 }
