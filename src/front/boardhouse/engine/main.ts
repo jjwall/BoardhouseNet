@@ -2,9 +2,9 @@ import { Resources, loadTextures, loadAudioElements, loadFonts } from "./resourc
 import { setEventListeners } from "./seteventlisteners";
 import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 import { IBoardHouseFront } from "./interfaces";
-import { messageHandlerSystem } from "./messagehandlersystem";
-import { PlayerMessage } from "../../packets/playermessage";
-import { PlayerEventTypes } from "../../packets/playereventtypes";
+import { messageHandlerSystem } from "../messaging/messagehandlersystem";
+import { PlayerMessage } from "../../../packets/playermessage";
+import { PlayerEventTypes } from "../../../packets/playereventtypes";
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
 

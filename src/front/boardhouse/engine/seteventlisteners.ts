@@ -4,8 +4,8 @@ import { scaleToWindow } from "./scaletowindow";
 // import { Entity } from "./entity";
 import { last } from "./helpers";
 import { IBoardHouseFront } from "./interfaces";
-import { PlayerMessage } from "../../packets/playermessage";
-import { PlayerEventTypes } from "../../packets/playereventtypes";
+import { PlayerMessage } from "../../../packets/playermessage";
+import { PlayerEventTypes } from "../../../packets/playereventtypes";
 
 export function setEventListeners(canvas: HTMLCanvasElement, boardhouseFront: IBoardHouseFront) {
     // call first to scale to current window dimensions

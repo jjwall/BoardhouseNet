@@ -1,7 +1,7 @@
-import { IBoardHouseFront } from "./interfaces";
-import { PlayerMessage } from "../../packets/playermessage";
-import { EntityMessage } from "../../packets/entitymessage";
-import { EntityEventTypes } from "../../packets/entityeventtypes";
+import { IBoardHouseFront } from "../engine/interfaces";
+import { PlayerMessage } from "../../../packets/playermessage";
+import { EntityMessage } from "../../../packets/entitymessage";
+import { EntityEventTypes } from "../../../packets/entityeventtypes";
 
 export function messageHandlerSystem(boardHouseFront: IBoardHouseFront) {
     boardHouseFront.connection.onmessage = function(messageEvent: MessageEvent) {
