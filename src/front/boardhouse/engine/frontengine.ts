@@ -1,7 +1,7 @@
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { BufferGeometry, ShapeBufferGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera} from "three";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
-// import { BaseState } from "./basestate";
+import { BaseFrontState } from "./basefrontstate";
 
 export interface FrontEngineConfig {
     /// old configs
@@ -9,8 +9,6 @@ export interface FrontEngineConfig {
     currentPort: number;
     currentPlayerId: number;
     hostName: string;
-    gameScene: Scene;
-    gameCamera: Camera;
     keyLeftIsDown: boolean;
     keyRightIsDown: boolean;
     // end old configs
@@ -32,8 +30,6 @@ export class FrontEngine {
         this.currentPort = config.currentPort;
         this.currentPlayerId = config.currentPlayerId;
         this.hostName = config.hostName;
-        this.gameScene = config.gameScene;
-        this.gameCamera = config.gameCamera;
         this.keyLeftIsDown = config.keyLeftIsDown;
         this.keyRightIsDown = config.keyRightIsDown;
 
@@ -55,8 +51,6 @@ export class FrontEngine {
     currentPort: number;
     currentPlayerId: number;
     hostName: string;
-    gameScene: Scene;
-    gameCamera: Camera;
     keyLeftIsDown: boolean;
     keyRightIsDown: boolean;
 
@@ -78,7 +72,7 @@ export class FrontEngine {
 
     public renderer: WebGLRenderer;
 
-    // public stateStack: BaseState[] = [];
+    public stateStack: BaseFrontState[] = [];
 
     public fontUrls: string[];
 

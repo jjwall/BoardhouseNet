@@ -4,6 +4,8 @@ import { messageHandlerSystem } from "../messaging/messagehandlersystem";
 import { PlayerMessage } from "../../../packets/playermessage";
 import { PlayerEventTypes } from "../../../packets/playereventtypes";
 import { FrontEngine, FrontEngineConfig } from "./frontengine";
+import { FrontGamePlayState } from "../states/gameplay/frontstate";
+import { last } from "./helpers";
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
 
@@ -12,8 +14,6 @@ const config: FrontEngineConfig = {
     currentPort: <number>parseInt(params.get("port")),
     currentPlayerId: <number>parseInt(params.get("loginUserId")),
     hostName: <string>window.location.hostname != "" ? window.location.hostname : "localhost",
-    gameScene: new Scene(),
-    gameCamera: new OrthographicCamera(0, 1280, 720, 0, -1000, 1000),
     keyLeftIsDown: false,
     keyRightIsDown: false,
     // netIdToEntMap: Array<NetIdToEntMap> // TODO: Implement!! (FrontEnt vs BackEnt, EntData is separate)
@@ -55,6 +55,8 @@ engine.connection.onopen = function() {
 }
 
 engine.loadAssets().then(() => {
+    const gamePlayState = new FrontGamePlayState(engine);
+    engine.stateStack.push(gamePlayState);
     main(<HTMLElement>document.getElementById("canvasContainer"));
 });
 
@@ -68,18 +70,21 @@ engine.loadAssets().then(() => {
 function main(canvasContainer: HTMLElement) {
     // set up renderer
     const renderer = new WebGLRenderer();
-    renderer.setSize(1280, 720);
+    renderer.setSize(engine.screenWidth, engine.screenHeight);
     renderer.autoClear = false;
-    engine.gameScene.background = new Color("#FFFFFF");
+    engine.renderer = renderer;
 
     // append canvas element to canvas container
     canvasContainer.append(renderer.domElement);
 
+    // disable right click context menu
+    renderer.domElement.oncontextmenu = function (e) {
+        e.preventDefault();
+    };
+
     let fps: number = 0;
     let totalTime: number = 0;
     let currentTime: number = 0;
-    // let fpsWidget = BoardhouseUI.CreateWidget();
-    // fpsWidget.setText("FPS:");
 
     // set up event listeners
     setEventListeners(renderer.domElement, engine);
@@ -91,16 +96,18 @@ function main(canvasContainer: HTMLElement) {
         totalTime = timeStamp;
         fps = 1 / (currentTime / 1000);
                 
-        render(renderer);
+        if (engine.stateStack.length > 0) {
+            // call render on last element in state stack
+            last(engine.stateStack).render();
+        }
+        else {
+            throw "No states to render";
+        }
     }
 
     // start the render loop
     renderLoop(0);
 
-    function render(renderer: WebGLRenderer) {
-        renderer.clear();
-        renderer.render(engine.gameScene, engine.gameCamera);
-    }
 
     messageHandlerSystem(engine);
 }
