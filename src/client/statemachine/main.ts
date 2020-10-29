@@ -4,6 +4,8 @@ import { messageHandlerSystem } from "../messaging/messagehandlersystem";
 import { PlayerMessage } from "../../packets/playermessage";
 import { PlayerEventTypes } from "../../packets/playereventtypes";
 import { ClientStateMachine, ClientStateMachineConfig } from "./clientstatemachine";
+import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
+import { ClientRoleTypes } from "../../packets/clientroletypes";
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
 const clientRole = ClientRoleTypes.PLAYER; // if params.get("loginUserId") is a playerId: player, else spectator
@@ -55,11 +57,7 @@ stateMachine.connection.onopen = function() {
 }
 
 stateMachine.loadAssets().then(() => {
-    stateMachine.initializeState("gameplay");
-    //engine.stateStack.push(state); // keep stateStack for now.. maybe remove later
-    // prob don't need statestack, you would just pass state to main, and not have 
-    // a reference to state on the engine, since you'd have a reference to engine on the state
-    // no need for a cyclical reference
+    stateMachine.initializeState(GameServerStateTypes.GAMEPLAY);
     main(<HTMLElement>document.getElementById("canvasContainer"));
 });
 

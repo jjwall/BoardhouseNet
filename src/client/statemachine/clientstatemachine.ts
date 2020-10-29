@@ -1,6 +1,8 @@
 import { BufferGeometry, ShapeBufferGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera} from "three";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
+import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
+import { ClientRoleTypes } from "../../packets/clientroletypes";
 
 export interface ClientStateMachineConfig {
     /// state stuff ///
@@ -195,11 +197,15 @@ export class ClientStateMachine {
         audio.play();
     }
 
-    public initializeState(gameState: string) {
-        switch (gameState) {
-            case "gameplay": // need enum for this
+    /**
+     * Initialize Game Client state based on Game Server state.
+     * @param gameServerState
+     */
+    public initializeState(gameServerState: GameServerStateTypes) {
+        switch (gameServerState) {
+            case GameServerStateTypes.GAMEPLAY:
                 // do stuff based on game server state
-                console.log("initializing client game play state");
+                console.log("initializing client for game play state");
                 // Set up game scene.
                 this.gameScene = new Scene();
                 this.gameScene.background = new Color("#FFFFFF");
