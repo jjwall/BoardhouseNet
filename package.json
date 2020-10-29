@@ -5,13 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build-lobby-server && npm run build-lobby-front && npm run build-boardhouse-back && npm run build-boardhouse-front",
-    "build-front": "npm run build-lobby-front && npm run build-boardhouse-front",
-    "build-back": "npm run build-lobby-server && npm run build-boardhouse-back",
+    "build": "npm run build-lobby && npm run build-engine",
+    "build-client": "npm run build-lobby-client && npm run build-engine-client",
+    "build-server": "npm run build-lobby-server && npm run build-engine-server",
+    "build-lobby": "npm run build-lobby-server && npm run build-lobby-client",
+    "build-engine": "npm run build-engine-server && npm run build-engine-client",
     "build-lobby-server": "webpack --config config/webpack-lobby-server.config.js",
-    "build-lobby-front": "webpack --config config/webpack-lobby-front.config.js",
-    "build-boardhouse-back": "webpack --config config/webpack-boardhouse-back.config.js",
-    "build-boardhouse-front": "webpack --config config/webpack-boardhouse-front.config.js"
+    "build-lobby-client": "webpack --config config/webpack-lobby-client.config.js",
+    "build-engine-server": "webpack --config config/webpack-engine-server.config.js",
+    "build-engine-client": "webpack --config config/webpack-engine-client.config.js"
   },
   "repository": {
     "type": "git",
