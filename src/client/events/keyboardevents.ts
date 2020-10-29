@@ -1,10 +1,10 @@
 // import { BaseState } from "./../engine/basestate";
 // import { Entity } from "./../states/gameplay/entity";
-import { FrontEngine } from "../engine/frontengine";
+import { ClientEngine } from "../engine/clientengine";
 
 // keyboard controls
 // visit https://keycode.info/ for other key codes.
-export let handleKeyDownEvent = (engine: FrontEngine, e: KeyboardEvent) => {
+export let handleKeyDownEvent = (engine: ClientEngine, e: KeyboardEvent) => {
     console.log(e);
     switch(e.keyCode) {
         case 37: // left
@@ -54,7 +54,7 @@ export let handleKeyDownEvent = (engine: FrontEngine, e: KeyboardEvent) => {
     }
 }
 
-export function handleKeyUpEvent(engine: FrontEngine , e: KeyboardEvent) {
+export function handleKeyUpEvent(engine: ClientEngine , e: KeyboardEvent) {
     switch(e.keyCode) {
         case 37: // left
         case 65: // a

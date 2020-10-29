@@ -1,16 +1,16 @@
 import { Scene, Camera, Color, WebGLRenderer, OrthographicCamera } from "three";
-import { BaseFrontState } from "../../engine/basefrontstate";
-import { FrontEngine } from "../../engine/frontengine";
+import { BaseClientState } from "../../engine/baseclientstate";
+import { ClientEngine } from "../../engine/clientengine";
 
-export class FrontGamePlayState extends BaseFrontState {
+export class ClientGamePlayState extends BaseClientState {
     public gameScene: Scene;
     public gameCamera: Camera;
     public uiScene: Scene;
     public uiCamera: Camera;
-    public entityList: FrontEntity[] = [];
-    constructor(engine: FrontEngine) {
+    public entityList: ClientEntity[] = [];
+    constructor(engine: ClientEngine) {
         super(engine);
-        console.log("initializing front game play state");
+        console.log("initializing client game play state");
         // Set up game scene.
         this.gameScene = new Scene();
         this.gameScene.background = new Color("#FFFFFF");

@@ -5,9 +5,9 @@ import { scaleToWindow } from "./scaletowindow";
 import { last } from "./helpers";
 import { PlayerMessage } from "../../packets/playermessage";
 import { PlayerEventTypes } from "../../packets/playereventtypes";
-import { FrontEngine } from "./frontengine";
+import { ClientEngine } from "./clientengine";
 
-export function setEventListeners(canvas: HTMLCanvasElement, engine: FrontEngine) {
+export function setEventListeners(canvas: HTMLCanvasElement, engine: ClientEngine) {
     // call first to scale to current window dimensions
     scaleToWindow(canvas);
 

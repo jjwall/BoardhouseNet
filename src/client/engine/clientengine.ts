@@ -1,9 +1,9 @@
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { BufferGeometry, ShapeBufferGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera} from "three";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
-import { BaseFrontState } from "./basefrontstate";
+import { BaseClientState } from "./baseclientstate";
 
-export interface FrontEngineConfig {
+export interface ClientEngineConfig {
     /// old configs
     connection: WebSocket;
     currentPort: number;
@@ -23,8 +23,8 @@ export interface FrontEngineConfig {
     audioUrls: string[];
 }
 
-export class FrontEngine {
-    constructor(config: FrontEngineConfig) {
+export class ClientEngine {
+    constructor(config: ClientEngineConfig) {
         // vvv merged from old configs vvv
         this.connection = config.connection;
         this.currentPort = config.currentPort;
@@ -72,7 +72,7 @@ export class FrontEngine {
 
     public renderer: WebGLRenderer;
 
-    public stateStack: BaseFrontState[] = [];
+    public stateStack: BaseClientState[] = [];
 
     public fontUrls: string[];
 

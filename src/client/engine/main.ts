@@ -3,13 +3,13 @@ import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 import { messageHandlerSystem } from "../messaging/messagehandlersystem";
 import { PlayerMessage } from "../../packets/playermessage";
 import { PlayerEventTypes } from "../../packets/playereventtypes";
-import { FrontEngine, FrontEngineConfig } from "./frontengine";
-import { FrontGamePlayState } from "../states/gameplay/frontstate";
+import { ClientEngine, ClientEngineConfig } from "./clientengine";
+import { ClientGamePlayState } from "../states/gameplay/clientstate";
 import { last } from "./helpers";
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
 
-const config: FrontEngineConfig = {
+const config: ClientEngineConfig = {
     connection: <WebSocket> null,
     currentPort: <number>parseInt(params.get("port")),
     currentPlayerId: <number>parseInt(params.get("loginUserId")),
@@ -37,7 +37,7 @@ const config: FrontEngineConfig = {
     ],
 }
 
-const engine = new FrontEngine(config);
+const engine = new ClientEngine(config);
 
 engine.connection = new WebSocket("ws://" + 
                                            engine.hostName + ":" +
@@ -55,7 +55,7 @@ engine.connection.onopen = function() {
 }
 
 engine.loadAssets().then(() => {
-    const gamePlayState = new FrontGamePlayState(engine);
+    const gamePlayState = new ClientGamePlayState(engine);
     engine.stateStack.push(gamePlayState);
     main(<HTMLElement>document.getElementById("canvasContainer"));
 });

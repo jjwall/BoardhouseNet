@@ -1,4 +1,4 @@
-class FrontEntity {
+class ClientEntity {
     x: number;
     y: number;
 }
