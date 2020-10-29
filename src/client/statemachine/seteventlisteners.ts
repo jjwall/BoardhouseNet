@@ -2,7 +2,6 @@ import { scaleToWindow } from "./scaletowindow";
 // import { BaseState } from "../basestate";
 // import { Widget } from "../ui/widget";
 // import { Entity } from "./entity";
-import { last } from "./helpers";
 import { PlayerMessage } from "../../packets/playermessage";
 import { PlayerEventTypes } from "../../packets/playereventtypes";
 import { ClientStateMachine } from "./clientstatemachine";

@@ -8,7 +8,7 @@ export interface ClientStateMachineConfig {
 
 
     /// end state stuff ///
-    clientRole: string;
+    clientRole: ClientRoleTypes;
     /// old configs
     connection: WebSocket;
     currentPort: number;

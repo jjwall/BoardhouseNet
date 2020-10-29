@@ -4,13 +4,12 @@ import { messageHandlerSystem } from "../messaging/messagehandlersystem";
 import { PlayerMessage } from "../../packets/playermessage";
 import { PlayerEventTypes } from "../../packets/playereventtypes";
 import { ClientStateMachine, ClientStateMachineConfig } from "./clientstatemachine";
-// import { ClientState } from "../state/clientstate";
-import { last } from "./helpers";
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
+const clientRole = ClientRoleTypes.PLAYER; // if params.get("loginUserId") is a playerId: player, else spectator
 
 const config: ClientStateMachineConfig = {
-    clientRole: "Player" || "Specatator", // would not be determined here. But role would change how event handling works. Only need player sending key press events for example. Maybe if playerId then player else specator. Set up ClientRole type enum.
+    clientRole: clientRole, // would not be determined here. But role would change how event handling works. Only need player sending key press events for example. Maybe if playerId then player else specator.
     connection: <WebSocket> null,
     currentPort: <number>parseInt(params.get("port")),
     currentPlayerId: <number>parseInt(params.get("loginUserId")),
