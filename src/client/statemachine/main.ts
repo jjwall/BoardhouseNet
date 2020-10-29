@@ -3,13 +3,14 @@ import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 import { messageHandlerSystem } from "../messaging/messagehandlersystem";
 import { PlayerMessage } from "../../packets/playermessage";
 import { PlayerEventTypes } from "../../packets/playereventtypes";
-import { ClientEngine, ClientEngineConfig } from "./clientengine";
-import { ClientState } from "../state/clientstate";
+import { ClientStateMachine, ClientStateMachineConfig } from "./clientstatemachine";
+// import { ClientState } from "../state/clientstate";
 import { last } from "./helpers";
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
 
-const config: ClientEngineConfig = {
+const config: ClientStateMachineConfig = {
+    clientRole: "Player" || "Specatator", // would not be determined here. But role would change how event handling works. Only need player sending key press events for example. Maybe if playerId then player else specator. Set up ClientRole type enum.
     connection: <WebSocket> null,
     currentPort: <number>parseInt(params.get("port")),
     currentPlayerId: <number>parseInt(params.get("loginUserId")),
@@ -37,26 +38,26 @@ const config: ClientEngineConfig = {
     ],
 }
 
-const engine = new ClientEngine(config);
+const stateMachine = new ClientStateMachine(config);
 
-engine.connection = new WebSocket("ws://" + 
-                                           engine.hostName + ":" +
-                                           engine.currentPort);
+stateMachine.connection = new WebSocket("ws://" + 
+                                           stateMachine.hostName + ":" +
+                                           stateMachine.currentPort);
 
-engine.connection.onopen = function() {
+stateMachine.connection.onopen = function() {
     console.log("conn opened");
 
     const message: PlayerMessage = {
         eventType: PlayerEventTypes.PLAYER_JOINED,
-        playerId: engine.currentPlayerId
+        playerId: stateMachine.currentPlayerId
     }
     
-    engine.connection.send(JSON.stringify(message));
+    stateMachine.connection.send(JSON.stringify(message));
 }
 
-engine.loadAssets().then(() => {
-    const state = new ClientState(engine);
-    engine.stateStack.push(state); // keep stateStack for now.. maybe remove later
+stateMachine.loadAssets().then(() => {
+    stateMachine.initializeState("gameplay");
+    //engine.stateStack.push(state); // keep stateStack for now.. maybe remove later
     // prob don't need statestack, you would just pass state to main, and not have 
     // a reference to state on the engine, since you'd have a reference to engine on the state
     // no need for a cyclical reference
@@ -73,9 +74,9 @@ engine.loadAssets().then(() => {
 function main(canvasContainer: HTMLElement) {
     // set up renderer
     const renderer = new WebGLRenderer();
-    renderer.setSize(engine.screenWidth, engine.screenHeight);
+    renderer.setSize(stateMachine.screenWidth, stateMachine.screenHeight);
     renderer.autoClear = false;
-    engine.renderer = renderer;
+    stateMachine.renderer = renderer;
 
     // append canvas element to canvas container
     canvasContainer.append(renderer.domElement);
@@ -90,7 +91,7 @@ function main(canvasContainer: HTMLElement) {
     let currentTime: number = 0;
 
     // set up event listeners
-    setEventListeners(renderer.domElement, engine);
+    setEventListeners(renderer.domElement, stateMachine);
 
     // render update loop
     function renderLoop(timeStamp: number) {
@@ -98,19 +99,12 @@ function main(canvasContainer: HTMLElement) {
         currentTime = timeStamp - totalTime;
         totalTime = timeStamp;
         fps = 1 / (currentTime / 1000);
-                
-        if (engine.stateStack.length > 0) {
-            // call render on last element in state stack
-            last(engine.stateStack).render();
-        }
-        else {
-            throw "No states to render";
-        }
+
+        stateMachine.render();
     }
 
     // start the render loop
     renderLoop(0);
 
-
-    messageHandlerSystem(engine);
+    messageHandlerSystem(stateMachine);
 }

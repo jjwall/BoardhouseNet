@@ -3,7 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     target: 'web',
-    entry: './src/client/engine/main.ts',
+    entry: './src/client/statemachine/main.ts',
     mode: 'development',
     devtool: 'inline-source-map',
     module: {

@@ -5,9 +5,9 @@ import { scaleToWindow } from "./scaletowindow";
 import { last } from "./helpers";
 import { PlayerMessage } from "../../packets/playermessage";
 import { PlayerEventTypes } from "../../packets/playereventtypes";
-import { ClientEngine } from "./clientengine";
+import { ClientStateMachine } from "./clientstatemachine";
 
-export function setEventListeners(canvas: HTMLCanvasElement, engine: ClientEngine) {
+export function setEventListeners(canvas: HTMLCanvasElement, stateMachine: ClientStateMachine) {
     // call first to scale to current window dimensions
     scaleToWindow(canvas);
 
@@ -18,50 +18,50 @@ export function setEventListeners(canvas: HTMLCanvasElement, engine: ClientEngin
     // keyboard controls
     window.onkeydown = function(e: KeyboardEvent) {
         // left
-        if (e.keyCode === 37 && !engine.keyLeftIsDown) {
+        if (e.keyCode === 37 && !stateMachine.keyLeftIsDown) {
             const message: PlayerMessage = {
                 eventType: PlayerEventTypes.LEFT_KEY_DOWN,
-                playerId: engine.currentPlayerId
+                playerId: stateMachine.currentPlayerId
             }
 
-            engine.keyLeftIsDown = true;
-            engine.connection.send(JSON.stringify(message));
+            stateMachine.keyLeftIsDown = true;
+            stateMachine.connection.send(JSON.stringify(message));
         }
 
 
         // right
-        if (e.keyCode === 39 && !engine.keyRightIsDown) {
+        if (e.keyCode === 39 && !stateMachine.keyRightIsDown) {
             const message: PlayerMessage = {
                 eventType: PlayerEventTypes.RIGHT_KEY_DOWN,
-                playerId: engine.currentPlayerId
+                playerId: stateMachine.currentPlayerId
             }
             
-            engine.keyRightIsDown = true;
-            engine.connection.send(JSON.stringify(message));
+            stateMachine.keyRightIsDown = true;
+            stateMachine.connection.send(JSON.stringify(message));
         }
     }
 
     window.onkeyup = function(e: KeyboardEvent) {
         // left
-        if (e.keyCode === 37 && engine.keyLeftIsDown) {
+        if (e.keyCode === 37 && stateMachine.keyLeftIsDown) {
             const message: PlayerMessage = {
                 eventType: PlayerEventTypes.LEFT_KEY_UP,
-                playerId: engine.currentPlayerId
+                playerId: stateMachine.currentPlayerId
             }
             
-            engine.keyLeftIsDown = false;
-            engine.connection.send(JSON.stringify(message));
+            stateMachine.keyLeftIsDown = false;
+            stateMachine.connection.send(JSON.stringify(message));
         }
 
         // right
-        if (e.keyCode === 39 && engine.keyRightIsDown) {
+        if (e.keyCode === 39 && stateMachine.keyRightIsDown) {
             const message: PlayerMessage = {
                 eventType: PlayerEventTypes.RIGHT_KEY_UP,
-                playerId: engine.currentPlayerId
+                playerId: stateMachine.currentPlayerId
             }
             
-            engine.keyRightIsDown = false;
-            engine.connection.send(JSON.stringify(message));
+            stateMachine.keyRightIsDown = false;
+            stateMachine.connection.send(JSON.stringify(message));
         }
     }
 }

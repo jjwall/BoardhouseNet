@@ -1,21 +1,21 @@
 import { PlayerMessage } from "../../packets/playermessage";
 import { EntityMessage } from "../../packets/entitymessage";
 import { EntityEventTypes } from "../../packets/entityeventtypes";
-import { ClientEngine } from "../engine/clientengine";
+import { ClientStateMachine } from "../statemachine/clientstatemachine";
 
-export function messageHandlerSystem(engine: ClientEngine) {
-    engine.connection.onmessage = function(messageEvent: MessageEvent) {
+export function messageHandlerSystem(stateMachine: ClientStateMachine) {
+    stateMachine.connection.onmessage = function(messageEvent: MessageEvent) {
         const message: EntityMessage = JSON.parse(messageEvent.data);
         console.log("boardhouse: back to front message");
 
         if (message.eventType === EntityEventTypes.CREATE_OR_UPDATE) {
-            createOrUpdateEntity(message, engine);
+            createOrUpdateEntity(message, stateMachine);
         }
     }
 }
 
 // TODO: implement this!! // -> i.e. create or update a front end version of an entity
-function createOrUpdateEntity(message: EntityMessage, engine: ClientEngine) {
+function createOrUpdateEntity(message: EntityMessage, stateMachine: ClientStateMachine) {
     console.log("create entity front");
     console.log(message.data);
 }

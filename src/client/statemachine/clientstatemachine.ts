@@ -1,9 +1,14 @@
+import { BufferGeometry, ShapeBufferGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera} from "three";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
-import { BufferGeometry, ShapeBufferGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera} from "three";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
-import { BaseClientState } from "./baseclientstate";
 
-export interface ClientEngineConfig {
+export interface ClientStateMachineConfig {
+    /// state stuff ///
+
+
+
+    /// end state stuff ///
+    clientRole: string;
     /// old configs
     connection: WebSocket;
     currentPort: number;
@@ -12,8 +17,8 @@ export interface ClientEngineConfig {
     keyLeftIsDown: boolean;
     keyRightIsDown: boolean;
     // end old configs
-    screenWidth: number; // -> not used currently
-    screenHeight: number; // -> not used currently
+    screenWidth: number;
+    screenHeight: number;
     // gameTicksPerSecond: number; // -> don't need
     // displayFPS: boolean; // -> set up later
     // displayHitBoxes: boolean; // -> set up later
@@ -23,8 +28,8 @@ export interface ClientEngineConfig {
     audioUrls: string[];
 }
 
-export class ClientEngine {
-    constructor(config: ClientEngineConfig) {
+export class ClientStateMachine {
+    constructor(config: ClientStateMachineConfig) {
         // vvv merged from old configs vvv
         this.connection = config.connection;
         this.currentPort = config.currentPort;
@@ -45,6 +50,16 @@ export class ClientEngine {
         this.textureUrls = config.textureUrls;
         this.audioUrls = config.audioUrls;
     }
+
+    /// state stuff
+
+    public gameScene: Scene;
+    public gameCamera: Camera;
+    public uiScene: Scene;
+    public uiCamera: Camera;
+    public entityList: ClientEntity[] = [];
+
+    /// end state stuff
 
     /// vvv old configs vvv
     connection: WebSocket;
@@ -71,8 +86,6 @@ export class ClientEngine {
     public FPS: number;
 
     public renderer: WebGLRenderer;
-
-    public stateStack: BaseClientState[] = [];
 
     public fontUrls: string[];
 
@@ -180,5 +193,59 @@ export class ClientEngine {
             audio.loop = loop;
 
         audio.play();
+    }
+
+    public initializeState(gameState: string) {
+        switch (gameState) {
+            case "gameplay": // need enum for this
+                // do stuff based on game server state
+                console.log("initializing client game play state");
+                // Set up game scene.
+                this.gameScene = new Scene();
+                this.gameScene.background = new Color("#FFFFFF");
+
+                // Set up game camera.
+                this.gameCamera = new OrthographicCamera(0, this.screenWidth, this.screenHeight, 0, -1000, 1000);
+
+                // Set up ui scene.
+                this.uiScene = new Scene();
+
+                // Set up ui camera.
+                this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
+                break;
+        }
+    }
+
+    public handleEvent(e: Event) : void {
+        switch(e.type) {
+            // case EventTypes.POINTER_DOWN:
+            //     handlePointerDownEvent(this.rootWidget, e as PointerEvent);
+            //      break;
+            // case EventTypes.POINTER_UP:
+            //     handlePointerUpEvent(e as PointerEvent);
+            //     break;
+            // case EventTypes.MOUSE_DOWN:
+            //     handleMouseDownEvent(this.rootWidget, e as MouseEvent);
+            //     break;
+            // case EventTypes.MOUSE_UP:
+            //     handleMouseUpEvent(e as MouseEvent);
+            //     break;
+            // case EventTypes.KEY_DOWN:
+            //     handleKeyDownEvent(this, e as KeyboardEvent);
+            //     break;
+            // case EventTypes.KEY_UP:
+            //     handleKeyUpEvent(this, e as KeyboardEvent);
+            //     break;
+        }
+    }
+
+    public render() : void {
+        this.renderer.clear();
+        this.renderer.render(this.gameScene, this.gameCamera);
+        this.renderer.clearDepth();
+        this.renderer.render(this.uiScene, this.uiCamera);
+
+        // Render UI updates. // -> set up later
+        // layoutWidget(this.rootWidget, this.engine);
     }
 }
