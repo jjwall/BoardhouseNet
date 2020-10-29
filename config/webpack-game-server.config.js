@@ -20,7 +20,7 @@ module.exports = {
     },
     output: {
         filename: 'game-server.bundle.js',
-        path: path.resolve(__dirname, '../dist/engine')
+        path: path.resolve(__dirname, '../dist/server')
     },
     externals: [nodeExternals()],
 };
