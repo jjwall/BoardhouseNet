@@ -1,5 +1,5 @@
 import { IGlobalLobby } from "./interfaces";
-import { PortToConnectionsMap } from "./../../packets/porttoconnectionsmap";
+import { PortToConnectionsMap } from "../../packets/porttoconnectionsmap";
 import { isNullOrWhitespace } from "./helpers";
 import { populateRoomList } from "./populateroomlist";
 
