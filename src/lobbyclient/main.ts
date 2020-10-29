@@ -1,7 +1,7 @@
 import { IGlobalLobby } from "./interfaces";
 import { createRoom } from "./createroom";
 import { populateRoomList } from "./populateroomlist";
-import { PortToConnectionsMap } from "../../packets/porttoconnectionsmap";
+import { PortToConnectionsMap } from "../packets/porttoconnectionsmap";
 
 // Global lobby variable.
 const globalLobby: IGlobalLobby = {

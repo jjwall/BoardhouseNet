@@ -1,5 +1,5 @@
 # boardhouse-node
-This repo serves as a full-stack enviornment for the [boardhouse game framework](https://github.com/jjwall/BoardhouseTS). The primary project goal is to add networking via websockets to boardhouse. Boardhouse is originally developed as a front-end game engine solution for browser based games. Setting up a client / server architecture would involve splitting up the existing front-end solution into two parts: client and server. Client will handle rendering game objects as well as sending messages to the server. Server will handle the lobby system, game engine logic and handling and sending messages back to the client. This is why ``src`` is split up into ``client`` and ``server``.  If there were an easier way to bolt on a networking layer to boardhouse, I'd go that route, but currently this is the best solution I have come up with.
+This repo serves as a full-stack enviornment for the [boardhouse game framework](https://github.com/jjwall/BoardhouseTS). The primary project goal is to add networking via websockets to boardhouse. Boardhouse is originally developed as a front-end game engine solution for browser based games. Setting up a client / server architecture would involve splitting up the existing front-end solution into two parts: client and server. Client will handle rendering game objects as well as sending messages to the server. Server will handle the lobby system, game engine logic and handling and sending messages back to the client.Hence why ``src`` is split up into ``gameclient``, ``gameserver`` ``lobbyclient``, and ``lobbyserver``.  If there were an easier way to bolt on a networking layer to boardhouse, I'd go that route, but currently this is the best solution I have come up with.
 
 ___
 
@@ -16,10 +16,10 @@ Go to ``localhost:8080`` to test it out. All production files will be contained 
 > More build scripts can be found in the package.json. 
 
 The project uses 4 different bundles: lobby server bundle, lobby client bundle, game server bundle, and game client bundle. The entry points for each bundle are as follows:
-* <u>lobby.js</u> (lobby server): src > server > lobby > main.ts
-* <u>lobby-client.bundle.js</u>: src > client > lobby > main.ts
-* <u>game-server.bundle.js</u>: src > server > engine > main.ts
-* <u>game-client.bundle.js</u>: src > client > engine > main.ts
+* <u>lobby.js</u> (lobby server): src > lobbyserver > server.ts
+* <u>lobby-client.bundle.js</u>: src > lobbyclient > main.ts
+* <u>game-server.bundle.js</u>: src > gameserver > engine > main.ts
+* <u>game-client.bundle.js</u>: src > gameclient > client > main.ts
 ___
 
 ### Lobby / Game Server Relationship

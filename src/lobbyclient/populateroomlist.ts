@@ -1,5 +1,5 @@
 import { IGlobalLobby } from './interfaces';
-import { PortToConnectionsMap } from "../../packets/porttoconnectionsmap";
+import { PortToConnectionsMap } from "../packets/porttoconnectionsmap";
 
 export function populateRoomList(globalLobby: IGlobalLobby, portsToConnectionsMap: PortToConnectionsMap) {
     globalLobby.gameRooms.innerHTML = `
