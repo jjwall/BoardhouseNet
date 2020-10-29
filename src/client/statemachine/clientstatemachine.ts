@@ -32,6 +32,9 @@ export interface ClientStateMachineConfig {
 
 export class ClientStateMachine {
     constructor(config: ClientStateMachineConfig) {
+        ///
+        this.clientRole = config.clientRole;
+        ///
         // vvv merged from old configs vvv
         this.connection = config.connection;
         this.currentPort = config.currentPort;
@@ -54,7 +57,7 @@ export class ClientStateMachine {
     }
 
     /// state stuff
-
+    public clientRole: ClientRoleTypes;
     public gameScene: Scene;
     public gameCamera: Camera;
     public uiScene: Scene;

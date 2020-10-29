@@ -2,7 +2,7 @@ import { setEventListeners } from "./seteventlisteners";
 import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 import { messageHandlerSystem } from "../messaging/messagehandlersystem";
 import { PlayerMessage } from "../../packets/playermessage";
-import { PlayerEventTypes } from "../../packets/playereventtypes";
+import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientStateMachine, ClientStateMachineConfig } from "./clientstatemachine";
 import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
@@ -46,14 +46,30 @@ stateMachine.connection = new WebSocket("ws://" +
                                            stateMachine.currentPort);
 
 stateMachine.connection.onopen = function() {
-    console.log("conn opened");
+    let message: PlayerMessage;
 
-    const message: PlayerMessage = {
-        eventType: PlayerEventTypes.PLAYER_JOINED,
-        playerId: stateMachine.currentPlayerId
-    }
+    switch (stateMachine.clientRole) {
+        case ClientRoleTypes.PLAYER:
+            message = {
+                eventType: ClientEventTypes.PLAYER_JOINED,
+                playerId: stateMachine.currentPlayerId
+            }
+            
+            console.log("client joining as player");
     
-    stateMachine.connection.send(JSON.stringify(message));
+            stateMachine.connection.send(JSON.stringify(message));
+            break;
+        case ClientRoleTypes.SPECTATOR:
+            message = {
+                eventType: ClientEventTypes.SPECTATOR_JOINED,
+                playerId: stateMachine.currentPlayerId
+            }
+            
+            console.log("client joining as spectator");
+    
+            stateMachine.connection.send(JSON.stringify(message));
+            break;
+    }
 }
 
 stateMachine.loadAssets().then(() => {

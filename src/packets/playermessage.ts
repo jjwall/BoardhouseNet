@@ -1,6 +1,6 @@
-import { PlayerEventTypes } from "./playereventtypes";
+import { ClientEventTypes } from "./clienteventtypes";
 
 export interface PlayerMessage {
-    eventType: PlayerEventTypes,
+    eventType: ClientEventTypes,
     playerId: number
 }

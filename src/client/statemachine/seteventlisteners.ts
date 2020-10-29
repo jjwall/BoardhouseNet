@@ -3,7 +3,7 @@ import { scaleToWindow } from "./scaletowindow";
 // import { Widget } from "../ui/widget";
 // import { Entity } from "./entity";
 import { PlayerMessage } from "../../packets/playermessage";
-import { PlayerEventTypes } from "../../packets/playereventtypes";
+import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientStateMachine } from "./clientstatemachine";
 
 export function setEventListeners(canvas: HTMLCanvasElement, stateMachine: ClientStateMachine) {
@@ -19,7 +19,7 @@ export function setEventListeners(canvas: HTMLCanvasElement, stateMachine: Clien
         // left
         if (e.keyCode === 37 && !stateMachine.keyLeftIsDown) {
             const message: PlayerMessage = {
-                eventType: PlayerEventTypes.LEFT_KEY_DOWN,
+                eventType: ClientEventTypes.LEFT_KEY_DOWN,
                 playerId: stateMachine.currentPlayerId
             }
 
@@ -31,7 +31,7 @@ export function setEventListeners(canvas: HTMLCanvasElement, stateMachine: Clien
         // right
         if (e.keyCode === 39 && !stateMachine.keyRightIsDown) {
             const message: PlayerMessage = {
-                eventType: PlayerEventTypes.RIGHT_KEY_DOWN,
+                eventType: ClientEventTypes.RIGHT_KEY_DOWN,
                 playerId: stateMachine.currentPlayerId
             }
             
@@ -44,7 +44,7 @@ export function setEventListeners(canvas: HTMLCanvasElement, stateMachine: Clien
         // left
         if (e.keyCode === 37 && stateMachine.keyLeftIsDown) {
             const message: PlayerMessage = {
-                eventType: PlayerEventTypes.LEFT_KEY_UP,
+                eventType: ClientEventTypes.LEFT_KEY_UP,
                 playerId: stateMachine.currentPlayerId
             }
             
@@ -55,7 +55,7 @@ export function setEventListeners(canvas: HTMLCanvasElement, stateMachine: Clien
         // right
         if (e.keyCode === 39 && stateMachine.keyRightIsDown) {
             const message: PlayerMessage = {
-                eventType: PlayerEventTypes.RIGHT_KEY_UP,
+                eventType: ClientEventTypes.RIGHT_KEY_UP,
                 playerId: stateMachine.currentPlayerId
             }
             

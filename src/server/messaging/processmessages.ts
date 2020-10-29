@@ -1,7 +1,7 @@
 import { Entity } from "../states/gameplay/entity";
 import { GameState } from "../states/gameplay/gamestate";
 import { PlayerMessage } from "../../packets/playermessage";
-import { PlayerEventTypes } from "../../packets/playereventtypes";
+import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { IBoardhouseBack } from "../engine/interfaces";
 import { initializeControls } from "../components/initializers";
 import { sendCreateOrUpdateEntityMessage } from "./sendmessages";
@@ -9,19 +9,19 @@ import { sendCreateOrUpdateEntityMessage } from "./sendmessages";
 export function processMessages(ents: ReadonlyArray<Entity>, boardhouseBack: IBoardhouseBack, state: GameState) {
     boardhouseBack.messagesToProcess.forEach(message => {
         switch (message.eventType) {
-            case PlayerEventTypes.PLAYER_JOINED:
+            case ClientEventTypes.PLAYER_JOINED:
                 processPlayerJoinedMessage(message, boardhouseBack, state);
                 break;
-            case PlayerEventTypes.LEFT_KEY_DOWN:
+            case ClientEventTypes.LEFT_KEY_DOWN:
                 processLeftKeyDownMessage(ents, message);
                 break;
-            case PlayerEventTypes.LEFT_KEY_UP:
+            case ClientEventTypes.LEFT_KEY_UP:
                 processLeftKeyUpMessage(ents, message);
                 break;
-            case PlayerEventTypes.RIGHT_KEY_DOWN:
+            case ClientEventTypes.RIGHT_KEY_DOWN:
                 processRightKeyDownMessage(ents, message);
                 break;
-            case PlayerEventTypes.RIGHT_KEY_UP:
+            case ClientEventTypes.RIGHT_KEY_UP:
                 processRightKeyUpMessage(ents, message);
                 break;
         }
