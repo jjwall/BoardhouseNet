@@ -24,3 +24,9 @@ ___
 #### Front:
 * main -> implement NetToEndId list
 * Implement message handler system functions
+
+#### General stuff:
+* Need to get an appropriately sized random PlayerId. Current one is too big.
+* Give back src treatment same treatment front got (transfer over most recent boardhouse changes over)
+* Add UI layer (fix up current UI changes by finishing or removing input box)
+* Add all events (pointer, mouse, keyboard)
