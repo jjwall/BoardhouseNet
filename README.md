@@ -22,7 +22,13 @@ The project uses 4 different bundles: lobby server bundle, lobby client bundle, 
 * <u>game-client.bundle.js</u>: src > client > engine > main.ts
 ___
 
-### Notes:
+### Lobby / Game Server Relationship
+
+The lobby is used to create rooms (i.e. game servers) and enable clients to connect to them as a player or a spectator. The lobby server is established by running the above command ``node lobby.js`` in the ``dist`` folder. If a client were to "create a room" then a child process of ``game-server.bundle.js`` would be spawned. The magic here happens in ``src > server > lobby > spinupgameserver.ts``
+
+___
+
+### Random Notes (for me):
 
 #### Back:
 * corecompoents -> component getters that need to add Ent to changeList
