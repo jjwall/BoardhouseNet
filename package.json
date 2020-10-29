@@ -5,15 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build-lobby && npm run build-engine",
-    "build-client": "npm run build-lobby-client && npm run build-engine-client",
-    "build-server": "npm run build-lobby-server && npm run build-engine-server",
+    "build": "npm run build-lobby && npm run build-game",
+    "build-client": "npm run build-lobby-client && npm run build-game-client",
+    "build-server": "npm run build-lobby-server && npm run build-game-server",
     "build-lobby": "npm run build-lobby-server && npm run build-lobby-client",
-    "build-engine": "npm run build-engine-server && npm run build-engine-client",
+    "build-game": "npm run build-game-server && npm run build-game-client",
     "build-lobby-server": "webpack --config config/webpack-lobby-server.config.js",
     "build-lobby-client": "webpack --config config/webpack-lobby-client.config.js",
-    "build-engine-server": "webpack --config config/webpack-engine-server.config.js",
-    "build-engine-client": "webpack --config config/webpack-engine-client.config.js"
+    "build-game-server": "webpack --config config/webpack-game-server.config.js",
+    "build-game-client": "webpack --config config/webpack-game-client.config.js"
   },
   "repository": {
     "type": "git",
