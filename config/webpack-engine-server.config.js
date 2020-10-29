@@ -19,7 +19,7 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js']
     },
     output: {
-        filename: 'boardhouse-back.bundle.js',
+        filename: 'game-server.bundle.js',
         path: path.resolve(__dirname, '../dist/engine')
     },
     externals: [nodeExternals()],

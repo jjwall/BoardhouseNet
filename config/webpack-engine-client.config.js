@@ -29,7 +29,7 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js']
     },
     output: {
-        filename: 'boardhouse-front.bundle.js',
+        filename: 'game-client.bundle.js',
         path: path.resolve(__dirname, '../dist/public/scripts')
     },
     externals: {
