@@ -4,7 +4,7 @@ import { messageHandlerSystem } from "../messaging/messagehandlersystem";
 import { PlayerMessage } from "../../packets/playermessage";
 import { PlayerEventTypes } from "../../packets/playereventtypes";
 import { ClientEngine, ClientEngineConfig } from "./clientengine";
-import { ClientGamePlayState } from "../states/gameplay/clientstate";
+import { ClientState } from "../state/clientstate";
 import { last } from "./helpers";
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
@@ -55,8 +55,11 @@ engine.connection.onopen = function() {
 }
 
 engine.loadAssets().then(() => {
-    const gamePlayState = new ClientGamePlayState(engine);
-    engine.stateStack.push(gamePlayState);
+    const state = new ClientState(engine);
+    engine.stateStack.push(state); // keep stateStack for now.. maybe remove later
+    // prob don't need statestack, you would just pass state to main, and not have 
+    // a reference to state on the engine, since you'd have a reference to engine on the state
+    // no need for a cyclical reference
     main(<HTMLElement>document.getElementById("canvasContainer"));
 });
 

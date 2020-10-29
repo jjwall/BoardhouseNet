@@ -1,8 +1,8 @@
 import { Scene, Camera, Color, WebGLRenderer, OrthographicCamera } from "three";
-import { BaseClientState } from "../../engine/baseclientstate";
-import { ClientEngine } from "../../engine/clientengine";
+import { BaseClientState } from "../engine/baseclientstate";
+import { ClientEngine } from "../engine/clientengine";
 
-export class ClientGamePlayState extends BaseClientState {
+export class ClientState extends BaseClientState {
     public gameScene: Scene;
     public gameCamera: Camera;
     public uiScene: Scene;
