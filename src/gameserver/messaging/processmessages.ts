@@ -12,6 +12,9 @@ export function processMessages(ents: ReadonlyArray<Entity>, boardhouseBack: IBo
             case ClientEventTypes.PLAYER_JOINED:
                 processPlayerJoinedMessage(message, boardhouseBack, state);
                 break;
+            case ClientEventTypes.SPECTATOR_JOINED:
+                processSpectatorJoinedMessage(message);
+                break;
             case ClientEventTypes.LEFT_KEY_DOWN:
                 processLeftKeyDownMessage(ents, message);
                 break;
@@ -38,6 +41,8 @@ export function processMessages(ents: ReadonlyArray<Entity>, boardhouseBack: IBo
  * @param state 
  */
 function processPlayerJoinedMessage(message: ClientMessage, boardhouseBack: IBoardhouseBack, state: GameState) {
+    console.log(`client with clientId = ${message.clientId} joined as a player`);
+    boardhouseBack.playersConnected++;
     console.log("create player entity");
     // Set up player entity.
     let player = new Entity();
@@ -55,6 +60,10 @@ function processPlayerJoinedMessage(message: ClientMessage, boardhouseBack: IBoa
     }, 5000);
 
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages
+}
+
+function processSpectatorJoinedMessage(message: ClientMessage) {
+    console.log(`client with clientId = ${message.clientId} joined as a spectator`);
 }
 
 function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientMessage) {

@@ -8,10 +8,9 @@ import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
-// const clientRole = ClientRoleTypes.PLAYER; // if params.get("loginUserId") is a playerId: player, else spectator
 
 const config: ClientConfig = {
-    role: params.get("clientRole") as ClientRoleTypes, // would not be determined here. But role would change how event handling works. Only need player sending key press events for example. Maybe if playerId then player else specator.
+    role: params.get("clientRole") as ClientRoleTypes, // Role would change how event handling works. Only need player sending key press events for example.
     connection: <WebSocket> null,
     currentPort: <number>parseInt(params.get("port")),
     currentClientId: params.get("clientId"),
@@ -38,6 +37,9 @@ const config: ClientConfig = {
         "./data/audio/Pale_Blue.mp3",
     ],
 }
+
+// Remove url params.
+window.history.replaceState(null, null, window.location.pathname);
 
 const client = new Client(config);
 
