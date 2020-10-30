@@ -1,4 +1,4 @@
-import { PlayerMessage } from "../../packets/playermessage";
+import { ClientMessage } from "../../packets/clientmessage";
 import { EntityMessage } from "../../packets/entitymessage";
 import { EntityEventTypes } from "../../packets/entityeventtypes";
 import { Client } from "../client/client";

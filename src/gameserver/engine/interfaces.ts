@@ -1,7 +1,7 @@
 import * as WebSocket from "ws";
 import { BaseState } from "./basestate";
 import { Entity } from "../states/gameplay/entity";
-import { PlayerMessage } from "../../packets/playermessage";
+import { ClientMessage } from "../../packets/clientmessage";
 
 export interface IBoardhouseBack {
     clientConnection: WebSocket,
@@ -11,7 +11,7 @@ export interface IBoardhouseBack {
     boardhouseServer: WebSocket.Server,
     currentNetId: number,
     netIdToEntityMap: NetIdToEntityMap,
-    messagesToProcess: Array<PlayerMessage>
+    messagesToProcess: Array<ClientMessage>
 }
 
 export interface NetIdToEntityMap {

@@ -1,6 +1,6 @@
 import { Entity } from "../states/gameplay/entity";
 import { GameState } from "../states/gameplay/gamestate";
-import { PlayerMessage } from "../../packets/playermessage";
+import { ClientMessage } from "../../packets/clientmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { IBoardhouseBack } from "../engine/interfaces";
 import { initializeControls } from "../components/initializers";
@@ -37,11 +37,11 @@ export function processMessages(ents: ReadonlyArray<Entity>, boardhouseBack: IBo
  * @param boardhouseBack 
  * @param state 
  */
-function processPlayerJoinedMessage(message: PlayerMessage, boardhouseBack: IBoardhouseBack, state: GameState) {
+function processPlayerJoinedMessage(message: ClientMessage, boardhouseBack: IBoardhouseBack, state: GameState) {
     console.log("create player entity");
     // Set up player entity.
     let player = new Entity();
-    player.player = { id: message.playerId };
+    player.player = { id: message.clientId };
     player.pos = { x: 500, y: 300 };
     player.sprite = { url: "./data/textures/msknight.png", pixelRatio: 4 };
     player.anim = { sequence: "blah", currentFrame: 0 };
@@ -57,40 +57,40 @@ function processPlayerJoinedMessage(message: PlayerMessage, boardhouseBack: IBoa
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages
 }
 
-function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: PlayerMessage) {
+function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.playerId) {
+            if (ent.player.id === message.clientId) {
                 ent.control.left = true;
             }
         }
     });
 }
 
-function processLeftKeyUpMessage(ents: ReadonlyArray<Entity>, message: PlayerMessage) {
+function processLeftKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.playerId) {
+            if (ent.player.id === message.clientId) {
                 ent.control.left = false;
             }
         }
     });
 }
 
-function processRightKeyDownMessage(ents: ReadonlyArray<Entity>, message: PlayerMessage) {
+function processRightKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.playerId) {
+            if (ent.player.id === message.clientId) {
                 ent.control.right = true;
             }
         }
     });
 }
 
-function processRightKeyUpMessage(ents: ReadonlyArray<Entity>, message: PlayerMessage) {
+function processRightKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.playerId) {
+            if (ent.player.id === message.clientId) {
                 ent.control.right = false;
             }
         }

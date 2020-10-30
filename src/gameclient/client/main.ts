@@ -1,7 +1,7 @@
 import { setEventListeners } from "./seteventlisteners";
 import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 import { messageHandlerSystem } from "../messaging/messagehandlersystem";
-import { PlayerMessage } from "../../packets/playermessage";
+import { ClientMessage } from "../../packets/clientmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { Client, ClientConfig } from "./client";
 import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
@@ -46,13 +46,13 @@ client.connection = new WebSocket("ws://" +
                                            client.currentPort);
 
 client.connection.onopen = function() {
-    let message: PlayerMessage;
+    let message: ClientMessage;
 
     switch (client.clientRole) {
         case ClientRoleTypes.PLAYER:
             message = {
                 eventType: ClientEventTypes.PLAYER_JOINED,
-                playerId: client.currentPlayerId
+                clientId: client.currentPlayerId
             }
             
             console.log("client joining as player");
@@ -62,7 +62,7 @@ client.connection.onopen = function() {
         case ClientRoleTypes.SPECTATOR:
             message = {
                 eventType: ClientEventTypes.SPECTATOR_JOINED,
-                playerId: client.currentPlayerId
+                clientId: client.currentPlayerId
             }
             
             console.log("client joining as spectator");

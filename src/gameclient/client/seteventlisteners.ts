@@ -2,7 +2,7 @@ import { scaleToWindow } from "./scaletowindow";
 // import { BaseState } from "../basestate";
 // import { Widget } from "../ui/widget";
 // import { Entity } from "./entity";
-import { PlayerMessage } from "../../packets/playermessage";
+import { ClientMessage } from "../../packets/clientmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { Client } from "./client";
 
@@ -18,9 +18,9 @@ export function setEventListeners(canvas: HTMLCanvasElement, client: Client) {
     window.onkeydown = function(e: KeyboardEvent) {
         // left
         if (e.keyCode === 37 && !client.keyLeftIsDown) {
-            const message: PlayerMessage = {
+            const message: ClientMessage = {
                 eventType: ClientEventTypes.LEFT_KEY_DOWN,
-                playerId: client.currentPlayerId
+                clientId: client.currentPlayerId
             }
 
             client.keyLeftIsDown = true;
@@ -30,9 +30,9 @@ export function setEventListeners(canvas: HTMLCanvasElement, client: Client) {
 
         // right
         if (e.keyCode === 39 && !client.keyRightIsDown) {
-            const message: PlayerMessage = {
+            const message: ClientMessage = {
                 eventType: ClientEventTypes.RIGHT_KEY_DOWN,
-                playerId: client.currentPlayerId
+                clientId: client.currentPlayerId
             }
             
             client.keyRightIsDown = true;
@@ -43,9 +43,9 @@ export function setEventListeners(canvas: HTMLCanvasElement, client: Client) {
     window.onkeyup = function(e: KeyboardEvent) {
         // left
         if (e.keyCode === 37 && client.keyLeftIsDown) {
-            const message: PlayerMessage = {
+            const message: ClientMessage = {
                 eventType: ClientEventTypes.LEFT_KEY_UP,
-                playerId: client.currentPlayerId
+                clientId: client.currentPlayerId
             }
             
             client.keyLeftIsDown = false;
@@ -54,9 +54,9 @@ export function setEventListeners(canvas: HTMLCanvasElement, client: Client) {
 
         // right
         if (e.keyCode === 39 && client.keyRightIsDown) {
-            const message: PlayerMessage = {
+            const message: ClientMessage = {
                 eventType: ClientEventTypes.RIGHT_KEY_UP,
-                playerId: client.currentPlayerId
+                clientId: client.currentPlayerId
             }
             
             client.keyRightIsDown = false;
