@@ -2,6 +2,17 @@ import { IGlobalLobby } from "./interfaces";
 import { createRoom } from "./createroom";
 import { populateRoomList } from "./populateroomlist";
 import { PortToConnectionsMap } from "../packets/porttoconnectionsmap";
+	
+function createRandomClientId(): string {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let clientId = "";
+
+    for (let i = 0; i < 5; i++) {
+        clientId += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+
+    return clientId;
+}
 
 // Global lobby variable.
 const globalLobby: IGlobalLobby = {
@@ -9,7 +20,11 @@ const globalLobby: IGlobalLobby = {
     roomNameInput: <HTMLButtonElement>document.getElementById("roomNameInput"),
     createRoomText: <HTMLElement>document.getElementById("createRoomText"),
     gameRooms: <HTMLElement>document.getElementById("gameRooms"),
-    currentLoginUserId: window.navigator.userAgent.replace(/\D+/g, '')
+    // currentClientId: window.navigator.userAgent.replace(/\D+/g, '')
+    // temporary solution for providing a clientId
+    // above solution may work, but not when testing with the same browser
+    // also above provide's too big a number to work with so it would need to be trimmed down
+    currentClientId: createRandomClientId()
 }
 
 globalLobby.createRoomButton.onclick = function() {

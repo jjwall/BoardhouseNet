@@ -14,7 +14,7 @@ export interface ClientConfig {
     /// old configs
     connection: WebSocket;
     currentPort: number;
-    currentPlayerId: number;
+    currentClientId: string;
     hostName: string;
     keyLeftIsDown: boolean;
     keyRightIsDown: boolean;
@@ -38,7 +38,7 @@ export class Client {
         // vvv merged from old configs vvv
         this.connection = config.connection;
         this.currentPort = config.currentPort;
-        this.currentPlayerId = config.currentPlayerId;
+        this.currentClientId = config.currentClientId;
         this.hostName = config.hostName;
         this.keyLeftIsDown = config.keyLeftIsDown;
         this.keyRightIsDown = config.keyRightIsDown;
@@ -69,7 +69,7 @@ export class Client {
     /// vvv old configs vvv
     connection: WebSocket;
     currentPort: number;
-    currentPlayerId: number;
+    currentClientId: string;
     hostName: string;
     keyLeftIsDown: boolean;
     keyRightIsDown: boolean;

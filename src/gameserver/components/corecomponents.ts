@@ -1,5 +1,5 @@
 export interface PlayerComponent {
-    id: number;
+    id: string;
 }
 
 /**

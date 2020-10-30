@@ -3,5 +3,5 @@ export interface IGlobalLobby {
     roomNameInput: HTMLButtonElement,
     createRoomText: HTMLElement,
     gameRooms: HTMLElement,
-    currentLoginUserId: string,
+    currentClientId: string,
 }

@@ -20,7 +20,7 @@ export function setEventListeners(canvas: HTMLCanvasElement, client: Client) {
         if (e.keyCode === 37 && !client.keyLeftIsDown) {
             const message: ClientMessage = {
                 eventType: ClientEventTypes.LEFT_KEY_DOWN,
-                clientId: client.currentPlayerId
+                clientId: client.currentClientId
             }
 
             client.keyLeftIsDown = true;
@@ -32,7 +32,7 @@ export function setEventListeners(canvas: HTMLCanvasElement, client: Client) {
         if (e.keyCode === 39 && !client.keyRightIsDown) {
             const message: ClientMessage = {
                 eventType: ClientEventTypes.RIGHT_KEY_DOWN,
-                clientId: client.currentPlayerId
+                clientId: client.currentClientId
             }
             
             client.keyRightIsDown = true;
@@ -45,7 +45,7 @@ export function setEventListeners(canvas: HTMLCanvasElement, client: Client) {
         if (e.keyCode === 37 && client.keyLeftIsDown) {
             const message: ClientMessage = {
                 eventType: ClientEventTypes.LEFT_KEY_UP,
-                clientId: client.currentPlayerId
+                clientId: client.currentClientId
             }
             
             client.keyLeftIsDown = false;
@@ -56,7 +56,7 @@ export function setEventListeners(canvas: HTMLCanvasElement, client: Client) {
         if (e.keyCode === 39 && client.keyRightIsDown) {
             const message: ClientMessage = {
                 eventType: ClientEventTypes.RIGHT_KEY_UP,
-                clientId: client.currentPlayerId
+                clientId: client.currentClientId
             }
             
             client.keyRightIsDown = false;

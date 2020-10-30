@@ -14,7 +14,7 @@ const config: ClientConfig = {
     clientRole: clientRole, // would not be determined here. But role would change how event handling works. Only need player sending key press events for example. Maybe if playerId then player else specator.
     connection: <WebSocket> null,
     currentPort: <number>parseInt(params.get("port")),
-    currentPlayerId: <number>parseInt(params.get("loginUserId")),
+    currentClientId: params.get("clientId"),
     hostName: <string>window.location.hostname != "" ? window.location.hostname : "localhost",
     keyLeftIsDown: false,
     keyRightIsDown: false,
@@ -52,7 +52,7 @@ client.connection.onopen = function() {
         case ClientRoleTypes.PLAYER:
             message = {
                 eventType: ClientEventTypes.PLAYER_JOINED,
-                clientId: client.currentPlayerId
+                clientId: client.currentClientId
             }
             
             console.log("client joining as player");
@@ -62,7 +62,7 @@ client.connection.onopen = function() {
         case ClientRoleTypes.SPECTATOR:
             message = {
                 eventType: ClientEventTypes.SPECTATOR_JOINED,
-                clientId: client.currentPlayerId
+                clientId: client.currentClientId
             }
             
             console.log("client joining as spectator");

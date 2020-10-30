@@ -32,7 +32,7 @@ export function populateRoomList(globalLobby: IGlobalLobby, portsToConnectionsMa
 
 function joinEvent (element:HTMLElement, port:String, globalLobby: IGlobalLobby) {
     element.onclick = function() {
-        window.location.href = `/playgame?port=${port}&loginUserId=${globalLobby.currentLoginUserId}`
+        window.location.href = `/playgame?port=${port}&clientId=${globalLobby.currentClientId}`
         console.log(port);
     }
 }
