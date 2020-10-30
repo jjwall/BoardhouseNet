@@ -3,14 +3,14 @@ import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 import { messageHandlerSystem } from "../messaging/messagehandlersystem";
 import { PlayerMessage } from "../../packets/playermessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
-import { ClientStateMachine, ClientStateMachineConfig } from "./clientstatemachine";
+import { Client, ClientConfig } from "./clientstatemachine";
 import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
 const clientRole = ClientRoleTypes.PLAYER; // if params.get("loginUserId") is a playerId: player, else spectator
 
-const config: ClientStateMachineConfig = {
+const config: ClientConfig = {
     clientRole: clientRole, // would not be determined here. But role would change how event handling works. Only need player sending key press events for example. Maybe if playerId then player else specator.
     connection: <WebSocket> null,
     currentPort: <number>parseInt(params.get("port")),
@@ -39,41 +39,41 @@ const config: ClientStateMachineConfig = {
     ],
 }
 
-const stateMachine = new ClientStateMachine(config);
+const client = new Client(config);
 
-stateMachine.connection = new WebSocket("ws://" + 
-                                           stateMachine.hostName + ":" +
-                                           stateMachine.currentPort);
+client.connection = new WebSocket("ws://" + 
+                                           client.hostName + ":" +
+                                           client.currentPort);
 
-stateMachine.connection.onopen = function() {
+client.connection.onopen = function() {
     let message: PlayerMessage;
 
-    switch (stateMachine.clientRole) {
+    switch (client.clientRole) {
         case ClientRoleTypes.PLAYER:
             message = {
                 eventType: ClientEventTypes.PLAYER_JOINED,
-                playerId: stateMachine.currentPlayerId
+                playerId: client.currentPlayerId
             }
             
             console.log("client joining as player");
     
-            stateMachine.connection.send(JSON.stringify(message));
+            client.connection.send(JSON.stringify(message));
             break;
         case ClientRoleTypes.SPECTATOR:
             message = {
                 eventType: ClientEventTypes.SPECTATOR_JOINED,
-                playerId: stateMachine.currentPlayerId
+                playerId: client.currentPlayerId
             }
             
             console.log("client joining as spectator");
     
-            stateMachine.connection.send(JSON.stringify(message));
+            client.connection.send(JSON.stringify(message));
             break;
     }
 }
 
-stateMachine.loadAssets().then(() => {
-    stateMachine.initializeState(GameServerStateTypes.GAMEPLAY);
+client.loadAssets().then(() => {
+    client.initializeState(GameServerStateTypes.GAMEPLAY);
     main(<HTMLElement>document.getElementById("canvasContainer"));
 });
 
@@ -87,9 +87,9 @@ stateMachine.loadAssets().then(() => {
 function main(canvasContainer: HTMLElement) {
     // set up renderer
     const renderer = new WebGLRenderer();
-    renderer.setSize(stateMachine.screenWidth, stateMachine.screenHeight);
+    renderer.setSize(client.screenWidth, client.screenHeight);
     renderer.autoClear = false;
-    stateMachine.renderer = renderer;
+    client.renderer = renderer;
 
     // append canvas element to canvas container
     canvasContainer.append(renderer.domElement);
@@ -104,7 +104,7 @@ function main(canvasContainer: HTMLElement) {
     let currentTime: number = 0;
 
     // set up event listeners
-    setEventListeners(renderer.domElement, stateMachine);
+    setEventListeners(renderer.domElement, client);
 
     // render update loop
     function renderLoop(timeStamp: number) {
@@ -113,11 +113,11 @@ function main(canvasContainer: HTMLElement) {
         totalTime = timeStamp;
         fps = 1 / (currentTime / 1000);
 
-        stateMachine.render();
+        client.render();
     }
 
     // start the render loop
     renderLoop(0);
 
-    messageHandlerSystem(stateMachine);
+    messageHandlerSystem(client);
 }

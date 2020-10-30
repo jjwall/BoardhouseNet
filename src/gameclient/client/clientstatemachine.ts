@@ -4,7 +4,7 @@ import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
 
-export interface ClientStateMachineConfig {
+export interface ClientConfig {
     /// state stuff ///
 
 
@@ -30,8 +30,8 @@ export interface ClientStateMachineConfig {
     audioUrls: string[];
 }
 
-export class ClientStateMachine {
-    constructor(config: ClientStateMachineConfig) {
+export class Client {
+    constructor(config: ClientConfig) {
         ///
         this.clientRole = config.clientRole;
         ///
