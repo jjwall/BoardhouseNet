@@ -8,10 +8,10 @@ import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
-const clientRole = ClientRoleTypes.PLAYER; // if params.get("loginUserId") is a playerId: player, else spectator
+// const clientRole = ClientRoleTypes.PLAYER; // if params.get("loginUserId") is a playerId: player, else spectator
 
 const config: ClientConfig = {
-    clientRole: clientRole, // would not be determined here. But role would change how event handling works. Only need player sending key press events for example. Maybe if playerId then player else specator.
+    role: params.get("clientRole") as ClientRoleTypes, // would not be determined here. But role would change how event handling works. Only need player sending key press events for example. Maybe if playerId then player else specator.
     connection: <WebSocket> null,
     currentPort: <number>parseInt(params.get("port")),
     currentClientId: params.get("clientId"),
@@ -48,7 +48,7 @@ client.connection = new WebSocket("ws://" +
 client.connection.onopen = function() {
     let message: ClientMessage;
 
-    switch (client.clientRole) {
+    switch (client.role) {
         case ClientRoleTypes.PLAYER:
             message = {
                 eventType: ClientEventTypes.PLAYER_JOINED,

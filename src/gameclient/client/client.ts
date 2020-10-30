@@ -10,7 +10,7 @@ export interface ClientConfig {
 
 
     /// end state stuff ///
-    clientRole: ClientRoleTypes;
+    role: ClientRoleTypes;
     /// old configs
     connection: WebSocket;
     currentPort: number;
@@ -33,7 +33,7 @@ export interface ClientConfig {
 export class Client {
     constructor(config: ClientConfig) {
         ///
-        this.clientRole = config.clientRole;
+        this.role = config.role;
         ///
         // vvv merged from old configs vvv
         this.connection = config.connection;
@@ -57,7 +57,7 @@ export class Client {
     }
 
     /// state stuff
-    public clientRole: ClientRoleTypes;
+    public role: ClientRoleTypes;
     public gameScene: Scene;
     public gameCamera: Camera;
     public uiScene: Scene;

@@ -1,5 +1,6 @@
 import { IGlobalLobby } from './interfaces';
 import { PortToConnectionsMap } from "../packets/porttoconnectionsmap";
+import { ClientRoleTypes } from '../packets/clientroletypes';
 
 export function populateRoomList(globalLobby: IGlobalLobby, portsToConnectionsMap: PortToConnectionsMap) {
     globalLobby.gameRooms.innerHTML = `
@@ -32,7 +33,7 @@ export function populateRoomList(globalLobby: IGlobalLobby, portsToConnectionsMa
 
 function joinEvent (element:HTMLElement, port:String, globalLobby: IGlobalLobby) {
     element.onclick = function() {
-        window.location.href = `/playgame?port=${port}&clientId=${globalLobby.currentClientId}`
+        window.location.href = `/playgame?port=${port}&clientId=${globalLobby.currentClientId}&clientRole=${ClientRoleTypes.PLAYER}`
         console.log(port);
     }
 }
