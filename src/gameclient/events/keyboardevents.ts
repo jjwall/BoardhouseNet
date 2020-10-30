@@ -1,6 +1,6 @@
 // import { BaseState } from "./../engine/basestate";
 // import { Entity } from "./../states/gameplay/entity";
-import {Client } from "../client/clientstatemachine";
+import { Client } from "../client/client";
 
 // keyboard controls
 // visit https://keycode.info/ for other key codes.

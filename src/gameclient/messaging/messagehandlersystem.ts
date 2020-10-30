@@ -1,7 +1,7 @@
 import { PlayerMessage } from "../../packets/playermessage";
 import { EntityMessage } from "../../packets/entitymessage";
 import { EntityEventTypes } from "../../packets/entityeventtypes";
-import { Client } from "../client/clientstatemachine";
+import { Client } from "../client/client";
 
 export function messageHandlerSystem(client: Client) {
     client.connection.onmessage = function(messageEvent: MessageEvent) {

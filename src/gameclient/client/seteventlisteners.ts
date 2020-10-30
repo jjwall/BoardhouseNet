@@ -4,7 +4,7 @@ import { scaleToWindow } from "./scaletowindow";
 // import { Entity } from "./entity";
 import { PlayerMessage } from "../../packets/playermessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
-import { Client } from "./clientstatemachine";
+import { Client } from "./client";
 
 export function setEventListeners(canvas: HTMLCanvasElement, client: Client) {
     // call first to scale to current window dimensions

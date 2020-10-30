@@ -3,7 +3,7 @@ import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 import { messageHandlerSystem } from "../messaging/messagehandlersystem";
 import { PlayerMessage } from "../../packets/playermessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
-import { Client, ClientConfig } from "./clientstatemachine";
+import { Client, ClientConfig } from "./client";
 import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
 
