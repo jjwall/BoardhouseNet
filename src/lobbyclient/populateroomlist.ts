@@ -7,6 +7,7 @@ export function populateRoomList(globalLobby: IGlobalLobby, portsToConnectionsMa
     <tr>
         <th>Room Name</th>
         <th>Players</th>
+        <th>Spectators</th>
         <th>Join</th>
         <th>Spectate</th>
     </tr>`;
@@ -14,12 +15,14 @@ export function populateRoomList(globalLobby: IGlobalLobby, portsToConnectionsMa
     for (let key in portsToConnectionsMap) {
         const currentPort = key;
         const gameRoomName = portsToConnectionsMap[key].name;
-        const players = portsToConnectionsMap[key].connections;
+        const players = portsToConnectionsMap[key].playersConnected;
+        const spectators = portsToConnectionsMap[key].spectatorsConnected;
 
         globalLobby.gameRooms.innerHTML += `
             <tr>
                 <td>${gameRoomName}: (Port: ${currentPort})</td>
                 <td>(${players}/3)</td>
+                <td>${spectators}</td>
                 <td><button class="roomJoin" data-port=${key}>Join</button></<td>
                 <td><button class="spectate" data-port=${key}>Spectate</button></<td>
             </tr>`

@@ -32,10 +32,12 @@ wss.on('connection', function(connection) {
 	connection.on('message', function(message: string) {
 		const currentGameServerInfo: GameServerInfo = JSON.parse(message);
 		const currentPort = currentGameServerInfo["port"];
-		const numberOfConnections = currentGameServerInfo["connections"];
+		const numberOfPlayersConnected = currentGameServerInfo["playersConnected"];
+		const numberOfSpectatorsConnected = currentGameServerInfo["spectatorsConnected"];
 
 		// update port connection struct with new connection info
-		globalServer.portToConnectionsMap[currentPort]["connections"] = numberOfConnections;
+		globalServer.portToConnectionsMap[currentPort]["playersConnected"] = numberOfPlayersConnected;
+		globalServer.portToConnectionsMap[currentPort]["spectatorsConnected"] = numberOfSpectatorsConnected;
 
 		for (var key in globalServer.portToPendingRequestsMap) {
 			// resolve request

@@ -9,11 +9,8 @@ import { GameState } from "../states/gameplay/gamestate";
 // Consider: making this a singleton
 // Handle client to lobby server connection.
 const boardhouseBack: IBoardhouseBack = {
-    clientConnection: new WebSocket("ws://localhost:8080/", { origin: "localhost:8080"}),
+    clientConnection: new WebSocket("ws://localhost:8080/", { origin: "localhost:8080"}), // lobby client connection
     gameServerPort: process.argv[2],
-    connections: 0,
-    playersConnected: 0,
-    spectatorsConnected: 0,
     playerClientIds: [],
     spectatorClientIds: [],
     boardhouseSocket: <WebSocket> null, // prob don't need

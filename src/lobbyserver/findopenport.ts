@@ -28,7 +28,7 @@ export function findOpenPort(gameRoomName: string, portToConnectionsMap: PortToC
 		iterator++;
 	}
 
-	portToConnectionsMap[openPort] = {"name": gameRoomName, "connections": 0};
+	portToConnectionsMap[openPort] = {"name": gameRoomName, "playersConnected": 0, "spectatorsConnected": 0};
 
 	portToPendingRequestsMap[openPort] = function() {
 		response.send(portToConnectionsMap);

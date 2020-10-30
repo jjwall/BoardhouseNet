@@ -42,7 +42,6 @@ export function processMessages(ents: ReadonlyArray<Entity>, boardhouseBack: IBo
  */
 function processPlayerJoinedMessage(message: ClientMessage, boardhouseBack: IBoardhouseBack, state: GameState) {
     console.log(`client with clientId = ${message.clientId} joined as a player`);
-    boardhouseBack.playersConnected++;
     console.log("create player entity");
     // Set up player entity.
     let player = new Entity();

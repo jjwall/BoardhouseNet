@@ -1,6 +1,8 @@
+// probably should rename this "PortToGameServerMap"
 export interface PortToConnectionsMap {
     [port: string]: {
         name: string,
-        connections: number
+        playersConnected: number,
+        spectatorsConnected: number,
     }
 }

@@ -13,7 +13,8 @@ export function setUpClientToLobbyConnection(boardhouseBack: IBoardhouseBack) {
         if (jsonData == "get connections") {
             const gameServerData: GameServerInfo = {
                 port: boardhouseBack.gameServerPort,
-                connections: boardhouseBack.connections,
+                playersConnected: boardhouseBack.playerClientIds.length,
+                spectatorsConnected: boardhouseBack.spectatorClientIds.length,
             }
 
             boardhouseBack.clientConnection.send(JSON.stringify(gameServerData));

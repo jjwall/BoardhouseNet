@@ -4,13 +4,10 @@ import { Entity } from "../states/gameplay/entity";
 import { ClientMessage } from "../../packets/clientmessage";
 
 export interface IBoardhouseBack {
-    clientConnection: WebSocket,
+    clientConnection: WebSocket, // lobbyClientConnection
     gameServerPort: string,
-    connections: number,
     playerClientIds: string[];
     spectatorClientIds: string[];
-    playersConnected: number,
-    spectatorsConnected: number,
     boardhouseSocket: WebSocket, // prob don't need
     boardhouseServer: WebSocket.Server,
     currentNetId: number,
