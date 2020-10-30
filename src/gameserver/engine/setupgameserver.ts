@@ -17,10 +17,10 @@ export function setUpGameServer(boardhouseBack: IBoardhouseBack) {
 
     boardhouseBack.boardhouseServer.on("connection", function connection(ws: MyWebSocket) {
         boardhouseBack.boardhouseSocket = ws;
-        console.log("client connected");
+        console.log(`(port: ${boardhouseBack.gameServerPort}): client connected`);
 
         ws.on("message", function incoming(message) {
-            console.log("received: %s", message);
+            console.log(`(port: ${boardhouseBack.gameServerPort}) received: ${message}`);
             const clientMessage: ClientMessage = JSON.parse(message.toString());
 
             if (clientMessage.eventType === ClientEventTypes.PLAYER_JOINED) {
@@ -45,7 +45,7 @@ export function setUpGameServer(boardhouseBack: IBoardhouseBack) {
 
                     if (playerIndex > -1) {
                         boardhouseBack.playerClientIds.splice(playerIndex, 1);
-                        console.log(`player with clientId = ${ws.clientId} disconnected`);
+                        console.log(`(port: ${boardhouseBack.gameServerPort}): player with clientId = "${ws.clientId}" disconnected`);
                     }
                     break;
                 case ClientRoleTypes.SPECTATOR:
@@ -53,7 +53,7 @@ export function setUpGameServer(boardhouseBack: IBoardhouseBack) {
 
                     if (spectatorIndex > -1) {
                         boardhouseBack.spectatorClientIds.splice(spectatorIndex, 1);
-                        console.log(`spectator with clientId = ${ws.clientId} disconnected`);
+                        console.log(`(port: ${boardhouseBack.gameServerPort}): spectator with clientId = "${ws.clientId}" disconnected`);
                     }
                     break;
             }

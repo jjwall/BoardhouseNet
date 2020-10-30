@@ -23,7 +23,7 @@ const globalServer = {
 }
 
 wss.on('connection', function(connection) {
-    console.log("Lobby server is connected to new instance of a game server.");
+    console.log("Lobby: connected to new instance of a game server.");
 
     	// ping all game servers so we can resolve the requests set up by "/creategameroom" POST
 	requestConnections(wss);

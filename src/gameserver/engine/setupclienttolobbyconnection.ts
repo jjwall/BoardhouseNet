@@ -4,7 +4,7 @@ import { GameServerInfo } from "../../packets/gameserverinfo";
 
 export function setUpClientToLobbyConnection(boardhouseBack: IBoardhouseBack) {
     boardhouseBack.clientConnection.onopen = function() {
-        console.log("New Game Server connection opened");
+        console.log(`(port: ${boardhouseBack.gameServerPort}): connection to lobby established`);
     }
 
     boardhouseBack.clientConnection.onmessage = function(messageEvent: WebSocket.MessageEvent) {
