@@ -229,23 +229,13 @@ export class Client {
 
     public handleEvent(e: Event) : void {
         switch(e.type) {
-            // case EventTypes.POINTER_DOWN:
-            //     handlePointerDownEvent(this.rootWidget, e as PointerEvent);
-            //      break;
-            // case EventTypes.POINTER_UP:
-            //     handlePointerUpEvent(e as PointerEvent);
-            //     break;
-            // case EventTypes.MOUSE_DOWN:
-            //     handleMouseDownEvent(this.rootWidget, e as MouseEvent);
-            //     break;
-            // case EventTypes.MOUSE_UP:
-            //     handleMouseUpEvent(e as MouseEvent);
-            //     break;
             case EventTypes.KEY_DOWN:
-                handleKeyDownEvent(this, e as KeyboardEvent);
+                if (this.role === ClientRoleTypes.PLAYER)
+                    handleKeyDownEvent(this, e as KeyboardEvent);
                 break;
             case EventTypes.KEY_UP:
-                handleKeyUpEvent(this, e as KeyboardEvent);
+                if (this.role === ClientRoleTypes.PLAYER)
+                    handleKeyUpEvent(this, e as KeyboardEvent);
                 break;
         }
     }

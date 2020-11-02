@@ -1,9 +1,4 @@
 import { scaleToWindow } from "./scaletowindow";
-// import { BaseState } from "../basestate";
-// import { Widget } from "../ui/widget";
-// import { Entity } from "./entity";
-import { ClientMessage } from "../../packets/clientmessage";
-import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { Client } from "./client";
 
 export function setEventListeners(canvas: HTMLCanvasElement, client: Client) {
@@ -14,53 +9,11 @@ export function setEventListeners(canvas: HTMLCanvasElement, client: Client) {
         scaleToWindow(canvas);
     });
 
-    // keyboard controls
     window.onkeydown = function(e: KeyboardEvent) {
-        // left
-        if (e.keyCode === 37 && !client.keyLeftIsDown) {
-            const message: ClientMessage = {
-                eventType: ClientEventTypes.LEFT_KEY_DOWN,
-                clientId: client.currentClientId
-            }
-
-            client.keyLeftIsDown = true;
-            client.connection.send(JSON.stringify(message));
-        }
-
-
-        // right
-        if (e.keyCode === 39 && !client.keyRightIsDown) {
-            const message: ClientMessage = {
-                eventType: ClientEventTypes.RIGHT_KEY_DOWN,
-                clientId: client.currentClientId
-            }
-            
-            client.keyRightIsDown = true;
-            client.connection.send(JSON.stringify(message));
-        }
+        client.handleEvent(e);
     }
 
     window.onkeyup = function(e: KeyboardEvent) {
-        // left
-        if (e.keyCode === 37 && client.keyLeftIsDown) {
-            const message: ClientMessage = {
-                eventType: ClientEventTypes.LEFT_KEY_UP,
-                clientId: client.currentClientId
-            }
-            
-            client.keyLeftIsDown = false;
-            client.connection.send(JSON.stringify(message));
-        }
-
-        // right
-        if (e.keyCode === 39 && client.keyRightIsDown) {
-            const message: ClientMessage = {
-                eventType: ClientEventTypes.RIGHT_KEY_UP,
-                clientId: client.currentClientId
-            }
-            
-            client.keyRightIsDown = false;
-            client.connection.send(JSON.stringify(message));
-        }
+        client.handleEvent(e);
     }
 }

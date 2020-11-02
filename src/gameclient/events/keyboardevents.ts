@@ -1,28 +1,37 @@
-// import { BaseState } from "./../engine/basestate";
-// import { Entity } from "./../states/gameplay/entity";
+import { ClientEventTypes } from "../../packets/clienteventtypes";
+import { ClientMessage } from "../../packets/clientmessage";
 import { Client } from "../client/client";
 
 // keyboard controls
 // visit https://keycode.info/ for other key codes.
 export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
-    console.log(e);
+    let message: ClientMessage;
+
     switch(e.keyCode) {
         case 37: // left
         case 65: // a
-            // state.getEntitiesByKey<Entity>("control").forEach(ent=> {
-            //     if (ent.control) {
-            //         ent.control.left = true;
-            //     }
-            // });
+            if (!client.keyLeftIsDown) {
+                message  = {
+                    eventType: ClientEventTypes.LEFT_KEY_DOWN,
+                    clientId: client.currentClientId
+                }
+
+                client.keyLeftIsDown = true;
+                client.connection.send(JSON.stringify(message));
+            }
             break;
 
         case 39: // right
         case 68: // d
-            // state.getEntitiesByKey<Entity>("control").forEach(ent=> {
-            //     if (ent.control) {
-            //         ent.control.right = true;
-            //     }
-            // });
+            if (!client.keyRightIsDown) {
+                message = {
+                    eventType: ClientEventTypes.RIGHT_KEY_DOWN,
+                    clientId: client.currentClientId
+                }
+                
+                client.keyRightIsDown = true;
+                client.connection.send(JSON.stringify(message));
+            }
             break;
 
         case 38: // up
@@ -54,24 +63,34 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
     }
 }
 
-export function handleKeyUpEvent(client: Client , e: KeyboardEvent) {
+export function handleKeyUpEvent(client: Client, e: KeyboardEvent) {
+    let message: ClientMessage;
+
     switch(e.keyCode) {
         case 37: // left
         case 65: // a
-            // state.getEntitiesByKey<Entity>("control").forEach(ent=> {
-            //     if (ent.control) {
-            //         ent.control.left = false;
-            //     }
-            // });
+            if (client.keyLeftIsDown) {
+                message = {
+                    eventType: ClientEventTypes.LEFT_KEY_UP,
+                    clientId: client.currentClientId
+                }
+                
+                client.keyLeftIsDown = false;
+                client.connection.send(JSON.stringify(message));
+            }
             break;
 
         case 39: // right
         case 68: // d
-            // state.getEntitiesByKey<Entity>("control").forEach(ent=> {
-            //     if (ent.control) {
-            //         ent.control.right = false;
-            //     }
-            // });
+            if (client.keyRightIsDown) {
+                message = {
+                    eventType: ClientEventTypes.RIGHT_KEY_UP,
+                    clientId: client.currentClientId
+                }
+                
+                client.keyRightIsDown = false;
+                client.connection.send(JSON.stringify(message));
+            }
             break;
 
         case 38: // up
