@@ -1,8 +1,10 @@
 import { BufferGeometry, ShapeBufferGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera} from "three";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
+import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
+import { EventTypes } from "../events/eventtypes";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -239,12 +241,12 @@ export class Client {
             // case EventTypes.MOUSE_UP:
             //     handleMouseUpEvent(e as MouseEvent);
             //     break;
-            // case EventTypes.KEY_DOWN:
-            //     handleKeyDownEvent(this, e as KeyboardEvent);
-            //     break;
-            // case EventTypes.KEY_UP:
-            //     handleKeyUpEvent(this, e as KeyboardEvent);
-            //     break;
+            case EventTypes.KEY_DOWN:
+                handleKeyDownEvent(this, e as KeyboardEvent);
+                break;
+            case EventTypes.KEY_UP:
+                handleKeyUpEvent(this, e as KeyboardEvent);
+                break;
         }
     }
 

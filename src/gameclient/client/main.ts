@@ -7,6 +7,14 @@ import { Client, ClientConfig } from "./client";
 import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
 
+// TODO:
+// > Clean up Client class fields and config fields
+// > Set up event handling so only player roles can trigger them
+// > Reconfigure "packets" directory
+// -> probably name it "middleware"
+// -> have a new "packets" dir in there as well as a "enums" dir in there
+// -> consider putting modules like setUpClientToLobbyConnection.ts in there
+
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
 
 const config: ClientConfig = {
