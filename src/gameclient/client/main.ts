@@ -9,7 +9,11 @@ import { ClientRoleTypes } from "../../packets/clientroletypes";
 
 // TODO:
 // > Clean up Client class fields and config fields
-// > Set up event handling so only player roles can trigger them
+// > (Done) Set up event handling so only player roles can trigger them
+// -> Player roles shouldn't have access to start sending packets until player's entity
+// has been created on back end.
+// Maybe make a client status? readyToSendMessages boolean?
+// > Start working on creating / destroying / and updating front end entities in messagehandlersystem
 // > Reconfigure "packets" directory
 // -> probably name it "middleware"
 // -> have a new "packets" dir in there as well as a "enums" dir in there
