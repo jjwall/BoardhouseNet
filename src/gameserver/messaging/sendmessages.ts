@@ -4,7 +4,7 @@ import { EntityMessage } from "../../packets/entitymessage";
 import { EntityEventTypes } from "../../packets/entityeventtypes";
 
 export function sendCreateOrUpdateEntityMessage(ent: Entity, boardhouseBack: IBoardhouseBack) {
-    if (ent.pos && ent.sprite && ent.anim) { // probably don't need this check
+    if (ent.pos && ent.sprite) {
         const entData: EntityData = {
             netId: ent.netId,
             pos: ent.pos,
@@ -21,4 +21,14 @@ export function sendCreateOrUpdateEntityMessage(ent: Entity, boardhouseBack: IBo
             client.send(JSON.stringify(message));
         });
     }
+}
+
+// This function should be called when a player or specator joins the match so they can
+// get all relevant entity data sent to their clients
+// A modified function like this may be used in a game that has scene transitions - where only the relevant
+// entity data of a certain scene may need to get sent over instead
+export function sendCreateAllEntitiesMessages(ents: Entity[], boardhouseBack: IBoardhouseBack) {
+    ents.forEach(ent => {
+        sendCreateOrUpdateEntityMessage(ent, boardhouseBack);
+    });
 }

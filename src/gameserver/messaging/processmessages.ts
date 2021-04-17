@@ -4,7 +4,7 @@ import { ClientMessage } from "../../packets/clientmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { IBoardhouseBack } from "../engine/interfaces";
 import { initializeControls } from "../components/initializers";
-import { sendCreateOrUpdateEntityMessage } from "./sendmessages";
+import { sendCreateAllEntitiesMessages, sendCreateOrUpdateEntityMessage } from "./sendmessages";
 
 export function processMessages(ents: ReadonlyArray<Entity>, boardhouseBack: IBoardhouseBack, state: GameState) {
     boardhouseBack.messagesToProcess.forEach(message => {
@@ -49,14 +49,14 @@ function processPlayerJoinedMessage(message: ClientMessage, boardhouseBack: IBoa
     player.player = { id: message.clientId };
     player.pos = { x: 150, y: 150, z: 5 };
     player.sprite = { url: "./data/textures/msknight.png", pixelRatio: 4 };
-    player.anim = { sequence: "blah", currentFrame: 0 };
+    // player.anim = { sequence: "blah", currentFrame: 0 };
     player.control = initializeControls();
 
     state.registerEntity(player, boardhouseBack);
 
     // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
-        sendCreateOrUpdateEntityMessage(player, boardhouseBack);
+        sendCreateAllEntitiesMessages(state.getEntitiesByKey("global"), boardhouseBack);
     }, 5000);
 
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages
@@ -78,7 +78,8 @@ function processSpectatorJoinedMessage(message: ClientMessage, boardhouseBack: I
 
     // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
-        sendCreateOrUpdateEntityMessage(player, boardhouseBack);
+        // sendCreateOrUpdateEntityMessage(player, boardhouseBack);
+        sendCreateAllEntitiesMessages(state.getEntitiesByKey("global"), boardhouseBack);
     }, 5000);
 
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages to create ents for spectating client

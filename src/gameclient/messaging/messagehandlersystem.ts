@@ -17,6 +17,7 @@ export function messageHandlerSystem(client: Client) {
 
 // TODO: implement this!! // -> i.e. create or update a front end version of an entity
 // Note: this function will get called a bunch when a player or spectator first joins (to set up all the front-end entities)
+// netId, pos, sprite are all REQUIRED - anim is optional
 function createOrUpdateEntity(message: EntityMessage, client: Client) {
     console.log("create entity front");
     console.log(message.data);
@@ -27,6 +28,9 @@ function createOrUpdateEntity(message: EntityMessage, client: Client) {
     clientEnt.netId = message.data.netId;
     clientEnt.pos = setPosition(message.data.pos.x, message.data.pos.y, message.data.pos.z);
     clientEnt.sprite = setSprite(message.data.sprite.url, client.gameScene, client, message.data.sprite.pixelRatio);
+    if (message.data.anim) {
+        // clientEnt.anim = setAnim(...);
+    }
     client.entityList.push(clientEnt);
 
     // if update then...

@@ -29,6 +29,16 @@ export class GameState extends BaseState {
         let ent = new Entity();
         ent.control = initializeControls();
         this.registerEntity(ent, boardhouseBack);
+
+        let cottage1 = new Entity();
+        cottage1.pos = { x: 150, y: 450, z: 5 };
+        cottage1.sprite = { url: "./data/textures/cottage.png", pixelRatio: 4 };
+        let cottage2 = new Entity();
+        cottage2.pos = { x: 450, y: 450, z: 5 };
+        cottage2.sprite = { url: "./data/textures/cottage.png", pixelRatio: 4 };
+    
+        this.registerEntity(cottage1, boardhouseBack);
+        this.registerEntity(cottage2, boardhouseBack);
     }
 
     public update() : void {
