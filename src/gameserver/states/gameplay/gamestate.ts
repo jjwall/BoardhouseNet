@@ -2,18 +2,18 @@ import { BaseState } from "../../server/basestate";
 import { initializeControls } from "../../components/initializers";
 import { controlSystem } from "../../systems/coresystems";
 import { Entity } from "./entity";
+import { IBoardhouseBack } from "../../server/interfaces";
 import { processMessages } from "../../messaging/processmessages";
-import { Server } from "./../../server/server";
 
 /**
  * GameState that handles updating of all game-related systems.
  */
 export class GameState extends BaseState {
     // public rootWidget: Widget;
-    server: Server;
-    constructor(stateStack: BaseState[], server: Server) {
+    boardhouseBack: IBoardhouseBack;
+    constructor(stateStack: BaseState[], boardhouseBack :IBoardhouseBack) {
         super(stateStack);
-        this.server = server;
+        this.boardhouseBack = boardhouseBack;
         // Set up ui widget and instance.
         // this.rootWidget = createWidget("root");
         // let rootComponent = renderGameUi(this.uiScene, this.rootWidget);
@@ -28,7 +28,7 @@ export class GameState extends BaseState {
         // I guess just create other ents first
         let ent = new Entity();
         ent.control = initializeControls();
-        this.registerEntity(ent, server);
+        this.registerEntity(ent, boardhouseBack);
 
         let cottage1 = new Entity();
         cottage1.pos = { x: 150, y: 450, z: 5 };
@@ -37,12 +37,12 @@ export class GameState extends BaseState {
         cottage2.pos = { x: 450, y: 450, z: 5 };
         cottage2.sprite = { url: "./data/textures/cottage.png", pixelRatio: 4 };
     
-        this.registerEntity(cottage1, server);
-        this.registerEntity(cottage2, server);
+        this.registerEntity(cottage1, boardhouseBack);
+        this.registerEntity(cottage2, boardhouseBack);
     }
 
     public update() : void {
-        processMessages(this.getEntitiesByKey<Entity>("global"), this.server, this)
+        processMessages(this.getEntitiesByKey<Entity>("global"), this.boardhouseBack, this)
         this.runSystems();
     }
 }

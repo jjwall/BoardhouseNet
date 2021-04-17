@@ -1,5 +1,4 @@
-import { RegistryKeyToSystemMap, RegistryKeyToEntityListMap } from "./interfaces";
-import { Server } from "./../server/server";
+import { RegistryKeyToSystemMap, RegistryKeyToEntityListMap, IBoardhouseBack } from "./interfaces";
 import { Entity } from "../states/gameplay/entity";
 // import { Widget } from "./ui/widget";
 
@@ -52,10 +51,10 @@ export abstract class BaseState {
      * and every specific registry for each ecsKey component match.
      * @param ent 
      */
-    public registerEntity(ent: Entity, server: Server) {
+    public registerEntity(ent: Entity, boardhouseBack: IBoardhouseBack) {
         let entityComponents: Array<string> = [];
-        ent.netId = ++server.currentNetId;
-        server.netIdToEntityMap[server.currentNetId] = ent;
+        ent.netId = ++boardhouseBack.currentNetId;
+        boardhouseBack.netIdToEntityMap[boardhouseBack.currentNetId] = ent;
 
         for (var component in ent) {
             entityComponents.push(component);

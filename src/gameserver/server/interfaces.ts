@@ -3,6 +3,19 @@ import { BaseState } from "./basestate";
 import { Entity } from "../states/gameplay/entity";
 import { ClientMessage } from "../../packets/clientmessage";
 
+export interface IBoardhouseBack {
+    clientConnection: WebSocket, // lobbyClientConnection
+    gameServerPort: string,
+    playerClientIds: string[];
+    spectatorClientIds: string[];
+    boardhouseSocket: WebSocket, // prob don't need
+    boardhouseServer: WebSocket.Server,
+    currentNetId: number,
+    netIdToEntityMap: NetIdToEntityMap,
+    messagesToProcess: Array<ClientMessage>
+    stateStack: BaseState[];
+}
+
 export interface NetIdToEntityMap {
     [netId: number]: Entity;
 }

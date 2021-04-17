@@ -1,10 +1,10 @@
 import { Entity } from "../states/gameplay/entity";
+import { IBoardhouseBack } from "../server/interfaces";
 import { EntityMessage } from "../../packets/entitymessage";
 import { EntityEventTypes } from "../../packets/entityeventtypes";
 import { last } from "../server/helpers";
-import { Server } from "./../server/server";
 
-export function sendCreateOrUpdateEntityMessage(ent: Entity, server: Server) {
+export function sendCreateOrUpdateEntityMessage(ent: Entity, boardhouseBack: IBoardhouseBack) {
     if (ent.pos && ent.sprite) {
         const entData: EntityData = {
             netId: ent.netId,
@@ -13,7 +13,7 @@ export function sendCreateOrUpdateEntityMessage(ent: Entity, server: Server) {
             anim: ent.anim
         }
 
-        server.boardhouseServer.clients.forEach(client => {
+        boardhouseBack.boardhouseServer.clients.forEach(client => {
             const message: EntityMessage = {
                 eventType: EntityEventTypes.CREATE_OR_UPDATE,
                 data: entData
@@ -28,15 +28,15 @@ export function sendCreateOrUpdateEntityMessage(ent: Entity, server: Server) {
 // get all relevant entity data sent to their clients
 // A modified function like this may be used in a game that has scene transitions - where only the relevant
 // entity data of a certain scene may need to get sent over instead
-export function sendCreateAllEntitiesMessages(ents: Entity[], server: Server) {
+export function sendCreateAllEntitiesMessages(ents: Entity[], boardhouseBack: IBoardhouseBack) {
     ents.forEach(ent => {
-        sendCreateOrUpdateEntityMessage(ent, server);
+        sendCreateOrUpdateEntityMessage(ent, boardhouseBack);
     });
 }
 
-export function sendDestroyEntityMessage(ent: Entity, server: Server) {
+export function sendDestroyEntityMessage(ent: Entity, boardhouseBack: IBoardhouseBack) {
     // remove entity from backend entity list:
-    last(server.stateStack).removeEntity(ent);
+    last(boardhouseBack.stateStack).removeEntity(ent);
     
     if (ent.netId) {
         const entData: EntityData = { // make optional params
@@ -46,7 +46,7 @@ export function sendDestroyEntityMessage(ent: Entity, server: Server) {
             anim: ent.anim
         }
 
-        server.boardhouseServer.clients.forEach(client => {
+        boardhouseBack.boardhouseServer.clients.forEach(client => {
             const message: EntityMessage = {
                 eventType: EntityEventTypes.DESTROY,
                 data: entData

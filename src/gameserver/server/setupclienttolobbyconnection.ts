@@ -1,23 +1,23 @@
 import * as WebSocket from "ws";
+import { IBoardhouseBack } from "./interfaces";
 import { GameServerInfo } from "../../packets/gameserverinfo";
-import { Server } from "./server";
 
-export function setUpClientToLobbyConnection(server: Server) {
-    server.clientConnection.onopen = function() {
-        console.log(`(port: ${server.gameServerPort}): connection to lobby established`);
+export function setUpClientToLobbyConnection(boardhouseBack: IBoardhouseBack) {
+    boardhouseBack.clientConnection.onopen = function() {
+        console.log(`(port: ${boardhouseBack.gameServerPort}): connection to lobby established`);
     }
 
-    server.clientConnection.onmessage = function(messageEvent: WebSocket.MessageEvent) {
+    boardhouseBack.clientConnection.onmessage = function(messageEvent: WebSocket.MessageEvent) {
         const jsonData = messageEvent.data;
 
         if (jsonData == "get connections") {
             const gameServerData: GameServerInfo = {
-                port: server.gameServerPort,
-                playersConnected: server.playerClientIds.length,
-                spectatorsConnected: server.spectatorClientIds.length,
+                port: boardhouseBack.gameServerPort,
+                playersConnected: boardhouseBack.playerClientIds.length,
+                spectatorsConnected: boardhouseBack.spectatorClientIds.length,
             }
 
-            server.clientConnection.send(JSON.stringify(gameServerData));
+            boardhouseBack.clientConnection.send(JSON.stringify(gameServerData));
         }
     }
 }
