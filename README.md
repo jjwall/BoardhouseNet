@@ -28,6 +28,31 @@ The lobby is used to create rooms (i.e. game servers) and enable clients to conn
 
 ___
 
+### Debugging Child Node Process (using VS Code)
+If you happen to be testing locally where you need both the lobby and game server instances running (and not running a game server instance by itself) you will need to set up a launch.json file for VS Code as follows:
+
+```json
+{
+    "configurations": [
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach to Child Node Process",
+            "address": "localhost",
+            "port": 9229,
+        }
+    ]
+}
+```
+And in the ```spinupgameserver.ts``` file mentioned above you would need to make this adjustment when spawning the child process:
+
+```js
+var child = cp.spawn("node --inspect-brk ./server/game-server.bundle.js " + port, { shell: true });
+```
+
+Finally, when this child process is spawned, the process will rest at an internal breakpoint which will allow you to manually attach the debugger using your newly created launch.json in VS Code. Once attached you can continue debugging from the internal breakpoint to the first breakpoint that has been set in the child process' code.
+___
+
 ### Random Notes (for me):
 
 #### Back:
