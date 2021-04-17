@@ -1,4 +1,4 @@
-# boardhouse-node
+# BoardhouseNet
 This repo serves as a full-stack enviornment for the [boardhouse game framework](https://github.com/jjwall/BoardhouseTS). The primary project goal is to add networking via websockets to boardhouse. Boardhouse is originally developed as a front-end game engine solution for browser based games. Setting up a client / server architecture would involve splitting up the existing front-end solution into two parts: client and server. Client will handle rendering game objects as well as sending messages to the server. Server will handle the lobby system, game engine logic and handling and sending messages back to the client. Hence why ``src`` is split up into ``gameclient``, ``gameserver`` ``lobbyclient``, and ``lobbyserver``.  If there were an easier way to bolt on a networking layer to boardhouse, I'd go that route, but currently this is the best solution I have come up with.
 
 ___
