@@ -2,7 +2,7 @@ import { Entity } from "../states/gameplay/entity";
 import { GameState } from "../states/gameplay/gamestate";
 import { ClientMessage } from "../../packets/clientmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
-import { IBoardhouseBack } from "../engine/interfaces";
+import { IBoardhouseBack } from "../server/interfaces";
 import { initializeControls } from "../components/initializers";
 import { sendCreateAllEntitiesMessages, sendCreateOrUpdateEntityMessage } from "./sendmessages";
 

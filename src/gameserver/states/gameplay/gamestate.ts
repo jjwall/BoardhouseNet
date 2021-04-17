@@ -1,8 +1,8 @@
-import { BaseState } from "../../engine/basestate";
+import { BaseState } from "../../server/basestate";
 import { initializeControls } from "../../components/initializers";
 import { controlSystem } from "../../systems/coresystems";
 import { Entity } from "./entity";
-import { IBoardhouseBack } from "../../engine/interfaces";
+import { IBoardhouseBack } from "../../server/interfaces";
 import { processMessages } from "../../messaging/processmessages";
 
 /**
