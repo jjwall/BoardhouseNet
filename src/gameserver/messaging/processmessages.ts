@@ -2,18 +2,18 @@ import { Entity } from "../states/gameplay/entity";
 import { GameState } from "../states/gameplay/gamestate";
 import { ClientMessage } from "../../packets/clientmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
-import { IBoardhouseBack } from "../server/interfaces";
 import { initializeControls } from "../components/initializers";
 import { sendCreateAllEntitiesMessages, sendCreateOrUpdateEntityMessage } from "./sendmessages";
+import { Server } from "./../server/server";
 
-export function processMessages(ents: ReadonlyArray<Entity>, boardhouseBack: IBoardhouseBack, state: GameState) {
-    boardhouseBack.messagesToProcess.forEach(message => {
+export function processMessages(ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
+    server.messagesToProcess.forEach(message => {
         switch (message.eventType) {
             case ClientEventTypes.PLAYER_JOINED:
-                processPlayerJoinedMessage(message, boardhouseBack, state);
+                processPlayerJoinedMessage(message, server, state);
                 break;
             case ClientEventTypes.SPECTATOR_JOINED:
-                processSpectatorJoinedMessage(message, boardhouseBack, state);
+                processSpectatorJoinedMessage(message, server, state);
                 break;
             case ClientEventTypes.LEFT_KEY_DOWN:
                 processLeftKeyDownMessage(ents, message);
@@ -30,18 +30,18 @@ export function processMessages(ents: ReadonlyArray<Entity>, boardhouseBack: IBo
         }
     });
 
-    boardhouseBack.messagesToProcess = [];
+    server.messagesToProcess = [];
 }
 
 /**
  * Just because player joins, doesn't mean an ent necessarily needs to be created for them.
  * In this example we do just that.
  * @param message 
- * @param boardhouseBack 
+ * @param server 
  * @param state 
  */
-function processPlayerJoinedMessage(message: ClientMessage, boardhouseBack: IBoardhouseBack, state: GameState) {
-    console.log(`(port: ${boardhouseBack.gameServerPort}): client with clientId = "${message.clientId}" joined as a player`);
+function processPlayerJoinedMessage(message: ClientMessage, server: Server, state: GameState) {
+    console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.clientId}" joined as a player`);
     console.log("create player entity");
     // Set up player entity.
     // Dummy data...
@@ -52,18 +52,18 @@ function processPlayerJoinedMessage(message: ClientMessage, boardhouseBack: IBoa
     // player.anim = { sequence: "blah", currentFrame: 0 };
     player.control = initializeControls();
 
-    state.registerEntity(player, boardhouseBack);
+    state.registerEntity(player, server);
 
     // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
-        sendCreateAllEntitiesMessages(state.getEntitiesByKey<Entity>("global"), boardhouseBack);
+        sendCreateAllEntitiesMessages(state.getEntitiesByKey<Entity>("global"), server);
     }, 5000);
 
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages
 }
 
-function processSpectatorJoinedMessage(message: ClientMessage, boardhouseBack: IBoardhouseBack, state: GameState) {
-    console.log(`(port: ${boardhouseBack.gameServerPort}): client with clientId = "${message.clientId}" joined as a spectator`);
+function processSpectatorJoinedMessage(message: ClientMessage, server: Server, state: GameState) {
+    console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.clientId}" joined as a spectator`);
 
     // Dummy data... for testing stuff with spectator
     // Set up another player entity.
@@ -74,12 +74,12 @@ function processSpectatorJoinedMessage(message: ClientMessage, boardhouseBack: I
     player.anim = { sequence: "blah", currentFrame: 0 };
     player.control = initializeControls();
 
-    state.registerEntity(player, boardhouseBack);
+    state.registerEntity(player, server);
 
     // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
         // sendCreateOrUpdateEntityMessage(player, boardhouseBack);
-        sendCreateAllEntitiesMessages(state.getEntitiesByKey<Entity>("global"), boardhouseBack);
+        sendCreateAllEntitiesMessages(state.getEntitiesByKey<Entity>("global"), server);
     }, 5000);
 
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages to create ents for spectating client

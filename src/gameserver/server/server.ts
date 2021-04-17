@@ -12,11 +12,13 @@ export interface ServerConfig {
     boardhouseServer: WebSocket.Server, // need to rename into something more apt - websocketServer?
     currentNetId: number,
     netIdToEntityMap: NetIdToEntityMap, // don't need as config -> this is to avoid having to do a search for the NetId all the time when updating / destroying
-    messagesToProcess: Array<ClientMessage> // don't need as config
+    // messagesToProcess: Array<ClientMessage> // don't need as config
+    // entityChangeList: []
 }
 
 export class Server {
     constructor(config: ServerConfig) {
+        console.log("configging");
         this.clientConnection = config.clientConnection;
         this.gameServerPort = config.gameServerPort;
         this.playerClientIds = config.playerClientIds;
@@ -24,8 +26,8 @@ export class Server {
         this.boardhouseServer = config.boardhouseServer;
         this.currentNetId = config.currentNetId;
         this.netIdToEntityMap = config.netIdToEntityMap;
-        this.messagesToProcess = config.messagesToProcess;
-        
+        // this.messagesToProcess = config.messagesToProcess;
+        console.log("configged");
     }
     // config fields
     public clientConnection: WebSocket; // lobbyClientConnection
@@ -35,7 +37,7 @@ export class Server {
     public boardhouseServer: WebSocket.Server;
     public currentNetId: number;
     public netIdToEntityMap: NetIdToEntityMap;
-    public messagesToProcess: Array<ClientMessage>;
+    public messagesToProcess: Array<ClientMessage> = [];
     // end config fields
 
     public stateStack: BaseState[] = [];
