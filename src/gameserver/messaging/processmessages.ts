@@ -44,9 +44,10 @@ function processPlayerJoinedMessage(message: ClientMessage, boardhouseBack: IBoa
     console.log(`(port: ${boardhouseBack.gameServerPort}): client with clientId = "${message.clientId}" joined as a player`);
     console.log("create player entity");
     // Set up player entity.
+    // Dummy data...
     let player = new Entity();
     player.player = { id: message.clientId };
-    player.pos = { x: 500, y: 300 };
+    player.pos = { x: 150, y: 150, z: 5 };
     player.sprite = { url: "./data/textures/msknight.png", pixelRatio: 4 };
     player.anim = { sequence: "blah", currentFrame: 0 };
     player.control = initializeControls();

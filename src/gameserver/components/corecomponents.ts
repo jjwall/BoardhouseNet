@@ -19,7 +19,8 @@ export interface ControlComponent {
  */
 export interface PositionComponent {
     x: number, // add setter that adds the Ent to changeList
-    y: number
+    y: number,
+    z: number
 }
 
 /**

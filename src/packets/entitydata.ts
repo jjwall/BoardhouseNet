@@ -3,6 +3,7 @@ interface EntityData {
     pos: {
         x: number;
         y: number;
+        z: number;
     },
     sprite: {
         url: string;

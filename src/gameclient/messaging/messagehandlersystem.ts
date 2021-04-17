@@ -22,10 +22,10 @@ function createOrUpdateEntity(message: EntityMessage, client: Client) {
     console.log(message.data);
 
     // Create a front-end entity for the client that will represent a back-end entity.
-    // Dummy data (will get real data from message.data)
     let clientEnt = new ClientEntity();
-    clientEnt.pos = setPosition(150, 150, 5);
-    clientEnt.sprite = setSprite("./data/textures/msknight.png", client.gameScene, client);
+    clientEnt.netId = message.data.netId;
+    clientEnt.pos = setPosition(message.data.pos.x, message.data.pos.y, message.data.pos.z);
+    clientEnt.sprite = setSprite(message.data.sprite.url, client.gameScene, client, message.data.sprite.pixelRatio);
     client.entityList.push(clientEnt);
 }
 
