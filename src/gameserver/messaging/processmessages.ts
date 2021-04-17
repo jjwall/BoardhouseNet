@@ -13,7 +13,7 @@ export function processMessages(ents: ReadonlyArray<Entity>, boardhouseBack: IBo
                 processPlayerJoinedMessage(message, boardhouseBack, state);
                 break;
             case ClientEventTypes.SPECTATOR_JOINED:
-                processSpectatorJoinedMessage(message, boardhouseBack);
+                processSpectatorJoinedMessage(message, boardhouseBack, state);
                 break;
             case ClientEventTypes.LEFT_KEY_DOWN:
                 processLeftKeyDownMessage(ents, message);
@@ -62,8 +62,24 @@ function processPlayerJoinedMessage(message: ClientMessage, boardhouseBack: IBoa
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages
 }
 
-function processSpectatorJoinedMessage(message: ClientMessage, boardhouseBack: IBoardhouseBack) {
+function processSpectatorJoinedMessage(message: ClientMessage, boardhouseBack: IBoardhouseBack, state: GameState) {
     console.log(`(port: ${boardhouseBack.gameServerPort}): client with clientId = "${message.clientId}" joined as a spectator`);
+
+    // Dummy data... for testing stuff with spectator
+    // Set up another player entity.
+    let player = new Entity();
+    player.player = { id: message.clientId };
+    player.pos = { x: 350, y: 150, z: 5 };
+    player.sprite = { url: "./data/textures/snow.png", pixelRatio: 4 };
+    player.anim = { sequence: "blah", currentFrame: 0 };
+    player.control = initializeControls();
+
+    state.registerEntity(player, boardhouseBack);
+
+    // Not exactly sure why we need this setTimeout here.
+    setTimeout(function() {
+        sendCreateOrUpdateEntityMessage(player, boardhouseBack);
+    }, 5000);
 
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages to create ents for spectating client
 }

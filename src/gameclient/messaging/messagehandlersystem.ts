@@ -22,14 +22,18 @@ function createOrUpdateEntity(message: EntityMessage, client: Client) {
     console.log(message.data);
 
     // Create a front-end entity for the client that will represent a back-end entity.
+    // if create then...
     let clientEnt = new ClientEntity();
     clientEnt.netId = message.data.netId;
     clientEnt.pos = setPosition(message.data.pos.x, message.data.pos.y, message.data.pos.z);
     clientEnt.sprite = setSprite(message.data.sprite.url, client.gameScene, client, message.data.sprite.pixelRatio);
     client.entityList.push(clientEnt);
+
+    // if update then...
+    // ...
 }
 
 // TODO: implement!! // -> i.e. destroy a front end version of an entity
-function destroyEntity() {
-
+function destroyEntity(message: EntityMessage, client: Client) {
+    // destory ent based off of message.data.netId...
 }
