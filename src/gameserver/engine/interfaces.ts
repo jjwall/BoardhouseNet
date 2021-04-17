@@ -13,6 +13,7 @@ export interface IBoardhouseBack {
     currentNetId: number,
     netIdToEntityMap: NetIdToEntityMap,
     messagesToProcess: Array<ClientMessage>
+    stateStack: BaseState[];
 }
 
 export interface NetIdToEntityMap {

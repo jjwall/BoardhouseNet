@@ -56,7 +56,7 @@ function processPlayerJoinedMessage(message: ClientMessage, boardhouseBack: IBoa
 
     // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
-        sendCreateAllEntitiesMessages(state.getEntitiesByKey("global"), boardhouseBack);
+        sendCreateAllEntitiesMessages(state.getEntitiesByKey<Entity>("global"), boardhouseBack);
     }, 5000);
 
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages
@@ -79,7 +79,7 @@ function processSpectatorJoinedMessage(message: ClientMessage, boardhouseBack: I
     // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
         // sendCreateOrUpdateEntityMessage(player, boardhouseBack);
-        sendCreateAllEntitiesMessages(state.getEntitiesByKey("global"), boardhouseBack);
+        sendCreateAllEntitiesMessages(state.getEntitiesByKey<Entity>("global"), boardhouseBack);
     }, 5000);
 
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages to create ents for spectating client

@@ -7,6 +7,7 @@ import { BaseState } from "./basestate";
 import { GameState } from "../states/gameplay/gamestate";
 
 // Consider: making this a singleton
+// Consider: not doing stack popping to ensure state stability (trying to disconnect a player that exists in a different state)
 // Handle client to lobby server connection.
 const boardhouseBack: IBoardhouseBack = {
     clientConnection: new WebSocket("ws://localhost:8080/", { origin: "localhost:8080"}), // lobby client connection
@@ -18,6 +19,7 @@ const boardhouseBack: IBoardhouseBack = {
     currentNetId: 0,
     netIdToEntityMap: {},
     messagesToProcess: [],
+    stateStack: [],
     // entityChangeList: []
 }
 
@@ -29,15 +31,14 @@ main();
 
 function main() {
     // initialize state stack
-    let stateStack: BaseState[] = [];
-    let mainMenuState = new GameState(stateStack, boardhouseBack);
-    stateStack.push(mainMenuState);
+    let mainMenuState = new GameState(boardhouseBack.stateStack, boardhouseBack);
+    boardhouseBack.stateStack.push(mainMenuState);
 
     // logic update loop
     setInterval(function (): void {
-        if (stateStack.length > 0) {
+        if (boardhouseBack.stateStack.length > 0) {
             // call update on last element in state stack
-            last(stateStack).update();
+            last(boardhouseBack.stateStack).update();
         }
         else {
             throw "No states to update";

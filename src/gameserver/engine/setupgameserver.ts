@@ -2,10 +2,11 @@ import * as WebSocket from "ws";
 import { IBoardhouseBack } from "./interfaces";
 import { EntityMessage } from "../../packets/entitymessage";
 import { ClientMessage } from "../../packets/clientmessage";
-import { sendCreateOrUpdateEntityMessage } from "../messaging/sendmessages";
+import { sendCreateOrUpdateEntityMessage, sendDestroyEntityMessage } from "../messaging/sendmessages";
 import { Entity } from "../states/gameplay/entity";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
+import { last } from "./helpers";
 
 class MyWebSocket extends WebSocket {
     clientId: string;
@@ -46,6 +47,12 @@ export function setUpGameServer(boardhouseBack: IBoardhouseBack) {
                     if (playerIndex > -1) {
                         boardhouseBack.playerClientIds.splice(playerIndex, 1);
                         console.log(`(port: ${boardhouseBack.gameServerPort}): player with clientId = "${ws.clientId}" disconnected`);
+                        let ents = last(boardhouseBack.stateStack).getEntitiesByKey<Entity>("global"); // could use netid here
+                        findAndDestroyPlayerEntity(ents, ws.clientId, boardhouseBack);
+                        // let ents = last(boardhouseBack.stateStack).getEntitiesByKey<Entity>("player");
+                        // const player = ents.find(ent => ent.player.id === ws.clientId);
+                        // console.log(player);
+                        // sendDestroyEntityMessage(player, boardhouseBack);
                     }
                     break;
                 case ClientRoleTypes.SPECTATOR:
@@ -59,4 +66,14 @@ export function setUpGameServer(boardhouseBack: IBoardhouseBack) {
             }
         })
     });
+}
+
+function findAndDestroyPlayerEntity(ents: Entity[], clientId: string, boardhouseBack: IBoardhouseBack) {
+    ents.forEach(ent => {
+        if (ent.player) {
+            if (ent.player.id === clientId) {
+                sendDestroyEntityMessage(ent, boardhouseBack);
+            }
+        }
+    })
 }

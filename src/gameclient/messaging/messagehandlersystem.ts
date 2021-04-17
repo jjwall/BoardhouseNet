@@ -12,6 +12,10 @@ export function messageHandlerSystem(client: Client) {
         if (message.eventType === EntityEventTypes.CREATE_OR_UPDATE) {
             createOrUpdateEntity(message, client);
         }
+
+        if (message.eventType === EntityEventTypes.DESTROY) {
+            destroyEntity(message, client);
+        }
     }
 }
 
@@ -39,5 +43,14 @@ function createOrUpdateEntity(message: EntityMessage, client: Client) {
 
 // TODO: implement!! // -> i.e. destroy a front end version of an entity
 function destroyEntity(message: EntityMessage, client: Client) {
-    // destory ent based off of message.data.netId...
+    console.log("destroy entity front");
+    const entToDestroy = client.entityList.find(ent => ent.netId === message.data.netId);
+
+    if (client.entityList.indexOf(entToDestroy) !== -1) {
+        client.entityList.splice(client.entityList.indexOf(entToDestroy), 1);
+    }
+
+    if (entToDestroy.sprite) {
+        client.gameScene.remove(entToDestroy.sprite);
+    }
 }
