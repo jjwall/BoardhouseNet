@@ -5,6 +5,7 @@ import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
 import { EventTypes } from "../events/eventtypes";
+import { ClientEntity } from "./cliententity";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -240,7 +241,18 @@ export class Client {
         }
     }
 
+    private updateClientEntPositions(ents: ReadonlyArray<ClientEntity>) {
+        ents.forEach(ent => {
+            if (ent.sprite && ent.pos) {
+                ent.sprite.position.copy(ent.pos.loc);
+                ent.sprite.rotation.set(0, 0, Math.atan2(ent.pos.dir.y, ent.pos.dir.x));
+            }
+        });
+    }
+
     public render() : void {
+        this.updateClientEntPositions(this.entityList);
+
         this.renderer.clear();
         this.renderer.render(this.gameScene, this.gameCamera);
         this.renderer.clearDepth();

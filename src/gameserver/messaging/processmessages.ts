@@ -63,6 +63,8 @@ function processPlayerJoinedMessage(message: ClientMessage, boardhouseBack: IBoa
 
 function processSpectatorJoinedMessage(message: ClientMessage, boardhouseBack: IBoardhouseBack) {
     console.log(`(port: ${boardhouseBack.gameServerPort}): client with clientId = "${message.clientId}" joined as a spectator`);
+
+    // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages to create ents for spectating client
 }
 
 function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientMessage) {
