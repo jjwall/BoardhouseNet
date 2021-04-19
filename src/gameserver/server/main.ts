@@ -37,7 +37,6 @@ function main() {
 
     // logic update loop
     setInterval(function (): void {
-        console.log("hi2");
         if (server.stateStack.length > 0) {
             // call update on last element in state stack
             last(server.stateStack).update();

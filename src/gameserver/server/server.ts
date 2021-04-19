@@ -18,16 +18,14 @@ export interface ServerConfig {
 
 export class Server {
     constructor(config: ServerConfig) {
-        console.log("configging");
         this.clientConnection = config.clientConnection;
         this.gameServerPort = config.gameServerPort;
         this.playerClientIds = config.playerClientIds;
-        this.playerClientIds = config.spectatorClientIds;
+        this.spectatorClientIds = config.spectatorClientIds;
         this.boardhouseServer = config.boardhouseServer;
         this.currentNetId = config.currentNetId;
         this.netIdToEntityMap = config.netIdToEntityMap;
         // this.messagesToProcess = config.messagesToProcess;
-        console.log("configged");
     }
     // config fields
     public clientConnection: WebSocket; // lobbyClientConnection
