@@ -1,44 +1,45 @@
 import * as WebSocket from "ws";
-import { IBoardhouseBack } from "./interfaces";
 import { setUpClientToLobbyConnection } from "./setupclienttolobbyconnection";
 import { setUpGameServer } from "./setupgameserver";
 import { last } from "./helpers";
 import { BaseState } from "./basestate";
 import { GameState } from "../states/gameplay/gamestate";
+import { Server, ServerConfig } from "./server";
 
 // Consider: making this a singleton
 // Consider: not doing stack popping to ensure state stability (trying to disconnect a player that exists in a different state)
 // Handle client to lobby server connection.
-const boardhouseBack: IBoardhouseBack = {
+const config: ServerConfig = {
     clientConnection: new WebSocket("ws://localhost:8080/", { origin: "localhost:8080"}), // lobby client connection
     gameServerPort: process.argv[2],
     playerClientIds: [],
     spectatorClientIds: [],
-    boardhouseSocket: <WebSocket> null, // prob don't need
     boardhouseServer: <WebSocket.Server> null,
     currentNetId: 0,
     netIdToEntityMap: {},
-    messagesToProcess: [],
-    stateStack: [],
-    // entityChangeList: []
+    // messagesToProcess: [],
 }
 
-setUpClientToLobbyConnection(boardhouseBack);
+const server = new Server(config);
 
-setUpGameServer(boardhouseBack);
+setUpClientToLobbyConnection(server);
+
+setUpGameServer(server);
 
 main();
 
 function main() {
     // initialize state stack
-    let mainMenuState = new GameState(boardhouseBack.stateStack, boardhouseBack);
-    boardhouseBack.stateStack.push(mainMenuState);
+    let mainMenuState = new GameState(server.stateStack, server);
+    server.stateStack.push(mainMenuState);
+    console.log(server.stateStack.length);
+    last(server.stateStack).update();
 
     // logic update loop
     setInterval(function (): void {
-        if (boardhouseBack.stateStack.length > 0) {
+        if (server.stateStack.length > 0) {
             // call update on last element in state stack
-            last(boardhouseBack.stateStack).update();
+            last(server.stateStack).update();
         }
         else {
             throw "No states to update";
