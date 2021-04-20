@@ -7,36 +7,35 @@ import * as WebSocket from "ws";
 export interface ServerConfig {
     clientConnection: WebSocket, // lobbyClientConnection
     gameServerPort: string,
-    playerClientIds: string[]; // don't need as config
-    spectatorClientIds: string[]; // don't need as config
-    boardhouseServer: WebSocket.Server, // need to rename into something more apt - websocketServer?
-    currentNetId: number,
-    netIdToEntityMap: NetIdToEntityMap, // don't need as config -> this is to avoid having to do a search for the NetId all the time when updating / destroying
-    // messagesToProcess: Array<ClientMessage> // don't need as config
-    // entityChangeList: []
 }
 
 export class Server {
     constructor(config: ServerConfig) {
+        // Set configs.
         this.clientConnection = config.clientConnection;
         this.gameServerPort = config.gameServerPort;
-        this.playerClientIds = config.playerClientIds;
-        this.spectatorClientIds = config.spectatorClientIds;
-        this.boardhouseServer = config.boardhouseServer;
-        this.currentNetId = config.currentNetId;
-        this.netIdToEntityMap = config.netIdToEntityMap;
-        // this.messagesToProcess = config.messagesToProcess;
+
+        // Initialize non-config fields.
+        this.playerClientIds = [];
+        this.spectatorClientIds = [];
+        this.currentNetId = 0;
+        this.netIdToEntityMap = {};
+        this.messagesToProcess = [];
+        this.stateStack = [];
     }
-    // config fields
+
+    // #region Config fields
     public clientConnection: WebSocket; // lobbyClientConnection
     public gameServerPort: string;
+    // #endregion
+
+    // #region Non-config fields
     public playerClientIds: string[];
     public spectatorClientIds: string[];
-    public boardhouseServer: WebSocket.Server;
+    public boardhouseServer: WebSocket.Server; // need to rename into something more apt - websocketServer?
     public currentNetId: number;
-    public netIdToEntityMap: NetIdToEntityMap;
-    public messagesToProcess: Array<ClientMessage> = [];
-    // end config fields
-
-    public stateStack: BaseState[] = [];
+    public netIdToEntityMap: NetIdToEntityMap; // -> this is to avoid having to do a search for the NetId all the time when updating / destroying entities
+    public messagesToProcess: Array<ClientMessage>;
+    public stateStack: BaseState[];
+    // #endregion
 }

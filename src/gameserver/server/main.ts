@@ -6,18 +6,11 @@ import { BaseState } from "./basestate";
 import { GameState } from "../states/gameplay/gamestate";
 import { Server, ServerConfig } from "./server";
 
-// Consider: making this a singleton
 // Consider: not doing stack popping to ensure state stability (trying to disconnect a player that exists in a different state)
 // Handle client to lobby server connection.
 const config: ServerConfig = {
     clientConnection: new WebSocket("ws://localhost:8080/", { origin: "localhost:8080"}), // lobby client connection
     gameServerPort: process.argv[2],
-    playerClientIds: [],
-    spectatorClientIds: [],
-    boardhouseServer: <WebSocket.Server> null,
-    currentNetId: 0,
-    netIdToEntityMap: {},
-    // messagesToProcess: [],
 }
 
 const server = new Server(config);
