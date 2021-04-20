@@ -44,13 +44,30 @@ export function sendUpdateEntityMessage(ent: Entity, server: Server) {
     }
 }
 
-// This function should be called when a player or specator joins the match so they can
-// get all relevant entity data sent to their clients
-// A modified function like this may be used in a game that has scene transitions - where only the relevant
-// entity data of a certain scene may need to get sent over instead
+/**
+ * This function should be called when a player or specator joins the match so they can
+ * get all relevant entity data sent to their clients
+ * A modified function like this may be used in a game that has scene transitions - where only the relevant
+ * entity data of a certain scene may need to get sent over instead
+ * @param ents 
+ * @param server 
+ */
 export function sendCreateAllEntitiesMessages(ents: Entity[], server: Server) {
     ents.forEach(ent => {
         sendCreateOrUpdateEntityMessage(ent, server);
+    });
+}
+
+/**
+ * Update to be called after a tick of engine.
+ * 
+ * PROBABLY NOT THE MOST EFFICIENT WAY TO DO THIS - BUT WORKS FOR NOW
+ * @param ents 
+ * @param server 
+ */
+export function sendUpdateAllEntitiesMessages(ents: Entity[], server: Server) {
+    ents.forEach(ent => {
+        sendUpdateEntityMessage(ent, server);
     });
 }
 

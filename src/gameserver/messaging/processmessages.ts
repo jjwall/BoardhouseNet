@@ -3,7 +3,7 @@ import { GameState } from "../states/gameplay/gamestate";
 import { ClientMessage } from "../../packets/clientmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { initializeControls } from "../components/initializers";
-import { sendCreateAllEntitiesMessages, sendCreateOrUpdateEntityMessage } from "./sendmessages";
+import { sendCreateAllEntitiesMessages } from "./sendmessages";
 import { Server } from "./../server/server";
 
 export function processMessages(ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
@@ -78,7 +78,6 @@ function processSpectatorJoinedMessage(message: ClientMessage, server: Server, s
 
     // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
-        // sendCreateOrUpdateEntityMessage(player, boardhouseBack);
         sendCreateAllEntitiesMessages(state.getEntitiesByKey<Entity>("global"), server);
     }, 5000);
 

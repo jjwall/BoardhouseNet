@@ -56,8 +56,6 @@ function updateEntity(message: EntityMessage, client: Client) {
                 if (ent.sprite && ent.pos) {
                     ent.pos.loc.setX(message.data.pos.x);
                     ent.pos.loc.setY(message.data.pos.y);
-                    ent.sprite.position.copy(ent.pos.loc);
-                    ent.sprite.rotation.set(0, 0, Math.atan2(ent.pos.dir.y, ent.pos.dir.x));
                 }
             }
         }
