@@ -11,8 +11,8 @@ import { Server } from "./../../server/server";
 export class GameState extends BaseState {
     // public rootWidget: Widget;
     server: Server;
-    constructor(stateStack: BaseState[], server: Server) {
-        super(stateStack);
+    constructor(server: Server) {
+        super();
         this.server = server;
         // Set up ui widget and instance.
         // this.rootWidget = createWidget("root");

@@ -21,7 +21,6 @@ export class Server {
         this.currentNetId = 0;
         this.netIdToEntityMap = {};
         this.messagesToProcess = [];
-        this.stateStack = [];
     }
 
     // #region Config fields
@@ -36,6 +35,6 @@ export class Server {
     public currentNetId: number;
     public netIdToEntityMap: NetIdToEntityMap; // -> this is to avoid having to do a search for the NetId all the time when updating / destroying entities
     public messagesToProcess: Array<ClientMessage>;
-    public stateStack: BaseState[];
+    public currentState: BaseState;
     // #endregion
 }

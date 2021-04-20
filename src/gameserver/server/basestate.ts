@@ -4,15 +4,13 @@ import { Entity } from "../states/gameplay/entity";
 // import { Widget } from "./ui/widget";
 
 export abstract class BaseState {
-    protected constructor(stateStack: BaseState[]) {
-        this.stateStack = stateStack;
-    }
+    // protected constructor(stateStack: BaseState[]) {
+    //     ...
+    // }
 
     public abstract update() : void;
 
     // public rootWidget: Widget;
-
-    protected stateStack: BaseState[];
 
     private ecsKeys: Array<string> = [];
 

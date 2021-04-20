@@ -36,7 +36,7 @@ export function sendCreateAllEntitiesMessages(ents: Entity[], server: Server) {
 
 export function sendDestroyEntityMessage(ent: Entity, server: Server) {
     // remove entity from backend entity list:
-    last(server.stateStack).removeEntity(ent);
+    server.currentState.removeEntity(ent);
     
     if (ent.netId) {
         const entData: EntityData = { // make optional params
