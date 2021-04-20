@@ -4,10 +4,11 @@ import { Entity } from "../states/gameplay/entity";
 // import { Widget } from "./ui/widget";
 
 export abstract class BaseState {
-    // protected constructor(stateStack: BaseState[]) {
-    //     ...
-    // }
+    protected constructor(server: Server) {
+        this.server = server;
+    }
 
+    public server: Server;
     public abstract update() : void;
 
     // public rootWidget: Widget;

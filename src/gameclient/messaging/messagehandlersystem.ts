@@ -13,6 +13,10 @@ export function messageHandlerSystem(client: Client) {
             createOrUpdateEntity(message, client);
         }
 
+        if (message.eventType === EntityEventTypes.UPDATE) {
+            updateEntity(message, client);
+        }
+
         if (message.eventType === EntityEventTypes.DESTROY) {
             destroyEntity(message, client);
         }
@@ -39,6 +43,25 @@ function createOrUpdateEntity(message: EntityMessage, client: Client) {
 
     // if update then...
     // ...
+}
+
+// VERY INEFFECIENT
+// NEED TO MAP NETID TO ENTS
+// NEET TO HAVE A CHANGE LIST SO UPDATING ONLY HAPPENS IN BULK AFTER ONE GAME TICK
+function updateEntity(message: EntityMessage, client: Client) {
+    console.log("updating entity...");
+    client.entityList.forEach(ent => {
+        if (ent.netId) {
+            if (ent.netId === message.data.netId) {
+                if (ent.sprite && ent.pos) {
+                    ent.pos.loc.setX(message.data.pos.x);
+                    ent.pos.loc.setY(message.data.pos.y);
+                    ent.sprite.position.copy(ent.pos.loc);
+                    ent.sprite.rotation.set(0, 0, Math.atan2(ent.pos.dir.y, ent.pos.dir.x));
+                }
+            }
+        }
+    });
 }
 
 // TODO: implement!! // -> i.e. destroy a front end version of an entity

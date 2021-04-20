@@ -10,10 +10,8 @@ import { Server } from "./../../server/server";
  */
 export class GameState extends BaseState {
     // public rootWidget: Widget;
-    server: Server;
     constructor(server: Server) {
-        super();
-        this.server = server;
+        super(server);
         // Set up ui widget and instance.
         // this.rootWidget = createWidget("root");
         // let rootComponent = renderGameUi(this.uiScene, this.rootWidget);

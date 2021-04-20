@@ -24,6 +24,26 @@ export function sendCreateOrUpdateEntityMessage(ent: Entity, server: Server) {
     }
 }
 
+export function sendUpdateEntityMessage(ent: Entity, server: Server) {
+    if (ent.pos && ent.sprite) {
+        const entData: EntityData = {
+            netId: ent.netId,
+            pos: ent.pos,
+            sprite: ent.sprite,
+            anim: ent.anim
+        }
+
+        server.boardhouseServer.clients.forEach(client => {
+            const message: EntityMessage = {
+                eventType: EntityEventTypes.UPDATE,
+                data: entData
+            }
+
+            client.send(JSON.stringify(message));
+        });
+    }
+}
+
 // This function should be called when a player or specator joins the match so they can
 // get all relevant entity data sent to their clients
 // A modified function like this may be used in a game that has scene transitions - where only the relevant

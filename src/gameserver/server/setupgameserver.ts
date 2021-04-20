@@ -74,5 +74,5 @@ function findAndDestroyPlayerEntity(ents: Entity[], clientId: string, server: Se
                 sendDestroyEntityMessage(ent, server);
             }
         }
-    })
+    });
 }
