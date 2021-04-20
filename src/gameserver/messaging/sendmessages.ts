@@ -15,7 +15,7 @@ export function sendCreateOrUpdateEntityMessage(ent: Entity, server: Server) {
 
         server.boardhouseServer.clients.forEach(client => {
             const message: EntityMessage = {
-                eventType: EntityEventTypes.CREATE_OR_UPDATE,
+                eventType: EntityEventTypes.CREATE,
                 data: entData
             }
 

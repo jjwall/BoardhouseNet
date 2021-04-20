@@ -9,8 +9,8 @@ export function messageHandlerSystem(client: Client) {
         const message: EntityMessage = JSON.parse(messageEvent.data);
         console.log("boardhouse: back to front message");
 
-        if (message.eventType === EntityEventTypes.CREATE_OR_UPDATE) {
-            createOrUpdateEntity(message, client);
+        if (message.eventType === EntityEventTypes.CREATE) {
+            createEntity(message, client);
         }
 
         if (message.eventType === EntityEventTypes.UPDATE) {
@@ -26,23 +26,21 @@ export function messageHandlerSystem(client: Client) {
 // TODO: implement this!! // -> i.e. create or update a front end version of an entity
 // Note: this function will get called a bunch when a player or spectator first joins (to set up all the front-end entities)
 // netId, pos, sprite are all REQUIRED - anim is optional
-function createOrUpdateEntity(message: EntityMessage, client: Client) {
+function createEntity(message: EntityMessage, client: Client) {
     console.log("create entity front");
     console.log(message.data);
 
     // Create a front-end entity for the client that will represent a back-end entity.
-    // if create then...
     let clientEnt = new ClientEntity();
     clientEnt.netId = message.data.netId;
     clientEnt.pos = setPosition(message.data.pos.x, message.data.pos.y, message.data.pos.z);
     clientEnt.sprite = setSprite(message.data.sprite.url, client.gameScene, client, message.data.sprite.pixelRatio);
+
     if (message.data.anim) {
         // clientEnt.anim = setAnim(...);
     }
-    client.entityList.push(clientEnt);
 
-    // if update then...
-    // ...
+    client.entityList.push(clientEnt);
 }
 
 // VERY INEFFECIENT
