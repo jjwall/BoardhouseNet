@@ -1,5 +1,5 @@
 import { BufferGeometry, ShapeBufferGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera} from "three";
-import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
+import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap, NetIdToEntityMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
@@ -66,6 +66,7 @@ export class Client {
     public uiScene: Scene;
     public uiCamera: Camera;
     public entityList: ClientEntity[] = [];
+    public NetIdToEntityMap: NetIdToEntityMap = {};
 
     /// end state stuff
 
