@@ -1,10 +1,14 @@
 import { Texture, Font, Scene, Camera } from "three";
-import { ClientEntity } from "./cliententity";
 
+// not used on front end
+// export interface RegistryKeyToSystemMap {
+//     [key: string]: (ents: ReadonlyArray<Object>, state: BaseState) => void;
+// }
 
-export interface NetIdToEntityMap {
-    [netId: number]: ClientEntity;
-}
+// not used on front end
+// export interface RegistryKeyToEntityListMap {
+//     [key: string]: Array<Object>;
+// }
 
 export interface UrlToTextureMap {
     [url: string]: Texture;

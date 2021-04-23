@@ -3,7 +3,6 @@ import { EntityMessage } from "../../packets/entitymessage";
 import { EntityEventTypes } from "../../packets/entityeventtypes";
 import { Client } from "../client/client";
 import { ClientEntity, setPosition, setSprite } from "./../client/cliententity";
-import { NetIdToEntityMap } from "../client/interfaces";
 
 export function messageHandlerSystem(client: Client) {
     client.connection.onmessage = function(messageEvent: MessageEvent) {
@@ -42,7 +41,6 @@ function createEntity(message: EntityMessage, client: Client) {
     }
 
     client.entityList.push(clientEnt);
-    client.NetIdToEntityMap[message.data.netId] = clientEnt;
 }
 
 // VERY INEFFECIENT
@@ -50,39 +48,27 @@ function createEntity(message: EntityMessage, client: Client) {
 // NEET TO HAVE A CHANGE LIST SO UPDATING ONLY HAPPENS IN BULK AFTER ONE GAME TICK
 function updateEntity(message: EntityMessage, client: Client) {
     console.log("updating entity...");
-    let clientEnt = client.NetIdToEntityMap[message.data.netId];
-
-    if (clientEnt.sprite && clientEnt.pos) {
-        clientEnt.pos.loc.setX(message.data.pos.x);
-        clientEnt.pos.loc.setY(message.data.pos.y);
-    }
-
-    // client.entityList.forEach(ent => {
-    //     if (ent.netId) {
-    //         if (ent.netId === message.data.netId) {
-    //             if (ent.sprite && ent.pos) {
-    //                 ent.pos.loc.setX(message.data.pos.x);
-    //                 ent.pos.loc.setY(message.data.pos.y);
-    //             }
-    //         }
-    //     }
-    // });
+    client.entityList.forEach(ent => {
+        if (ent.netId) {
+            if (ent.netId === message.data.netId) {
+                if (ent.sprite && ent.pos) {
+                    ent.pos.loc.setX(message.data.pos.x);
+                    ent.pos.loc.setY(message.data.pos.y);
+                }
+            }
+        }
+    });
 }
 
 // TODO: implement!! // -> i.e. destroy a front end version of an entity
 function destroyEntity(message: EntityMessage, client: Client) {
     console.log("destroy entity front");
-    const entToDestroy = client.NetIdToEntityMap[message.data.netId]; //client.entityList.find(ent => ent.netId === message.data.netId);
+    const entToDestroy = client.entityList.find(ent => ent.netId === message.data.netId);
 
-    // Remove from entityList.
     if (client.entityList.indexOf(entToDestroy) !== -1) {
         client.entityList.splice(client.entityList.indexOf(entToDestroy), 1);
     }
 
-    // Remove from NetId to Entity map.
-    delete client.NetIdToEntityMap[message.data.netId];
-
-    // Remove sprite from scene.
     if (entToDestroy.sprite) {
         client.gameScene.remove(entToDestroy.sprite);
     }
