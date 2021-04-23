@@ -24,24 +24,32 @@ export function sendCreateEntityMessage(ent: Entity, server: Server) {
     }
 }
 
-export function sendUpdateEntityMessage(ent: Entity, server: Server) {
-    if (ent.pos && ent.sprite) {
-        const entData: EntityData = {
-            netId: ent.netId,
-            pos: ent.pos,
-            sprite: ent.sprite,
-            anim: ent.anim
-        }
+export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
+    let messageList: EntityMessage[] = [];
 
-        server.boardhouseServer.clients.forEach(client => {
-            const message: EntityMessage = {
-                eventType: EntityEventTypes.UPDATE,
-                data: entData
+    ents.forEach(ent => {
+        if (ent.pos && ent.sprite) {
+            const entData: EntityData = {
+                netId: ent.netId,
+                pos: ent.pos,
+                sprite: ent.sprite,
+                anim: ent.anim
             }
 
-            client.send(JSON.stringify(message));
-        });
-    }
+            const messageItem: EntityMessage = {
+                eventType: EntityEventTypes.UPDATE,
+                data: entData         
+            }
+
+            messageList.push(messageItem);
+        }
+    });
+
+    server.boardhouseServer.clients.forEach(client => {
+        client.send(JSON.stringify(messageList));
+    });
+
+    server.entityChangeList = [];
 }
 
 /**
@@ -65,11 +73,11 @@ export function sendCreateAllEntitiesMessages(ents: Entity[], server: Server) {
  * @param ents 
  * @param server 
  */
-export function sendUpdateAllEntitiesMessages(ents: Entity[], server: Server) {
-    ents.forEach(ent => {
-        sendUpdateEntityMessage(ent, server);
-    });
-}
+// export function sendUpdateAllEntitiesMessages(ents: Entity[], server: Server) {
+//     ents.forEach(ent => {
+//         sendUpdateEntityMessage(ent, server);
+//     });
+// }
 
 export function sendDestroyEntityMessage(ent: Entity, server: Server) {
     // remove entity from backend entity list:

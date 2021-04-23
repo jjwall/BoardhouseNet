@@ -6,6 +6,13 @@ import { ClientEntity, setPosition, setSprite } from "./../client/cliententity";
 
 export function messageHandlerSystem(client: Client) {
     client.connection.onmessage = function(messageEvent: MessageEvent) {
+
+        // Sending message list based on this, should switch everything to this.
+        if (messageEvent.data[0] == "[") {
+            const messageList: EntityMessage[] = JSON.parse(messageEvent.data);
+            updateEntity(messageList, client);
+        }
+
         const message: EntityMessage = JSON.parse(messageEvent.data);
         console.log("boardhouse: back to front message");
 
@@ -13,9 +20,9 @@ export function messageHandlerSystem(client: Client) {
             createEntity(message, client);
         }
 
-        if (message.eventType === EntityEventTypes.UPDATE) {
-            updateEntity(message, client);
-        }
+        // if (message.eventType === EntityEventTypes.UPDATE) {
+        //     updateEntity(message, client);
+        // }
 
         if (message.eventType === EntityEventTypes.DESTROY) {
             destroyEntity(message, client);
@@ -50,13 +57,15 @@ function createEntity(message: EntityMessage, client: Client) {
 // VERY INEFFECIENT
 // NEED TO MAP NETID TO ENTS
 // NEET TO HAVE A CHANGE LIST SO UPDATING ONLY HAPPENS IN BULK AFTER ONE GAME TICK
-function updateEntity(message: EntityMessage, client: Client) {
-    let clientEnt = client.NetIdToEntityMap[message.data.netId];
+function updateEntity(messageList: EntityMessage[], client: Client) {
+    messageList.forEach(message => {
+        let clientEnt = client.NetIdToEntityMap[message.data.netId];
 
-    if (clientEnt.sprite && clientEnt.pos) {
-        clientEnt.pos.loc.setX(message.data.pos.x);
-        clientEnt.pos.loc.setY(message.data.pos.y);
-    }
+        if (clientEnt.sprite && clientEnt.pos) {
+            clientEnt.pos.loc.setX(message.data.pos.x);
+            clientEnt.pos.loc.setY(message.data.pos.y);
+        }
+    });
 }
 
 // TODO: implement!! // -> i.e. destroy a front end version of an entity

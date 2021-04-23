@@ -36,5 +36,6 @@ export class Server {
     public netIdToEntityMap: NetIdToEntityMap; // -> this is to avoid having to do a search for the NetId all the time when updating / destroying entities
     public messagesToProcess: Array<ClientMessage>;
     public currentState: BaseState;
+    public entityChangeList: Entity[] = [];
     // #endregion
 }

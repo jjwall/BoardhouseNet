@@ -1,6 +1,7 @@
 import { RegistryKeyToSystemMap, RegistryKeyToEntityListMap } from "./interfaces";
 import { Server } from "./../server/server";
 import { Entity } from "../states/gameplay/entity";
+import { sendUpdateEntitiesMessage } from "../messaging/sendmessages";
 // import { Widget } from "./ui/widget";
 
 export abstract class BaseState {
@@ -126,5 +127,9 @@ export abstract class BaseState {
 
             systemMap[key](this.entityRegistry[key], this);
         });
+
+        // Send update all entities after engine tick.
+        if (this.server.entityChangeList.length > 0)
+            sendUpdateEntitiesMessage(this.server.entityChangeList, this.server);
     }
 }
