@@ -4,7 +4,7 @@ import { EntityEventTypes } from "../../packets/entityeventtypes";
 import { last } from "../server/helpers";
 import { Server } from "./../server/server";
 
-export function sendCreateOrUpdateEntityMessage(ent: Entity, server: Server) {
+export function sendCreateEntityMessage(ent: Entity, server: Server) {
     if (ent.pos && ent.sprite) {
         const entData: EntityData = {
             netId: ent.netId,
@@ -54,7 +54,7 @@ export function sendUpdateEntityMessage(ent: Entity, server: Server) {
  */
 export function sendCreateAllEntitiesMessages(ents: Entity[], server: Server) {
     ents.forEach(ent => {
-        sendCreateOrUpdateEntityMessage(ent, server);
+        sendCreateEntityMessage(ent, server);
     });
 }
 
