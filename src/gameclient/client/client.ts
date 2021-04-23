@@ -6,6 +6,7 @@ import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
 import { EventTypes } from "../events/eventtypes";
 import { ClientEntity } from "./cliententity";
+import { NetIdToEntityMap } from "./interfaces";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -66,6 +67,7 @@ export class Client {
     public uiScene: Scene;
     public uiCamera: Camera;
     public entityList: ClientEntity[] = [];
+    public NetIdToEntityMap: NetIdToEntityMap = {};
 
     /// end state stuff
 

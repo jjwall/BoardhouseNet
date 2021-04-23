@@ -31,44 +31,51 @@ function createEntity(message: EntityMessage, client: Client) {
     console.log(message.data);
 
     // Create a front-end entity for the client that will represent a back-end entity.
-    let clientEnt = new ClientEntity();
-    clientEnt.netId = message.data.netId;
-    clientEnt.pos = setPosition(message.data.pos.x, message.data.pos.y, message.data.pos.z);
-    clientEnt.sprite = setSprite(message.data.sprite.url, client.gameScene, client, message.data.sprite.pixelRatio);
+    // Don't create the ent twice if it had already been created.
+    if (!client.NetIdToEntityMap[message.data.netId]) {
+        let clientEnt = new ClientEntity();
+        clientEnt.netId = message.data.netId;
+        clientEnt.pos = setPosition(message.data.pos.x, message.data.pos.y, message.data.pos.z);
+        clientEnt.sprite = setSprite(message.data.sprite.url, client.gameScene, client, message.data.sprite.pixelRatio);
 
-    if (message.data.anim) {
-        // clientEnt.anim = setAnim(...);
+        if (message.data.anim) {
+            // clientEnt.anim = setAnim(...);
+        }
+
+        client.entityList.push(clientEnt);
+        client.NetIdToEntityMap[message.data.netId] = clientEnt;
     }
-
-    client.entityList.push(clientEnt);
 }
 
 // VERY INEFFECIENT
 // NEED TO MAP NETID TO ENTS
 // NEET TO HAVE A CHANGE LIST SO UPDATING ONLY HAPPENS IN BULK AFTER ONE GAME TICK
 function updateEntity(message: EntityMessage, client: Client) {
-    console.log("updating entity...");
-    client.entityList.forEach(ent => {
-        if (ent.netId) {
-            if (ent.netId === message.data.netId) {
-                if (ent.sprite && ent.pos) {
-                    ent.pos.loc.setX(message.data.pos.x);
-                    ent.pos.loc.setY(message.data.pos.y);
-                }
-            }
-        }
-    });
+    let clientEnt = client.NetIdToEntityMap[message.data.netId];
+
+    if (clientEnt.sprite && clientEnt.pos) {
+        clientEnt.pos.loc.setX(message.data.pos.x);
+        clientEnt.pos.loc.setY(message.data.pos.y);
+    }
 }
 
 // TODO: implement!! // -> i.e. destroy a front end version of an entity
 function destroyEntity(message: EntityMessage, client: Client) {
     console.log("destroy entity front");
-    const entToDestroy = client.entityList.find(ent => ent.netId === message.data.netId);
+    const entToDestroy = client.NetIdToEntityMap[message.data.netId];
 
+    console.log(client.entityList);
+    // Remove from entityList.
     if (client.entityList.indexOf(entToDestroy) !== -1) {
         client.entityList.splice(client.entityList.indexOf(entToDestroy), 1);
     }
+    console.log("removing ent from entity list");
+    console.log(client.entityList);
 
+    // Remove from NetId to Entity map.
+    delete client.NetIdToEntityMap[message.data.netId];
+
+    // Remove sprite from scene.
     if (entToDestroy.sprite) {
         client.gameScene.remove(entToDestroy.sprite);
     }
