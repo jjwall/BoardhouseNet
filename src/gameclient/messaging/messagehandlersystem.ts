@@ -4,29 +4,29 @@ import { EntityEventTypes } from "../../packets/entityeventtypes";
 import { Client } from "../client/client";
 import { ClientEntity, setPosition, setSprite } from "./../client/cliententity";
 
+// Handle message based on the EntityEventType.
 export function messageHandlerSystem(client: Client) {
     client.connection.onmessage = function(messageEvent: MessageEvent) {
         const message: EntityMessage = JSON.parse(messageEvent.data);
         console.log("boardhouse: back to front message");
 
         if (message.eventType === EntityEventTypes.CREATE) {
-            createEntity(message, client);
+            createEntities(message, client);
         }
 
         if (message.eventType === EntityEventTypes.UPDATE) {
-            updateEntity(message, client);
+            updateEntities(message, client);
         }
 
         if (message.eventType === EntityEventTypes.DESTROY) {
-            destroyEntity(message, client);
+            destroyEntities(message, client);
         }
     }
 }
 
-// TODO: implement this!! // -> i.e. create or update a front end version of an entity
-// Note: this function will get called a bunch when a player or spectator first joins (to set up all the front-end entities)
-// netId, pos, sprite are all REQUIRED - anim is optional
-function createEntity(message: EntityMessage, client: Client) {
+// Create front-end representations of EntData list. Should pass in all entities
+// using the "global" ecsKey when a player or spectator first joins (or scene transition happens).
+function createEntities(message: EntityMessage, client: Client) {
     message.data.forEach(entData => {
         console.log("create entity front");
         console.log(entData);
@@ -49,7 +49,8 @@ function createEntity(message: EntityMessage, client: Client) {
     });
 }
 
-function updateEntity(message: EntityMessage, client: Client) {
+// Update front end representation of EntData list.
+function updateEntities(message: EntityMessage, client: Client) {
     message.data.forEach(entData => {
         if (client.NetIdToEntityMap[entData.netId]) {
             let clientEnt = client.NetIdToEntityMap[entData.netId];
@@ -66,8 +67,8 @@ function updateEntity(message: EntityMessage, client: Client) {
     });
 }
 
-// Destroy a front end version of an entity.
-function destroyEntity(message: EntityMessage, client: Client) {
+// Destroy front end representations EntData list.
+function destroyEntities(message: EntityMessage, client: Client) {
     message.data.forEach(entData => {
         console.log("destroy entity front");
         const entToDestroy = client.NetIdToEntityMap[entData.netId];

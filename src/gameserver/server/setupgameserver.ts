@@ -1,7 +1,7 @@
 import * as WebSocket from "ws";
 import { EntityMessage } from "../../packets/entitymessage";
 import { ClientMessage } from "../../packets/clientmessage";
-import { sendDestroyEntityMessage } from "../messaging/sendmessages";
+import { sendDestroyEntitiesMessage } from "../messaging/sendmessages";
 import { Entity } from "../states/gameplay/entity";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
@@ -78,5 +78,5 @@ function findAndDestroyPlayerEntity(ents: Entity[], clientId: string, server: Se
         }
     });
 
-    sendDestroyEntityMessage(entsToDestroy, server);
+    sendDestroyEntitiesMessage(entsToDestroy, server);
 }

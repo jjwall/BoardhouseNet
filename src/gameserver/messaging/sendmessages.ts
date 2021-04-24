@@ -4,7 +4,7 @@ import { EntityEventTypes } from "../../packets/entityeventtypes";
 import { last } from "../server/helpers";
 import { Server } from "./../server/server";
 
-export function sendCreateEntityMessage(ents: Entity[], server: Server) {
+export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
     let message: EntityMessage = {
         eventType: EntityEventTypes.CREATE,
         data: [],
@@ -81,7 +81,7 @@ export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
 //     });
 // }
 
-export function sendDestroyEntityMessage(ents: Entity[], server: Server) {
+export function sendDestroyEntitiesMessage(ents: Entity[], server: Server) {
     let message: EntityMessage = {
         eventType: EntityEventTypes.DESTROY,
         data: [],

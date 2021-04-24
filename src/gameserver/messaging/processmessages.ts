@@ -3,7 +3,7 @@ import { GameState } from "../states/gameplay/gamestate";
 import { ClientMessage } from "../../packets/clientmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { initializeControls } from "../components/initializers";
-import { sendCreateEntityMessage } from "./sendmessages";
+import { sendCreateEntitiesMessage } from "./sendmessages";
 import { Server } from "./../server/server";
 
 export function processMessages(ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
@@ -57,7 +57,7 @@ function processPlayerJoinedMessage(message: ClientMessage, server: Server, stat
     // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
         // Create all entities for connecting client.
-        sendCreateEntityMessage(state.getEntitiesByKey<Entity>("global"), server);
+        sendCreateEntitiesMessage(state.getEntitiesByKey<Entity>("global"), server);
     }, 5000);
 
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages
@@ -80,7 +80,7 @@ function processSpectatorJoinedMessage(message: ClientMessage, server: Server, s
     // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
         // Create all entities for connecting client.
-        sendCreateEntityMessage(state.getEntitiesByKey<Entity>("global"), server);
+        sendCreateEntitiesMessage(state.getEntitiesByKey<Entity>("global"), server);
     }, 5000);
 
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages to create ents for spectating client
