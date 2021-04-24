@@ -1,4 +1,4 @@
-import { BufferGeometry, ShapeBufferGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera} from "three";
+import { BufferGeometry, ShapeBufferGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3} from "three";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
@@ -246,7 +246,8 @@ export class Client {
     private updateClientEntPositions(ents: ReadonlyArray<ClientEntity>) {
         ents.forEach(ent => {
             if (ent.sprite && ent.pos) {
-                ent.sprite.position.copy(ent.pos.loc);
+                const targetPos = new Vector3(ent.pos.loc.x, ent.pos.loc.y, ent.pos.loc.z);
+                ent.sprite.position.lerp(targetPos, 0.2)
                 ent.sprite.rotation.set(0, 0, Math.atan2(ent.pos.dir.y, ent.pos.dir.x));
             }
         });

@@ -7,6 +7,7 @@ import * as WebSocket from "ws";
 export interface ServerConfig {
     clientConnection: WebSocket, // lobbyClientConnection
     gameServerPort: string,
+    gameTicksPerSecond: number;
 }
 
 export class Server {
@@ -14,6 +15,7 @@ export class Server {
         // Set configs.
         this.clientConnection = config.clientConnection;
         this.gameServerPort = config.gameServerPort;
+        this.millisecondsPerGameTick = 1000 / config.gameTicksPerSecond;
 
         // Initialize non-config fields.
         this.playerClientIds = [];
@@ -26,6 +28,7 @@ export class Server {
     // #region Config fields
     public clientConnection: WebSocket; // lobbyClientConnection
     public gameServerPort: string;
+    public millisecondsPerGameTick: number;
     // #endregion
 
     // #region Non-config fields
