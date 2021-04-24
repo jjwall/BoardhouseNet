@@ -1,7 +1,7 @@
 import * as WebSocket from "ws";
 import { EntityMessage } from "../../packets/entitymessage";
 import { ClientMessage } from "../../packets/clientmessage";
-import { sendDestroyEntityMessage } from "../messaging/sendmessages";
+import { sendDestroyEntitiesMessage } from "../messaging/sendmessages";
 import { Entity } from "../states/gameplay/entity";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
@@ -68,11 +68,15 @@ export function setUpGameServer(server: Server) {
 }
 
 function findAndDestroyPlayerEntity(ents: Entity[], clientId: string, server: Server) {
+    let entsToDestroy: Entity[] = [];
+
     ents.forEach(ent => {
         if (ent.player) {
             if (ent.player.id === clientId) {
-                sendDestroyEntityMessage(ent, server);
+                entsToDestroy.push(ent);
             }
         }
     });
+
+    sendDestroyEntitiesMessage(entsToDestroy, server);
 }

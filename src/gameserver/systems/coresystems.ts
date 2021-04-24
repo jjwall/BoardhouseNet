@@ -1,7 +1,7 @@
 import { send } from "process";
 import { BaseState } from "../server/basestate";
 import { Entity } from "../states/gameplay/entity";
-import { sendUpdateEntityMessage } from "./../messaging/sendmessages";
+import { sendUpdateEntitiesMessage } from "./../messaging/sendmessages";
 
 /**
  * Control system.
@@ -15,7 +15,8 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
                 ent.pos.x--;
 
                 // Won't want to actually update here - at end of engine tick.
-                sendUpdateEntityMessage(ent, state.server);
+                // sendUpdateEntitiesMessage(ent, state.server);
+                state.server.entityChangeList.push(ent);
             }
 
             // Right
@@ -23,7 +24,8 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
                 ent.pos.x++;
 
                 // Won't want to actually update here - at end of engine tick.
-                sendUpdateEntityMessage(ent, state.server);
+                // sendUpdateEntitiesMessage(ent, state.server);
+                state.server.entityChangeList.push(ent);
             }
         }
     });
