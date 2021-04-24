@@ -4,28 +4,11 @@ import { EntityEventTypes } from "../../packets/entityeventtypes";
 import { last } from "../server/helpers";
 import { Server } from "./../server/server";
 
-export function sendCreateEntityMessage(ent: Entity, server: Server) {
-    if (ent.pos && ent.sprite) {
-        const entData: EntityData = {
-            netId: ent.netId,
-            pos: ent.pos,
-            sprite: ent.sprite,
-            anim: ent.anim
-        }
-
-        server.boardhouseServer.clients.forEach(client => {
-            const message: EntityMessage = {
-                eventType: EntityEventTypes.CREATE,
-                data: entData
-            }
-
-            client.send(JSON.stringify(message));
-        });
+export function sendCreateEntityMessage(ents: Entity[], server: Server) {
+    let message: EntityMessage = {
+        eventType: EntityEventTypes.CREATE,
+        data: [],
     }
-}
-
-export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
-    let messageList: EntityMessage[] = [];
 
     ents.forEach(ent => {
         if (ent.pos && ent.sprite) {
@@ -36,17 +19,36 @@ export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
                 anim: ent.anim
             }
 
-            const messageItem: EntityMessage = {
-                eventType: EntityEventTypes.UPDATE,
-                data: entData         
-            }
-
-            messageList.push(messageItem);
+            message.data.push(entData);
         }
     });
 
     server.boardhouseServer.clients.forEach(client => {
-        client.send(JSON.stringify(messageList));
+        client.send(JSON.stringify(message));
+    });
+}
+
+export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
+    let message: EntityMessage = {
+        eventType: EntityEventTypes.UPDATE,
+        data: [],
+    }
+
+    ents.forEach(ent => {
+        if (ent.pos && ent.sprite) {
+            const entData: EntityData = {
+                netId: ent.netId,
+                pos: ent.pos,
+                sprite: ent.sprite,
+                anim: ent.anim
+            }
+
+            message.data.push(entData);
+        }
+    });
+
+    server.boardhouseServer.clients.forEach(client => {
+        client.send(JSON.stringify(message));
     });
 
     server.entityChangeList = [];
@@ -60,11 +62,11 @@ export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
  * @param ents 
  * @param server 
  */
-export function sendCreateAllEntitiesMessages(ents: Entity[], server: Server) {
-    ents.forEach(ent => {
-        sendCreateEntityMessage(ent, server);
-    });
-}
+// export function sendCreateAllEntitiesMessages(ents: Entity[], server: Server) {
+//     ents.forEach(ent => {
+//         sendCreateEntityMessage(ent, server);
+//     });
+// }
 
 /**
  * Update to be called after a tick of engine.
@@ -79,25 +81,29 @@ export function sendCreateAllEntitiesMessages(ents: Entity[], server: Server) {
 //     });
 // }
 
-export function sendDestroyEntityMessage(ent: Entity, server: Server) {
-    // remove entity from backend entity list:
-    server.currentState.removeEntity(ent);
-    
-    if (ent.netId) {
-        const entData: EntityData = { // make optional params
-            netId: ent.netId,
-            pos: ent.pos,
-            sprite: ent.sprite,
-            anim: ent.anim
-        }
+export function sendDestroyEntityMessage(ents: Entity[], server: Server) {
+    let message: EntityMessage = {
+        eventType: EntityEventTypes.DESTROY,
+        data: [],
+    }
 
-        server.boardhouseServer.clients.forEach(client => {
-            const message: EntityMessage = {
-                eventType: EntityEventTypes.DESTROY,
-                data: entData
+    ents.forEach(ent => {
+        // remove entity from backend entity list:
+        server.currentState.removeEntity(ent);
+        
+        if (ent.netId) {
+            const entData: EntityData = { // make optional params
+                netId: ent.netId,
+                pos: ent.pos,
+                sprite: ent.sprite,
+                anim: ent.anim
             }
 
-            client.send(JSON.stringify(message));
-        });
-    }
+            message.data.push(entData);
+        }
+    });
+    
+    server.boardhouseServer.clients.forEach(client => {
+        client.send(JSON.stringify(message));
+    });
 }

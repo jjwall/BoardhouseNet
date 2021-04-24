@@ -68,11 +68,15 @@ export function setUpGameServer(server: Server) {
 }
 
 function findAndDestroyPlayerEntity(ents: Entity[], clientId: string, server: Server) {
+    let entsToDestroy: Entity[] = [];
+
     ents.forEach(ent => {
         if (ent.player) {
             if (ent.player.id === clientId) {
-                sendDestroyEntityMessage(ent, server);
+                entsToDestroy.push(ent);
             }
         }
     });
+
+    sendDestroyEntityMessage(entsToDestroy, server);
 }
