@@ -4,6 +4,7 @@ interface EntityData {
         x: number;
         y: number;
         z: number;
+        teleport?: boolean;
     },
     sprite: {
         url: string;

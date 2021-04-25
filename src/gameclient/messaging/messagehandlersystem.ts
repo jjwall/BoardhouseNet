@@ -38,6 +38,7 @@ function createEntities(message: EntityMessage, client: Client) {
             clientEnt.netId = entData.netId;
             clientEnt.pos = setPosition(entData.pos.x, entData.pos.y, entData.pos.z);
             clientEnt.sprite = setSprite(entData.sprite.url, client.gameScene, client, entData.sprite.pixelRatio);
+            clientEnt.pos.teleport = entData.pos.teleport;
 
             if (entData.anim) {
                 // clientEnt.anim = setAnim(...);
@@ -58,6 +59,7 @@ function updateEntities(message: EntityMessage, client: Client) {
             if (clientEnt.sprite && clientEnt.pos) {
                 clientEnt.pos.loc.setX(entData.pos.x);
                 clientEnt.pos.loc.setY(entData.pos.y);
+                clientEnt.pos.teleport = entData.pos.teleport;
             }
     
             // if (clientEnt.anim) {

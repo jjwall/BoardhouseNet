@@ -1,7 +1,6 @@
 import { Entity } from "../states/gameplay/entity";
 import { EntityMessage } from "../../packets/entitymessage";
 import { EntityEventTypes } from "../../packets/entityeventtypes";
-import { last } from "../server/helpers";
 import { Server } from "./../server/server";
 
 export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
@@ -14,7 +13,12 @@ export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
         if (ent.pos && ent.sprite) {
             const entData: EntityData = {
                 netId: ent.netId,
-                pos: ent.pos,
+                pos: {
+                    x: ent.pos.x,
+                    y: ent.pos.y,
+                    z: ent.pos.z,
+                    teleport: true,
+                },
                 sprite: ent.sprite,
                 anim: ent.anim
             }

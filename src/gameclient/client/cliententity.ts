@@ -17,6 +17,8 @@ export class ClientEntity {
     dir: Vector3;
     /** Wraparound behavior. */
     wrap: boolean;
+    /** Flag that is checked in the lerping system to know if lerping should occur. */
+    teleport?: boolean;
 }
 
 /**

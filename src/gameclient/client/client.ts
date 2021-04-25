@@ -247,7 +247,12 @@ export class Client {
         ents.forEach(ent => {
             if (ent.sprite && ent.pos) {
                 const targetPos = new Vector3(ent.pos.loc.x, ent.pos.loc.y, ent.pos.loc.z);
-                ent.sprite.position.lerp(targetPos, 0.2)
+                
+                if (ent.pos.teleport)
+                    ent.sprite.position.copy(targetPos);
+                else
+                    ent.sprite.position.lerp(targetPos, 0.2)
+            
                 ent.sprite.rotation.set(0, 0, Math.atan2(ent.pos.dir.y, ent.pos.dir.x));
             }
         });
