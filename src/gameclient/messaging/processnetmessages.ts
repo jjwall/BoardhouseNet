@@ -2,10 +2,10 @@ import { ClientMessage } from "../../packets/clientmessage";
 import { EntityMessage } from "../../packets/entitymessage";
 import { EntityEventTypes } from "../../packets/entityeventtypes";
 import { Client } from "../client/client";
-import { ClientEntity, setPosition, setSprite } from "./../client/cliententity";
+import { ClientEntity, setPosition, setSprite } from "../client/cliententity";
 
 // Handle message based on the EntityEventType.
-export function messageHandlerSystem(client: Client) {
+export function processNetMessages(client: Client) {
     client.connection.onmessage = function(messageEvent: MessageEvent) {
         const message: EntityMessage = JSON.parse(messageEvent.data);
         console.log("boardhouse: back to front message");

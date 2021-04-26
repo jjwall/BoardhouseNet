@@ -2,7 +2,7 @@ import { BaseState } from "../../server/basestate";
 import { initializeControls } from "../../components/initializers";
 import { controlSystem } from "../../systems/coresystems";
 import { Entity } from "./entity";
-import { processMessages } from "../../messaging/processmessages";
+import { processClientMessages } from "../../messaging/processclientmessages";
 import { Server } from "./../../server/server";
 
 /**
@@ -40,7 +40,7 @@ export class GameState extends BaseState {
     }
 
     public update() : void {
-        processMessages(this.getEntitiesByKey<Entity>("global"), this.server, this)
+        processClientMessages(this.getEntitiesByKey<Entity>("global"), this.server, this)
         this.runSystems();
     }
 }

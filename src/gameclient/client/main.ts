@@ -1,6 +1,6 @@
 import { setEventListeners } from "./seteventlisteners";
 import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
-import { messageHandlerSystem } from "../messaging/messagehandlersystem";
+import { processNetMessages } from "../messaging/processnetmessages";
 import { ClientMessage } from "../../packets/clientmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { Client, ClientConfig } from "./client";
@@ -133,5 +133,5 @@ function main(canvasContainer: HTMLElement) {
     // start the render loop
     renderLoop(0);
 
-    messageHandlerSystem(client);
+    processNetMessages(client);
 }

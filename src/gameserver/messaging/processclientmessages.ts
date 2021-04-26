@@ -4,9 +4,9 @@ import { ClientMessage } from "../../packets/clientmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { initializeControls } from "../components/initializers";
 import { sendCreateEntitiesMessage } from "./sendmessages";
-import { Server } from "./../server/server";
+import { Server } from "../server/server";
 
-export function processMessages(ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
+export function processClientMessages(ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
     server.messagesToProcess.forEach(message => {
         switch (message.eventType) {
             case ClientEventTypes.PLAYER_JOINED:
