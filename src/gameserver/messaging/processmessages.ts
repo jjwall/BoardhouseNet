@@ -27,6 +27,9 @@ export function processMessages(ents: ReadonlyArray<Entity>, server: Server, sta
             case ClientEventTypes.RIGHT_KEY_UP:
                 processRightKeyUpMessage(ents, message);
                 break;
+            case ClientEventTypes.INPUT_TO_QUERY:
+                processQueryInputMessage(ents, message, server);
+                break;
         }
     });
 
@@ -84,6 +87,16 @@ function processSpectatorJoinedMessage(message: ClientMessage, server: Server, s
     }, 5000);
 
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages to create ents for spectating client
+}
+
+function processQueryInputMessage(ents: ReadonlyArray<Entity>, message: ClientMessage, server: Server) {
+    ents.forEach(ent => {
+        if (ent.player && ent.control) {
+            if (ent.player.id === message.clientId) {
+                server.queriedInputs.push({input: "myInput", clientId: message.clientId});
+            }
+        }
+    });
 }
 
 function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientMessage) {

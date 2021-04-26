@@ -14,3 +14,8 @@ export interface RegistryKeyToSystemMap {
 export interface RegistryKeyToEntityListMap {
     [key: string]: Array<Object>;
 }
+
+export interface QueriedInput {
+    input: string,
+    clientId: string,
+}

@@ -1,5 +1,5 @@
 import { ClientMessage } from "../../packets/clientmessage";
-import { NetIdToEntityMap } from "./interfaces";
+import { NetIdToEntityMap, QueriedInput } from "./interfaces";
 import { Entity } from "../states/gameplay/entity";
 import { BaseState } from "./basestate";
 import * as WebSocket from "ws";
@@ -40,5 +40,6 @@ export class Server {
     public messagesToProcess: Array<ClientMessage>;
     public currentState: BaseState;
     public entityChangeList: Entity[] = [];
+    public queriedInputs: QueriedInput[] = [];
     // #endregion
 }
