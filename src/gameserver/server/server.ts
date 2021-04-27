@@ -1,4 +1,4 @@
-import { ClientMessage } from "../../packets/clientmessage";
+import { Message } from "../../packets/message";
 import { NetIdToEntityMap, QueriedInput } from "./interfaces";
 import { Entity } from "../states/gameplay/entity";
 import { BaseState } from "./basestate";
@@ -37,7 +37,7 @@ export class Server {
     public boardhouseServer: WebSocket.Server; // need to rename into something more apt - websocketServer?
     public currentNetId: number;
     public netIdToEntityMap: NetIdToEntityMap; // -> this is to avoid having to do a search for the NetId all the time when updating / destroying entities
-    public messagesToProcess: Array<ClientMessage>;
+    public messagesToProcess: Array<Message>;
     public currentState: BaseState;
     public entityChangeList: Entity[] = [];
     public queriedInputs: QueriedInput[] = [];

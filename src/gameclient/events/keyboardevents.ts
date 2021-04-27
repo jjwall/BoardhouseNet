@@ -1,17 +1,19 @@
+import { MessageTypes } from "../../packets/messagetypes";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
-import { ClientMessage } from "../../packets/clientmessage";
+import { ClientEventMessage } from "../../packets/clientmessage";
 import { Client } from "../client/client";
 
 // keyboard controls
 // visit https://keycode.info/ for other key codes.
 export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
-    let message: ClientMessage;
+    let message: ClientEventMessage;
 
     switch(e.keyCode) {
         case 37: // left
         case 65: // a
             if (!client.keyLeftIsDown) {
                 message  = {
+                    messageType: MessageTypes.CLIENT_EVENT_MESSAGE,
                     eventType: ClientEventTypes.LEFT_KEY_DOWN,
                     clientId: client.currentClientId
                 }
@@ -25,6 +27,7 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
         case 68: // d
             if (!client.keyRightIsDown) {
                 message = {
+                    messageType: MessageTypes.CLIENT_EVENT_MESSAGE,
                     eventType: ClientEventTypes.RIGHT_KEY_DOWN,
                     clientId: client.currentClientId
                 }
@@ -64,13 +67,14 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
 }
 
 export function handleKeyUpEvent(client: Client, e: KeyboardEvent) {
-    let message: ClientMessage;
+    let message: ClientEventMessage;
 
     switch(e.keyCode) {
         case 37: // left
         case 65: // a
             if (client.keyLeftIsDown) {
                 message = {
+                    messageType: MessageTypes.CLIENT_EVENT_MESSAGE,
                     eventType: ClientEventTypes.LEFT_KEY_UP,
                     clientId: client.currentClientId
                 }
@@ -84,6 +88,7 @@ export function handleKeyUpEvent(client: Client, e: KeyboardEvent) {
         case 68: // d
             if (client.keyRightIsDown) {
                 message = {
+                    messageType: MessageTypes.CLIENT_EVENT_MESSAGE,
                     eventType: ClientEventTypes.RIGHT_KEY_UP,
                     clientId: client.currentClientId
                 }

@@ -1,11 +1,12 @@
 import { setEventListeners } from "./seteventlisteners";
 import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 import { processNetMessages } from "../messaging/processnetmessages";
-import { ClientMessage } from "../../packets/clientmessage";
+import { ClientEventMessage } from "../../packets/clientmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { Client, ClientConfig } from "./client";
 import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
+import { MessageTypes } from "../../packets/messagetypes";
 
 // TODO:
 // > Clean up Client class fields and config fields
@@ -60,11 +61,12 @@ client.connection = new WebSocket("ws://" +
                                            client.currentPort);
 
 client.connection.onopen = function() {
-    let message: ClientMessage;
+    let message: ClientEventMessage;
 
     switch (client.role) {
         case ClientRoleTypes.PLAYER:
             message = {
+                messageType: MessageTypes.CLIENT_EVENT_MESSAGE,
                 eventType: ClientEventTypes.PLAYER_JOINED,
                 clientId: client.currentClientId
             }
@@ -75,6 +77,7 @@ client.connection.onopen = function() {
             break;
         case ClientRoleTypes.SPECTATOR:
             message = {
+                messageType: MessageTypes.CLIENT_EVENT_MESSAGE,
                 eventType: ClientEventTypes.SPECTATOR_JOINED,
                 clientId: client.currentClientId
             }

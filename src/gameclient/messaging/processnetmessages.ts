@@ -1,10 +1,14 @@
-import { ClientMessage } from "../../packets/clientmessage";
+import { ClientEventMessage } from "../../packets/clientmessage";
 import { EntityMessage } from "../../packets/entitymessage";
 import { EntityEventTypes } from "../../packets/entityeventtypes";
 import { Client } from "../client/client";
 import { ClientEntity, setPosition, setSprite } from "../client/cliententity";
 
 // Handle message based on the EntityEventType.
+// Will need non-entity messages such as "CREATE_FIRE_BALL" with x,y,z location in Euler direction etc...
+// EntityMessage should be renamed to NetMessage
+// EntityEventTypes should renamed to NetEventTypes
+// CREATE will now be CREATE_ENTITIES and so on...
 export function processNetMessages(client: Client) {
     client.connection.onmessage = function(messageEvent: MessageEvent) {
         const message: EntityMessage = JSON.parse(messageEvent.data);

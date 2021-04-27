@@ -1,39 +1,49 @@
 import { Entity } from "../states/gameplay/entity";
 import { GameState } from "../states/gameplay/gamestate";
-import { ClientMessage } from "../../packets/clientmessage";
+import { ClientEventMessage } from "../../packets/clientmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { initializeControls } from "../components/initializers";
 import { sendCreateEntitiesMessage } from "./sendmessages";
 import { Server } from "../server/server";
+import { MessageTypes } from "../../packets/messagetypes";
 
+// Will need more info pertaining to INPUT_TO_QUERY event.
 export function processClientMessages(ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
     server.messagesToProcess.forEach(message => {
-        switch (message.eventType) {
-            case ClientEventTypes.PLAYER_JOINED:
-                processPlayerJoinedMessage(message, server, state);
-                break;
-            case ClientEventTypes.SPECTATOR_JOINED:
-                processSpectatorJoinedMessage(message, server, state);
-                break;
-            case ClientEventTypes.LEFT_KEY_DOWN:
-                processLeftKeyDownMessage(ents, message);
-                break;
-            case ClientEventTypes.LEFT_KEY_UP:
-                processLeftKeyUpMessage(ents, message);
-                break;
-            case ClientEventTypes.RIGHT_KEY_DOWN:
-                processRightKeyDownMessage(ents, message);
-                break;
-            case ClientEventTypes.RIGHT_KEY_UP:
-                processRightKeyUpMessage(ents, message);
-                break;
-            case ClientEventTypes.INPUT_TO_QUERY:
-                processQueryInputMessage(ents, message, server);
+        switch (message.messageType) {
+            case MessageTypes.CLIENT_EVENT_MESSAGE:
+                processClientEventMessages(message as ClientEventMessage, ents, server, state);
                 break;
         }
     });
 
     server.messagesToProcess = [];
+}
+
+function processClientEventMessages(message: ClientEventMessage, ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
+    switch (message.eventType) {
+        case ClientEventTypes.PLAYER_JOINED:
+            processPlayerJoinedMessage(message, server, state);
+            break;
+        case ClientEventTypes.SPECTATOR_JOINED:
+            processSpectatorJoinedMessage(message, server, state);
+            break;
+        case ClientEventTypes.LEFT_KEY_DOWN:
+            processLeftKeyDownMessage(ents, message);
+            break;
+        case ClientEventTypes.LEFT_KEY_UP:
+            processLeftKeyUpMessage(ents, message);
+            break;
+        case ClientEventTypes.RIGHT_KEY_DOWN:
+            processRightKeyDownMessage(ents, message);
+            break;
+        case ClientEventTypes.RIGHT_KEY_UP:
+            processRightKeyUpMessage(ents, message);
+            break;
+        case ClientEventTypes.INPUT_TO_QUERY:
+            processQueryInputMessage(ents, message, server);
+            break;
+    }
 }
 
 /**
@@ -43,7 +53,7 @@ export function processClientMessages(ents: ReadonlyArray<Entity>, server: Serve
  * @param server 
  * @param state 
  */
-function processPlayerJoinedMessage(message: ClientMessage, server: Server, state: GameState) {
+function processPlayerJoinedMessage(message: ClientEventMessage, server: Server, state: GameState) {
     console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.clientId}" joined as a player`);
     console.log("create player entity");
     // Set up player entity.
@@ -66,7 +76,7 @@ function processPlayerJoinedMessage(message: ClientMessage, server: Server, stat
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages
 }
 
-function processSpectatorJoinedMessage(message: ClientMessage, server: Server, state: GameState) {
+function processSpectatorJoinedMessage(message: ClientEventMessage, server: Server, state: GameState) {
     console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.clientId}" joined as a spectator`);
 
     // Dummy data... for testing stuff with spectator
@@ -89,7 +99,7 @@ function processSpectatorJoinedMessage(message: ClientMessage, server: Server, s
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages to create ents for spectating client
 }
 
-function processQueryInputMessage(ents: ReadonlyArray<Entity>, message: ClientMessage, server: Server) {
+function processQueryInputMessage(ents: ReadonlyArray<Entity>, message: ClientEventMessage, server: Server) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
             if (ent.player.id === message.clientId) {
@@ -99,7 +109,7 @@ function processQueryInputMessage(ents: ReadonlyArray<Entity>, message: ClientMe
     });
 }
 
-function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientMessage) {
+function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientEventMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
             if (ent.player.id === message.clientId) {
@@ -109,7 +119,7 @@ function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientM
     });
 }
 
-function processLeftKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientMessage) {
+function processLeftKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientEventMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
             if (ent.player.id === message.clientId) {
@@ -119,7 +129,7 @@ function processLeftKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientMes
     });
 }
 
-function processRightKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientMessage) {
+function processRightKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientEventMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
             if (ent.player.id === message.clientId) {
@@ -129,7 +139,7 @@ function processRightKeyDownMessage(ents: ReadonlyArray<Entity>, message: Client
     });
 }
 
-function processRightKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientMessage) {
+function processRightKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientEventMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
             if (ent.player.id === message.clientId) {
