@@ -1,7 +1,7 @@
 import { setEventListeners } from "./seteventlisteners";
 import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 import { processNetMessages } from "../messaging/processnetmessages";
-import { ClientEventMessage } from "../../packets/clientmessage";
+import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { Client, ClientConfig } from "./client";
 import { GameServerStateTypes } from "../../packets/gameserverstatetypes";

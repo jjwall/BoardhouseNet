@@ -1,11 +1,13 @@
 import { Entity } from "../states/gameplay/entity";
 import { GameState } from "../states/gameplay/gamestate";
-import { ClientEventMessage } from "../../packets/clientmessage";
+import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
+import { ClientInputMessage } from "../../packets/clientinputmessage";
 import { initializeControls } from "../components/initializers";
 import { sendCreateEntitiesMessage } from "./sendmessages";
 import { Server } from "../server/server";
 import { MessageTypes } from "../../packets/messagetypes";
+import { ClientInputTypes } from "../../packets/clientinputtypes";
 
 // Will need more info pertaining to INPUT_TO_QUERY event.
 export function processClientMessages(ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
@@ -13,6 +15,9 @@ export function processClientMessages(ents: ReadonlyArray<Entity>, server: Serve
         switch (message.messageType) {
             case MessageTypes.CLIENT_EVENT_MESSAGE:
                 processClientEventMessages(message as ClientEventMessage, ents, server, state);
+                break;
+            case MessageTypes.CLIENT_INPUT_MESSAGE:
+                processClientInputMessages(message as ClientInputMessage, ents, server, state);
                 break;
         }
     });
@@ -40,8 +45,16 @@ function processClientEventMessages(message: ClientEventMessage, ents: ReadonlyA
         case ClientEventTypes.RIGHT_KEY_UP:
             processRightKeyUpMessage(ents, message);
             break;
-        case ClientEventTypes.INPUT_TO_QUERY:
-            processQueryInputMessage(ents, message, server);
+        // case ClientEventTypes.INPUT_TO_QUERY:
+        //     processQueryInputMessage(ents, message, server);
+        //     break;
+    }
+}
+
+function processClientInputMessages(message: ClientInputMessage, ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
+    switch (message.inputType) {
+        case ClientInputTypes.ATTACK:
+            processAttackInputMessage(ents, message, server);
             break;
     }
 }
@@ -99,10 +112,11 @@ function processSpectatorJoinedMessage(message: ClientEventMessage, server: Serv
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages to create ents for spectating client
 }
 
-function processQueryInputMessage(ents: ReadonlyArray<Entity>, message: ClientEventMessage, server: Server) {
+function processAttackInputMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage, server: Server) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
             if (ent.player.id === message.clientId) {
+                // change up...
                 server.queriedInputs.push({input: "myInput", clientId: message.clientId});
             }
         }

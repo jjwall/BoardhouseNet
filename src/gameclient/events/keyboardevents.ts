@@ -1,6 +1,6 @@
 import { MessageTypes } from "../../packets/messagetypes";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
-import { ClientEventMessage } from "../../packets/clientmessage";
+import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { Client } from "../client/client";
 
 // keyboard controls

@@ -5,5 +5,4 @@ export enum ClientEventTypes {
     LEFT_KEY_UP = "LEFT_KEY_UP",
     RIGHT_KEY_DOWN = "RIGHT_KEY_DOWN",
     RIGHT_KEY_UP = "RIGHT_KEY_UP",
-    INPUT_TO_QUERY = "INPUT_TO_QUERY"
 }
