@@ -1,11 +1,13 @@
 import { Entity } from "../states/gameplay/entity";
-import { EntityMessage } from "../../packets/entitymessage";
-import { EntityEventTypes } from "../../packets/entityeventtypes";
+import { NetEntityMessage } from "../../packets/netentitymessage";
+import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
 import { Server } from "./../server/server";
+import { MessageTypes } from "../../packets/messagetypes";
 
 export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
-    let message: EntityMessage = {
-        eventType: EntityEventTypes.CREATE,
+    let message: NetEntityMessage = {
+        messageType: MessageTypes.NET_ENTITY_MESSAGE,
+        eventType: NetEntityEventTypes.CREATE,
         data: [],
     }
 
@@ -33,8 +35,9 @@ export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
 }
 
 export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
-    let message: EntityMessage = {
-        eventType: EntityEventTypes.UPDATE,
+    let message: NetEntityMessage = {
+        messageType: MessageTypes.NET_ENTITY_MESSAGE,
+        eventType: NetEntityEventTypes.UPDATE,
         data: [],
     }
 
@@ -86,8 +89,9 @@ export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
 // }
 
 export function sendDestroyEntitiesMessage(ents: Entity[], server: Server) {
-    let message: EntityMessage = {
-        eventType: EntityEventTypes.DESTROY,
+    let message: NetEntityMessage = {
+        messageType: MessageTypes.NET_ENTITY_MESSAGE,
+        eventType: NetEntityEventTypes.DESTROY,
         data: [],
     }
 

@@ -1,5 +1,5 @@
 import * as WebSocket from "ws";
-import { EntityMessage } from "../../packets/entitymessage";
+import { NetEntityMessage } from "../../packets/netentitymessage";
 import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { sendDestroyEntitiesMessage } from "../messaging/sendmessages";
 import { Entity } from "../states/gameplay/entity";

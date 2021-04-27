@@ -1,8 +1,10 @@
 import { ClientEventMessage } from "../../packets/clienteventmessage";
-import { EntityMessage } from "../../packets/entitymessage";
-import { EntityEventTypes } from "../../packets/entityeventtypes";
+import { NetEntityMessage } from "../../packets/netentitymessage";
+import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
 import { Client } from "../client/client";
 import { ClientEntity, setPosition, setSprite } from "../client/cliententity";
+import { Message } from "../../packets/message";
+import { MessageTypes } from "../../packets/messagetypes";
 
 // Handle message based on the EntityEventType.
 // Will need non-entity messages such as "CREATE_FIRE_BALL" with x,y,z location in Euler direction etc...
@@ -11,26 +13,36 @@ import { ClientEntity, setPosition, setSprite } from "../client/cliententity";
 // CREATE will now be CREATE_ENTITIES and so on...
 export function processNetMessages(client: Client) {
     client.connection.onmessage = function(messageEvent: MessageEvent) {
-        const message: EntityMessage = JSON.parse(messageEvent.data);
+        // const message: NetEntityMessage = JSON.parse(messageEvent.data);
+        const message: Message = JSON.parse(messageEvent.data);
         console.log("boardhouse: back to front message");
 
-        if (message.eventType === EntityEventTypes.CREATE) {
+        switch (message.messageType) {
+            case MessageTypes.NET_ENTITY_MESSAGE:
+                processNetEntityMessages(message as NetEntityMessage, client);
+                break;
+            // case MessageTypes.NET_EVENT_MESSAGE
+        }
+    }
+}
+
+function processNetEntityMessages(message: NetEntityMessage, client: Client) {
+    switch (message.eventType) {
+        case NetEntityEventTypes.CREATE:
             createEntities(message, client);
-        }
-
-        if (message.eventType === EntityEventTypes.UPDATE) {
+            break;
+        case NetEntityEventTypes.UPDATE:
             updateEntities(message, client);
-        }
-
-        if (message.eventType === EntityEventTypes.DESTROY) {
+            break;
+        case NetEntityEventTypes.DESTROY:
             destroyEntities(message, client);
-        }
+            break;
     }
 }
 
 // Create front-end representations of EntData list. Should pass in all entities
 // using the "global" ecsKey when a player or spectator first joins (or scene transition happens).
-function createEntities(message: EntityMessage, client: Client) {
+function createEntities(message: NetEntityMessage, client: Client) {
     message.data.forEach(entData => {
         console.log("create entity front");
         console.log(entData);
@@ -55,7 +67,7 @@ function createEntities(message: EntityMessage, client: Client) {
 }
 
 // Update front end representation of EntData list.
-function updateEntities(message: EntityMessage, client: Client) {
+function updateEntities(message: NetEntityMessage, client: Client) {
     message.data.forEach(entData => {
         if (client.NetIdToEntityMap[entData.netId]) {
             let clientEnt = client.NetIdToEntityMap[entData.netId];
@@ -74,7 +86,7 @@ function updateEntities(message: EntityMessage, client: Client) {
 }
 
 // Destroy front end representations EntData list.
-function destroyEntities(message: EntityMessage, client: Client) {
+function destroyEntities(message: NetEntityMessage, client: Client) {
     message.data.forEach(entData => {
         console.log("destroy entity front");
         const entToDestroy = client.NetIdToEntityMap[entData.netId];
