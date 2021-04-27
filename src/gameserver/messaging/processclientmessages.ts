@@ -14,10 +14,10 @@ export function processClientMessages(ents: ReadonlyArray<Entity>, server: Serve
     server.messagesToProcess.forEach(message => {
         switch (message.messageType) {
             case MessageTypes.CLIENT_EVENT_MESSAGE:
-                processClientEventMessages(message as ClientEventMessage, ents, server, state);
+                processClientEventMessage(message as ClientEventMessage, ents, server, state);
                 break;
             case MessageTypes.CLIENT_INPUT_MESSAGE:
-                processClientInputMessages(message as ClientInputMessage, ents, server, state);
+                processClientInputMessage(message as ClientInputMessage, ents, server, state);
                 break;
         }
     });
@@ -25,7 +25,7 @@ export function processClientMessages(ents: ReadonlyArray<Entity>, server: Serve
     server.messagesToProcess = [];
 }
 
-function processClientEventMessages(message: ClientEventMessage, ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
+function processClientEventMessage(message: ClientEventMessage, ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
     switch (message.eventType) {
         case ClientEventTypes.PLAYER_JOINED:
             processPlayerJoinedMessage(message, server, state);
@@ -45,13 +45,10 @@ function processClientEventMessages(message: ClientEventMessage, ents: ReadonlyA
         case ClientEventTypes.RIGHT_KEY_UP:
             processRightKeyUpMessage(ents, message);
             break;
-        // case ClientEventTypes.INPUT_TO_QUERY:
-        //     processQueryInputMessage(ents, message, server);
-        //     break;
     }
 }
 
-function processClientInputMessages(message: ClientInputMessage, ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
+function processClientInputMessage(message: ClientInputMessage, ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
     switch (message.inputType) {
         case ClientInputTypes.ATTACK:
             processAttackInputMessage(ents, message, server);

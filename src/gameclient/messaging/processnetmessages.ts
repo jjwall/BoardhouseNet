@@ -19,14 +19,14 @@ export function processNetMessages(client: Client) {
 
         switch (message.messageType) {
             case MessageTypes.NET_ENTITY_MESSAGE:
-                processNetEntityMessages(message as NetEntityMessage, client);
+                processNetEntityMessage(message as NetEntityMessage, client);
                 break;
             // case MessageTypes.NET_EVENT_MESSAGE
         }
     }
 }
 
-function processNetEntityMessages(message: NetEntityMessage, client: Client) {
+function processNetEntityMessage(message: NetEntityMessage, client: Client) {
     switch (message.eventType) {
         case NetEntityEventTypes.CREATE:
             createEntities(message, client);
