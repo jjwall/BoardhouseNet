@@ -14,7 +14,7 @@ import { Server, ServerConfig } from "./server";
 // 3. (done) Need to implement UPDATE event.
 // 4. (done) Need to implement NetToEntity map
 // 5. (done) Need to implement entity change list to loop through and update ents in batch at end of engine tick
-// 6. ...
+// 6. client player's ents should have +1 to their z-index so they are always rendered over other player's ents
 
 // Handle client to lobby server connection.
 const config: ServerConfig = {

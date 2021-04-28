@@ -5,15 +5,13 @@ import { Client } from "../client/client";
 import { ClientEntity, setPosition, setSprite } from "../client/cliententity";
 import { Message } from "../../packets/message";
 import { MessageTypes } from "../../packets/messagetypes";
+import { NetEventMessage } from "../../packets/neteventmessage";
+import { NetEventTypes } from "../../packets/neteventtypes";
 
-// Handle message based on the EntityEventType.
+// Handle message based on the type of NetMessage.
 // Will need non-entity messages such as "CREATE_FIRE_BALL" with x,y,z location in Euler direction etc...
-// EntityMessage should be renamed to NetMessage
-// EntityEventTypes should renamed to NetEventTypes
-// CREATE will now be CREATE_ENTITIES and so on...
 export function processNetMessages(client: Client) {
     client.connection.onmessage = function(messageEvent: MessageEvent) {
-        // const message: NetEntityMessage = JSON.parse(messageEvent.data);
         const message: Message = JSON.parse(messageEvent.data);
         console.log("boardhouse: back to front message");
 
@@ -21,10 +19,14 @@ export function processNetMessages(client: Client) {
             case MessageTypes.NET_ENTITY_MESSAGE:
                 processNetEntityMessage(message as NetEntityMessage, client);
                 break;
-            // case MessageTypes.NET_EVENT_MESSAGE
+            case MessageTypes.NET_EVENT_MESSAGE:
+                processNetEventMessage(message as NetEventMessage, client);
+                break;
         }
     }
 }
+
+//#region Net Entity Messages
 
 function processNetEntityMessage(message: NetEntityMessage, client: Client) {
     switch (message.eventType) {
@@ -111,3 +113,23 @@ function destroyEntities(message: NetEntityMessage, client: Client) {
         }
     })
 }
+
+//#endregion
+
+//#region Net Event Messages
+
+function processNetEventMessage(message: NetEventMessage, client: Client) {
+    switch (message.eventType) {
+        case NetEventTypes.PLAYER_ATTACK_ANIM_DISPLAY:
+            renderPlayerAttackAnim(message, client);
+            break;
+        // case ...
+    }
+}
+
+function renderPlayerAttackAnim(message: NetEventMessage, client: Client) {
+    // create ent?
+    console.log("Attack!");
+}
+
+//#endregion
