@@ -4,7 +4,7 @@ import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientInputMessage } from "../../packets/clientinputmessage";
 import { initializeControls } from "../components/initializers";
-import { sendCreateEntitiesMessage } from "./sendmessages";
+import { sendCreateEntitiesMessage, sendPlayerAttackAnimDisplayMessage } from "./sendmessages";
 import { Server } from "../server/server";
 import { MessageTypes } from "../../packets/messagetypes";
 import { ClientInputTypes } from "../../packets/clientinputtypes";
@@ -17,7 +17,7 @@ export function processClientMessages(ents: ReadonlyArray<Entity>, server: Serve
                 processClientEventMessage(message as ClientEventMessage, ents, server, state);
                 break;
             case MessageTypes.CLIENT_INPUT_MESSAGE:
-                processClientInputMessage(message as ClientInputMessage, ents, server, state);
+                queueClientInputMessage(message as ClientInputMessage, ents, server, state);
                 break;
         }
     });
@@ -48,10 +48,11 @@ function processClientEventMessage(message: ClientEventMessage, ents: ReadonlyAr
     }
 }
 
-function processClientInputMessage(message: ClientInputMessage, ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
+function queueClientInputMessage(message: ClientInputMessage, ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
     switch (message.inputType) {
         case ClientInputTypes.ATTACK:
-            processAttackInputMessage(ents, message, server);
+            // processAttackInputMessage(ents, message, server);
+            server.queriedInputs.push({inputType: message.inputType, clientId: message.clientId});
             break;
     }
 }
@@ -109,15 +110,40 @@ function processSpectatorJoinedMessage(message: ClientEventMessage, server: Serv
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages to create ents for spectating client
 }
 
-function processAttackInputMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage, server: Server) {
-    ents.forEach(ent => {
-        if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
-                // change up...
-                server.queriedInputs.push({input: "myInput", clientId: message.clientId});
+export function processQueriedInputs(ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
+    server.queriedInputs.forEach(input => {
+        ents.forEach(ent => {
+            if (ent.player && ent.control) {
+                if (ent.player.id === input.clientId) {
+                    switch (input.inputType) {
+                        case ClientInputTypes.ATTACK:
+                            processAttackInputMessage(ent, server, state);
+                            break;
+                        // case ...
+                    }
+                    // change up...
+                    // server.queriedInputs.push({input: "myInput", clientId: message.clientId});
+                }
             }
-        }
+        });
     });
+
+    // Clear queriedInputs list.
+    server.queriedInputs = [];
+}
+
+function processAttackInputMessage(playerEnt: Entity, server: Server, state: GameState) {
+    // Do cooldown check here for attack.
+    // if (ent.control.attackTicks <= 0) {
+        // DO ENGINE WORK - I.E. throw out attack on back end, handle collision check etc.
+
+        // in parent function recieving 1 ent (playerEnt) but likely sending multiple based on engine logic
+        // or maybe all you need to do is make attack = true?
+
+        let testEnts: Entity[] = [];
+        testEnts.push(playerEnt);
+        sendPlayerAttackAnimDisplayMessage(testEnts, server);
+    // }
 }
 
 function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientEventMessage) {

@@ -22,6 +22,7 @@ export interface ClientConfig {
     hostName: string;
     keyLeftIsDown: boolean;
     keyRightIsDown: boolean;
+    keySpaceIsDown: boolean;
     // end old configs
     screenWidth: number;
     screenHeight: number;
@@ -46,6 +47,7 @@ export class Client {
         this.hostName = config.hostName;
         this.keyLeftIsDown = config.keyLeftIsDown;
         this.keyRightIsDown = config.keyRightIsDown;
+        this.keySpaceIsDown = config.keySpaceIsDown;
 
         // ...
         // vvv regular engine stuff vvv
@@ -78,6 +80,7 @@ export class Client {
     hostName: string;
     keyLeftIsDown: boolean;
     keyRightIsDown: boolean;
+    keySpaceIsDown: boolean;
 
     /// ^^^ old configs ^^^
 

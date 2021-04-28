@@ -129,7 +129,7 @@ function processNetEventMessage(message: NetEventMessage, client: Client) {
 
 function renderPlayerAttackAnim(message: NetEventMessage, client: Client) {
     // create ent?
-    console.log("Attack!");
+    console.log("Attack! - render from server");
 }
 
 //#endregion

@@ -2,6 +2,7 @@ import * as WebSocket from "ws";
 import { BaseState } from "./basestate";
 import { Entity } from "../states/gameplay/entity";
 import { ClientEventMessage } from "../../packets/clienteventmessage";
+import { ClientInputTypes } from "../../packets/clientinputtypes";
 
 export interface NetIdToEntityMap {
     [netId: number]: Entity;
@@ -16,6 +17,6 @@ export interface RegistryKeyToEntityListMap {
 }
 
 export interface QueriedInput {
-    input: string,
+    inputType: ClientInputTypes,
     clientId: string,
 }

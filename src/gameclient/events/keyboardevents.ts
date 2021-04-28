@@ -2,6 +2,8 @@ import { MessageTypes } from "../../packets/messagetypes";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { Client } from "../client/client";
+import { ClientInputMessage } from "../../packets/clientinputmessage";
+import { ClientInputTypes } from "../../packets/clientinputtypes";
 
 // keyboard controls
 // visit https://keycode.info/ for other key codes.
@@ -62,6 +64,17 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
             //         ent.control.attack = true;
             //     }
             // });
+            if (!client.keySpaceIsDown) {
+                let inputMessage: ClientInputMessage = {
+                    messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
+                    inputType: ClientInputTypes.ATTACK,
+                    clientId: client.currentClientId
+                }
+                
+                client.keySpaceIsDown = true;
+                console.log("SPACE - Z - ATTACK");
+                client.connection.send(JSON.stringify(inputMessage));
+            }
             break;
     }
 }
@@ -123,6 +136,10 @@ export function handleKeyUpEvent(client: Client, e: KeyboardEvent) {
             //         ent.control.attack = false;
             //     }
             // });
+            if (client.keySpaceIsDown) {
+                client.keySpaceIsDown = false;
+            }
+
             break;
     }
 }

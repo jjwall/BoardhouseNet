@@ -3,6 +3,8 @@ import { NetEntityMessage } from "../../packets/netentitymessage";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
 import { Server } from "./../server/server";
 import { MessageTypes } from "../../packets/messagetypes";
+import { NetEventMessage } from "../../packets/neteventmessage";
+import { NetEventTypes } from "../../packets/neteventtypes";
 
 export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
     let message: NetEntityMessage = {
@@ -115,3 +117,31 @@ export function sendDestroyEntitiesMessage(ents: Entity[], server: Server) {
         client.send(JSON.stringify(message));
     });
 }
+
+//#region Send Net Event Messages
+export function sendPlayerAttackAnimDisplayMessage(ents: Entity[], server: Server) {
+    let message: NetEventMessage = {
+        messageType: MessageTypes.NET_EVENT_MESSAGE,
+        eventType: NetEventTypes.PLAYER_ATTACK_ANIM_DISPLAY,
+        data: [],
+    }
+
+    // All ent data is purely for rendering attack animation purposes.
+    ents.forEach(ent => {
+        if (ent.pos && ent.sprite) {
+            const entData: EntityData = {
+                netId: ent.netId, // wouldn't need a NetId in this case since this EntityData is only represented on front end by renderings...
+                pos: ent.pos,
+                sprite: ent.sprite,
+                anim: ent.anim
+            }
+
+            message.data.push(entData);
+        }
+    });
+
+    server.boardhouseServer.clients.forEach(client => {
+        client.send(JSON.stringify(message));
+    });
+}
+//#endregion
