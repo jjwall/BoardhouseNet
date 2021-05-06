@@ -1,11 +1,15 @@
 import { Entity } from "../states/gameplay/entity";
-import { EntityMessage } from "../../packets/entitymessage";
-import { EntityEventTypes } from "../../packets/entityeventtypes";
+import { NetEntityMessage } from "../../packets/netentitymessage";
+import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
 import { Server } from "./../server/server";
+import { MessageTypes } from "../../packets/messagetypes";
+import { NetEventMessage } from "../../packets/neteventmessage";
+import { NetEventTypes } from "../../packets/neteventtypes";
 
 export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
-    let message: EntityMessage = {
-        eventType: EntityEventTypes.CREATE,
+    let message: NetEntityMessage = {
+        messageType: MessageTypes.NET_ENTITY_MESSAGE,
+        eventType: NetEntityEventTypes.CREATE,
         data: [],
     }
 
@@ -33,8 +37,9 @@ export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
 }
 
 export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
-    let message: EntityMessage = {
-        eventType: EntityEventTypes.UPDATE,
+    let message: NetEntityMessage = {
+        messageType: MessageTypes.NET_ENTITY_MESSAGE,
+        eventType: NetEntityEventTypes.UPDATE,
         data: [],
     }
 
@@ -86,8 +91,9 @@ export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
 // }
 
 export function sendDestroyEntitiesMessage(ents: Entity[], server: Server) {
-    let message: EntityMessage = {
-        eventType: EntityEventTypes.DESTROY,
+    let message: NetEntityMessage = {
+        messageType: MessageTypes.NET_ENTITY_MESSAGE,
+        eventType: NetEntityEventTypes.DESTROY,
         data: [],
     }
 
@@ -111,3 +117,37 @@ export function sendDestroyEntitiesMessage(ents: Entity[], server: Server) {
         client.send(JSON.stringify(message));
     });
 }
+
+//#region Send Net Event Messages
+export function sendPlayerAttackAnimDisplayMessage(ents: Entity[], server: Server) {
+    let message: NetEventMessage = {
+        messageType: MessageTypes.NET_EVENT_MESSAGE,
+        eventType: NetEventTypes.PLAYER_ATTACK_ANIM_DISPLAY,
+        data: [],
+    }
+
+    // All ent data is purely for rendering attack animation purposes.
+    // One ent may be hitbox data for example (optionally render temporarily on front end for testing purposes)
+    ents.forEach(ent => {
+        if (ent.pos && ent.sprite) {
+            const entData: EntityData = {
+                netId: ent.netId, // wouldn't need a NetId in this case since this EntityData is only represented on front end by renderings...
+                pos: {
+                    x: ent.pos.x,
+                    y: ent.pos.y,
+                    z: ent.pos.z,
+                    teleport: true,
+                },
+                sprite: ent.sprite,
+                anim: ent.anim
+            }
+
+            message.data.push(entData);
+        }
+    });
+
+    server.boardhouseServer.clients.forEach(client => {
+        client.send(JSON.stringify(message));
+    });
+}
+//#endregion

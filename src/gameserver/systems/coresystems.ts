@@ -1,7 +1,7 @@
 import { send } from "process";
 import { BaseState } from "../server/basestate";
 import { Entity } from "../states/gameplay/entity";
-import { sendUpdateEntitiesMessage } from "./../messaging/sendmessages";
+import { sendUpdateEntitiesMessage, sendPlayerAttackAnimDisplayMessage } from "./../messaging/sendmessages";
 
 /**
  * Control system.
@@ -26,6 +26,31 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
                 // Won't want to actually update here - at end of engine tick.
                 // sendUpdateEntitiesMessage(ent, state.server);
                 state.server.entityChangeList.push(ent);
+            }
+
+            // Reduce attack cooldown by one tick.
+            if (ent.control.attackCooldownTicks > 0) {
+                ent.control.attackCooldownTicks--;
+            }
+
+            // Attack
+            if (ent.control.attack) {
+                if (ent.control.attackCooldownTicks <= 0) {
+                    // Send attack msg (test code for now)
+                    let attackEnts: Entity[] = [];
+                    let attackEnt: Entity = new Entity();
+                    attackEnt.pos = { x: ent.pos.x + 100, y: ent.pos.y, z: ent.pos.z};
+                    attackEnt.sprite = { url: "./data/textures/mediumExplosion1.png", pixelRatio: 4 };
+                    attackEnts.push(attackEnt);
+                    sendPlayerAttackAnimDisplayMessage(attackEnts, state.server);
+                  
+                    // Start cooldown.
+                    ent.control.attackCooldownTicks = 60;
+                    ent.control.attack = false;
+                }
+                else {
+                    ent.control.attack = false;
+                }
             }
         }
     });

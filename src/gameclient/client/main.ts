@@ -1,8 +1,7 @@
+import { sendPlayerJoinedMessage, sendSpectatorJoinedMessage } from "../messaging/sendclienteventmessages";
 import { setEventListeners } from "./seteventlisteners";
 import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
-import { messageHandlerSystem } from "../messaging/messagehandlersystem";
-import { ClientMessage } from "../../packets/clientmessage";
-import { ClientEventTypes } from "../../packets/clienteventtypes";
+import { processNetMessages } from "../messaging/processnetmessages";
 import { Client, ClientConfig } from "./client";
 import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
@@ -29,6 +28,7 @@ const config: ClientConfig = {
     hostName: <string>window.location.hostname != "" ? window.location.hostname : "localhost",
     keyLeftIsDown: false,
     keyRightIsDown: false,
+    keySpaceIsDown: false,
     // netIdToEntMap: Array<NetIdToEntMap> // TODO: Implement!! (FrontEnt vs BackEnt, EntData is separate)
     /// ----
     screenWidth: 1280,
@@ -44,6 +44,7 @@ const config: ClientConfig = {
         "./data/textures/cottage.png",
         "./data/textures/msknight.png",
         "./data/textures/snow.png",
+        "./data/textures/mediumExplosion1.png",
     ],
     audioUrls: [
         "./data/audio/Pale_Blue.mp3",
@@ -60,28 +61,12 @@ client.connection = new WebSocket("ws://" +
                                            client.currentPort);
 
 client.connection.onopen = function() {
-    let message: ClientMessage;
-
     switch (client.role) {
         case ClientRoleTypes.PLAYER:
-            message = {
-                eventType: ClientEventTypes.PLAYER_JOINED,
-                clientId: client.currentClientId
-            }
-            
-            console.log("client joining as player");
-    
-            client.connection.send(JSON.stringify(message));
+            sendPlayerJoinedMessage(client);
             break;
         case ClientRoleTypes.SPECTATOR:
-            message = {
-                eventType: ClientEventTypes.SPECTATOR_JOINED,
-                clientId: client.currentClientId
-            }
-            
-            console.log("client joining as spectator");
-    
-            client.connection.send(JSON.stringify(message));
+            sendSpectatorJoinedMessage(client);
             break;
     }
 }
@@ -133,5 +118,5 @@ function main(canvasContainer: HTMLElement) {
     // start the render loop
     renderLoop(0);
 
-    messageHandlerSystem(client);
+    processNetMessages(client);
 }

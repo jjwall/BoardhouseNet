@@ -1,6 +1,6 @@
 import * as WebSocket from "ws";
-import { EntityMessage } from "../../packets/entitymessage";
-import { ClientMessage } from "../../packets/clientmessage";
+import { NetEntityMessage } from "../../packets/netentitymessage";
+import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { sendDestroyEntitiesMessage } from "../messaging/sendmessages";
 import { Entity } from "../states/gameplay/entity";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
@@ -21,7 +21,7 @@ export function setUpGameServer(server: Server) {
 
         ws.on("message", function incoming(message) {
             console.log(`(port: ${server.gameServerPort}) received: ${message}`);
-            const clientMessage: ClientMessage = JSON.parse(message.toString());
+            const clientMessage: ClientEventMessage = JSON.parse(message.toString());
 
             if (clientMessage.eventType === ClientEventTypes.PLAYER_JOINED) {
                 ws.clientId = clientMessage.clientId;
