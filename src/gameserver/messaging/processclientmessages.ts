@@ -34,7 +34,7 @@ function processClientEventMessage(message: ClientEventMessage, ents: ReadonlyAr
             processSpectatorJoinedMessage(message, server, state);
             break;
         case ClientEventTypes.LEFT_KEY_DOWN:
-            processLeftKeyDownMessage(ents, message);
+            processLeftKeyDownMessage(ents, message); // vvv swap to input message
             break;
         case ClientEventTypes.LEFT_KEY_UP:
             processLeftKeyUpMessage(ents, message);
@@ -43,7 +43,7 @@ function processClientEventMessage(message: ClientEventMessage, ents: ReadonlyAr
             processRightKeyDownMessage(ents, message);
             break;
         case ClientEventTypes.RIGHT_KEY_UP:
-            processRightKeyUpMessage(ents, message);
+            processRightKeyUpMessage(ents, message); // ^^ swap to input message
             break;
     }
 }
@@ -106,10 +106,10 @@ function processSpectatorJoinedMessage(message: ClientEventMessage, server: Serv
         // Create all entities for connecting client.
         sendCreateEntitiesMessage(state.getEntitiesByKey<Entity>("global"), server);
     }, 5000);
-
-    // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages to create ents for spectating client
 }
 
+// TRY TO REDUCE THIS TO BIG O OF N and not N^2
+// An alternative approach would be to make a table for players... but a small list for now will do.
 export function processQueriedInputs(ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
     server.queriedInputs.forEach(input => {
         ents.forEach(ent => {
@@ -139,10 +139,16 @@ function processAttackInputMessage(playerEnt: Entity, server: Server, state: Gam
 
         // in parent function recieving 1 ent (playerEnt) but likely sending multiple based on engine logic
         // or maybe all you need to do is make attack = true?
+        // ^ I think this is the case
+        // If ent.control.attack = true is set, a tick of the engine will go through,
+        // it will check this against the attack's cooldown and if the cooldown is still going
+        // then set ent.control.attack = false and nothing else
+        // if attack is rdy then also set ent.control.attack = false and do proper attack logic...
 
-        let testEnts: Entity[] = [];
-        testEnts.push(playerEnt);
-        sendPlayerAttackAnimDisplayMessage(testEnts, server);
+        // let testEnts: Entity[] = [];
+        // testEnts.push(playerEnt);
+        // sendPlayerAttackAnimDisplayMessage(testEnts, server);
+        playerEnt.control.attack = true;
     // }
 }
 

@@ -127,6 +127,7 @@ export function sendPlayerAttackAnimDisplayMessage(ents: Entity[], server: Serve
     }
 
     // All ent data is purely for rendering attack animation purposes.
+    // One ent may be hitbox data for example (optionally render temporarily on front end for testing purposes)
     ents.forEach(ent => {
         if (ent.pos && ent.sprite) {
             const entData: EntityData = {

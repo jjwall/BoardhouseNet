@@ -8,6 +8,7 @@ export interface PlayerComponent {
 export interface ControlComponent {
     jump: boolean;
     attack: boolean;
+    attackCooldownTicks: number;
     left: boolean;
     right: boolean;
     up: boolean;

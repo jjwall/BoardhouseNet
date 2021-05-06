@@ -8,6 +8,7 @@ export function initializeControls(): ControlComponent {
     return {
         jump: false,
         attack: false,
+        attackCooldownTicks: 0,
         left: false,
         right: false,
         up: false,
