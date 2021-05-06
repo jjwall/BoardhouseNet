@@ -1,6 +1,4 @@
 import { MessageTypes } from "../../packets/messagetypes";
-import { ClientEventTypes } from "../../packets/clienteventtypes";
-import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { Client } from "../client/client";
 import { ClientInputMessage } from "../../packets/clientinputmessage";
 import { ClientInputTypes } from "../../packets/clientinputtypes";
@@ -8,15 +6,15 @@ import { ClientInputTypes } from "../../packets/clientinputtypes";
 // keyboard controls
 // visit https://keycode.info/ for other key codes.
 export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
-    let message: ClientEventMessage;
+    let message: ClientInputMessage;
 
     switch(e.keyCode) {
         case 37: // left
         case 65: // a
             if (!client.keyLeftIsDown) {
                 message  = {
-                    messageType: MessageTypes.CLIENT_EVENT_MESSAGE,
-                    eventType: ClientEventTypes.LEFT_KEY_DOWN,
+                    messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
+                    inputType: ClientInputTypes.LEFT_KEY_DOWN,
                     clientId: client.currentClientId
                 }
 
@@ -29,8 +27,8 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
         case 68: // d
             if (!client.keyRightIsDown) {
                 message = {
-                    messageType: MessageTypes.CLIENT_EVENT_MESSAGE,
-                    eventType: ClientEventTypes.RIGHT_KEY_DOWN,
+                    messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
+                    inputType: ClientInputTypes.RIGHT_KEY_DOWN,
                     clientId: client.currentClientId
                 }
                 
@@ -80,15 +78,15 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
 }
 
 export function handleKeyUpEvent(client: Client, e: KeyboardEvent) {
-    let message: ClientEventMessage;
+    let message: ClientInputMessage;
 
     switch(e.keyCode) {
         case 37: // left
         case 65: // a
             if (client.keyLeftIsDown) {
                 message = {
-                    messageType: MessageTypes.CLIENT_EVENT_MESSAGE,
-                    eventType: ClientEventTypes.LEFT_KEY_UP,
+                    messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
+                    inputType: ClientInputTypes.LEFT_KEY_UP,
                     clientId: client.currentClientId
                 }
                 
@@ -101,8 +99,8 @@ export function handleKeyUpEvent(client: Client, e: KeyboardEvent) {
         case 68: // d
             if (client.keyRightIsDown) {
                 message = {
-                    messageType: MessageTypes.CLIENT_EVENT_MESSAGE,
-                    eventType: ClientEventTypes.RIGHT_KEY_UP,
+                    messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
+                    inputType: ClientInputTypes.RIGHT_KEY_UP,
                     clientId: client.currentClientId
                 }
                 

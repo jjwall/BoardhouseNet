@@ -17,7 +17,7 @@ export function processClientMessages(ents: ReadonlyArray<Entity>, server: Serve
                 processClientEventMessage(message as ClientEventMessage, ents, server, state);
                 break;
             case MessageTypes.CLIENT_INPUT_MESSAGE:
-                queueClientInputMessage(message as ClientInputMessage, ents, server, state);
+                processClientInputMessage(message as ClientInputMessage, ents, server, state);
                 break;
         }
     });
@@ -33,26 +33,26 @@ function processClientEventMessage(message: ClientEventMessage, ents: ReadonlyAr
         case ClientEventTypes.SPECTATOR_JOINED:
             processSpectatorJoinedMessage(message, server, state);
             break;
-        case ClientEventTypes.LEFT_KEY_DOWN:
-            processLeftKeyDownMessage(ents, message); // vvv swap to input message
-            break;
-        case ClientEventTypes.LEFT_KEY_UP:
-            processLeftKeyUpMessage(ents, message);
-            break;
-        case ClientEventTypes.RIGHT_KEY_DOWN:
-            processRightKeyDownMessage(ents, message);
-            break;
-        case ClientEventTypes.RIGHT_KEY_UP:
-            processRightKeyUpMessage(ents, message); // ^^ swap to input message
-            break;
     }
 }
 
-function queueClientInputMessage(message: ClientInputMessage, ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
+function processClientInputMessage(message: ClientInputMessage, ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
     switch (message.inputType) {
         case ClientInputTypes.ATTACK:
             // processAttackInputMessage(ents, message, server);
             server.queriedInputs.push({inputType: message.inputType, clientId: message.clientId});
+            break;
+        case ClientInputTypes.LEFT_KEY_DOWN:
+            processLeftKeyDownMessage(ents, message);
+            break;
+        case ClientInputTypes.LEFT_KEY_UP:
+            processLeftKeyUpMessage(ents, message);
+            break;
+        case ClientInputTypes.RIGHT_KEY_DOWN:
+            processRightKeyDownMessage(ents, message);
+            break;
+        case ClientInputTypes.RIGHT_KEY_UP:
+            processRightKeyUpMessage(ents, message);
             break;
     }
 }
@@ -152,7 +152,7 @@ function processAttackInputMessage(playerEnt: Entity, server: Server, state: Gam
     // }
 }
 
-function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientEventMessage) {
+function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
             if (ent.player.id === message.clientId) {
@@ -162,7 +162,7 @@ function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientE
     });
 }
 
-function processLeftKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientEventMessage) {
+function processLeftKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
             if (ent.player.id === message.clientId) {
@@ -172,7 +172,7 @@ function processLeftKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientEve
     });
 }
 
-function processRightKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientEventMessage) {
+function processRightKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
             if (ent.player.id === message.clientId) {
@@ -182,7 +182,7 @@ function processRightKeyDownMessage(ents: ReadonlyArray<Entity>, message: Client
     });
 }
 
-function processRightKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientEventMessage) {
+function processRightKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
             if (ent.player.id === message.clientId) {
