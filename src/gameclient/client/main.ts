@@ -1,12 +1,10 @@
+import { sendPlayerJoinedMessage, sendSpectatorJoinedMessage } from "../messaging/sendclienteventmessages";
 import { setEventListeners } from "./seteventlisteners";
 import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 import { processNetMessages } from "../messaging/processnetmessages";
-import { ClientEventMessage } from "../../packets/clienteventmessage";
-import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { Client, ClientConfig } from "./client";
 import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
-import { MessageTypes } from "../../packets/messagetypes";
 
 // TODO:
 // > Clean up Client class fields and config fields
@@ -62,30 +60,12 @@ client.connection = new WebSocket("ws://" +
                                            client.currentPort);
 
 client.connection.onopen = function() {
-    let message: ClientEventMessage;
-
     switch (client.role) {
         case ClientRoleTypes.PLAYER:
-            message = {
-                messageType: MessageTypes.CLIENT_EVENT_MESSAGE,
-                eventType: ClientEventTypes.PLAYER_JOINED,
-                clientId: client.currentClientId
-            }
-            
-            console.log("client joining as player");
-    
-            client.connection.send(JSON.stringify(message));
+            sendPlayerJoinedMessage(client);
             break;
         case ClientRoleTypes.SPECTATOR:
-            message = {
-                messageType: MessageTypes.CLIENT_EVENT_MESSAGE,
-                eventType: ClientEventTypes.SPECTATOR_JOINED,
-                clientId: client.currentClientId
-            }
-            
-            console.log("client joining as spectator");
-    
-            client.connection.send(JSON.stringify(message));
+            sendSpectatorJoinedMessage(client);
             break;
     }
 }

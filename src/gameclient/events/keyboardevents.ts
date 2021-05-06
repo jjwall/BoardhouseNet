@@ -1,4 +1,4 @@
-import { sendAttackMessage, sendLeftKeyDownMessage, sendLeftKeyUpMessage, sendRightKeyDownMessage, sendRightKeyUpMessage } from "../messaging/sendmessages";
+import { sendAttackMessage, sendLeftKeyDownMessage, sendLeftKeyUpMessage, sendRightKeyDownMessage, sendRightKeyUpMessage } from "../messaging/sendclientinputmessages";
 import { ClientInputMessage } from "../../packets/clientinputmessage";
 import { Client } from "../client/client";
 
