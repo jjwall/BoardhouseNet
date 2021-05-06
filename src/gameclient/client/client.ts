@@ -7,6 +7,7 @@ import { ClientRoleTypes } from "../../packets/clientroletypes";
 import { EventTypes } from "../events/eventtypes";
 import { ClientEntity } from "./cliententity";
 import { NetIdToEntityMap } from "./interfaces";
+import { ClientRender } from "../renders/clientrender";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -70,6 +71,7 @@ export class Client {
     public uiCamera: Camera;
     public entityList: ClientEntity[] = [];
     public NetIdToEntityMap: NetIdToEntityMap = {};
+    public renderList: ClientRender[] = [];
 
     /// end state stuff
 
@@ -261,8 +263,47 @@ export class Client {
         });
     }
 
+    private updateClientRenders(renders: ReadonlyArray<ClientRender>) {
+        let newRenderList: ClientRender[] = [];
+        let rendersToDiscard: ClientRender[] = [];
+
+        renders.forEach(render => {
+            if (render.ticks > 0) {
+                if (render.sprite && render.pos) {
+                    const targetPos = new Vector3(render.pos.loc.x, render.pos.loc.y, render.pos.loc.z);
+                    
+                    if (render.pos.teleport)
+                        render.sprite.position.copy(targetPos);
+                    else
+                        render.sprite.position.lerp(targetPos, 0.2)
+                
+                    render.sprite.rotation.set(0, 0, Math.atan2(render.pos.dir.y, render.pos.dir.x));
+                }
+
+                render.ticks--;
+                newRenderList.push(render);
+            }
+            else {
+                rendersToDiscard.push(render);
+            }
+        });
+
+        // Remove renders from screen. (or have fade out animation)
+        if (rendersToDiscard.length > 0) {
+            rendersToDiscard.forEach(render => {
+                if (render.sprite) {
+                    this.gameScene.remove(render.sprite);
+                }
+            })
+        }
+
+        // Set new render list.
+        this.renderList = newRenderList;
+    }
+
     public render() : void {
         this.updateClientEntPositions(this.entityList);
+        this.updateClientRenders(this.renderList);
 
         this.renderer.clear();
         this.renderer.render(this.gameScene, this.gameCamera);

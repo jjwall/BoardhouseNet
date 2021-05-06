@@ -7,6 +7,7 @@ import { Message } from "../../packets/message";
 import { MessageTypes } from "../../packets/messagetypes";
 import { NetEventMessage } from "../../packets/neteventmessage";
 import { NetEventTypes } from "../../packets/neteventtypes";
+import { ClientRender } from "../renders/clientrender";
 
 // Handle message based on the type of NetMessage.
 // Will need non-entity messages such as "CREATE_FIRE_BALL" with x,y,z location in Euler direction etc...
@@ -128,8 +129,21 @@ function processNetEventMessage(message: NetEventMessage, client: Client) {
 }
 
 function renderPlayerAttackAnim(message: NetEventMessage, client: Client) {
-    // create ent?
     console.log("Attack! - render from server");
+    // taken from create ent
+
+    message.data.forEach(entData => {
+        let clientRender = new ClientRender(120);
+        clientRender.pos = setPosition(entData.pos.x, entData.pos.y, entData.pos.z);
+        clientRender.sprite = setSprite(entData.sprite.url, client.gameScene, client, entData.sprite.pixelRatio);
+        clientRender.pos.teleport = entData.pos.teleport;
+
+        if (entData.anim) {
+            // clientEnt.anim = setAnim(...);
+        }
+
+        client.renderList.push(clientRender);
+    });
 }
 
 //#endregion

@@ -36,10 +36,13 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
             // Attack
             if (ent.control.attack) {
                 if (ent.control.attackCooldownTicks <= 0) {
-                    // Send attack msg.
-                    let testEnts: Entity[] = [];
-                    testEnts.push(ent);
-                    sendPlayerAttackAnimDisplayMessage(testEnts, state.server);
+                    // Send attack msg (test code for now)
+                    let attackEnts: Entity[] = [];
+                    let attackEnt: Entity = new Entity();
+                    attackEnt.pos = { x: ent.pos.x + 100, y: ent.pos.y, z: ent.pos.z};
+                    attackEnt.sprite = { url: "./data/textures/mediumExplosion1.png", pixelRatio: 4 };
+                    attackEnts.push(attackEnt);
+                    sendPlayerAttackAnimDisplayMessage(attackEnts, state.server);
                   
                     // Start cooldown.
                     ent.control.attackCooldownTicks = 60;

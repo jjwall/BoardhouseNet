@@ -132,7 +132,12 @@ export function sendPlayerAttackAnimDisplayMessage(ents: Entity[], server: Serve
         if (ent.pos && ent.sprite) {
             const entData: EntityData = {
                 netId: ent.netId, // wouldn't need a NetId in this case since this EntityData is only represented on front end by renderings...
-                pos: ent.pos,
+                pos: {
+                    x: ent.pos.x,
+                    y: ent.pos.y,
+                    z: ent.pos.z,
+                    teleport: true,
+                },
                 sprite: ent.sprite,
                 anim: ent.anim
             }

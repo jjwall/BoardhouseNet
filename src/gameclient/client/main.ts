@@ -44,6 +44,7 @@ const config: ClientConfig = {
         "./data/textures/cottage.png",
         "./data/textures/msknight.png",
         "./data/textures/snow.png",
+        "./data/textures/mediumExplosion1.png",
     ],
     audioUrls: [
         "./data/audio/Pale_Blue.mp3",
