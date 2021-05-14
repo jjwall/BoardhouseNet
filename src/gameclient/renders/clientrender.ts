@@ -3,16 +3,16 @@ import { Client } from "../client/client";
 // like ents...
 export class ClientRender {
     constructor(ticks: number) {
-        this.ticks = ticks;
+        this.ticks = ticks; // TODO - get delta time for render ticks as some monitors will render faster than others. Renders should be based on time not render ticks...
     }
-    
+
     public pos: PositionComponent;
     public sprite: SpriteComponent;
     public ticks: number;
 }
 
 // ***
-// WILL STEAL ALL COMPONENTS BELOW FROM COMPONENTS DIR WHEN CLIENT REFACTOR IS DONE
+// WILL STEAL ALL COMPONENTS BELOW FROM COMPONENTS DIR WHEN CLIENT REFACTOR IS DONE (REFACTOR)
 // ***
 
 /**

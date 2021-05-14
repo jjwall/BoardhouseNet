@@ -39,8 +39,7 @@ function processClientEventMessage(message: ClientEventMessage, ents: ReadonlyAr
 function processClientInputMessage(message: ClientInputMessage, ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
     switch (message.inputType) {
         case ClientInputTypes.ATTACK:
-            // processAttackInputMessage(ents, message, server);
-            server.queriedInputs.push({inputType: message.inputType, clientId: message.clientId});
+            queryAttackInputMessage(message, server);
             break;
         case ClientInputTypes.LEFT_KEY_DOWN:
             processLeftKeyDownMessage(ents, message);
@@ -117,12 +116,10 @@ export function processQueriedInputs(ents: ReadonlyArray<Entity>, server: Server
                 if (ent.player.id === input.clientId) {
                     switch (input.inputType) {
                         case ClientInputTypes.ATTACK:
-                            processAttackInputMessage(ent, server, state);
+                            processAttackInputMessage(ent);
                             break;
                         // case ...
                     }
-                    // change up...
-                    // server.queriedInputs.push({input: "myInput", clientId: message.clientId});
                 }
             }
         });
@@ -132,24 +129,12 @@ export function processQueriedInputs(ents: ReadonlyArray<Entity>, server: Server
     server.queriedInputs = [];
 }
 
-function processAttackInputMessage(playerEnt: Entity, server: Server, state: GameState) {
-    // Do cooldown check here for attack.
-    // if (ent.control.attackTicks <= 0) {
-        // DO ENGINE WORK - I.E. throw out attack on back end, handle collision check etc.
+function queryAttackInputMessage(message: ClientInputMessage, server: Server) {
+    server.queriedInputs.push({inputType: message.inputType, clientId: message.clientId});
+}
 
-        // in parent function recieving 1 ent (playerEnt) but likely sending multiple based on engine logic
-        // or maybe all you need to do is make attack = true?
-        // ^ I think this is the case
-        // If ent.control.attack = true is set, a tick of the engine will go through,
-        // it will check this against the attack's cooldown and if the cooldown is still going
-        // then set ent.control.attack = false and nothing else
-        // if attack is rdy then also set ent.control.attack = false and do proper attack logic...
-
-        // let testEnts: Entity[] = [];
-        // testEnts.push(playerEnt);
-        // sendPlayerAttackAnimDisplayMessage(testEnts, server);
-        playerEnt.control.attack = true;
-    // }
+function processAttackInputMessage(playerEnt: Entity) {
+    playerEnt.control.attack = true;
 }
 
 function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
