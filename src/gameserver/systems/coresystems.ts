@@ -73,3 +73,7 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
         }
     });
 }
+
+export function playerSystem(ents: ReadonlyArray<Entity>, state: BaseState) {
+    // ...
+}

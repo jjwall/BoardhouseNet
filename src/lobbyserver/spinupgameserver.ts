@@ -6,6 +6,7 @@ export function spinUpGameServer(port: string) {
 
 	// Uncomment for debugging.
 	// var child = cp.spawn("node --inspect-brk ./server/game-server.bundle.js " + port, { shell: true });
+
 	child.stdout.on('data', function(data) {
 		console.log(data.toString());
 	});

@@ -1,6 +1,6 @@
 import { BaseState } from "../../server/basestate";
 import { initializeControls } from "../../components/initializers";
-import { controlSystem } from "../../systems/coresystems";
+import { controlSystem, playerSystem } from "../../systems/coresystems";
 import { Entity } from "./entity";
 import { processClientMessages, processQueriedInputs } from "../../messaging/processclientmessages";
 import { Server } from "./../../server/server";
@@ -18,6 +18,7 @@ export class GameState extends BaseState {
 
         // Register systems.
         this.registerSystem(controlSystem, "control");
+        this.registerSystem(playerSystem, "player");
         // this.registerSystem(positionSystem);
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
@@ -40,8 +41,8 @@ export class GameState extends BaseState {
     }
 
     public update() : void {
-        processClientMessages(this.getEntitiesByKey<Entity>("global"), this.server, this);
-        processQueriedInputs(this.getEntitiesByKey<Entity>("global"), this.server, this);
+        processClientMessages(this.getEntitiesByKey<Entity>("player"), this.server, this);
+        processQueriedInputs(this.getEntitiesByKey<Entity>("player"), this.server, this);
         this.runSystems();
     }
 }

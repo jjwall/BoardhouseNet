@@ -7,7 +7,7 @@ import { GameState } from "../states/gameplay/gamestate";
 import { Server, ServerConfig } from "./server";
 
 // Server to-do:
-// 1. Fix BaseState ecs registration - only global and control registering.. others throwing errors - need to debug
+// 1. (done) Fix BaseState ecs registration - only global and control registering.. others throwing errors - need to debug
 // 2. Need to refactor engine code to reflect current changes in BoardhouseTS repo.
 // 3. (done) Queue up attacking events (not like movement)
 // -> To be processed as a tap so if tick misses it'll register on next tick

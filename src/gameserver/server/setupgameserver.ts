@@ -46,7 +46,7 @@ export function setUpGameServer(server: Server) {
                     if (playerIndex > -1) {
                         server.playerClientIds.splice(playerIndex, 1);
                         console.log(`(port: ${server.gameServerPort}): player with clientId = "${ws.clientId}" disconnected`);
-                        let ents = server.currentState.getEntitiesByKey<Entity>("global"); // could use netid here
+                        let ents = server.currentState.getEntitiesByKey<Entity>("player"); // could use netid here
                         findAndDestroyPlayerEntity(ents, ws.clientId, server);
                         // let ents = last(boardhouseBack.stateStack).getEntitiesByKey<Entity>("player");
                         // const player = ents.find(ent => ent.player.id === ws.clientId);
