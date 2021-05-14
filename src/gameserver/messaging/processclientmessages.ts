@@ -53,6 +53,18 @@ function processClientInputMessage(message: ClientInputMessage, ents: ReadonlyAr
         case ClientInputTypes.RIGHT_KEY_UP:
             processRightKeyUpMessage(ents, message);
             break;
+        case ClientInputTypes.UP_KEY_DOWN:
+            processUpKeyDownMessage(ents, message);
+            break;
+        case ClientInputTypes.UP_KEY_UP:
+            processUpKeyUpMessage(ents, message);
+            break;
+        case ClientInputTypes.DOWN_KEY_DOWN:
+            processDownKeyDownMessage(ents, message);
+            break;
+        case ClientInputTypes.DOWN_KEY_UP:
+            processDownKeyUpMessage(ents, message);
+            break;
     }
 }
 
@@ -172,6 +184,46 @@ function processRightKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientIn
         if (ent.player && ent.control) {
             if (ent.player.id === message.clientId) {
                 ent.control.right = false;
+            }
+        }
+    });
+}
+
+function processUpKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
+    ents.forEach(ent => {
+        if (ent.player && ent.control) {
+            if (ent.player.id === message.clientId) {
+                ent.control.up = true;
+            }
+        }
+    });
+}
+
+function processUpKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
+    ents.forEach(ent => {
+        if (ent.player && ent.control) {
+            if (ent.player.id === message.clientId) {
+                ent.control.up = false;
+            }
+        }
+    });
+}
+
+function processDownKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
+    ents.forEach(ent => {
+        if (ent.player && ent.control) {
+            if (ent.player.id === message.clientId) {
+                ent.control.down = true;
+            }
+        }
+    });
+}
+
+function processDownKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
+    ents.forEach(ent => {
+        if (ent.player && ent.control) {
+            if (ent.player.id === message.clientId) {
+                ent.control.down = false;
             }
         }
     });

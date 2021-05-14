@@ -45,6 +45,48 @@ export function sendRightKeyUpMessage(client: Client) {
     client.connection.send(JSON.stringify(message));
 }
 
+// Up movement key:
+export function sendUpKeyDownMessage(client: Client) {
+    const message: ClientInputMessage = {
+        messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
+        inputType: ClientInputTypes.UP_KEY_DOWN,
+        clientId: client.currentClientId
+    }     
+    
+    client.connection.send(JSON.stringify(message));
+}
+
+export function sendUpKeyUpMessage(client: Client) {
+    const message: ClientInputMessage = {
+        messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
+        inputType: ClientInputTypes.UP_KEY_UP,
+        clientId: client.currentClientId
+    }
+    
+    client.connection.send(JSON.stringify(message));
+}
+
+// Down movement key:
+export function sendDownKeyDownMessage(client: Client) {
+    const message: ClientInputMessage = {
+        messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
+        inputType: ClientInputTypes.DOWN_KEY_DOWN,
+        clientId: client.currentClientId
+    }     
+    
+    client.connection.send(JSON.stringify(message));
+}
+
+export function sendDownKeyUpMessage(client: Client) {
+    const message: ClientInputMessage = {
+        messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
+        inputType: ClientInputTypes.DOWN_KEY_UP,
+        clientId: client.currentClientId
+    }
+    
+    client.connection.send(JSON.stringify(message));
+}
+
 // Attack key:
 export function sendAttackMessage(client: Client) {
     const message: ClientInputMessage = {

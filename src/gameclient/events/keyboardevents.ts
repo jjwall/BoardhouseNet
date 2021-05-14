@@ -1,12 +1,9 @@
-import { sendAttackMessage, sendLeftKeyDownMessage, sendLeftKeyUpMessage, sendRightKeyDownMessage, sendRightKeyUpMessage } from "../messaging/sendclientinputmessages";
-import { ClientInputMessage } from "../../packets/clientinputmessage";
+import { sendAttackMessage, sendDownKeyUpMessage, sendDownKeyDownMessage, sendLeftKeyDownMessage, sendLeftKeyUpMessage, sendRightKeyDownMessage, sendRightKeyUpMessage, sendUpKeyDownMessage, sendUpKeyUpMessage } from "../messaging/sendclientinputmessages";
 import { Client } from "../client/client";
 
 // keyboard controls
 // visit https://keycode.info/ for other key codes.
 export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
-    let message: ClientInputMessage;
-
     switch(e.keyCode) {
         case 37: // left
         case 65: // a
@@ -26,12 +23,18 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
 
         case 38: // up
         case 87: // w
-            // ...
+            if (!client.keyUpIsDown) {
+                client.keyUpIsDown = true;
+                sendUpKeyDownMessage(client);
+            }
             break;
         
         case 40: // down
         case 83: // s
-            // ...
+            if (!client.keyDownIsDown) {
+                client.keyDownIsDown = true;
+                sendDownKeyDownMessage(client);
+            }
             break;
 
         case 32: // spacebar
@@ -45,8 +48,6 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
 }
 
 export function handleKeyUpEvent(client: Client, e: KeyboardEvent) {
-    // let message: ClientInputMessage;
-
     switch(e.keyCode) {
         case 37: // left
         case 65: // a
@@ -66,12 +67,18 @@ export function handleKeyUpEvent(client: Client, e: KeyboardEvent) {
             break;
         case 38: // up
         case 87: // w
-            // ...
+            if (client.keyUpIsDown) {
+                client.keyUpIsDown = false;
+                sendUpKeyUpMessage(client);
+            }
             break;
         
         case 40: // down
         case 83: // s
-            // ...
+            if (client.keyDownIsDown) {
+                client.keyDownIsDown = false;
+                sendDownKeyUpMessage(client);
+            }
             break;
 
         case 32: // spacebar
@@ -79,7 +86,6 @@ export function handleKeyUpEvent(client: Client, e: KeyboardEvent) {
             if (client.keySpaceIsDown) {
                 client.keySpaceIsDown = false;
             }
-
             break;
     }
 }

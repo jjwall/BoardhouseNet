@@ -26,9 +26,6 @@ const config: ClientConfig = {
     currentPort: <number>parseInt(params.get("port")),
     currentClientId: params.get("clientId"),
     hostName: <string>window.location.hostname != "" ? window.location.hostname : "localhost",
-    keyLeftIsDown: false,
-    keyRightIsDown: false,
-    keySpaceIsDown: false,
     // netIdToEntMap: Array<NetIdToEntMap> // TODO: Implement!! (FrontEnt vs BackEnt, EntData is separate)
     /// ----
     screenWidth: 1280,

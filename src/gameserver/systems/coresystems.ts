@@ -14,8 +14,6 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
             if (ent.control.left) {
                 ent.pos.x -= 25;
 
-                // Won't want to actually update here - at end of engine tick.
-                // sendUpdateEntitiesMessage(ent, state.server);
                 state.server.entityChangeList.push(ent);
             }
 
@@ -23,8 +21,20 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
             if (ent.control.right) {
                 ent.pos.x += 25;
 
-                // Won't want to actually update here - at end of engine tick.
-                // sendUpdateEntitiesMessage(ent, state.server);
+                state.server.entityChangeList.push(ent);
+            }
+
+            // Up
+            if (ent.control.up) {
+                ent.pos.y += 25;
+
+                state.server.entityChangeList.push(ent);
+            }
+
+            // Down 
+            if (ent.control.down) {
+                ent.pos.y -= 25;
+
                 state.server.entityChangeList.push(ent);
             }
 
