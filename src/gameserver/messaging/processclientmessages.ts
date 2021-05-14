@@ -83,7 +83,7 @@ function processPlayerJoinedMessage(message: ClientEventMessage, server: Server,
     let player = new Entity();
     player.player = { id: message.clientId };
     player.pos = { x: 150, y: 150, z: 5 };
-    player.sprite = { url: "./data/textures/msknight.png", pixelRatio: 4 };
+    player.sprite = { url: "./data/textures/archer_girl_from_sketch.png", pixelRatio: 1 };
     // player.anim = { sequence: "blah", currentFrame: 0 };
     player.control = initializeControls();
 

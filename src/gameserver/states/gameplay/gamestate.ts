@@ -4,6 +4,8 @@ import { controlSystem, playerSystem } from "../../systems/coresystems";
 import { Entity } from "./entity";
 import { processClientMessages, processQueriedInputs } from "../../messaging/processclientmessages";
 import { Server } from "./../../server/server";
+import { kenneyFantasy } from "../../../../data/tilemaps/kenneyfantasy";
+import { Mesh } from "three";
 
 /**
  * GameState that handles updating of all game-related systems.
@@ -38,7 +40,30 @@ export class GameState extends BaseState {
     
         this.registerEntity(cottage1, server);
         this.registerEntity(cottage2, server);
+
+        
     }
+
+    // Register tiles for hit colision / traps.
+    // TO DO - Add hit collision
+    private registerTileMap() : void {
+        const tileHeight: number = 16;
+        const tileWidth: number  = 16;
+
+        kenneyFantasy.layers.forEach(layer => {
+            layer.tiles.forEach(tile => {
+                let tileEnt = new Entity();
+                tileEnt.pos = { x: tile.x*tileWidth, y: tile.y*tileWidth, z: 1 };
+                this.registerEntity(tileEnt, this.server);
+            });
+        });
+    }
+
+    // Move to front end.
+    // Render one time when level loads.
+    // private setTileMeshSprite(tileIndex: number): Mesh {
+        // Use UV Coordinates
+    // }
 
     public update() : void {
         processClientMessages(this.getEntitiesByKey<Entity>("player"), this.server, this);
