@@ -1,6 +1,7 @@
 import { IGlobalLobby } from './interfaces';
 import { PortToConnectionsMap } from "../packets/porttoconnectionsmap";
 import { ClientRoleTypes } from '../packets/clientroletypes';
+import { PlayerClassTypes } from '../packets/playerclasstypes';
 
 export function populateRoomList(globalLobby: IGlobalLobby, portsToConnectionsMap: PortToConnectionsMap) {
     globalLobby.gameRooms.innerHTML = `
@@ -43,14 +44,37 @@ export function populateRoomList(globalLobby: IGlobalLobby, portsToConnectionsMa
 
 function joinEvent (element:HTMLElement, port:String, globalLobby: IGlobalLobby) {
     element.onclick = function() {
-        window.location.href = `/playgame?port=${port}&clientId=${globalLobby.currentClientId}&clientRole=${ClientRoleTypes.PLAYER}`
+        const playerClassSelection = classSelectRadioValue(globalLobby);
+        window.location.href = `/playgame?port=${port}&clientId=${globalLobby.currentClientId}&clientRole=${ClientRoleTypes.PLAYER}&playerClass=${playerClassSelection}`
         console.log(port);
     }
 }
 
 function spectateEvent (element:HTMLElement, port:String, globalLobby: IGlobalLobby) {
     element.onclick = function() {
-        window.location.href = `/playgame?port=${port}&clientId=${globalLobby.currentClientId}&clientRole=${ClientRoleTypes.SPECTATOR}`
+        window.location.href = `/playgame?port=${port}&clientId=${globalLobby.currentClientId}&clientRole=${ClientRoleTypes.SPECTATOR}&playerClass=${PlayerClassTypes.NULL}`
         console.log(port);
     }
+}
+
+function classSelectRadioValue (globalLobby: IGlobalLobby) : PlayerClassTypes {
+    let playerClassSelection = PlayerClassTypes.NULL;
+    for (var i = 0, length = globalLobby.classSelectRadioElements.length; i < length; i++) {
+        if ((globalLobby.classSelectRadioElements[i] as HTMLInputElement).checked) {
+            switch ((globalLobby.classSelectRadioElements[i] as HTMLInputElement).value) {
+                case "page":
+                    playerClassSelection = PlayerClassTypes.PAGE;
+                    break;
+                case "archer":
+                    playerClassSelection = PlayerClassTypes.ARCHER;
+                    break;
+                case "magician":
+                    playerClassSelection = PlayerClassTypes.MAGICIAN;
+                    break;
+            }
+          break;
+        }
+    }
+
+    return playerClassSelection;
 }

@@ -20,6 +20,7 @@ const globalLobby: IGlobalLobby = {
     roomNameInput: <HTMLButtonElement>document.getElementById("roomNameInput"),
     createRoomText: <HTMLElement>document.getElementById("createRoomText"),
     gameRooms: <HTMLElement>document.getElementById("gameRooms"),
+    classSelectRadioElements: document.getElementsByName("classSelect"),
     // currentClientId: window.navigator.userAgent.replace(/\D+/g, '')
     // temporary solution for providing a clientId
     // above solution may work, but not when testing with the same browser

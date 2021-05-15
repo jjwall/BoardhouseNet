@@ -7,7 +7,8 @@ export function sendPlayerJoinedMessage(client: Client) {
     const message: ClientEventMessage = {
         messageType: MessageTypes.CLIENT_EVENT_MESSAGE,
         eventType: ClientEventTypes.PLAYER_JOINED,
-        clientId: client.currentClientId
+        clientId: client.currentClientId,
+        playerClass: client.playerClass,
     }
     
     console.log("client joining as player");
@@ -18,7 +19,8 @@ export function sendSpectatorJoinedMessage(client: Client) {
     const message: ClientEventMessage = {
         messageType: MessageTypes.CLIENT_EVENT_MESSAGE,
         eventType: ClientEventTypes.SPECTATOR_JOINED,
-        clientId: client.currentClientId
+        clientId: client.currentClientId,
+        playerClass: client.playerClass,
     }
     
     console.log("client joining as spectator");

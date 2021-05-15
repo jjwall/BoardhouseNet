@@ -8,6 +8,7 @@ import { EventTypes } from "../events/eventtypes";
 import { ClientEntity } from "./cliententity";
 import { NetIdToEntityMap } from "./interfaces";
 import { ClientRender } from "../renders/clientrender";
+import { PlayerClassTypes } from "../../packets/playerclasstypes";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -16,6 +17,7 @@ export interface ClientConfig {
 
     /// end state stuff ///
     role: ClientRoleTypes;
+    playerClass: PlayerClassTypes;
     /// old configs
     connection: WebSocket;
     currentPort: number;
@@ -37,6 +39,7 @@ export class Client {
     constructor(config: ClientConfig) {
         ///
         this.role = config.role;
+        this.playerClass = config.playerClass;
         ///
         // vvv merged from old configs vvv
         this.connection = config.connection;
@@ -64,6 +67,7 @@ export class Client {
 
     /// state stuff
     public role: ClientRoleTypes;
+    public playerClass: PlayerClassTypes;
     public gameScene: Scene;
     public gameCamera: Camera;
     public uiScene: Scene;
