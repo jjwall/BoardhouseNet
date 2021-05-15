@@ -1,4 +1,4 @@
-import { BufferGeometry, ShapeBufferGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3} from "three";
+import { BufferGeometry, ShapeBufferGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector2, Vector3, PlaneGeometry, Mesh, NearestFilter, MeshBasicMaterial, BufferAttribute } from "three";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
@@ -236,6 +236,9 @@ export class Client {
 
                 // Set up ui camera.
                 this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
+
+                // Set up initial tilemap.
+                this.setTileMeshSprite(5);
                 break;
         }
     }
@@ -304,6 +307,43 @@ export class Client {
 
         // Set new render list.
         this.renderList = newRenderList;
+    }
+
+    // Render one time when level loads.
+    private setTileMeshSprite(tileIndex: number) {//: Mesh {
+        let tileTextureMap = this.getTexture("./data/textures/colored_packed.png");
+        const uMultiple = 16 / 768;
+        const vMultiple = 16 / 352;
+        // const uvTransformation: Vector2 = new Vector2(1*uMultiple, 1*vMultiple);
+        // tileTextureMap.
+        // tileTextureMap.transformUv(uvTransformation);
+        // Set magFilter to nearest for crisp looking pixels/
+        tileTextureMap.magFilter = NearestFilter;
+        let material = new MeshBasicMaterial({ map: tileTextureMap, transparent: true });
+        let geometry = new PlaneGeometry(64, 64);
+        // let geometry = new BufferGeometry()
+        const point1 = new Vector2(0*uMultiple, 0*vMultiple);
+        const point2 = new Vector2(1*uMultiple, 0*vMultiple);
+        const point3 = new Vector2(1*uMultiple, 1*vMultiple);
+        const point4 = new Vector2(0*uMultiple, 1*vMultiple);
+        const uvCoords: Vector2[] = [point1, point2, point3, point4];
+        const uvs = new Float32Array( [
+            0*uMultiple, 0*vMultiple,
+            1*uMultiple, 0*vMultiple,
+            0*uMultiple, 1*vMultiple,
+            1*uMultiple, 1*vMultiple,
+            0*uMultiple, 1*vMultiple,
+            1*uMultiple, 0*vMultiple,
+        ]);
+        geometry.setAttribute('uv', new BufferAttribute(uvs, 2));
+        // geometry.setAttribute('position', new BufferAttribute([64, 64], 2));
+        // geometry.setFromPoints(uvCoords);
+        let tileMesh = new Mesh(geometry, material);
+        this.gameScene.add(tileMesh);
+        const position = new Vector3(100, 100, 1);
+        tileMesh.position.copy(position);
+
+        // Use UV Coordinates
     }
 
     public render() : void {

@@ -59,12 +59,6 @@ export class GameState extends BaseState {
         });
     }
 
-    // Move to front end.
-    // Render one time when level loads.
-    // private setTileMeshSprite(tileIndex: number): Mesh {
-        // Use UV Coordinates
-    // }
-
     public update() : void {
         processClientMessages(this.getEntitiesByKey<Entity>("player"), this.server, this);
         processQueriedInputs(this.getEntitiesByKey<Entity>("player"), this.server, this);
