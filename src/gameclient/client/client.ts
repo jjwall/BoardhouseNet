@@ -326,15 +326,19 @@ export class Client {
         const point2 = new Vector2(1*uMultiple, 0*vMultiple);
         const point3 = new Vector2(1*uMultiple, 1*vMultiple);
         const point4 = new Vector2(0*uMultiple, 1*vMultiple);
-        const uvCoords: Vector2[] = [point1, point2, point3, point4];
-        const uvs = new Float32Array( [
-            0*uMultiple, 0*vMultiple,
-            1*uMultiple, 0*vMultiple,
+        // const uvCoords: Vector2[] = [point1, point2, point3, point4];
+        const uvs = new Float32Array([
             0*uMultiple, 1*vMultiple,
             1*uMultiple, 1*vMultiple,
-            0*uMultiple, 1*vMultiple,
+            0*uMultiple, 0*vMultiple,
+
             1*uMultiple, 0*vMultiple,
+            0*uMultiple, 0*vMultiple,
+            1*uMultiple, 1*vMultiple,
         ]);
+        // const coords: Float32Array([
+            
+        // ])
         geometry.setAttribute('uv', new BufferAttribute(uvs, 2));
         // geometry.setAttribute('position', new BufferAttribute([64, 64], 2));
         // geometry.setFromPoints(uvCoords);
