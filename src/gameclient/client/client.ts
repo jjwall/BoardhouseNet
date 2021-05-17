@@ -241,7 +241,7 @@ export class Client {
                 this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
 
                 // Set up initial tilemap.
-                this.renderTileMap("./data/textures/colored_packed.png", kenneyFantasy, 8);
+                this.renderTileMap(this, "./data/textures/colored_packed.png", kenneyFantasy, 8);
                 break;
         }
     }
@@ -313,16 +313,16 @@ export class Client {
     }
 
     // Render one time when level loads.
-    public renderTileMap(tileSetTextureUrl: string, tileMapData: TileMapSchema, pixelRatio: number) {
+    public renderTileMap(client: Client, tileSetTextureUrl: string, tileMapData: TileMapSchema, pixelRatio: number) {
         // Remove current tilemap render if exists.
-        if (this.tileMeshList.length > 0) {
-            this.tileMeshList.forEach(mesh =>{
-                this.gameScene.remove(mesh);
+        if (client.tileMeshList.length > 0) {
+            client.tileMeshList.forEach(mesh =>{
+                client.gameScene.remove(mesh);
             });
         }
-        this.tileMeshList = [];
+        client.tileMeshList = [];
 
-        const tileSetTexture = this.getTexture(tileSetTextureUrl);
+        const tileSetTexture = client.getTexture(tileSetTextureUrl);
         const tileHeight = tileMapData.tileheight; // in pixels
         const tileWidth = tileMapData.tilewidth; // in pixels
         const canvasWidth = tileSetTexture.image.width / tileWidth; // # of tiles wide (from tileset not map)
@@ -384,8 +384,8 @@ export class Client {
                     tileMesh.scale.x = -1;
                 }
 
-                this.tileMeshList.push(tileMesh);
-                this.gameScene.add(tileMesh);            
+                client.tileMeshList.push(tileMesh);
+                client.gameScene.add(tileMesh);
             });
         });
     }
