@@ -314,24 +314,19 @@ export class Client {
         let tileTextureMap = this.getTexture("./data/textures/colored_packed.png");
         const uMultiple = 16 / 768;
         const vMultiple = 16 / 352;
-        const posXDiff = 100;
-        const posYDiff = 100;
-        const zIndex = 0;
         const pixelRatio = 8;
-
-        // const uvTransformation: Vector2 = new Vector2(1*uMultiple, 1*vMultiple);
-        // tileTextureMap.
-        // tileTextureMap.transformUv(uvTransformation);
         // Set magFilter to nearest for crisp looking pixels/
         tileTextureMap.magFilter = NearestFilter;
         let material = new MeshBasicMaterial({ map: tileTextureMap, transparent: true });
-        // let geometry = new PlaneGeometry(16*pixelRatio, 16*pixelRatio);
         let geometry = new BufferGeometry()
-        const point1 = new Vector2(0*uMultiple, 0*vMultiple);
-        const point2 = new Vector2(1*uMultiple, 0*vMultiple);
-        const point3 = new Vector2(1*uMultiple, 1*vMultiple);
-        const point4 = new Vector2(0*uMultiple, 1*vMultiple);
-        // const uvCoords: Vector2[] = [point1, point2, point3, point4];
+        const positions = new Float32Array([
+            -8, 8, 0,
+            8, 8, 0,
+            -8, -8, 0,
+            8, -8, 0,
+            -8, -8, 0,
+            8, 8, 0,
+        ]).map(x => x * pixelRatio);
         const uvs = new Float32Array([
             0*uMultiple, 1*vMultiple,
             1*uMultiple, 1*vMultiple,
@@ -339,14 +334,6 @@ export class Client {
             1*uMultiple, 0*vMultiple,
             0*uMultiple, 0*vMultiple,
             1*uMultiple, 1*vMultiple,
-        ]);
-        const coords = new Float32Array([
-            -8, 8, //zIndex,
-            8, 8, //zIndex,
-            -8, -8, //zIndex,
-            8, -8, //zIndex,
-            -8, -8, //zIndex,
-            8, 8, //zIndex,
         ]);
         const normals = new Float32Array([
             0, 0, 1,
@@ -356,16 +343,16 @@ export class Client {
             0, 0, 1,
             0, 0, 1,
         ]);
-        geometry.setAttribute('position', new BufferAttribute(coords, 2));
+        
+        geometry.setAttribute('position', new BufferAttribute(positions, 3));
         geometry.setAttribute('normal', new BufferAttribute(normals, 3));
         geometry.setAttribute('uv', new BufferAttribute(uvs, 2));
         geometry.setIndex([0, 2, 1, 1, 2, 3]);
+
         let tileMesh = new Mesh(geometry, material);
         const position = new Vector3(100, 100, 1);
         tileMesh.position.copy(position);
         this.gameScene.add(tileMesh);
-
-        // Use UV Coordinates
     }
 
     public render() : void {
