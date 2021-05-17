@@ -20,26 +20,3 @@ export interface QueriedInput {
     inputType: ClientInputTypes,
     clientId: string,
 }
-
-export interface TileSetSchema {
-    tileswide: number;
-    tileheight: number;
-    tileshigh: number;
-    layers: Array<TileSetLayerSchema>;
-    tilewidth: number;
-}
-
-interface TileSetLayerSchema {
-    name: string;
-    tiles: Array<TileSchema>;
-    number: number;
-}
-
-interface TileSchema {
-    rot: number;
-    y: number;
-    tile: number;
-    flipX: boolean;
-    index: number;
-    x: number;
-}

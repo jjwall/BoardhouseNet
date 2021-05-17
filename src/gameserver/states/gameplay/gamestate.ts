@@ -4,7 +4,7 @@ import { controlSystem, playerSystem } from "../../systems/coresystems";
 import { Entity } from "./entity";
 import { processClientMessages, processQueriedInputs } from "../../messaging/processclientmessages";
 import { Server } from "./../../server/server";
-import { kenneyFantasy } from "../../../../data/tilemaps/kenneyfantasy";
+import { kenneyFantasy } from "../../../modules/tilemapping/tilemaps/kenneyfantasy";
 import { Mesh } from "three";
 
 /**
@@ -58,12 +58,6 @@ export class GameState extends BaseState {
             });
         });
     }
-
-    // Move to front end.
-    // Render one time when level loads.
-    // private setTileMeshSprite(tileIndex: number): Mesh {
-        // Use UV Coordinates
-    // }
 
     public update() : void {
         processClientMessages(this.getEntitiesByKey<Entity>("player"), this.server, this);
