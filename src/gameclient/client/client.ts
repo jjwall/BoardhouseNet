@@ -321,7 +321,9 @@ export class Client {
         //         this.registerEntity(tileEnt, this.server);
         //     });
         // });
-        // let tileIndex = 0;
+        const tileIndex = 1027;
+        const canvasWidth = 48;
+        const canvasHeight = 22;
         // let u = 0;
         // let v = 0;
         // if (tileIndex / 47 > 1) {
@@ -333,6 +335,9 @@ export class Client {
         //     u = tileIndex;
         //     v = 47;
         // }
+        const v = canvasHeight - Math.floor(tileIndex / canvasWidth) - 1;
+        const u = tileIndex % canvasWidth;
+
 
         let tileTextureMap = this.getTexture("./data/textures/colored_packed.png");
         const uMultiple = 16 / 768;
@@ -351,12 +356,12 @@ export class Client {
             8, 8, 0,
         ]).map(x => x * pixelRatio);
         const uvs = new Float32Array([
-            0*uMultiple, 1*vMultiple,
-            1*uMultiple, 1*vMultiple,
-            0*uMultiple, 0*vMultiple,
-            1*uMultiple, 0*vMultiple,
-            0*uMultiple, 0*vMultiple,
-            1*uMultiple, 1*vMultiple,
+            u*uMultiple, (v+1)*vMultiple,
+            (u+1)*uMultiple, (v+1)*vMultiple,
+            (u)*uMultiple, (v)*vMultiple,
+            (u+1)*uMultiple, (v)*vMultiple,
+            (u)*uMultiple, (v)*vMultiple,
+            (u+1)*uMultiple, (v+1)*vMultiple,
         ]);
         const normals = new Float32Array([
             0, 0, 1,
