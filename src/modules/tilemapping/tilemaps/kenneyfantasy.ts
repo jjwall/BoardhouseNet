@@ -1,6 +1,6 @@
-import { TileSetSchema } from "../../src/gameserver/server/interfaces";
+import { TileMapSchema } from "../tilemapschema";
 
-export const kenneyFantasy: TileSetSchema = {
+export const kenneyFantasy: TileMapSchema = {
     tileswide: 39,
     tileheight: 16,
     tileshigh: 23,

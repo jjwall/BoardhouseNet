@@ -1,4 +1,5 @@
 import { BufferGeometry, ShapeBufferGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector2, Vector3, PlaneGeometry, Mesh, NearestFilter, MeshBasicMaterial, BufferAttribute } from "three";
+import { kenneyFantasy } from "../../modules/tilemapping/tilemaps/kenneyfantasy";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
@@ -238,7 +239,7 @@ export class Client {
                 this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
 
                 // Set up initial tilemap.
-                this.setTileMeshSprite(5);
+                this.setTileMeshSprite();
                 break;
         }
     }
@@ -310,7 +311,29 @@ export class Client {
     }
 
     // Render one time when level loads.
-    private setTileMeshSprite(tileIndex: number) {//: Mesh {
+    private setTileMeshSprite() {//: Mesh {
+        // kenneyFantasy.layers.forEach(layer => {
+        //     layer.tiles.forEach(tile => {
+        //         tile.
+
+        //         let tileEnt = new Entity();
+        //         tileEnt.pos = { x: tile.x*tileWidth, y: tile.y*tileWidth, z: 1 };
+        //         this.registerEntity(tileEnt, this.server);
+        //     });
+        // });
+        // let tileIndex = 0;
+        // let u = 0;
+        // let v = 0;
+        // if (tileIndex / 47 > 1) {
+        //     // blah
+        //     //u = tileIndex / 47
+        //     //v = ;
+        // }
+        // else {
+        //     u = tileIndex;
+        //     v = 47;
+        // }
+
         let tileTextureMap = this.getTexture("./data/textures/colored_packed.png");
         const uMultiple = 16 / 768;
         const vMultiple = 16 / 352;
@@ -343,7 +366,7 @@ export class Client {
             0, 0, 1,
             0, 0, 1,
         ]);
-        
+
         geometry.setAttribute('position', new BufferAttribute(positions, 3));
         geometry.setAttribute('normal', new BufferAttribute(normals, 3));
         geometry.setAttribute('uv', new BufferAttribute(uvs, 2));
