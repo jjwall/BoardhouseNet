@@ -239,7 +239,7 @@ export class Client {
                 this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
 
                 // Set up initial tilemap.
-                this.setTileMeshSprite();
+                this.renderTileMap();
                 break;
         }
     }
@@ -311,68 +311,65 @@ export class Client {
     }
 
     // Render one time when level loads.
-    private setTileMeshSprite() {//: Mesh {
-        // kenneyFantasy.layers.forEach(layer => {
-        //     layer.tiles.forEach(tile => {
-        //         tile.
+    private renderTileMap() {
+        kenneyFantasy.layers.forEach(layer => {
+            layer.tiles.forEach(tile => {
+                const tileNumber = tile.tile;
+                const tileHeight = 16; // in pixels
+                const tileWidth = 16; // in pixels
+                const pixelRatio = 8;
+                const canvasWidth = 48; // # of tiles wide
+                const canvasHeight = 22; // # of tiles high
+                const scaledHeight = tileHeight*pixelRatio;
+                const scaledWidth = tileWidth*pixelRatio;
+                const posX = tile.x*scaledWidth + scaledWidth/2;
+                const posY = tile.y*scaledHeight + scaledHeight/2;// - (scaledHeight*canvasHeight);
+                const v = canvasHeight - Math.floor(tileNumber / canvasWidth) - 1;
+                const u = tileNumber % canvasWidth;
+                const uMultiple = tileWidth / (canvasWidth * tileWidth); //16 / 768;
+                const vMultiple = tileHeight / (canvasHeight * tileHeight); //16 / 352;
+                const tileTextureMap = this.getTexture("./data/textures/colored_packed.png");
+                // Set magFilter to nearest for crisp looking pixels/
+                tileTextureMap.magFilter = NearestFilter;
+                const material = new MeshBasicMaterial({ map: tileTextureMap, transparent: true });
+                const geometry = new BufferGeometry()
+                // "8" comes from tile width or height divided by 2.
+                const positions = new Float32Array([
+                    -8, 8, 0,
+                    8, 8, 0,
+                    -8, -8, 0,
+                    8, -8, 0,
+                    -8, -8, 0,
+                    8, 8, 0,
+                ]).map(x => x * pixelRatio);
+                const uvs = new Float32Array([
+                    u*uMultiple, (v+1)*vMultiple,
+                    (u+1)*uMultiple, (v+1)*vMultiple,
+                    (u)*uMultiple, (v)*vMultiple,
+                    (u+1)*uMultiple, (v)*vMultiple,
+                    (u)*uMultiple, (v)*vMultiple,
+                    (u+1)*uMultiple, (v+1)*vMultiple,
+                ]);
+                const normals = new Float32Array([
+                    0, 0, 1,
+                    0, 0, 1,
+                    0, 0, 1,
+                    0, 0, 1,
+                    0, 0, 1,
+                    0, 0, 1,
+                ]);
 
-        //         let tileEnt = new Entity();
-        //         tileEnt.pos = { x: tile.x*tileWidth, y: tile.y*tileWidth, z: 1 };
-        //         this.registerEntity(tileEnt, this.server);
-        //     });
-        // });
-        const tileIndex = 1027;
-        const canvasWidth = 48; // # of tiles wide
-        const canvasHeight = 22; // # of tiles high
-        const tileHeight = 16; // in pixels
-        const tileWidth = 16; // in pixels
-        const v = canvasHeight - Math.floor(tileIndex / canvasWidth) - 1;
-        const u = tileIndex % canvasWidth;
-        const uMultiple = tileWidth / (canvasWidth * tileWidth); //16 / 768;
-        const vMultiple = tileHeight / (canvasHeight * tileHeight); //16 / 352;
+                geometry.setAttribute('position', new BufferAttribute(positions, 3));
+                geometry.setAttribute('normal', new BufferAttribute(normals, 3));
+                geometry.setAttribute('uv', new BufferAttribute(uvs, 2));
+                geometry.setIndex([0, 2, 1, 1, 2, 3]);
 
-
-        let tileTextureMap = this.getTexture("./data/textures/colored_packed.png");
-        const pixelRatio = 8;
-        // Set magFilter to nearest for crisp looking pixels/
-        tileTextureMap.magFilter = NearestFilter;
-        let material = new MeshBasicMaterial({ map: tileTextureMap, transparent: true });
-        let geometry = new BufferGeometry()
-        // "8" comes from tile width or height divided by 2.
-        const positions = new Float32Array([
-            -8, 8, 0,
-            8, 8, 0,
-            -8, -8, 0,
-            8, -8, 0,
-            -8, -8, 0,
-            8, 8, 0,
-        ]).map(x => x * pixelRatio);
-        const uvs = new Float32Array([
-            u*uMultiple, (v+1)*vMultiple,
-            (u+1)*uMultiple, (v+1)*vMultiple,
-            (u)*uMultiple, (v)*vMultiple,
-            (u+1)*uMultiple, (v)*vMultiple,
-            (u)*uMultiple, (v)*vMultiple,
-            (u+1)*uMultiple, (v+1)*vMultiple,
-        ]);
-        const normals = new Float32Array([
-            0, 0, 1,
-            0, 0, 1,
-            0, 0, 1,
-            0, 0, 1,
-            0, 0, 1,
-            0, 0, 1,
-        ]);
-
-        geometry.setAttribute('position', new BufferAttribute(positions, 3));
-        geometry.setAttribute('normal', new BufferAttribute(normals, 3));
-        geometry.setAttribute('uv', new BufferAttribute(uvs, 2));
-        geometry.setIndex([0, 2, 1, 1, 2, 3]);
-
-        let tileMesh = new Mesh(geometry, material);
-        const position = new Vector3(64, 64, 1);
-        tileMesh.position.copy(position);
-        this.gameScene.add(tileMesh);
+                const tileMesh = new Mesh(geometry, material);
+                const position = new Vector3(posX, posY, 1);
+                tileMesh.position.copy(position);
+                this.gameScene.add(tileMesh);            
+            });
+        });
     }
 
     public render() : void {
