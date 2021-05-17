@@ -316,8 +316,8 @@ export class Client {
         const tileHeight = 16; // in pixels
         const tileWidth = 16; // in pixels
         const pixelRatio = 2;
-        const canvasWidth = 48; // # of tiles wide
-        const canvasHeight = 22; // # of tiles high
+        const canvasWidth = 48; // # of tiles wide (from tileset not map)
+        const canvasHeight = 22; // # of tiles high (from tileset not map)
         const scaledHeight = tileHeight*pixelRatio;
         const scaledWidth = tileWidth*pixelRatio;
         const uMultiple = tileWidth / (canvasWidth * tileWidth); //16 / 768;
