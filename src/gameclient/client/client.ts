@@ -322,31 +322,23 @@ export class Client {
         //     });
         // });
         const tileIndex = 1027;
-        const canvasWidth = 48;
-        const canvasHeight = 22;
-        // let u = 0;
-        // let v = 0;
-        // if (tileIndex / 47 > 1) {
-        //     // blah
-        //     //u = tileIndex / 47
-        //     //v = ;
-        // }
-        // else {
-        //     u = tileIndex;
-        //     v = 47;
-        // }
+        const canvasWidth = 48; // # of tiles wide
+        const canvasHeight = 22; // # of tiles high
+        const tileHeight = 16; // in pixels
+        const tileWidth = 16; // in pixels
         const v = canvasHeight - Math.floor(tileIndex / canvasWidth) - 1;
         const u = tileIndex % canvasWidth;
+        const uMultiple = tileWidth / (canvasWidth * tileWidth); //16 / 768;
+        const vMultiple = tileHeight / (canvasHeight * tileHeight); //16 / 352;
 
 
         let tileTextureMap = this.getTexture("./data/textures/colored_packed.png");
-        const uMultiple = 16 / 768;
-        const vMultiple = 16 / 352;
         const pixelRatio = 8;
         // Set magFilter to nearest for crisp looking pixels/
         tileTextureMap.magFilter = NearestFilter;
         let material = new MeshBasicMaterial({ map: tileTextureMap, transparent: true });
         let geometry = new BufferGeometry()
+        // "8" comes from tile width or height divided by 2.
         const positions = new Float32Array([
             -8, 8, 0,
             8, 8, 0,
@@ -378,7 +370,7 @@ export class Client {
         geometry.setIndex([0, 2, 1, 1, 2, 3]);
 
         let tileMesh = new Mesh(geometry, material);
-        const position = new Vector3(100, 100, 1);
+        const position = new Vector3(64, 64, 1);
         tileMesh.position.copy(position);
         this.gameScene.add(tileMesh);
     }
