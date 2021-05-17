@@ -10,6 +10,7 @@ import { ClientEntity } from "./cliententity";
 import { NetIdToEntityMap } from "./interfaces";
 import { ClientRender } from "../renders/clientrender";
 import { PlayerClassTypes } from "../../packets/playerclasstypes";
+import { TileMapSchema } from "src/modules/tilemapping/tilemapschema";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -76,6 +77,7 @@ export class Client {
     public entityList: ClientEntity[] = [];
     public NetIdToEntityMap: NetIdToEntityMap = {};
     public renderList: ClientRender[] = [];
+    public tileMeshList: Mesh[] = [];
 
     /// end state stuff
 
@@ -239,7 +241,7 @@ export class Client {
                 this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
 
                 // Set up initial tilemap.
-                this.renderTileMap();
+                this.renderTileMap("./data/textures/colored_packed.png", kenneyFantasy);
                 break;
         }
     }
@@ -311,11 +313,19 @@ export class Client {
     }
 
     // Render one time when level loads.
-    private renderTileMap() {
-        const tileTextureMap = this.getTexture("./data/textures/colored_packed.png");
+    public renderTileMap(tileMapTextureUrl: string, tileMapData: TileMapSchema) {
+        // Remove current tilemap render if exists.
+        if (this.tileMeshList.length > 0) {
+            this.tileMeshList.forEach(mesh =>{
+                this.gameScene.remove(mesh);
+            });
+        }
+        this.tileMeshList = [];
+
+        const tileMapTexture = this.getTexture(tileMapTextureUrl);
         const tileHeight = 16; // in pixels
         const tileWidth = 16; // in pixels
-        const pixelRatio = 2;
+        const pixelRatio = 8;
         const canvasWidth = 48; // # of tiles wide (from tileset not map)
         const canvasHeight = 22; // # of tiles high (from tileset not map)
         const scaledHeight = tileHeight*pixelRatio;
@@ -323,16 +333,16 @@ export class Client {
         const uMultiple = tileWidth / (canvasWidth * tileWidth); //16 / 768;
         const vMultiple = tileHeight / (canvasHeight * tileHeight); //16 / 352;
         // Set magFilter to nearest for crisp looking pixels/
-        tileTextureMap.magFilter = NearestFilter;
+        tileMapTexture.magFilter = NearestFilter;
 
-        kenneyFantasy.layers.forEach(layer => {
+        tileMapData.layers.forEach(layer => {
             layer.tiles.forEach(tile => {
                 const tileNumber = tile.tile;
                 const posX = tile.x*scaledWidth + scaledWidth/2;
                 const posY = scaledHeight*canvasHeight - tile.y*scaledHeight + scaledHeight/2;
                 const v = canvasHeight - Math.floor(tileNumber / canvasWidth) - 1;
                 const u = tileNumber % canvasWidth;
-                const material = new MeshBasicMaterial({ map: tileTextureMap, transparent: true });
+                const material = new MeshBasicMaterial({ map: tileMapTexture, transparent: true });
                 const geometry = new BufferGeometry();
                 // "8" comes from tile width or height divided by 2.
                 const positions = new Float32Array([
@@ -375,6 +385,7 @@ export class Client {
                     tileMesh.scale.x = -1;
                 }
 
+                this.tileMeshList.push(tileMesh);
                 this.gameScene.add(tileMesh);            
             });
         });
