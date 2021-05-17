@@ -312,27 +312,28 @@ export class Client {
 
     // Render one time when level loads.
     private renderTileMap() {
+        const tileTextureMap = this.getTexture("./data/textures/colored_packed.png");
+        const tileHeight = 16; // in pixels
+        const tileWidth = 16; // in pixels
+        const pixelRatio = 8;
+        const canvasWidth = 48; // # of tiles wide
+        const canvasHeight = 22; // # of tiles high
+        const scaledHeight = tileHeight*pixelRatio;
+        const scaledWidth = tileWidth*pixelRatio;
+        const uMultiple = tileWidth / (canvasWidth * tileWidth); //16 / 768;
+        const vMultiple = tileHeight / (canvasHeight * tileHeight); //16 / 352;
+        // Set magFilter to nearest for crisp looking pixels/
+        tileTextureMap.magFilter = NearestFilter;
+
         kenneyFantasy.layers.forEach(layer => {
             layer.tiles.forEach(tile => {
                 const tileNumber = tile.tile;
-                const tileHeight = 16; // in pixels
-                const tileWidth = 16; // in pixels
-                const pixelRatio = 8;
-                const canvasWidth = 48; // # of tiles wide
-                const canvasHeight = 22; // # of tiles high
-                const scaledHeight = tileHeight*pixelRatio;
-                const scaledWidth = tileWidth*pixelRatio;
                 const posX = tile.x*scaledWidth + scaledWidth/2;
-                const posY = tile.y*scaledHeight + scaledHeight/2;// - (scaledHeight*canvasHeight);
+                const posY = scaledHeight*canvasHeight - tile.y*scaledHeight + scaledHeight/2;
                 const v = canvasHeight - Math.floor(tileNumber / canvasWidth) - 1;
                 const u = tileNumber % canvasWidth;
-                const uMultiple = tileWidth / (canvasWidth * tileWidth); //16 / 768;
-                const vMultiple = tileHeight / (canvasHeight * tileHeight); //16 / 352;
-                const tileTextureMap = this.getTexture("./data/textures/colored_packed.png");
-                // Set magFilter to nearest for crisp looking pixels/
-                tileTextureMap.magFilter = NearestFilter;
                 const material = new MeshBasicMaterial({ map: tileTextureMap, transparent: true });
-                const geometry = new BufferGeometry()
+                const geometry = new BufferGeometry();
                 // "8" comes from tile width or height divided by 2.
                 const positions = new Float32Array([
                     -8, 8, 0,
