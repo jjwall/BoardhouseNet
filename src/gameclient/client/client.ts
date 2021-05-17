@@ -315,7 +315,7 @@ export class Client {
         const tileTextureMap = this.getTexture("./data/textures/colored_packed.png");
         const tileHeight = 16; // in pixels
         const tileWidth = 16; // in pixels
-        const pixelRatio = 8;
+        const pixelRatio = 2;
         const canvasWidth = 48; // # of tiles wide
         const canvasHeight = 22; // # of tiles high
         const scaledHeight = tileHeight*pixelRatio;
@@ -367,7 +367,14 @@ export class Client {
 
                 const tileMesh = new Mesh(geometry, material);
                 const position = new Vector3(posX, posY, 1);
+                const deg = 90 * tile.rot;
                 tileMesh.position.copy(position);
+                tileMesh.rotateZ(-deg*Math.PI / 180);
+
+                if (tile.flipX) {
+                    tileMesh.scale.x = -1;
+                }
+
                 this.gameScene.add(tileMesh);            
             });
         });
