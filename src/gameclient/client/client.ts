@@ -241,7 +241,7 @@ export class Client {
                 this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
 
                 // Set up initial tilemap.
-                this.renderTileMap("./data/textures/colored_packed.png", kenneyFantasy);
+                this.renderTileMap("./data/textures/colored_packed.png", kenneyFantasy, 8);
                 break;
         }
     }
@@ -313,7 +313,7 @@ export class Client {
     }
 
     // Render one time when level loads.
-    public renderTileMap(tileMapTextureUrl: string, tileMapData: TileMapSchema) {
+    public renderTileMap(tileSetTextureUrl: string, tileMapData: TileMapSchema, pixelRatio: number) {
         // Remove current tilemap render if exists.
         if (this.tileMeshList.length > 0) {
             this.tileMeshList.forEach(mesh =>{
@@ -322,18 +322,17 @@ export class Client {
         }
         this.tileMeshList = [];
 
-        const tileMapTexture = this.getTexture(tileMapTextureUrl);
-        const tileHeight = 16; // in pixels
-        const tileWidth = 16; // in pixels
-        const pixelRatio = 8;
-        const canvasWidth = 48; // # of tiles wide (from tileset not map)
-        const canvasHeight = 22; // # of tiles high (from tileset not map)
+        const tileSetTexture = this.getTexture(tileSetTextureUrl);
+        const tileHeight = tileMapData.tileheight; // in pixels
+        const tileWidth = tileMapData.tilewidth; // in pixels
+        const canvasWidth = tileSetTexture.image.width / tileWidth; // # of tiles wide (from tileset not map)
+        const canvasHeight = tileSetTexture.image.height / tileHeight; // # of tiles high (from tileset not map)
         const scaledHeight = tileHeight*pixelRatio;
         const scaledWidth = tileWidth*pixelRatio;
-        const uMultiple = tileWidth / (canvasWidth * tileWidth); //16 / 768;
-        const vMultiple = tileHeight / (canvasHeight * tileHeight); //16 / 352;
+        const uMultiple = tileWidth / (canvasWidth * tileWidth);
+        const vMultiple = tileHeight / (canvasHeight * tileHeight);
         // Set magFilter to nearest for crisp looking pixels/
-        tileMapTexture.magFilter = NearestFilter;
+        tileSetTexture.magFilter = NearestFilter;
 
         tileMapData.layers.forEach(layer => {
             layer.tiles.forEach(tile => {
@@ -342,7 +341,7 @@ export class Client {
                 const posY = scaledHeight*canvasHeight - tile.y*scaledHeight + scaledHeight/2;
                 const v = canvasHeight - Math.floor(tileNumber / canvasWidth) - 1;
                 const u = tileNumber % canvasWidth;
-                const material = new MeshBasicMaterial({ map: tileMapTexture, transparent: true });
+                const material = new MeshBasicMaterial({ map: tileSetTexture, transparent: true });
                 const geometry = new BufferGeometry();
                 // "8" comes from tile width or height divided by 2.
                 const positions = new Float32Array([
