@@ -24,7 +24,8 @@ export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
                     teleport: true,
                 },
                 sprite: ent.sprite,
-                anim: ent.anim
+                anim: ent.anim,
+                player: ent.player,
             }
 
             message.data.push(entData);
@@ -49,7 +50,8 @@ export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
                 netId: ent.netId,
                 pos: ent.pos,
                 sprite: ent.sprite,
-                anim: ent.anim
+                anim: ent.anim,
+                player: ent.player,
             }
 
             message.data.push(entData);
@@ -106,7 +108,8 @@ export function sendDestroyEntitiesMessage(ents: Entity[], server: Server) {
                 netId: ent.netId,
                 pos: ent.pos,
                 sprite: ent.sprite,
-                anim: ent.anim
+                anim: ent.anim,
+                player: ent.player,
             }
 
             message.data.push(entData);
@@ -139,7 +142,8 @@ export function sendPlayerAttackAnimDisplayMessage(ents: Entity[], server: Serve
                     teleport: true,
                 },
                 sprite: ent.sprite,
-                anim: ent.anim
+                anim: ent.anim,
+                player: ent.player,
             }
 
             message.data.push(entData);

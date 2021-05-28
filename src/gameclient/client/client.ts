@@ -68,6 +68,7 @@ export class Client {
     }
 
     /// state stuff
+    public playerEnt: ClientEntity; // just a reference
     public role: ClientRoleTypes;
     public playerClass: PlayerClassTypes;
     public gameScene: Scene;
@@ -315,6 +316,12 @@ export class Client {
     public render() : void {
         this.updateClientEntPositions(this.entityList);
         this.updateClientRenders(this.renderList);
+
+        if (this.playerEnt) {
+            this.gameCamera.position.copy(this.playerEnt.pos.loc);
+            this.gameCamera.position.x -= this.screenWidth/2;
+            this.gameCamera.position.y -= this.screenHeight/2;
+        }
 
         this.renderer.clear();
         this.renderer.render(this.gameScene, this.gameCamera);
