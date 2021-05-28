@@ -68,7 +68,7 @@ function createEntities(message: NetEntityMessage, client: Client) {
 
                 // Set player ent reference if client id matches player id.
                 if (client.currentClientId === entData.player.id) {
-                    client.playerEnt = clientEnt;
+                    client.currentPlayerEntity = clientEnt;
                 }
             }
 
