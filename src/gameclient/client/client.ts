@@ -318,9 +318,10 @@ export class Client {
         this.updateClientRenders(this.renderList);
 
         if (this.currentPlayerEntity) {
-            this.gameCamera.position.copy(this.currentPlayerEntity.pos.loc);
-            this.gameCamera.position.x -= this.screenWidth/2;
-            this.gameCamera.position.y -= this.screenHeight/2;
+            const targetPos = new Vector3(this.currentPlayerEntity.pos.loc.x, this.currentPlayerEntity.pos.loc.y, this.currentPlayerEntity.pos.loc.z);
+            this.gameCamera.position.lerp(targetPos, 0.2);
+            this.gameCamera.position.x -= this.screenWidth/10;
+            this.gameCamera.position.y -= this.screenHeight/10;
         }
 
         this.renderer.clear();
