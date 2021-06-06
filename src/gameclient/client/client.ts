@@ -306,7 +306,7 @@ export class Client {
                 if (render.sprite) {
                     this.gameScene.remove(render.sprite);
                 }
-            })
+            });
         }
 
         // Set new render list.
@@ -320,8 +320,8 @@ export class Client {
         if (this.currentPlayerEntity) {
             const targetPos = new Vector3(this.currentPlayerEntity.pos.loc.x, this.currentPlayerEntity.pos.loc.y, this.currentPlayerEntity.pos.loc.z);
             this.gameCamera.position.lerp(targetPos, 0.2);
-            this.gameCamera.position.x -= this.screenWidth/10;
-            this.gameCamera.position.y -= this.screenHeight/10;
+            this.gameCamera.position.x -= this.screenWidth / 10;
+            this.gameCamera.position.y -= this.screenHeight / 10;
         }
 
         this.renderer.clear();
