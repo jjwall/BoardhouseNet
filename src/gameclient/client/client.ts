@@ -98,6 +98,8 @@ export class Client {
     public screenWidth: number;
 
     public screenHeight: number;
+    public worldWidth: number; // set in renderTileMap method
+    public worldHeight: number; // set in renderTileMap method
 
     public millisecondsPerGameTick: number;
 
@@ -313,16 +315,39 @@ export class Client {
         this.renderList = newRenderList;
     }
 
+    public centerCamera(client: Client) {
+        // Center camera over current Player Entity.
+        if (client.currentPlayerEntity) {
+            let cx = client.currentPlayerEntity.pos.loc.x;
+            let cy = client.currentPlayerEntity.pos.loc.y;    
+            const targetPos = new Vector3(
+                client.currentPlayerEntity.pos.loc.x, 
+                client.currentPlayerEntity.pos.loc.y, 
+                client.currentPlayerEntity.pos.loc.z
+            );
+
+            // Ensure camera doesn't scroll past world edges.
+            if (client.worldHeight > 0 && client.worldWidth > 0) {
+                cx = Math.max(cx, -client.worldWidth / 4 + client.screenWidth * 1.5); // -> change value * / -4 - 4
+                cx = Math.min(cx, client.worldWidth / 1 - client.screenWidth / 2);
+        
+                cy = Math.max(cy, -client.worldHeight / 4 + client.screenHeight * 1.5); // -> change value * / -4 - 4
+                cy = Math.min(cy, client.worldHeight / 1 - client.screenHeight / 2);
+            }
+
+            // client.gameCamera.position.lerp(targetPos, 0.2);
+            // client.gameCamera.position.x -= client.screenWidth / 10;
+            // client.gameCamera.position.y -= client.screenHeight / 10;
+
+            client.gameCamera.position.x = cx - client.screenWidth / 2;
+            client.gameCamera.position.y = cy - client.screenHeight / 2;
+        }
+    }
+
     public render() : void {
         this.updateClientEntPositions(this.entityList);
         this.updateClientRenders(this.renderList);
-
-        if (this.currentPlayerEntity) {
-            const targetPos = new Vector3(this.currentPlayerEntity.pos.loc.x, this.currentPlayerEntity.pos.loc.y, this.currentPlayerEntity.pos.loc.z);
-            this.gameCamera.position.lerp(targetPos, 0.2);
-            this.gameCamera.position.x -= this.screenWidth / 10;
-            this.gameCamera.position.y -= this.screenHeight / 10;
-        }
+        this.centerCamera(this);
 
         this.renderer.clear();
         this.renderer.render(this.gameScene, this.gameCamera);
