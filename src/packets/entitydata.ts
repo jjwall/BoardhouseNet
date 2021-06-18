@@ -1,19 +1,19 @@
 interface EntityData {
-    netId: number;
-    pos: {
+    netId?: number;
+    pos?: {
         x: number;
         y: number;
         z: number;
         teleport?: boolean;
     },
-    sprite: {
+    sprite?: {
         url: string;
         pixelRatio: number;
     },
-    anim: {
+    anim?: {
         sequence: string;
     }
-    player: {
+    player?: {
         id: string;
     }
 }

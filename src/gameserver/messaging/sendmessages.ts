@@ -21,7 +21,7 @@ export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
                     x: ent.pos.x,
                     y: ent.pos.y,
                     z: ent.pos.z,
-                    teleport: true,
+                    teleport: true, // Set to true to mitigate lerping for newly created ents.
                 },
                 sprite: ent.sprite,
                 anim: ent.anim,
@@ -65,33 +65,6 @@ export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
     server.entityChangeList = [];
 }
 
-/**
- * This function should be called when a player or specator joins the match so they can
- * get all relevant entity data sent to their clients
- * A modified function like this may be used in a game that has scene transitions - where only the relevant
- * entity data of a certain scene may need to get sent over instead
- * @param ents 
- * @param server 
- */
-// export function sendCreateAllEntitiesMessages(ents: Entity[], server: Server) {
-//     ents.forEach(ent => {
-//         sendCreateEntityMessage(ent, server);
-//     });
-// }
-
-/**
- * Update to be called after a tick of engine.
- * 
- * PROBABLY NOT THE MOST EFFICIENT WAY TO DO THIS - BUT WORKS FOR NOW
- * @param ents 
- * @param server 
- */
-// export function sendUpdateAllEntitiesMessages(ents: Entity[], server: Server) {
-//     ents.forEach(ent => {
-//         sendUpdateEntityMessage(ent, server);
-//     });
-// }
-
 export function sendDestroyEntitiesMessage(ents: Entity[], server: Server) {
     let message: NetEntityMessage = {
         messageType: MessageTypes.NET_ENTITY_MESSAGE,
@@ -100,16 +73,12 @@ export function sendDestroyEntitiesMessage(ents: Entity[], server: Server) {
     }
 
     ents.forEach(ent => {
-        // remove entity from backend entity list:
+        // Remove entity from backend entity list.
         server.currentState.removeEntity(ent);
         
         if (ent.netId) {
-            const entData: EntityData = { // make optional params
+            const entData: EntityData = {
                 netId: ent.netId,
-                pos: ent.pos,
-                sprite: ent.sprite,
-                anim: ent.anim,
-                player: ent.player,
             }
 
             message.data.push(entData);
@@ -134,7 +103,6 @@ export function sendPlayerAttackAnimDisplayMessage(ents: Entity[], server: Serve
     ents.forEach(ent => {
         if (ent.pos && ent.sprite) {
             const entData: EntityData = {
-                netId: ent.netId, // wouldn't need a NetId in this case since this EntityData is only represented on front end by renderings...
                 pos: {
                     x: ent.pos.x,
                     y: ent.pos.y,
@@ -143,7 +111,6 @@ export function sendPlayerAttackAnimDisplayMessage(ents: Entity[], server: Serve
                 },
                 sprite: ent.sprite,
                 anim: ent.anim,
-                player: ent.player,
             }
 
             message.data.push(entData);
