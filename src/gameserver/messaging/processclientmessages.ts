@@ -83,10 +83,8 @@ function processClientInputMessage(message: ClientInputMessage, ents: ReadonlyAr
 function processPlayerJoinedMessage(message: ClientEventMessage, server: Server, state: GameState) {
     console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.clientId}" joined as a player with class = "${message.playerClass}"`);
     console.log("create player entity");
-    // Set up player entity.
-    // Dummy data...
+    
     switch (message.playerClass) {
-        // TODO: rework these player entity classes as archetype functions once components get cleaned up
         case PlayerClassTypes.PAGE:
             const pagePos: PositionComponent = { x: 150, y: 150, z: 5 };
             createPage(state, message, pagePos);

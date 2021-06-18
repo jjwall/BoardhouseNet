@@ -13,7 +13,7 @@ import { PlayerClassTypes } from "../../packets/playerclasstypes";
 // -> Player roles shouldn't have access to start sending packets until player's entity
 // has been created on back end.
 // Maybe make a client status? readyToSendMessages boolean?
-// > Start working on creating / destroying / and updating front end entities in messagehandlersystem
+// > (Done) Start working on creating / destroying / and updating front end entities in messagehandlersystem
 // > Reconfigure "packets" directory
 // -> probably name it "middleware"
 // -> have a new "packets" dir in there as well as a "enums" dir in there
