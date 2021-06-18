@@ -9,6 +9,10 @@ import { Server } from "../server/server";
 import { MessageTypes } from "../../packets/messagetypes";
 import { ClientInputTypes } from "../../packets/clientinputtypes";
 import { PlayerClassTypes } from "../../packets/playerclasstypes";
+import { createPage } from "../archetypes/page";
+import { PositionComponent } from "../components/corecomponents";
+import { createMagician } from "../archetypes/magician";
+import { createArcher } from "../archetypes/archer";
 
 // Will need more info pertaining to INPUT_TO_QUERY event.
 export function processClientMessages(ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
@@ -77,32 +81,23 @@ function processClientInputMessage(message: ClientInputMessage, ents: ReadonlyAr
  * @param state 
  */
 function processPlayerJoinedMessage(message: ClientEventMessage, server: Server, state: GameState) {
-    console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.clientId}" joined as a player with role = "${message.playerClass}"`);
+    console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.clientId}" joined as a player with class = "${message.playerClass}"`);
     console.log("create player entity");
     // Set up player entity.
     // Dummy data...
     switch (message.playerClass) {
         // TODO: rework these player entity classes as archetype functions once components get cleaned up
         case PlayerClassTypes.PAGE:
-        case PlayerClassTypes.MAGICIAN: // no mage for now
-            let page = new Entity();
-            page.player = { id: message.clientId };
-            page.pos = { x: 150, y: 150, z: 5 };
-            page.sprite = { url: "./data/textures/msknight.png", pixelRatio: 4 };
-            // player.anim = { sequence: "blah", currentFrame: 0 };
-            page.control = initializeControls();
-        
-            state.registerEntity(page, server);
+            const pagePos: PositionComponent = { x: 150, y: 150, z: 5 };
+            createPage(state, message, pagePos);
+            break;
+        case PlayerClassTypes.MAGICIAN:
+            const magicianPos: PositionComponent = { x: 150, y: 450, z: 5 };
+            createMagician(state, message, magicianPos);
             break;
         case PlayerClassTypes.ARCHER:
-            let archer = new Entity();
-            archer.player = { id: message.clientId };
-            archer.pos = { x: 450, y: 150, z: 5 };
-            archer.sprite = { url: "./data/textures/archer_girl_from_sketch.png", pixelRatio: 1 };
-            // player.anim = { sequence: "blah", currentFrame: 0 };
-            archer.control = initializeControls();
-        
-            state.registerEntity(archer, server);
+            const archerPos: PositionComponent = { x: 150, y: 450, z: 5 };
+            createArcher(state, message, archerPos);
             break;
     }
 
