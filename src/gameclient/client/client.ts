@@ -319,28 +319,24 @@ export class Client {
         // Center camera over current Player Entity.
         if (client.currentPlayerEntity) {
             let cx = client.currentPlayerEntity.pos.loc.x;
-            let cy = client.currentPlayerEntity.pos.loc.y;    
-            const targetPos = new Vector3(
-                client.currentPlayerEntity.pos.loc.x, 
-                client.currentPlayerEntity.pos.loc.y, 
-                client.currentPlayerEntity.pos.loc.z
-            );
+            let cy = client.currentPlayerEntity.pos.loc.y;
 
             // Ensure camera doesn't scroll past world edges.
             if (client.worldHeight > 0 && client.worldWidth > 0) {
-                cx = Math.max(cx, -client.worldWidth / 4 + client.screenWidth * 1.5); // -> change value * / -4 - 4
+                cx = Math.max(cx, -client.worldWidth / 4 + client.screenWidth * 1.475); // -> >> 1.475 << change value based on World Size
                 cx = Math.min(cx, client.worldWidth / 1 - client.screenWidth / 2);
         
-                cy = Math.max(cy, -client.worldHeight / 4 + client.screenHeight * 1.5); // -> change value * / -4 - 4
+                cy = Math.max(cy, -client.worldHeight / 4 + client.screenHeight * 1.525); // -> >> 1.525 << change value based on World Size
                 cy = Math.min(cy, client.worldHeight / 1 - client.screenHeight / 2);
             }
 
-            // client.gameCamera.position.lerp(targetPos, 0.2);
-            // client.gameCamera.position.x -= client.screenWidth / 10;
-            // client.gameCamera.position.y -= client.screenHeight / 10;
+            const targetPos = new Vector3(
+                cx - client.screenWidth / 2, 
+                cy - client.screenHeight / 2, 
+                0,
+            );
 
-            client.gameCamera.position.x = cx - client.screenWidth / 2;
-            client.gameCamera.position.y = cy - client.screenHeight / 2;
+            client.gameCamera.position.lerp(targetPos, 0.2);
         }
     }
 
