@@ -13,4 +13,7 @@ interface EntityData {
     anim: {
         sequence: string;
     }
+    player: {
+        id: string;
+    }
 }

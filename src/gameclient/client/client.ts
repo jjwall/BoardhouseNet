@@ -68,6 +68,7 @@ export class Client {
     }
 
     /// state stuff
+    public currentPlayerEntity: ClientEntity; // just a reference
     public role: ClientRoleTypes;
     public playerClass: PlayerClassTypes;
     public gameScene: Scene;
@@ -97,6 +98,8 @@ export class Client {
     public screenWidth: number;
 
     public screenHeight: number;
+    public worldWidth: number; // set in renderTileMap method
+    public worldHeight: number; // set in renderTileMap method
 
     public millisecondsPerGameTick: number;
 
@@ -305,16 +308,42 @@ export class Client {
                 if (render.sprite) {
                     this.gameScene.remove(render.sprite);
                 }
-            })
+            });
         }
 
         // Set new render list.
         this.renderList = newRenderList;
     }
 
+    public centerCamera(client: Client) {
+        // Center camera over current Player Entity.
+        if (client.currentPlayerEntity) {
+            let cx = client.currentPlayerEntity.pos.loc.x;
+            let cy = client.currentPlayerEntity.pos.loc.y;
+
+            // Ensure camera doesn't scroll past world edges.
+            if (client.worldHeight > 0 && client.worldWidth > 0) {
+                cx = Math.max(cx, -client.worldWidth / 4 + client.screenWidth * 1.475); // -> >> 1.475 << change value based on World Size
+                cx = Math.min(cx, client.worldWidth / 1 - client.screenWidth / 2);
+        
+                cy = Math.max(cy, -client.worldHeight / 4 + client.screenHeight * 1.525); // -> >> 1.525 << change value based on World Size
+                cy = Math.min(cy, client.worldHeight / 1 - client.screenHeight / 2);
+            }
+
+            const targetPos = new Vector3(
+                cx - client.screenWidth / 2, 
+                cy - client.screenHeight / 2, 
+                0,
+            );
+
+            client.gameCamera.position.lerp(targetPos, 0.2);
+        }
+    }
+
     public render() : void {
         this.updateClientEntPositions(this.entityList);
         this.updateClientRenders(this.renderList);
+        this.centerCamera(this);
 
         this.renderer.clear();
         this.renderer.render(this.gameScene, this.gameCamera);

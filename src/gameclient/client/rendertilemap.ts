@@ -21,8 +21,13 @@ export function renderTileMap(client: Client, tileSetTextureUrl: string, tileMap
     const scaledWidth = tileWidth*pixelRatio;
     const uMultiple = tileWidth / (canvasWidth * tileWidth);
     const vMultiple = tileHeight / (canvasHeight * tileHeight);
-    // Set magFilter to nearest for crisp looking pixels/
+
+    // Set magFilter to nearest for crisp looking pixels.
     tileSetTexture.magFilter = NearestFilter;
+
+    // Set worldWidth and worldHeight on client.
+    client.worldWidth = scaledWidth * tileMapData.tileswide;
+    client.worldHeight = scaledHeight * tileMapData.tileshigh;
 
     tileMapData.layers.forEach(layer => {
         layer.tiles.forEach(tile => {

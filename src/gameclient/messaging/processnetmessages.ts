@@ -63,6 +63,15 @@ function createEntities(message: NetEntityMessage, client: Client) {
                 // clientEnt.anim = setAnim(...);
             }
 
+            if (entData.player) {
+                clientEnt.player = entData.player;
+
+                // Set player ent reference if client id matches player id.
+                if (client.currentClientId === entData.player.id) {
+                    client.currentPlayerEntity = clientEnt;
+                }
+            }
+
             client.entityList.push(clientEnt);
             client.NetIdToEntityMap[entData.netId] = clientEnt;
         }
