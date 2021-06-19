@@ -2,12 +2,14 @@ import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { NetEntityMessage } from "../../packets/netentitymessage";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
 import { Client } from "../client/client";
-import { ClientEntity, setPosition, setSprite } from "../client/cliententity";
+import { ClientEntity } from "../client/cliententity";
 import { Message } from "../../packets/message";
 import { MessageTypes } from "../../packets/messagetypes";
 import { NetEventMessage } from "../../packets/neteventmessage";
 import { NetEventTypes } from "../../packets/neteventtypes";
 import { ClientRender } from "../renders/clientrender";
+import { setPosition } from "../components/position";
+import { setSprite } from "../components/sprite";
 
 // Handle message based on the type of NetMessage.
 // Will need non-entity messages such as "CREATE_FIRE_BALL" with x,y,z location in Euler direction etc...
