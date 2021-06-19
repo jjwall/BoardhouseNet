@@ -146,6 +146,7 @@ function renderPlayerAttackAnim(message: NetEventMessage, client: Client) {
     // taken from create ent
 
     message.data.forEach(entData => {
+        // set up render archetypes methods?
         let clientRender = new ClientRender(120);
         clientRender.pos = setPosition(entData.pos.x, entData.pos.y, entData.pos.z);
         clientRender.sprite = setSprite(entData.sprite.url, client.gameScene, client, entData.sprite.pixelRatio);

@@ -50,7 +50,7 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
                     // Send attack msg (test code for now)
                     let attackEnts: Entity[] = [];
                     let attackEnt: Entity = new Entity();
-                    attackEnt.pos = { x: ent.pos.x + 100, y: ent.pos.y, z: ent.pos.z};
+                    attackEnt.pos = { x: ent.pos.x + 100, y: ent.pos.y, z: ent.pos.z + 1};
                     attackEnt.sprite = { url: "./data/textures/mediumExplosion1.png", pixelRatio: 4 };
                     attackEnts.push(attackEnt);
                     sendPlayerAttackAnimDisplayMessage(attackEnts, state.server);
