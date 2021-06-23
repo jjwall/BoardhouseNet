@@ -28,6 +28,7 @@ export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
                         y: ent.pos.dir.y,
                         z: ent.pos.dir.z,
                     },
+                    flipX: ent.pos.flipX,
                     teleport: true, // Set to true to mitigate lerping for newly created ents.
                 },
                 sprite: ent.sprite,
@@ -66,6 +67,7 @@ export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
                         y: ent.pos.dir.y,
                         z: ent.pos.dir.z,
                     },
+                    flipX: ent.pos.flipX,
                     teleport: false, // TODO: will need to get more sophisticated here - a teleport skill that needs updating would require this to be true.
                 },
                 sprite: ent.sprite,
@@ -137,6 +139,7 @@ export function sendNetEventMessage(ents: Entity[], server: Server, netEventType
                         y: ent.pos.dir.y,
                         z: ent.pos.dir.z,
                     },
+                    flipX: ent.pos.flipX,
                     teleport: true, // Set to true to mitigate lerping for fresh renders.
                 },
                 sprite: ent.sprite,

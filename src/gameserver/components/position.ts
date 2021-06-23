@@ -10,6 +10,7 @@ export interface PositionComponent {
     dir: Vector3;
     /** Wraparound behavior. */
     wrap: boolean;
+    flipX: boolean;
 }
 
 /**
@@ -19,19 +20,19 @@ export interface PositionComponent {
  * @param zPos 
  * @param startingDirection optional param. If not specified, direction will be: Vector3(1, 0, 0).
  */
-export function setPosition(xPos: number, yPos: number, zPos: number, startingDirection?: Vector3, wrap?: boolean): PositionComponent {
-    let position: PositionComponent = { loc: new Vector3(xPos, yPos, zPos), dir: null, wrap: false };
+export function setPosition(xPos: number, yPos: number, zPos: number, startingDirection?: Vector3, flipX?: boolean, wrap?: boolean): PositionComponent {
+    let position: PositionComponent = { loc: new Vector3(xPos, yPos, zPos), dir: null, flipX: false, wrap: false };
 
-    if (startingDirection) {
+    if (startingDirection) 
         position.dir = startingDirection;
-    }
-    else {
+    else
         position.dir = new Vector3(1, 0, 0);
-    }
+
+    if (flipX)
+        position.flipX = flipX;
       
-    if (wrap !== undefined) {
+    if (wrap)
         position.wrap = wrap;
-    }
 
     return position;
 }

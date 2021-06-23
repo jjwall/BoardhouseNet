@@ -59,7 +59,7 @@ function createEntities(message: NetEntityMessage, client: Client) {
             let clientEnt = new ClientEntity();
             const dir = new Vector3(entData.pos.dir.x, entData.pos.dir.y, entData.pos.dir.z);
             clientEnt.netId = entData.netId;
-            clientEnt.pos = setPosition(entData.pos.loc.x, entData.pos.loc.y, entData.pos.loc.z, dir);
+            clientEnt.pos = setPosition(entData.pos.loc.x, entData.pos.loc.y, entData.pos.loc.z, dir, entData.pos.flipX);
             clientEnt.sprite = setSprite(entData.sprite.url, client.gameScene, client, entData.sprite.pixelRatio);
             clientEnt.pos.teleport = entData.pos.teleport;
 
@@ -96,6 +96,7 @@ function updateEntities(message: NetEntityMessage, client: Client) {
                 clientEnt.pos.dir.setX(entData.pos.dir.x);
                 clientEnt.pos.dir.setY(entData.pos.dir.y);
                 clientEnt.pos.teleport = entData.pos.teleport;
+                clientEnt.pos.flipX = entData.pos.flipX;
             }
     
             // if (clientEnt.anim) {
@@ -153,7 +154,7 @@ function renderPlayerAttackAnim(message: NetEventMessage, client: Client) {
         // set up render archetypes methods?
         let clientRender = new ClientRender(120);
         const dir = new Vector3(entData.pos.dir.x, entData.pos.dir.y, entData.pos.dir.z);
-        clientRender.pos = setPosition(entData.pos.loc.x, entData.pos.loc.y, entData.pos.loc.z, dir);
+        clientRender.pos = setPosition(entData.pos.loc.x, entData.pos.loc.y, entData.pos.loc.z, dir, entData.pos.flipX);
         clientRender.sprite = setSprite(entData.sprite.url, client.gameScene, client, entData.sprite.pixelRatio);
         clientRender.pos.teleport = entData.pos.teleport;
 

@@ -11,6 +11,7 @@ interface EntityData {
             y: number;
             z: number;
         }
+        flipX?: boolean;
         teleport?: boolean;
     },
     sprite?: {

@@ -12,7 +12,7 @@ import { Vector3 } from "three";
 // TODO: replace current pos updating with BoardhouseTS style updating
 // i.e. have a PositionSystem / VelocitySystem that handles updates
 // TODO: Refactor back end to separate out components
-// TODO: Handle dir for ents facing left or right based on their movement
+// TODO: (done) Handle dir for ents facing left or right based on their movement
 // -> Make sure this updates other player ents on current player's client.
 // TODO: Set up HitBox system & component.
 export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState) {
@@ -22,8 +22,9 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState) {
             // Left
             if (ent.control.left) {
                 ent.pos.loc.x -= 25;
-                ent.pos.dir.setX(-1);
-                ent.pos.dir.setY(0);
+                // ent.pos.dir.setX(-1);
+                // ent.pos.dir.setY(0);
+                ent.pos.flipX = true;
 
                 updatePlayerEnt = true;
             }
@@ -31,8 +32,9 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState) {
             // Right
             if (ent.control.right) {
                 ent.pos.loc.x += 25;
-                ent.pos.dir.setX(1);
-                ent.pos.dir.setY(0);
+                // ent.pos.dir.setX(1);
+                // ent.pos.dir.setY(0);
+                ent.pos.flipX = false;
 
                 updatePlayerEnt = true;
             }
@@ -60,10 +62,13 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState) {
             if (ent.control.attack) {
                 if (ent.control.attackCooldownTicks <= 0) {
                     // Send attack msg (test code for now)
+                    let attackPosOffset = 100;
+                    if (ent.pos.flipX)
+                        attackPosOffset -= 200;
                     let attackEnts: Entity[] = [];
                     let attackEnt: Entity = new Entity();
                     let atkDirection = new Vector3(.5,.5,0);
-                    attackEnt.pos = setPosition(ent.pos.loc.x + 100, ent.pos.loc.y, ent.pos.loc.z + 1, atkDirection);
+                    attackEnt.pos = setPosition(ent.pos.loc.x + attackPosOffset, ent.pos.loc.y, ent.pos.loc.z + 1, atkDirection);
                     attackEnt.sprite = { url: "./data/textures/mediumExplosion1.png", pixelRatio: 4 };
                     attackEnts.push(attackEnt);
                     sendNetEventMessage(attackEnts, state.server, NetEventTypes.PLAYER_ATTACK_ANIM_DISPLAY);

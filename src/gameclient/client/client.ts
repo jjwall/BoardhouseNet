@@ -270,7 +270,12 @@ export class Client {
                 if (ent.pos.teleport)
                     ent.sprite.position.copy(targetPos);
                 else
-                    ent.sprite.position.lerp(targetPos, 0.2)
+                    ent.sprite.position.lerp(targetPos, 0.2);
+
+                if (ent.pos.flipX)
+                    ent.sprite.scale.x = -1;
+                else
+                    ent.sprite.scale.x = 1;
             
                 ent.sprite.rotation.set(0, 0, Math.atan2(ent.pos.dir.y, ent.pos.dir.x));
             }
@@ -289,7 +294,12 @@ export class Client {
                     if (render.pos.teleport)
                         render.sprite.position.copy(targetPos);
                     else
-                        render.sprite.position.lerp(targetPos, 0.2)
+                        render.sprite.position.lerp(targetPos, 0.2);
+                    
+                    if (render.pos.flipX)
+                        render.sprite.scale.x = -1;
+                    else
+                        render.sprite.scale.x = 1;
                 
                     render.sprite.rotation.set(0, 0, Math.atan2(render.pos.dir.y, render.pos.dir.x));
                 }
