@@ -3,6 +3,7 @@ import { NetEventTypes } from "../../packets/neteventtypes";
 import { setPosition } from "../components/position";
 import { Entity } from "../states/gameplay/entity";
 import { BaseState } from "../server/basestate";
+import { Vector3 } from "three";
 
 /**
  * Control system.
@@ -14,13 +15,15 @@ import { BaseState } from "../server/basestate";
 // TODO: Handle dir for ents facing left or right based on their movement
 // -> Make sure this updates other player ents on current player's client.
 // TODO: Set up HitBox system & component.
-export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
+export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState) {
     ents.forEach(ent => {
         let updatePlayerEnt = false;
         if (ent.control && ent.pos) {
             // Left
             if (ent.control.left) {
                 ent.pos.loc.x -= 25;
+                ent.pos.dir.setX(-1);
+                ent.pos.dir.setY(0);
 
                 updatePlayerEnt = true;
             }
@@ -28,6 +31,8 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
             // Right
             if (ent.control.right) {
                 ent.pos.loc.x += 25;
+                ent.pos.dir.setX(1);
+                ent.pos.dir.setY(0);
 
                 updatePlayerEnt = true;
             }
@@ -57,7 +62,8 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
                     // Send attack msg (test code for now)
                     let attackEnts: Entity[] = [];
                     let attackEnt: Entity = new Entity();
-                    attackEnt.pos = setPosition(ent.pos.loc.x + 100, ent.pos.loc.y, ent.pos.loc.z + 1);
+                    let atkDirection = new Vector3(.5,.5,0);
+                    attackEnt.pos = setPosition(ent.pos.loc.x + 100, ent.pos.loc.y, ent.pos.loc.z + 1, atkDirection);
                     attackEnt.sprite = { url: "./data/textures/mediumExplosion1.png", pixelRatio: 4 };
                     attackEnts.push(attackEnt);
                     sendNetEventMessage(attackEnts, state.server, NetEventTypes.PLAYER_ATTACK_ANIM_DISPLAY);

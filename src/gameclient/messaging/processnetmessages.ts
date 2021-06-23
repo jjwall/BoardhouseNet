@@ -10,6 +10,7 @@ import { NetEventTypes } from "../../packets/neteventtypes";
 import { ClientRender } from "../renders/clientrender";
 import { setPosition } from "../components/position";
 import { setSprite } from "../components/sprite";
+import { Vector3 } from "three";
 
 // Handle message based on the type of NetMessage.
 // Will need non-entity messages such as "CREATE_FIRE_BALL" with x,y,z location in Euler direction etc...
@@ -56,8 +57,9 @@ function createEntities(message: NetEntityMessage, client: Client) {
         // Don't create the ent twice if it had already been created.
         if (!client.NetIdToEntityMap[entData.netId]) {
             let clientEnt = new ClientEntity();
+            const dir = new Vector3(entData.pos.dir.x, entData.pos.dir.y, entData.pos.dir.z);
             clientEnt.netId = entData.netId;
-            clientEnt.pos = setPosition(entData.pos.x, entData.pos.y, entData.pos.z);
+            clientEnt.pos = setPosition(entData.pos.loc.x, entData.pos.loc.y, entData.pos.loc.z, dir);
             clientEnt.sprite = setSprite(entData.sprite.url, client.gameScene, client, entData.sprite.pixelRatio);
             clientEnt.pos.teleport = entData.pos.teleport;
 
@@ -89,8 +91,10 @@ function updateEntities(message: NetEntityMessage, client: Client) {
             let clientEnt = client.NetIdToEntityMap[entData.netId];
 
             if (clientEnt.sprite && clientEnt.pos) {
-                clientEnt.pos.loc.setX(entData.pos.x);
-                clientEnt.pos.loc.setY(entData.pos.y);
+                clientEnt.pos.loc.setX(entData.pos.loc.x);
+                clientEnt.pos.loc.setY(entData.pos.loc.y);
+                clientEnt.pos.dir.setX(entData.pos.dir.x);
+                clientEnt.pos.dir.setY(entData.pos.dir.y);
                 clientEnt.pos.teleport = entData.pos.teleport;
             }
     
@@ -148,7 +152,8 @@ function renderPlayerAttackAnim(message: NetEventMessage, client: Client) {
     message.data.forEach(entData => {
         // set up render archetypes methods?
         let clientRender = new ClientRender(120);
-        clientRender.pos = setPosition(entData.pos.x, entData.pos.y, entData.pos.z);
+        const dir = new Vector3(entData.pos.dir.x, entData.pos.dir.y, entData.pos.dir.z);
+        clientRender.pos = setPosition(entData.pos.loc.x, entData.pos.loc.y, entData.pos.loc.z, dir);
         clientRender.sprite = setSprite(entData.sprite.url, client.gameScene, client, entData.sprite.pixelRatio);
         clientRender.pos.teleport = entData.pos.teleport;
 
