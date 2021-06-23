@@ -1,12 +1,18 @@
-import { send } from "process";
+import { NetEventTypes } from "../../packets/neteventtypes";
 import { BaseState } from "../server/basestate";
 import { Entity } from "../states/gameplay/entity";
-import { sendUpdateEntitiesMessage, sendPlayerAttackAnimDisplayMessage } from "./../messaging/sendmessages";
+import { sendUpdateEntitiesMessage, sendNetEventMessage } from "./../messaging/sendmessages";
 
 /**
  * Control system.
  * @param ents Ents from the control entitities registry.
  */
+// TODO: replace current pos updating with BoardhouseTS style updating
+// i.e. have a PositionSystem / VelocitySystem that handles updates
+// TODO: Refactor back end to separate out components
+// TODO: Handle dir for ents facing left or right based on their movement
+// -> Make sure this updates other player ents on current player's client.
+// TODO: Set up HitBox system & component.
 export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
     ents.forEach(ent => {
         let updatePlayerEnt = false;
@@ -53,7 +59,7 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
                     attackEnt.pos = { x: ent.pos.x + 100, y: ent.pos.y, z: ent.pos.z + 1};
                     attackEnt.sprite = { url: "./data/textures/mediumExplosion1.png", pixelRatio: 4 };
                     attackEnts.push(attackEnt);
-                    sendPlayerAttackAnimDisplayMessage(attackEnts, state.server);
+                    sendNetEventMessage(attackEnts, state.server, NetEventTypes.PLAYER_ATTACK_ANIM_DISPLAY);
                   
                     // Start cooldown.
                     ent.control.attackCooldownTicks = 60;

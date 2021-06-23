@@ -4,7 +4,7 @@ import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientInputMessage } from "../../packets/clientinputmessage";
 import { initializeControls } from "../components/initializers";
-import { sendCreateEntitiesMessage, sendPlayerAttackAnimDisplayMessage } from "./sendmessages";
+import { sendCreateEntitiesMessage } from "./sendmessages";
 import { Server } from "../server/server";
 import { MessageTypes } from "../../packets/messagetypes";
 import { ClientInputTypes } from "../../packets/clientinputtypes";
