@@ -18,9 +18,17 @@ export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
             const entData: EntityData = {
                 netId: ent.netId,
                 pos: {
-                    x: ent.pos.x,
-                    y: ent.pos.y,
-                    z: ent.pos.z,
+                    loc: {
+                        x: ent.pos.loc.x,
+                        y: ent.pos.loc.y,
+                        z: ent.pos.loc.z,
+                    },
+                    dir: {
+                        x: ent.pos.dir.x,
+                        y: ent.pos.dir.y,
+                        z: ent.pos.dir.z,
+                    },
+                    flipX: ent.pos.flipX,
                     teleport: true, // Set to true to mitigate lerping for newly created ents.
                 },
                 sprite: ent.sprite,
@@ -48,7 +56,20 @@ export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
         if (ent.pos && ent.sprite) {
             const entData: EntityData = {
                 netId: ent.netId,
-                pos: ent.pos,
+                pos: {
+                    loc: {
+                        x: ent.pos.loc.x,
+                        y: ent.pos.loc.y,
+                        z: ent.pos.loc.z,
+                    },
+                    dir: {
+                        x: ent.pos.dir.x,
+                        y: ent.pos.dir.y,
+                        z: ent.pos.dir.z,
+                    },
+                    flipX: ent.pos.flipX,
+                    teleport: false, // TODO: will need to get more sophisticated here - a teleport skill that needs updating would require this to be true.
+                },
                 sprite: ent.sprite,
                 anim: ent.anim,
                 player: ent.player,
@@ -108,10 +129,18 @@ export function sendNetEventMessage(ents: Entity[], server: Server, netEventType
         if (ent.pos && ent.sprite) {
             const entData: EntityData = {
                 pos: {
-                    x: ent.pos.x,
-                    y: ent.pos.y,
-                    z: ent.pos.z,
-                    teleport: true,
+                    loc: {
+                        x: ent.pos.loc.x,
+                        y: ent.pos.loc.y,
+                        z: ent.pos.loc.z,
+                    },
+                    dir: {
+                        x: ent.pos.dir.x,
+                        y: ent.pos.dir.y,
+                        z: ent.pos.dir.z,
+                    },
+                    flipX: ent.pos.flipX,
+                    teleport: true, // Set to true to mitigate lerping for fresh renders.
                 },
                 sprite: ent.sprite,
                 anim: ent.anim,

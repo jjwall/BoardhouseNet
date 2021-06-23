@@ -10,9 +10,9 @@ import { MessageTypes } from "../../packets/messagetypes";
 import { ClientInputTypes } from "../../packets/clientinputtypes";
 import { PlayerClassTypes } from "../../packets/playerclasstypes";
 import { createPage } from "../archetypes/page";
-import { PositionComponent } from "../components/corecomponents";
 import { createMagician } from "../archetypes/magician";
 import { createArcher } from "../archetypes/archer";
+import { PositionComponent, setPosition } from "../components/position";
 
 // Will need more info pertaining to INPUT_TO_QUERY event.
 export function processClientMessages(ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
@@ -86,15 +86,15 @@ function processPlayerJoinedMessage(message: ClientEventMessage, server: Server,
     
     switch (message.playerClass) {
         case PlayerClassTypes.PAGE:
-            const pagePos: PositionComponent = { x: 150, y: 150, z: 5 };
+            const pagePos: PositionComponent = setPosition(150, 150, 5);
             createPage(state, message, pagePos);
             break;
         case PlayerClassTypes.MAGICIAN:
-            const magicianPos: PositionComponent = { x: 150, y: 450, z: 5 };
+            const magicianPos: PositionComponent = setPosition(150, 450, 5);
             createMagician(state, message, magicianPos);
             break;
         case PlayerClassTypes.ARCHER:
-            const archerPos: PositionComponent = { x: 150, y: 450, z: 5 };
+            const archerPos: PositionComponent = setPosition(450, 450, 5);
             createArcher(state, message, archerPos);
             break;
     }
@@ -115,7 +115,7 @@ function processSpectatorJoinedMessage(message: ClientEventMessage, server: Serv
     // Set up another player entity.
     let player = new Entity();
     player.player = { id: message.clientId };
-    player.pos = { x: 350, y: 150, z: 5 };
+    player.pos = setPosition(350, 150, 5);
     player.sprite = { url: "./data/textures/snow.png", pixelRatio: 4 };
     player.anim = { sequence: "blah", currentFrame: 0 };
     player.control = initializeControls();

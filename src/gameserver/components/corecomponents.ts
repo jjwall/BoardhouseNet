@@ -16,15 +16,6 @@ export interface ControlComponent {
 }
 
 /**
- * Position component.
- */
-export interface PositionComponent {
-    x: number, // add setter that adds the Ent to changeList
-    y: number,
-    z: number
-}
-
-/**
  * Sprite component.
  */
 export interface SpriteComponent {

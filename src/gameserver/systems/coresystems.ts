@@ -1,7 +1,9 @@
+import { sendNetEventMessage } from "./../messaging/sendmessages";
 import { NetEventTypes } from "../../packets/neteventtypes";
-import { BaseState } from "../server/basestate";
+import { setPosition } from "../components/position";
 import { Entity } from "../states/gameplay/entity";
-import { sendUpdateEntitiesMessage, sendNetEventMessage } from "./../messaging/sendmessages";
+import { BaseState } from "../server/basestate";
+import { Vector3 } from "three";
 
 /**
  * Control system.
@@ -10,37 +12,43 @@ import { sendUpdateEntitiesMessage, sendNetEventMessage } from "./../messaging/s
 // TODO: replace current pos updating with BoardhouseTS style updating
 // i.e. have a PositionSystem / VelocitySystem that handles updates
 // TODO: Refactor back end to separate out components
-// TODO: Handle dir for ents facing left or right based on their movement
+// TODO: (done) Handle dir for ents facing left or right based on their movement
 // -> Make sure this updates other player ents on current player's client.
 // TODO: Set up HitBox system & component.
-export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
+export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState) {
     ents.forEach(ent => {
         let updatePlayerEnt = false;
         if (ent.control && ent.pos) {
             // Left
             if (ent.control.left) {
-                ent.pos.x -= 25;
+                ent.pos.loc.x -= 25;
+                // ent.pos.dir.setX(-1);
+                // ent.pos.dir.setY(0);
+                ent.pos.flipX = true;
 
                 updatePlayerEnt = true;
             }
 
             // Right
             if (ent.control.right) {
-                ent.pos.x += 25;
+                ent.pos.loc.x += 25;
+                // ent.pos.dir.setX(1);
+                // ent.pos.dir.setY(0);
+                ent.pos.flipX = false;
 
                 updatePlayerEnt = true;
             }
 
             // Up
             if (ent.control.up) {
-                ent.pos.y += 25;
+                ent.pos.loc.y += 25;
 
                 updatePlayerEnt = true;
             }
 
             // Down 
             if (ent.control.down) {
-                ent.pos.y -= 25;
+                ent.pos.loc.y -= 25;
 
                 updatePlayerEnt = true;
             }
@@ -54,9 +62,13 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
             if (ent.control.attack) {
                 if (ent.control.attackCooldownTicks <= 0) {
                     // Send attack msg (test code for now)
+                    let attackPosOffset = 100;
+                    if (ent.pos.flipX)
+                        attackPosOffset -= 200;
                     let attackEnts: Entity[] = [];
                     let attackEnt: Entity = new Entity();
-                    attackEnt.pos = { x: ent.pos.x + 100, y: ent.pos.y, z: ent.pos.z + 1};
+                    let atkDirection = new Vector3(.5,.5,0);
+                    attackEnt.pos = setPosition(ent.pos.loc.x + attackPosOffset, ent.pos.loc.y, ent.pos.loc.z + 1, atkDirection);
                     attackEnt.sprite = { url: "./data/textures/mediumExplosion1.png", pixelRatio: 4 };
                     attackEnts.push(attackEnt);
                     sendNetEventMessage(attackEnts, state.server, NetEventTypes.PLAYER_ATTACK_ANIM_DISPLAY);

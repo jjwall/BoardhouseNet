@@ -1,4 +1,5 @@
-import { ControlComponent, PositionComponent, SpriteComponent, AnimationComponent, PlayerComponent } from "../../components/corecomponents";
+import { ControlComponent, SpriteComponent, AnimationComponent, PlayerComponent } from "../../components/corecomponents";
+import { PositionComponent } from "../../components/position";
 
 export class Entity {
     netId: number;

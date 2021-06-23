@@ -3,7 +3,7 @@ import { Vector3 } from "three";
 /**
  * Position component.
  */
- export interface PositionComponent {
+export interface PositionComponent {
     /** Location vector. */
     loc: Vector3;
     /** Direction vector. */
@@ -11,8 +11,6 @@ import { Vector3 } from "three";
     /** Wraparound behavior. */
     wrap: boolean;
     flipX: boolean;
-    /** Flag that is checked in the lerping system to know if lerping should occur. */
-    teleport?: boolean;
 }
 
 /**
@@ -21,9 +19,8 @@ import { Vector3 } from "three";
  * @param yPos 
  * @param zPos 
  * @param startingDirection optional param. If not specified, direction will be: Vector3(1, 0, 0).
- * @param wrap
  */
- export function setPosition(xPos: number, yPos: number, zPos: number, startingDirection?: Vector3, flipX?: boolean, wrap?: boolean): PositionComponent {
+export function setPosition(xPos: number, yPos: number, zPos: number, startingDirection?: Vector3, flipX?: boolean, wrap?: boolean): PositionComponent {
     let position: PositionComponent = { loc: new Vector3(xPos, yPos, zPos), dir: null, flipX: false, wrap: false };
 
     if (startingDirection) 

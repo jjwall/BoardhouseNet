@@ -1,9 +1,17 @@
 interface EntityData {
     netId?: number;
     pos?: {
-        x: number;
-        y: number;
-        z: number;
+        loc: {
+            x: number;
+            y: number;
+            z: number;
+        },
+        dir: {
+            x: number;
+            y: number;
+            z: number;
+        }
+        flipX?: boolean;
         teleport?: boolean;
     },
     sprite?: {
