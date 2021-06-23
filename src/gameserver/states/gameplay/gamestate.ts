@@ -36,7 +36,7 @@ export class GameState extends BaseState {
         cottage1.pos = setPosition(150, 450, 5);
         cottage1.sprite = { url: "./data/textures/cottage.png", pixelRatio: 4 };
         let cottage2 = new Entity();
-        cottage2.pos = setPosition(150, 450, 5);
+        cottage2.pos = setPosition(450, 450, 5);
         cottage2.sprite = { url: "./data/textures/cottage.png", pixelRatio: 4 };
     
         this.registerEntity(cottage1, server);

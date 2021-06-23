@@ -18,13 +18,13 @@ Go to ``localhost:8080`` to test it out. All production files will be contained 
 The project uses 4 different bundles: lobby server bundle, lobby client bundle, game server bundle, and game client bundle. The entry points for each bundle are as follows:
 * <u>lobby.js</u> (lobby server): src > lobbyserver > server.ts
 * <u>lobby-client.bundle.js</u>: src > lobbyclient > main.ts
-* <u>game-server.bundle.js</u>: src > gameserver > engine > main.ts
+* <u>game-server.bundle.js</u>: src > gameserver > server > main.ts
 * <u>game-client.bundle.js</u>: src > gameclient > client > main.ts
 ___
 
 ### Lobby / Game Server Relationship
 
-The lobby is used to create rooms (i.e. game servers) and enable clients to connect to them as a player or a spectator. The lobby server is established by running the above command ``node lobby.js`` in the ``dist`` folder. If a client were to "create a room" then a child process of ``game-server.bundle.js`` would be spawned. The magic here happens in ``src > server > lobby > spinupgameserver.ts``
+The lobby is used to create rooms (i.e. game servers) and enable clients to connect to them as a player or a spectator. The lobby server is established by running the above command ``node lobby.js`` in the ``dist`` folder. If a client were to "create a room" then a child process of ``game-server.bundle.js`` would be spawned. The magic here happens in ``src > lobbyserver > spinupgameserver.ts``
 
 ___
 
@@ -51,25 +51,3 @@ var child = cp.spawn("node --inspect-brk ./server/game-server.bundle.js " + port
 ```
 
 Finally, when this child process is spawned, the process will rest at an internal breakpoint which will allow you to manually attach the debugger using your newly created launch.json in VS Code. Once attached you can continue debugging from the internal breakpoint to the first breakpoint that has been set in the child process' code.
-___
-
-### Random Notes (for me):
-
-#### Back:
-* corecompoents -> component getters that need to add Ent to changeList
-* Implement EntityChangeList
-* processmessages -> call entity create for newly joined player (will need to get data for ents to front end)
-
-#### Front:
-* main -> implement NetToEndId list
-* Implement message handler system functions
-
-#### General stuff:
-* (done) Need to have a ClientRole variable on ClientEngine that indicates if the user is a spectator, player etc. Player roles would be able to send key press events to server.
-Roles would be checked in the event handling system
-* (done) Should add a spectate button to the lobby list to test this idea
-* (done - sort of) Need to get an appropriately sized random PlayerId. Current one is too big.
-* Give back src treatment same treatment front got (transfer over most recent boardhouse changes over)
-* Add UI layer (fix up current UI changes by finishing or removing input box)
-* Add all events (pointer, mouse, keyboard)
-* Consolidate all To-do's into one massive to-do
