@@ -1,6 +1,6 @@
 import { ClientEventMessage } from "../../packets/clienteventmessage";
-import { PositionComponent } from "../components/corecomponents";
 import { initializeControls } from "../components/initializers";
+import { PositionComponent } from "../components/position";
 import { Entity } from "../states/gameplay/entity";
 import { BaseState } from "../server/basestate";
 

@@ -1,7 +1,8 @@
+import { sendNetEventMessage } from "./../messaging/sendmessages";
 import { NetEventTypes } from "../../packets/neteventtypes";
-import { BaseState } from "../server/basestate";
+import { setPosition } from "../components/position";
 import { Entity } from "../states/gameplay/entity";
-import { sendUpdateEntitiesMessage, sendNetEventMessage } from "./../messaging/sendmessages";
+import { BaseState } from "../server/basestate";
 
 /**
  * Control system.
@@ -19,28 +20,28 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
         if (ent.control && ent.pos) {
             // Left
             if (ent.control.left) {
-                ent.pos.x -= 25;
+                ent.pos.loc.x -= 25;
 
                 updatePlayerEnt = true;
             }
 
             // Right
             if (ent.control.right) {
-                ent.pos.x += 25;
+                ent.pos.loc.x += 25;
 
                 updatePlayerEnt = true;
             }
 
             // Up
             if (ent.control.up) {
-                ent.pos.y += 25;
+                ent.pos.loc.y += 25;
 
                 updatePlayerEnt = true;
             }
 
             // Down 
             if (ent.control.down) {
-                ent.pos.y -= 25;
+                ent.pos.loc.y -= 25;
 
                 updatePlayerEnt = true;
             }
@@ -56,7 +57,7 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState){
                     // Send attack msg (test code for now)
                     let attackEnts: Entity[] = [];
                     let attackEnt: Entity = new Entity();
-                    attackEnt.pos = { x: ent.pos.x + 100, y: ent.pos.y, z: ent.pos.z + 1};
+                    attackEnt.pos = setPosition(ent.pos.loc.x + 100, ent.pos.loc.y, ent.pos.loc.z + 1);
                     attackEnt.sprite = { url: "./data/textures/mediumExplosion1.png", pixelRatio: 4 };
                     attackEnts.push(attackEnt);
                     sendNetEventMessage(attackEnts, state.server, NetEventTypes.PLAYER_ATTACK_ANIM_DISPLAY);

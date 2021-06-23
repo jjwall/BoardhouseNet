@@ -6,6 +6,7 @@ import { processClientMessages, processQueriedInputs } from "../../messaging/pro
 import { Server } from "./../../server/server";
 import { kenneyFantasy } from "../../../modules/tilemapping/tilemaps/kenneyfantasy";
 import { Mesh } from "three";
+import { setPosition } from "../../components/position";
 
 /**
  * GameState that handles updating of all game-related systems.
@@ -32,10 +33,10 @@ export class GameState extends BaseState {
         this.registerEntity(ent, server);
 
         let cottage1 = new Entity();
-        cottage1.pos = { x: 150, y: 450, z: 5 };
+        cottage1.pos = setPosition(150, 450, 5);
         cottage1.sprite = { url: "./data/textures/cottage.png", pixelRatio: 4 };
         let cottage2 = new Entity();
-        cottage2.pos = { x: 450, y: 450, z: 5 };
+        cottage2.pos = setPosition(150, 450, 5);
         cottage2.sprite = { url: "./data/textures/cottage.png", pixelRatio: 4 };
     
         this.registerEntity(cottage1, server);
@@ -46,6 +47,7 @@ export class GameState extends BaseState {
 
     // Register tiles for hit colision / traps.
     // TO DO - Add hit collision
+    // TO DO - make this work...
     private registerTileMap() : void {
         const tileHeight: number = 16;
         const tileWidth: number  = 16;
@@ -53,7 +55,7 @@ export class GameState extends BaseState {
         kenneyFantasy.layers.forEach(layer => {
             layer.tiles.forEach(tile => {
                 let tileEnt = new Entity();
-                tileEnt.pos = { x: tile.x*tileWidth, y: tile.y*tileWidth, z: 1 };
+                tileEnt.pos = setPosition(tile.x*tileWidth, tile.y*tileHeight, 1);
                 this.registerEntity(tileEnt, this.server);
             });
         });
