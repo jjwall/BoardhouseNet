@@ -9,7 +9,7 @@ export function createPage(state: BaseState, message: ClientEventMessage, pos: P
     let page = new Entity();
     page.player = { id: message.clientId };
     page.pos = pos;
-    page.vel = setVelocity(1);
+    page.vel = setVelocity(15, 0.5);
     page.sprite = { url: "./data/textures/msknight.png", pixelRatio: 4 };
     // page.anim = { sequence: "blah", currentFrame: 0 };
     page.control = initializeControls();

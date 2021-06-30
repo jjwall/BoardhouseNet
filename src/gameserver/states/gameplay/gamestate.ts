@@ -1,12 +1,12 @@
-import { BaseState } from "../../server/basestate";
-import { initializeControls } from "../../components/initializers";
-import { controlSystem, playerSystem } from "../../systems/coresystems";
-import { Entity } from "./entity";
 import { processClientMessages, processQueriedInputs } from "../../messaging/processclientmessages";
-import { Server } from "./../../server/server";
 import { kenneyFantasy } from "../../../modules/tilemapping/tilemaps/kenneyfantasy";
-import { Mesh } from "three";
+import { controlSystem, playerSystem } from "../../systems/coresystems";
+import { initializeControls } from "../../components/initializers";
 import { setPosition } from "../../components/position";
+import { velocitySystem } from "../../systems/velocity";
+import { BaseState } from "../../server/basestate";
+import { Server } from "./../../server/server";
+import { Entity } from "./entity";
 
 /**
  * GameState that handles updating of all game-related systems.
@@ -22,7 +22,7 @@ export class GameState extends BaseState {
         // Register systems.
         this.registerSystem(controlSystem, "control");
         this.registerSystem(playerSystem, "player");
-        // this.registerSystem(positionSystem);
+        this.registerSystem(velocitySystem);
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 
@@ -41,8 +41,6 @@ export class GameState extends BaseState {
     
         this.registerEntity(cottage1, server);
         this.registerEntity(cottage2, server);
-
-        
     }
 
     // Register tiles for hit colision / traps.

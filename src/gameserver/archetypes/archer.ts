@@ -9,7 +9,7 @@ export function createArcher(state: BaseState, message: ClientEventMessage, pos:
     let archer = new Entity();
     archer.player = { id: message.clientId };
     archer.pos = pos;
-    archer.vel = setVelocity(1);
+    archer.vel = setVelocity(15, 0.5);
     archer.sprite = { url: "./data/textures/archer_girl_from_sketch.png", pixelRatio: 1 };
     // archer.anim = { sequence: "blah", currentFrame: 0 };
     archer.control = initializeControls();

@@ -17,13 +17,16 @@ export interface VelocityComponent {
  * @param rotationalVel 
  * @param friction 
  */
-export function setVelocity(acceleration: number, positionalVel?: Vector3, rotationalVel?: Euler, friction?: number): VelocityComponent {
+export function setVelocity(acceleration: number, friction?: number, positionalVel?: Vector3, rotationalVel?: Euler): VelocityComponent {
     let velocity: VelocityComponent = { 
         acceleration: acceleration,
         positional: null,
         rotational: null,
         friction: undefined
     };
+
+    if (friction)
+        velocity.friction = friction;
 
     if (positionalVel)
         velocity.positional = positionalVel;
@@ -34,9 +37,6 @@ export function setVelocity(acceleration: number, positionalVel?: Vector3, rotat
         velocity.rotational = rotationalVel;
     else
         velocity.rotational = new Euler();
-
-    if (friction)
-        velocity.friction = friction;
 
     return velocity;
 }

@@ -9,7 +9,7 @@ export function createMagician(state: BaseState, message: ClientEventMessage, po
     let magician = new Entity();
     magician.player = { id: message.clientId };
     magician.pos = pos;
-    magician.vel = setVelocity(1);
+    magician.vel = setVelocity(15, 0.5);
     magician.sprite = { url: "./data/textures/snow.png", pixelRatio: 4 };
     // magician.anim = { sequence: "blah", currentFrame: 0 };
     magician.control = initializeControls();
