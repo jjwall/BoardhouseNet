@@ -1,8 +1,8 @@
 import { processClientMessages, processQueriedInputs } from "../../messaging/processclientmessages";
 import { kenneyFantasy } from "../../../modules/tilemapping/tilemaps/kenneyfantasy";
-import { initializeControls } from "../../components/initializers";
 import { setPosition } from "../../components/position";
 import { velocitySystem } from "../../systems/velocity";
+import { setControls } from "../../components/control";
 import { controlSystem } from "../../systems/control";
 import { playerSystem } from "../../systems/player";
 import { BaseState } from "../../server/basestate";
@@ -30,7 +30,7 @@ export class GameState extends BaseState {
         // TODO: Make it where you don't have to do this, delay on entity creation breaks stuff
         // I guess just create other ents first
         let ent = new Entity();
-        ent.control = initializeControls();
+        ent.control = setControls();
         this.registerEntity(ent, server);
 
         let cottage1 = new Entity();

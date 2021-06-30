@@ -3,7 +3,6 @@ import { GameState } from "../states/gameplay/gamestate";
 import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientInputMessage } from "../../packets/clientinputmessage";
-import { initializeControls } from "../components/initializers";
 import { sendCreateEntitiesMessage } from "./sendmessages";
 import { Server } from "../server/server";
 import { MessageTypes } from "../../packets/messagetypes";
@@ -118,7 +117,6 @@ function processSpectatorJoinedMessage(message: ClientEventMessage, server: Serv
     player.pos = setPosition(350, 150, 5);
     player.sprite = { url: "./data/textures/snow.png", pixelRatio: 4 };
     player.anim = { sequence: "blah", currentFrame: 0 };
-    player.control = initializeControls();
 
     state.registerEntity(player, server);
 
