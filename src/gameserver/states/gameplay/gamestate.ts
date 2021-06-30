@@ -1,9 +1,9 @@
 import { processClientMessages, processQueriedInputs } from "../../messaging/processclientmessages";
 import { kenneyFantasy } from "../../../modules/tilemapping/tilemaps/kenneyfantasy";
-import { controlSystem } from "../../systems/coresystems";
 import { initializeControls } from "../../components/initializers";
 import { setPosition } from "../../components/position";
 import { velocitySystem } from "../../systems/velocity";
+import { controlSystem } from "../../systems/control";
 import { playerSystem } from "../../systems/player";
 import { BaseState } from "../../server/basestate";
 import { Server } from "./../../server/server";
