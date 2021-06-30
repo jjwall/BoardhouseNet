@@ -20,7 +20,7 @@ export function velocitySystem(ents: ReadonlyArray<Entity>, state: BaseState) : 
             const newPos = new Vector3(ent.pos.loc.x, ent.pos.loc.y, 0);
             ent.pos.dir.applyEuler(ent.vel.rotational); // TODO: Need to have entityChange check for rotations.
 
-            if (newPos !== currentPos)
+            if (newPos.x !== currentPos.x || newPos.y !== currentPos.y)
                 state.server.entityChangeList.push(ent);
         }
     });
