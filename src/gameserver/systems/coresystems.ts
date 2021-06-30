@@ -16,41 +16,54 @@ import { Vector3 } from "three";
 // -> Make sure this updates other player ents on current player's client.
 // TODO: Set up HitBox system & component.
 export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState) {
+    let movementDirection = new Vector3(0,0,0);
     ents.forEach(ent => {
         let updatePlayerEnt = false;
-        if (ent.control && ent.pos) {
+        if (ent.control && ent.pos && ent.vel) {
             // Left
             if (ent.control.left) {
-                ent.pos.loc.x -= 25;
+                // ent.pos.loc.x -= 25;
                 // ent.pos.dir.setX(-1);
                 // ent.pos.dir.setY(0);
+                movementDirection.setX(-1);
+                movementDirection.setY(0);
+                ent.vel.positional.add(movementDirection.multiplyScalar(ent.vel.acceleration));
                 ent.pos.flipX = true;
 
-                updatePlayerEnt = true;
+                // updatePlayerEnt = true;
             }
 
             // Right
             if (ent.control.right) {
-                ent.pos.loc.x += 25;
+                // ent.pos.loc.x += 25;
                 // ent.pos.dir.setX(1);
                 // ent.pos.dir.setY(0);
+                movementDirection.setX(1);
+                movementDirection.setY(0);
+                ent.vel.positional.add(movementDirection.multiplyScalar(ent.vel.acceleration));
                 ent.pos.flipX = false;
 
-                updatePlayerEnt = true;
+                // updatePlayerEnt = true;
             }
 
             // Up
             if (ent.control.up) {
-                ent.pos.loc.y += 25;
+                // ent.pos.loc.y += 25;
+                movementDirection.setX(0);
+                movementDirection.setY(1);
+                ent.vel.positional.add(movementDirection.multiplyScalar(ent.vel.acceleration));
 
-                updatePlayerEnt = true;
+                // updatePlayerEnt = true;
             }
 
             // Down 
             if (ent.control.down) {
-                ent.pos.loc.y -= 25;
+                // ent.pos.loc.y -= 25;
+                movementDirection.setX(0);
+                movementDirection.setY(-1);
+                ent.vel.positional.add(movementDirection.multiplyScalar(ent.vel.acceleration));
 
-                updatePlayerEnt = true;
+                // updatePlayerEnt = true;
             }
 
             // Reduce attack cooldown by one tick.
@@ -85,9 +98,9 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState) {
             // Check to see if we need to push changed ent data to change list.
             // Note: will need to do something akin to this after all systems are run so we don't have
             // multiple update items to the same ent in the change list for one tick of the engine.
-            if (updatePlayerEnt) {
-                state.server.entityChangeList.push(ent);
-            }
+            // if (updatePlayerEnt) {
+            //     state.server.entityChangeList.push(ent);
+            // }
         }
     });
 }
