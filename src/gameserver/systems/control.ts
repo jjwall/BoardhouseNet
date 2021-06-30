@@ -9,7 +9,7 @@ import { Vector3 } from "three";
  * Control system.
  * @param ents Ents from the control entitities registry.
  */
-// TODO: replace current pos updating with BoardhouseTS style updating
+// TODO: (done) replace current pos updating with BoardhouseTS style updating
 // i.e. have a PositionSystem / VelocitySystem that handles updates
 // TODO: Refactor back end to separate out components
 // TODO: (done) Handle dir for ents facing left or right based on their movement
