@@ -1,8 +1,8 @@
-import { Vector3 } from "three";
 import { PositionComponent } from "../components/position";
 import { VelocityComponent } from "../components/velocity";
-import { BaseState } from "../server/basestate";
 import { Entity } from "../states/gameplay/entity";
+import { BaseState } from "../server/basestate";
+import { Vector3 } from "three";
 
 /**
  * Velocity System.
