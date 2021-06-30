@@ -1,7 +1,7 @@
 /**
  * Control component.
  */
-export interface ControlComponent {
+ export interface ControlComponent {
     jump: boolean;
     attack: boolean;
     attackCooldownTicks: number;

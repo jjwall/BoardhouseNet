@@ -1,4 +1,4 @@
-import { ControlComponent } from "./corecomponents";
+import { ControlComponent } from "./control";
 
 /**
  * Helper for initializing ControlComponent with starting values.
