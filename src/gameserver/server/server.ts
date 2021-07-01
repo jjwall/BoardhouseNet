@@ -8,6 +8,7 @@ export interface ServerConfig {
     clientConnection: WebSocket, // lobbyClientConnection
     gameServerPort: string,
     gameTicksPerSecond: number;
+    displayHitBoxes: boolean;
 }
 
 export class Server {
@@ -16,6 +17,7 @@ export class Server {
         this.clientConnection = config.clientConnection;
         this.gameServerPort = config.gameServerPort;
         this.millisecondsPerGameTick = 1000 / config.gameTicksPerSecond;
+        this.displayHitBoxes = config.displayHitBoxes;
 
         // Initialize non-config fields.
         this.playerClientIds = [];
@@ -29,6 +31,7 @@ export class Server {
     public clientConnection: WebSocket; // lobbyClientConnection
     public gameServerPort: string;
     public millisecondsPerGameTick: number;
+    public displayHitBoxes: boolean;
     // #endregion
 
     // #region Non-config fields
