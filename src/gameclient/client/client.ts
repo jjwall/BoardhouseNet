@@ -30,7 +30,7 @@ export interface ClientConfig {
     screenHeight: number;
     // gameTicksPerSecond: number; // -> don't need
     // displayFPS: boolean; // -> set up later
-    // displayHitBoxes: boolean; // -> set up later
+    displayHitBoxes: boolean;
     // globalErrorHandling: boolean; // -> set up later
     fontUrls: string[];
     textureUrls: string[];
@@ -60,7 +60,7 @@ export class Client {
         this.screenHeight = config.screenHeight;
         // this.millisecondsPerGameTick = 1000 / config.gameTicksPerSecond;
         // this.displayFPS = config.displayFPS;
-        // this.displayHitBoxes = config.displayHitBoxes;
+        this.displayHitBoxes = config.displayHitBoxes;
         // this.globalErrorHandling = config.globalErrorHandling;
         this.fontUrls = config.fontUrls;
         this.textureUrls = config.textureUrls;

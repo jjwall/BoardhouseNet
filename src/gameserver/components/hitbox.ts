@@ -57,19 +57,19 @@ export function setHitbox(entMesh: Mesh, collideType: HitboxTypes, collidesWith:
  * @param hitbox
  * @param color color of hitBox graphic. Defaults to red if no parameter is passed in.
  */
-export function setHitboxGraphic(server: Server, entMesh: Mesh, hitbox: HitboxComponent, color: string = "#DC143C") : void {
-    if (server.displayHitBoxes) {
-        const hitBoxPlaneGeometry = new PlaneGeometry(hitbox.width, hitbox.height);
-        const hitBoxEdgesGeometry = new EdgesGeometry(hitBoxPlaneGeometry);
-        const hitBoxMaterial = new LineBasicMaterial({ color: color });
-        const hitBoxWireframe = new LineSegments(hitBoxEdgesGeometry, hitBoxMaterial);
-        hitBoxWireframe.position.x += hitbox.offsetX;
-        hitBoxWireframe.position.y += hitbox.offsetY;
-        // TODO // Don't rotate hitbox graphic with the parent object, actual hitbox does not rotate.
-        // -> need to add gyroscope from three.js for this
-        entMesh.add(hitBoxWireframe);
-    }
-}
+// export function setHitboxGraphic(server: Server, entMesh: Mesh, hitbox: HitboxComponent, color: string = "#DC143C") : void {
+//     if (server.displayHitBoxes) {
+//         const hitBoxPlaneGeometry = new PlaneGeometry(hitbox.width, hitbox.height);
+//         const hitBoxEdgesGeometry = new EdgesGeometry(hitBoxPlaneGeometry);
+//         const hitBoxMaterial = new LineBasicMaterial({ color: color });
+//         const hitBoxWireframe = new LineSegments(hitBoxEdgesGeometry, hitBoxMaterial);
+//         hitBoxWireframe.position.x += hitbox.offsetX;
+//         hitBoxWireframe.position.y += hitbox.offsetY;
+//         // TODO // Don't rotate hitbox graphic with the parent object, actual hitbox does not rotate.
+//         // -> need to add gyroscope from three.js for this
+//         entMesh.add(hitBoxWireframe);
+//     }
+// }
 
 export const getHitbox = (e: Entity): Rect => ({
     left: e.pos.loc.x + e.hitbox.offsetX - e.hitbox.width / 2,

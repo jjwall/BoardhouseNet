@@ -23,7 +23,6 @@ const config: ServerConfig = {
     clientConnection: new WebSocket("ws://localhost:8080/", { origin: "localhost:8080"}), // lobby client connection
     gameServerPort: process.argv[2],
     gameTicksPerSecond: 20,
-    displayHitBoxes: true,
 }
 
 const server = new Server(config);
