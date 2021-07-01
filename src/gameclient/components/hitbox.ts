@@ -11,15 +11,15 @@ import { Client } from "../client/client";
  */
  export function setHitboxGraphic(client: Client, entMesh: Mesh, hitbox: EntityDataHitbox, color: string = "#DC143C") : void {
     if (client.displayHitBoxes) {
-        const hitBoxPlaneGeometry = new PlaneGeometry(hitbox.width, hitbox.height);
-        const hitBoxEdgesGeometry = new EdgesGeometry(hitBoxPlaneGeometry);
-        const hitBoxMaterial = new LineBasicMaterial({ color: color });
-        const hitBoxWireframe = new LineSegments(hitBoxEdgesGeometry, hitBoxMaterial);
-        hitBoxWireframe.position.x += hitbox.offsetX;
-        hitBoxWireframe.position.y += hitbox.offsetY;
+        const hitboxPlaneGeometry = new PlaneGeometry(hitbox.width, hitbox.height);
+        const hitboxEdgesGeometry = new EdgesGeometry(hitboxPlaneGeometry);
+        const hitboxMaterial = new LineBasicMaterial({ color: color });
+        const hitboxWireframe = new LineSegments(hitboxEdgesGeometry, hitboxMaterial);
+        hitboxWireframe.position.x += hitbox.offsetX;
+        hitboxWireframe.position.y += hitbox.offsetY;
         // TODO // Don't rotate hitbox graphic with the parent object, actual hitbox does not rotate.
         // -> need to add gyroscope from three.js for this
-        entMesh.add(hitBoxWireframe);
+        entMesh.add(hitboxWireframe);
     }
 }
 
