@@ -1,5 +1,6 @@
 import { processClientMessages, processQueriedInputs } from "../../messaging/processclientmessages";
 import { kenneyFantasy } from "../../../modules/tilemapping/tilemaps/kenneyfantasy";
+import { collisionSystem } from "../../systems/collision";
 import { setPosition } from "../../components/position";
 import { velocitySystem } from "../../systems/velocity";
 import { setControls } from "../../components/control";
@@ -24,6 +25,7 @@ export class GameState extends BaseState {
         this.registerSystem(controlSystem, "control");
         this.registerSystem(playerSystem, "player");
         this.registerSystem(velocitySystem);
+        this.registerSystem(collisionSystem);
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 
