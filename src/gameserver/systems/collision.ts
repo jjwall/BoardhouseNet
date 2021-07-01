@@ -1,4 +1,4 @@
-import { Rect, Manifold, getHitbox, getManifold, HitBoxComponent, HitBoxTypes } from "./../components/hitbox";
+import { Rect, Manifold, getHitbox, getManifold, HitboxComponent, HitboxTypes } from "./../components/hitbox";
 import { PositionComponent } from "./../components/position";
 import { Entity } from "../states/gameplay/entity";
 
@@ -13,13 +13,13 @@ export function collisionSystem(ents: ReadonlyArray<Entity>) {
     };
 
     const tryOnHit = (a: Entity, b: Entity, m: Manifold) => {
-        if (a.hitBox.onHit && a.hitBox.collidesWith.includes(b.hitBox.collideType)) {
-            a.hitBox.onHit(a, b, m);
+        if (a.hitbox.onHit && a.hitbox.collidesWith.includes(b.hitbox.collideType)) {
+            a.hitbox.onHit(a, b, m);
         }
     };
 
     const allBodies = ents
-        .filter(e => e.hitBox && e.pos)
+        .filter(e => e.hitbox && e.pos)
         .map((e): Body => ({ ent: e, rect: getHitbox(e) }));
 
     allBodies.sort((a, b) => a.rect.left - b.rect.left);

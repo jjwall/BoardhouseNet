@@ -7,9 +7,9 @@ import { Server } from "../server/server";
  * HitBox Component that represents the area that when colliding with
  * any of the "collidesWith" enum entries, entity will "hit" them.
  */
-export interface HitBoxComponent {
-    collideType: HitBoxTypes;
-    collidesWith: HitBoxTypes[];
+export interface HitboxComponent {
+    collideType: HitboxTypes;
+    collidesWith: HitboxTypes[];
     height: number;
     width: number;
     offsetX: number;
@@ -30,23 +30,23 @@ export interface HitBoxComponent {
  * @param offsetX (Default 0) Number of pixels to offset the hitbox's x position.
  * @param offsetY (Default 0) Number of pixels to offset the hitbox's y position.
  */
-export function setHitBox(entMesh: Mesh, collideType: HitBoxTypes, collidesWith: HitBoxTypes[], heightOverride?: number, widthOverride?: number, offsetX: number = 0, offsetY: number = 0) : HitBoxComponent {
-    let hitBox: HitBoxComponent = { collideType: collideType, collidesWith: collidesWith, height: 0, width: 0, offsetX: offsetX, offsetY: offsetY };
+export function setHitbox(entMesh: Mesh, collideType: HitboxTypes, collidesWith: HitboxTypes[], heightOverride?: number, widthOverride?: number, offsetX: number = 0, offsetY: number = 0) : HitboxComponent {
+    let hitbox: HitboxComponent = { collideType: collideType, collidesWith: collidesWith, height: 0, width: 0, offsetX: offsetX, offsetY: offsetY };
 
     if (heightOverride && widthOverride) {
         if (heightOverride <= 0 || widthOverride <= 0)
             throw Error("overrides can't be less than or equal to 0.");
-        hitBox.height = heightOverride;
-        hitBox.width = widthOverride;
+        hitbox.height = heightOverride;
+        hitbox.width = widthOverride;
     }
     else {
         const boundingBox = new Box3().setFromObject(entMesh);
 
-        hitBox.height = boundingBox.max.y - boundingBox.min.y;
-        hitBox.width =  boundingBox.max.x - boundingBox.min.x;
+        hitbox.height = boundingBox.max.y - boundingBox.min.y;
+        hitbox.width =  boundingBox.max.x - boundingBox.min.x;
     }
 
-    return hitBox;
+    return hitbox;
 }
 
 /**
@@ -54,17 +54,17 @@ export function setHitBox(entMesh: Mesh, collideType: HitBoxTypes, collidesWith:
  * Used for testing hit collision assumptions.
  * @param entMesh Could be optional. Not every hitBox will have an associated ent mesh.
  * However, would need a way to remove it if added directly to scene.
- * @param hitBox
+ * @param hitbox
  * @param color color of hitBox graphic. Defaults to red if no parameter is passed in.
  */
-export function setHitBoxGraphic(server: Server, entMesh: Mesh, hitBox: HitBoxComponent, color: string = "#DC143C") : void {
+export function setHitboxGraphic(server: Server, entMesh: Mesh, hitbox: HitboxComponent, color: string = "#DC143C") : void {
     if (server.displayHitBoxes) {
-        const hitBoxPlaneGeometry = new PlaneGeometry(hitBox.width, hitBox.height);
+        const hitBoxPlaneGeometry = new PlaneGeometry(hitbox.width, hitbox.height);
         const hitBoxEdgesGeometry = new EdgesGeometry(hitBoxPlaneGeometry);
         const hitBoxMaterial = new LineBasicMaterial({ color: color });
         const hitBoxWireframe = new LineSegments(hitBoxEdgesGeometry, hitBoxMaterial);
-        hitBoxWireframe.position.x += hitBox.offsetX;
-        hitBoxWireframe.position.y += hitBox.offsetY;
+        hitBoxWireframe.position.x += hitbox.offsetX;
+        hitBoxWireframe.position.y += hitbox.offsetY;
         // TODO // Don't rotate hitbox graphic with the parent object, actual hitbox does not rotate.
         // -> need to add gyroscope from three.js for this
         entMesh.add(hitBoxWireframe);
@@ -72,10 +72,10 @@ export function setHitBoxGraphic(server: Server, entMesh: Mesh, hitBox: HitBoxCo
 }
 
 export const getHitbox = (e: Entity): Rect => ({
-    left: e.pos.loc.x + e.hitBox.offsetX - e.hitBox.width / 2,
-    right: e.pos.loc.x + e.hitBox.offsetX + e.hitBox.width / 2,
-    bottom: e.pos.loc.y + e.hitBox.offsetY - e.hitBox.height / 2,
-    top: e.pos.loc.y + e.hitBox.offsetY + e.hitBox.height / 2,
+    left: e.pos.loc.x + e.hitbox.offsetX - e.hitbox.width / 2,
+    right: e.pos.loc.x + e.hitbox.offsetX + e.hitbox.width / 2,
+    bottom: e.pos.loc.y + e.hitbox.offsetY - e.hitbox.height / 2,
+    top: e.pos.loc.y + e.hitbox.offsetY + e.hitbox.height / 2,
 });
 
 export const getManifold = (a: Rect, b: Rect): Manifold => {
@@ -98,7 +98,7 @@ export const getManifold = (a: Rect, b: Rect): Manifold => {
  * as long as they are properly set in HitBox "collidesWith" property
  * and HitBox "type" property.
  */
-export const enum HitBoxTypes {
+export const enum HitboxTypes {
     PLAYER,
     ENEMY,
 }

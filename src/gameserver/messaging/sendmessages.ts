@@ -36,6 +36,15 @@ export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
                 player: ent.player,
             }
 
+            if (ent.hitbox) {
+                entData.hitbox = {
+                    height: ent.hitbox.height,
+                    width: ent.hitbox.width,
+                    offsetX: ent.hitbox.offsetX,
+                    offsetY: ent.hitbox.offsetY,
+                }
+            }
+
             message.data.push(entData);
         }
     });
