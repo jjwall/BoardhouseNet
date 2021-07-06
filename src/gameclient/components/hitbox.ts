@@ -1,4 +1,4 @@
-import { Mesh, PlaneGeometry, EdgesGeometry, LineSegments, LineBasicMaterial } from "three";
+import { Mesh, PlaneGeometry, EdgesGeometry, LineSegments, LineBasicMaterial, Group } from "three";
 import { Client } from "../client/client";
 
 /**
@@ -17,9 +17,9 @@ import { Client } from "../client/client";
         const hitboxWireframe = new LineSegments(hitboxEdgesGeometry, hitboxMaterial);
         hitboxWireframe.position.x += hitbox.offsetX;
         hitboxWireframe.position.y += hitbox.offsetY;
-        // TODO // Don't rotate hitbox graphic with the parent object, actual hitbox does not rotate.
-        // -> need to add gyroscope from three.js for this
-        entMesh.add(hitboxWireframe);
+        const container = new Group();
+        entMesh.add(container);
+        container.add(hitboxWireframe);
     }
 }
 
