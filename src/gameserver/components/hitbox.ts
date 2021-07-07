@@ -20,31 +20,21 @@ export interface HitboxComponent {
 /**
  * Helper for initializing an entity's hit box component.
  * Note: ``onHit`` callback should be set independently.
- * @param entMesh An entity's mesh A.K.A. sprite to be set before calling this function.
  * @param collideType This entity's HitBox type.
  * @param collidesWith List of HitBox types the HitBox can collide with.
- * @param heightOverride (Optional) Exact number of pixels to set for the hitBox's height.
- * Must also set ``widthOverride`` for this to take effect.
- * @param widthOverride (Optional) Exact number of pixels to set for the hitBox's width.
- * Must also set ``heightOverride`` for this to take effect.
+ * @param height Exact number of pixels to set for the hitBox's height.
+ * @param width Exact number of pixels to set for the hitBox's width.
  * @param offsetX (Default 0) Number of pixels to offset the hitbox's x position.
  * @param offsetY (Default 0) Number of pixels to offset the hitbox's y position.
  */
-export function setHitbox(entMesh: Mesh, collideType: HitboxTypes, collidesWith: HitboxTypes[], heightOverride?: number, widthOverride?: number, offsetX: number = 0, offsetY: number = 0) : HitboxComponent {
+export function setHitbox(collideType: HitboxTypes, collidesWith: HitboxTypes[], height: number, width: number, offsetX: number = 0, offsetY: number = 0) : HitboxComponent {
     let hitbox: HitboxComponent = { collideType: collideType, collidesWith: collidesWith, height: 0, width: 0, offsetX: offsetX, offsetY: offsetY };
 
-    if (heightOverride && widthOverride) {
-        if (heightOverride <= 0 || widthOverride <= 0)
-            throw Error("overrides can't be less than or equal to 0.");
-        hitbox.height = heightOverride;
-        hitbox.width = widthOverride;
-    }
-    else {
-        const boundingBox = new Box3().setFromObject(entMesh);
-
-        hitbox.height = boundingBox.max.y - boundingBox.min.y;
-        hitbox.width =  boundingBox.max.x - boundingBox.min.x;
-    }
+    if (height <= 0 || width <= 0)
+        throw Error("overrides can't be less than or equal to 0.");
+        
+    hitbox.height = height;
+    hitbox.width = width;
 
     return hitbox;
 }
