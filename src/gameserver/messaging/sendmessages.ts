@@ -5,6 +5,7 @@ import { Server } from "./../server/server";
 import { MessageTypes } from "../../packets/messagetypes";
 import { NetEventMessage } from "../../packets/neteventmessage";
 import { NetEventTypes } from "../../packets/neteventtypes";
+import { EntityData } from "../../packets/entitydata";
 
 export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
     let message: NetEntityMessage = {

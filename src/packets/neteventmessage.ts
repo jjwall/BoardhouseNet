@@ -1,4 +1,5 @@
 import { NetEventTypes } from "./neteventtypes";
+import { EntityData } from "./entitydata";
 import { Message } from "./message";
 
 export interface NetEventMessage extends Message {

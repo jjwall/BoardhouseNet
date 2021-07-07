@@ -11,6 +11,7 @@ import { NetIdToEntityMap } from "./interfaces";
 import { ClientRender } from "../renders/clientrender";
 import { PlayerClassTypes } from "../../packets/playerclasstypes";
 import { renderTileMap } from "./rendertilemap";
+import { WorldTypes } from "../../packets/networldmessage";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -100,6 +101,7 @@ export class Client {
     public screenHeight: number;
     public worldWidth: number; // set in renderTileMap method
     public worldHeight: number; // set in renderTileMap method
+    public worldType: WorldTypes;
 
     public millisecondsPerGameTick: number;
 

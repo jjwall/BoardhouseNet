@@ -1,3 +1,4 @@
+import { NetWorldEventTypes, NetWorldMessage } from "../../packets/networldmessage";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
 import { NetEntityMessage } from "../../packets/netentitymessage";
 import { NetEventMessage } from "../../packets/neteventmessage";
@@ -25,6 +26,9 @@ export function processNetMessages(client: Client) {
                 break;
             case MessageTypes.NET_EVENT_MESSAGE:
                 processNetEventMessage(message as NetEventMessage, client);
+                break;
+            case MessageTypes.NET_WORLD_MESSAGE:
+                processNetWorldMessage(message as NetWorldMessage, client);
                 break;
         }
     }
@@ -169,4 +173,22 @@ function renderPlayerAttackAnim(message: NetEventMessage, client: Client) {
     });
 }
 
+//#endregion
+
+//#region Net World Messages
+function processNetWorldMessage(message: NetWorldMessage, client: Client) {
+    switch (message.eventType) {
+        case NetWorldEventTypes.LOAD_WORLD:
+            loadWorld(message, client);
+            break;
+        // case ...
+    }
+}
+
+function loadWorld(message: NetWorldMessage, client: Client) {
+    if (client.worldType !== message.data.worldType) {
+        client.worldType = message.data.worldType;
+        // load world...
+    }
+}
 //#endregion

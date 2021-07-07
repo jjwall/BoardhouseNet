@@ -1,4 +1,4 @@
-interface EntityData {
+export interface EntityData {
     netId?: number;
     pos?: {
         loc: {
