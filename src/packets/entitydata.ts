@@ -14,6 +14,12 @@ interface EntityData {
         flipX?: boolean;
         teleport?: boolean;
     },
+    hitbox?: {
+        height: number;
+        width: number;
+        offsetX: number;
+        offsetY: number;
+    },
     sprite?: {
         url: string;
         pixelRatio: number;

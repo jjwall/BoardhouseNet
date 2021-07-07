@@ -1,4 +1,5 @@
 import { ClientEventMessage } from "../../packets/clienteventmessage";
+import { setHitbox, HitboxTypes } from "../components/hitbox";
 import { PositionComponent } from "../components/position";
 import { setVelocity } from "../components/velocity";
 import { setControls } from "../components/control";
@@ -13,6 +14,7 @@ export function createMagician(state: BaseState, message: ClientEventMessage, po
     magician.sprite = { url: "./data/textures/snow.png", pixelRatio: 4 };
     // magician.anim = { sequence: "blah", currentFrame: 0 };
     magician.control = setControls();
+    magician.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 50, 50, -100, -10);
     state.registerEntity(magician, state.server);
 
     return magician;

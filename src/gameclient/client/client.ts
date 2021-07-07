@@ -30,7 +30,7 @@ export interface ClientConfig {
     screenHeight: number;
     // gameTicksPerSecond: number; // -> don't need
     // displayFPS: boolean; // -> set up later
-    // displayHitBoxes: boolean; // -> set up later
+    displayHitBoxes: boolean;
     // globalErrorHandling: boolean; // -> set up later
     fontUrls: string[];
     textureUrls: string[];
@@ -60,7 +60,7 @@ export class Client {
         this.screenHeight = config.screenHeight;
         // this.millisecondsPerGameTick = 1000 / config.gameTicksPerSecond;
         // this.displayFPS = config.displayFPS;
-        // this.displayHitBoxes = config.displayHitBoxes;
+        this.displayHitBoxes = config.displayHitBoxes;
         // this.globalErrorHandling = config.globalErrorHandling;
         this.fontUrls = config.fontUrls;
         this.textureUrls = config.textureUrls;
@@ -272,10 +272,18 @@ export class Client {
                 else
                     ent.sprite.position.lerp(targetPos, 0.2);
 
-                if (ent.pos.flipX)
+                if (ent.pos.flipX) { 
                     ent.sprite.scale.x = -1;
-                else
+                    
+                    if (this.displayHitBoxes) // Don't scale hitbox graphics.
+                        ent.sprite.children.map(child => child.scale.x = 1.0 / ent.sprite.scale.x);
+                }
+                else {
                     ent.sprite.scale.x = 1;
+
+                    if (this.displayHitBoxes) // Don't scale hitbox graphics.
+                        ent.sprite.children.map(child => child.scale.x = 1.0 / ent.sprite.scale.x);
+                }
             
                 ent.sprite.rotation.set(0, 0, Math.atan2(ent.pos.dir.y, ent.pos.dir.x));
             }
@@ -297,9 +305,9 @@ export class Client {
                         render.sprite.position.lerp(targetPos, 0.2);
                     
                     if (render.pos.flipX)
-                        render.sprite.scale.x = -1;
+                        render.sprite.scale.x = -1; // TODO: Account for hitbox graphics.
                     else
-                        render.sprite.scale.x = 1;
+                        render.sprite.scale.x = 1; // TODO: Account for hitbox graphics.
                 
                     render.sprite.rotation.set(0, 0, Math.atan2(render.pos.dir.y, render.pos.dir.x));
                 }

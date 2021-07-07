@@ -1,15 +1,15 @@
-import { ClientEventMessage } from "../../packets/clienteventmessage";
-import { NetEntityMessage } from "../../packets/netentitymessage";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
-import { Client } from "../client/client";
-import { ClientEntity } from "../client/cliententity";
-import { Message } from "../../packets/message";
-import { MessageTypes } from "../../packets/messagetypes";
+import { NetEntityMessage } from "../../packets/netentitymessage";
 import { NetEventMessage } from "../../packets/neteventmessage";
 import { NetEventTypes } from "../../packets/neteventtypes";
+import { MessageTypes } from "../../packets/messagetypes";
+import { setHitboxGraphic } from "../components/hitbox";
 import { ClientRender } from "../renders/clientrender";
+import { ClientEntity } from "../client/cliententity";
 import { setPosition } from "../components/position";
 import { setSprite } from "../components/sprite";
+import { Message } from "../../packets/message";
+import { Client } from "../client/client";
 import { Vector3 } from "three";
 
 // Handle message based on the type of NetMessage.
@@ -62,6 +62,9 @@ function createEntities(message: NetEntityMessage, client: Client) {
             clientEnt.pos = setPosition(entData.pos.loc.x, entData.pos.loc.y, entData.pos.loc.z, dir, entData.pos.flipX);
             clientEnt.sprite = setSprite(entData.sprite.url, client.gameScene, client, entData.sprite.pixelRatio);
             clientEnt.pos.teleport = entData.pos.teleport;
+
+            if (entData.hitbox)
+                setHitboxGraphic(client, clientEnt.sprite, entData.hitbox);
 
             if (entData.anim) {
                 // clientEnt.anim = setAnim(...);
