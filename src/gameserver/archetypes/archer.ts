@@ -5,7 +5,6 @@ import { setVelocity } from "../components/velocity";
 import { setControls } from "../components/control";
 import { Entity } from "../states/gameplay/entity";
 import { BaseState } from "../server/basestate";
-import { Mesh } from "three";
 
 export function createArcher(state: BaseState, message: ClientEventMessage, pos: PositionComponent): Entity {
     let archer = new Entity();
