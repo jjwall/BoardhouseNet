@@ -20,20 +20,18 @@ export function processNetMessages(client: Client) {
         const message: Message = JSON.parse(messageEvent.data);
         console.log("boardhouse: back to front message");
 
-        switch (message.messageType) {
-            case MessageTypes.NET_ENTITY_MESSAGE:
-                const netEntityMessage = message as NetEntityMessage;
-                if (client.worldType ===  netEntityMessage.worldType)
-                    processNetEntityMessage(netEntityMessage, client);
-                break;
-            case MessageTypes.NET_EVENT_MESSAGE:
-                const netEventMessage = message as NetEventMessage;
-                if (client.worldType ===  netEventMessage.worldType)
-                    processNetEventMessage(netEventMessage, client);
-                break;
-            // case MessageTypes.NET_WORLD_MESSAGE:
-            //     processNetWorldMessage(message as NetWorldMessage, client);
-            //     break;
+        if (client.worldType === message.worldType) {
+            switch (message.messageType) {
+                case MessageTypes.NET_ENTITY_MESSAGE:
+                    processNetEntityMessage(message as NetEntityMessage, client);
+                    break;
+                case MessageTypes.NET_EVENT_MESSAGE:
+                    processNetEventMessage(message as NetEventMessage, client);
+                    break;
+                // case MessageTypes.NET_WORLD_MESSAGE:
+                //     processNetWorldMessage(message as NetWorldMessage, client);
+                //     break;
+            }
         }
     }
 }
