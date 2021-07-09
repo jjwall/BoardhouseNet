@@ -29,7 +29,10 @@ export abstract class BaseState {
      * @param ecsKey 
      */
     public getEntitiesByKey<E>(ecsKey: keyof E | "global") {
-        return this.entityRegistry[ecsKey.toString()] as E[];
+        if (this.entityRegistry[ecsKey.toString()])
+            return this.entityRegistry[ecsKey.toString()] as E[];
+        else
+            return [];
     }
 
     /**
