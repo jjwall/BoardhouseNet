@@ -165,3 +165,9 @@ export function sendNetEventMessage(ents: Entity[], server: Server, netEventType
     });
 }
 //#endregion
+
+//#region Send Net World Messages
+export function sendLoadWorldMessage() {
+    // ...
+}
+//#endregion
