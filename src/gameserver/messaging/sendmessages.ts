@@ -131,10 +131,11 @@ export function sendDestroyEntitiesMessage(ents: Entity[], server: Server, world
 // i.e. look at the attack in core systems, all that could be in a method called "sendPlayerAttackNetEventMessage" or something...
 // This function assumes entity data is needed to be sent for generic "sendNetEventMessage" method - in the future we may want 
 // more functionality, for example one net event might be "SwitchToEndGameScreen" or something and no ent data would need to be sent
-export function sendNetEventMessage(ents: Entity[], server: Server, netEventType: NetEventTypes) {
+export function sendNetEventMessage(ents: Entity[], server: Server, netEventType: NetEventTypes, worldType: WorldTypes) {
     let message: NetEventMessage = {
         messageType: MessageTypes.NET_EVENT_MESSAGE,
         eventType: netEventType,
+        worldType: worldType,
         data: [],
     }
 

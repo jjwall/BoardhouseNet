@@ -3,6 +3,7 @@ import { NetIdToEntityMap, QueriedInput } from "./interfaces";
 import { Entity } from "../states/gameplay/entity";
 import { BaseState } from "./basestate";
 import * as WebSocket from "ws";
+import { processQueriedInputs } from "../messaging/processclientmessages";
 
 export interface ServerConfig {
     clientConnection: WebSocket, // lobbyClientConnection
@@ -42,4 +43,9 @@ export class Server {
     public entityChangeList: Entity[] = [];
     public queriedInputs: QueriedInput[] = [];
     // #endregion
+
+    public update() : void {
+        // processClientMessages(this.getEntitiesByKey<Entity>("player"), this.server);
+        processQueriedInputs(this);
+    }
 }

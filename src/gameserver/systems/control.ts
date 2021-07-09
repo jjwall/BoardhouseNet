@@ -84,7 +84,7 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState) {
                     attackEnt.pos = setPosition(ent.pos.loc.x + attackPosOffset, ent.pos.loc.y, ent.pos.loc.z + 1, atkDirection);
                     attackEnt.sprite = { url: "./data/textures/mediumExplosion1.png", pixelRatio: 4 };
                     attackEnts.push(attackEnt);
-                    sendNetEventMessage(attackEnts, state.server, NetEventTypes.PLAYER_ATTACK_ANIM_DISPLAY);
+                    sendNetEventMessage(attackEnts, state.server, NetEventTypes.PLAYER_ATTACK_ANIM_DISPLAY, state.worldType);
                   
                     // Start cooldown.
                     ent.control.attackCooldownTicks = 60;

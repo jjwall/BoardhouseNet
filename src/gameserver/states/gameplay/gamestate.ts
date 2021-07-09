@@ -65,7 +65,7 @@ export class GameState extends BaseState {
 
     public update() : void {
         processClientMessages(this.getEntitiesByKey<Entity>("player"), this.server);
-        processQueriedInputs(this.getEntitiesByKey<Entity>("player"), this.server, this);
+        // processQueriedInputs(this.getEntitiesByKey<Entity>("player"), this.server, this);
         this.runSystems();
     }
 }

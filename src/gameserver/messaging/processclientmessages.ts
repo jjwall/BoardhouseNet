@@ -14,6 +14,7 @@ import { createArcher } from "../archetypes/archer";
 import { PositionComponent, setPosition } from "../components/position";
 import { WorldTypes } from "../../packets/networldmessage";
 import { BaseState } from "../server/basestate";
+import { QueriedInput } from "../server/interfaces";
 
 // Will need more info pertaining to INPUT_TO_QUERY event.
 export function processClientMessages(ents: ReadonlyArray<Entity>, server: Server) {
@@ -139,8 +140,11 @@ function processSpectatorJoinedMessage(message: ClientEventMessage, server: Serv
 
 // TRY TO REDUCE THIS TO BIG O OF N and not N^2
 // An alternative approach would be to make a table for players... but a small list for now will do.
-export function processQueriedInputs(ents: ReadonlyArray<Entity>, server: Server, state: GameState) {
+export function processQueriedInputs(server: Server) {
     server.queriedInputs.forEach(input => {
+        const currentWorld = server.worldEngines.find(worldEngine => worldEngine.worldType === input.worldType);
+        const ents = currentWorld.getEntitiesByKey<Entity>("player");
+
         ents.forEach(ent => {
             if (ent.player && ent.control) {
                 if (ent.player.id === input.clientId) {
@@ -160,7 +164,12 @@ export function processQueriedInputs(ents: ReadonlyArray<Entity>, server: Server
 }
 
 function queryAttackInputMessage(message: ClientInputMessage, server: Server) {
-    server.queriedInputs.push({inputType: message.inputType, clientId: message.clientId});
+    const quieredAttackInput: QueriedInput = {
+        inputType: message.inputType,
+        worldType: message.worldType,
+        clientId: message.clientId,
+    }
+    server.queriedInputs.push(quieredAttackInput);
 }
 
 function processAttackInputMessage(playerEnt: Entity) {

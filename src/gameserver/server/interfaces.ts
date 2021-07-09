@@ -3,6 +3,7 @@ import { BaseState } from "./basestate";
 import { Entity } from "../states/gameplay/entity";
 import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientInputTypes } from "../../packets/clientinputtypes";
+import { WorldTypes } from "../../packets/networldmessage";
 
 export interface NetIdToEntityMap {
     [netId: number]: Entity;
@@ -18,5 +19,6 @@ export interface RegistryKeyToEntityListMap {
 
 export interface QueriedInput {
     inputType: ClientInputTypes,
+    worldType: WorldTypes,
     clientId: string,
 }

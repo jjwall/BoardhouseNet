@@ -43,6 +43,7 @@ function main() {
     setInterval(function (): void {
         if (server.worldEngines.length > 0) {
             // call update on last element in state stack
+            server.update();
             server.worldEngines.forEach(worldEngine => worldEngine.update());
         }
         else {

@@ -28,7 +28,7 @@ export function processNetMessages(client: Client) {
                 break;
             case MessageTypes.NET_EVENT_MESSAGE:
                 const netEventMessage = message as NetEventMessage;
-                if (client.worldType ===  netEntityMessage.worldType)
+                if (client.worldType ===  netEventMessage.worldType)
                     processNetEventMessage(netEventMessage, client);
                 break;
             // case MessageTypes.NET_WORLD_MESSAGE:
