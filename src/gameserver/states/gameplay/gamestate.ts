@@ -9,14 +9,15 @@ import { playerSystem } from "../../systems/player";
 import { BaseState } from "../../server/basestate";
 import { Server } from "./../../server/server";
 import { Entity } from "./entity";
+import { WorldTypes } from "../../../packets/networldmessage";
 
 /**
  * GameState that handles updating of all game-related systems.
  */
 export class GameState extends BaseState {
     // public rootWidget: Widget;
-    constructor(server: Server) {
-        super(server);
+    constructor(server: Server, worldType: WorldTypes) {
+        super(server, worldType);
         // Set up ui widget and instance.
         // this.rootWidget = createWidget("root");
         // let rootComponent = renderGameUi(this.uiScene, this.rootWidget);
@@ -63,7 +64,7 @@ export class GameState extends BaseState {
     }
 
     public update() : void {
-        processClientMessages(this.getEntitiesByKey<Entity>("player"), this.server, this);
+        processClientMessages(this.getEntitiesByKey<Entity>("player"), this.server);
         processQueriedInputs(this.getEntitiesByKey<Entity>("player"), this.server, this);
         this.runSystems();
     }

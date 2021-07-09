@@ -2,17 +2,20 @@ import { RegistryKeyToSystemMap, RegistryKeyToEntityListMap } from "./interfaces
 import { Server } from "./../server/server";
 import { Entity } from "../states/gameplay/entity";
 import { sendUpdateEntitiesMessage } from "../messaging/sendmessages";
+import { WorldTypes } from "../../packets/networldmessage";
 // import { Widget } from "./ui/widget";
 
 export abstract class BaseState {
-    protected constructor(server: Server) {
+    protected constructor(server: Server, worldType: WorldTypes) {
         this.server = server;
+        this.worldType = worldType;
     }
 
     public server: Server;
     public abstract update() : void;
 
     // public rootWidget: Widget;
+    public worldType: WorldTypes;
 
     private ecsKeys: Array<string> = [];
 
@@ -135,6 +138,6 @@ export abstract class BaseState {
 
         // Send update all entities after engine tick.
         if (this.server.entityChangeList.length > 0)
-            sendUpdateEntitiesMessage(this.server.entityChangeList, this.server);
+            sendUpdateEntitiesMessage(this.server.entityChangeList, this.server, this.worldType);
     }
 }

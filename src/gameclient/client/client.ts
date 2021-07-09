@@ -21,6 +21,7 @@ export interface ClientConfig {
     /// end state stuff ///
     role: ClientRoleTypes;
     playerClass: PlayerClassTypes;
+    worldType: WorldTypes;
     /// old configs
     connection: WebSocket;
     currentPort: number;
@@ -43,6 +44,7 @@ export class Client {
         ///
         this.role = config.role;
         this.playerClass = config.playerClass;
+        this.worldType = config.worldType;
         ///
         // vvv merged from old configs vvv
         this.connection = config.connection;

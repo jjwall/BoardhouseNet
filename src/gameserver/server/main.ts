@@ -5,6 +5,7 @@ import { last } from "./helpers";
 import { BaseState } from "./basestate";
 import { GameState } from "../states/gameplay/gamestate";
 import { Server, ServerConfig } from "./server";
+import { WorldTypes } from "../../packets/networldmessage";
 
 // Server to-do:
 // 1. (done) Fix BaseState ecs registration - only global and control registering.. others throwing errors - need to debug
@@ -35,13 +36,14 @@ main();
 
 function main() {
     // initialize state stack
-    server.currentState = new GameState(server);
+    server.worldEngines.push(new GameState(server, WorldTypes.WORLD_1));
+    server.worldEngines.push(new GameState(server, WorldTypes.WORLD_2));
 
     // logic update loop
     setInterval(function (): void {
-        if (server.currentState) {
+        if (server.worldEngines.length > 0) {
             // call update on last element in state stack
-            server.currentState.update();
+            server.worldEngines.forEach(worldEngine => worldEngine.update());
         }
         else {
             throw "No state to update";

@@ -5,8 +5,9 @@ import { setVelocity } from "../components/velocity";
 import { setControls } from "../components/control";
 import { Entity } from "../states/gameplay/entity";
 import { BaseState } from "../server/basestate";
+import { Server } from "../server/server";
 
-export function createArcher(state: BaseState, message: ClientEventMessage, pos: PositionComponent): Entity {
+export function createArcher(server: Server, worldEngine: BaseState, message: ClientEventMessage, pos: PositionComponent): Entity {
     let archer = new Entity();
     archer.player = { id: message.clientId };
     archer.pos = pos;
@@ -15,7 +16,8 @@ export function createArcher(state: BaseState, message: ClientEventMessage, pos:
     // archer.anim = { sequence: "blah", currentFrame: 0 };
     archer.control = setControls();
     archer.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 50, 50, 100, -10);
-    state.registerEntity(archer, state.server);
+
+    worldEngine.registerEntity(archer, server);
 
     return archer;
 }

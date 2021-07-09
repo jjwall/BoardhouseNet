@@ -2,6 +2,7 @@ import { IGlobalLobby } from './interfaces';
 import { PortToConnectionsMap } from "../packets/porttoconnectionsmap";
 import { ClientRoleTypes } from '../packets/clientroletypes';
 import { PlayerClassTypes } from '../packets/playerclasstypes';
+import { WorldTypes } from '../packets/networldmessage';
 
 export function populateRoomList(globalLobby: IGlobalLobby, portsToConnectionsMap: PortToConnectionsMap) {
     globalLobby.gameRooms.innerHTML = `
@@ -45,7 +46,8 @@ export function populateRoomList(globalLobby: IGlobalLobby, portsToConnectionsMa
 function joinEvent (element:HTMLElement, port:String, globalLobby: IGlobalLobby) {
     element.onclick = function() {
         const playerClassSelection = classSelectRadioValue(globalLobby);
-        window.location.href = `/playgame?port=${port}&clientId=${globalLobby.currentClientId}&clientRole=${ClientRoleTypes.PLAYER}&playerClass=${playerClassSelection}`
+        const worldSelection = worldSelectRadioValue(globalLobby);
+        window.location.href = `/playgame?port=${port}&clientId=${globalLobby.currentClientId}&clientRole=${ClientRoleTypes.PLAYER}&playerClass=${playerClassSelection}&worldType=${worldSelection}`
         console.log(port);
     }
 }
@@ -77,4 +79,23 @@ function classSelectRadioValue (globalLobby: IGlobalLobby) : PlayerClassTypes {
     }
 
     return playerClassSelection;
+}
+
+function worldSelectRadioValue (globalLobby: IGlobalLobby) : WorldTypes {
+    let worldSelection = WorldTypes.WORLD_1;
+    for (var i = 0, length = globalLobby.worldSelectRadioElements.length; i < length; i++) {
+        if ((globalLobby.worldSelectRadioElements[i] as HTMLInputElement).checked) {
+            switch ((globalLobby.worldSelectRadioElements[i] as HTMLInputElement).value) {
+                case "world_1":
+                    worldSelection = WorldTypes.WORLD_1;
+                    break;
+                case "world_2":
+                    worldSelection = WorldTypes.WORLD_2;
+                    break;
+            }
+          break;
+        }
+    }
+
+    return worldSelection;
 }

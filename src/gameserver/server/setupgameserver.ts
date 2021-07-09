@@ -7,6 +7,7 @@ import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
 import { Server } from "./server";
 import { last } from "./helpers";
+import { BaseState } from "./basestate";
 
 class MyWebSocket extends WebSocket {
     clientId: string;
@@ -46,12 +47,10 @@ export function setUpGameServer(server: Server) {
                     if (playerIndex > -1) {
                         server.playerClientIds.splice(playerIndex, 1);
                         console.log(`(port: ${server.gameServerPort}): player with clientId = "${ws.clientId}" disconnected`);
-                        let ents = server.currentState.getEntitiesByKey<Entity>("player"); // could use netid here
-                        findAndDestroyPlayerEntity(ents, ws.clientId, server);
-                        // let ents = last(boardhouseBack.stateStack).getEntitiesByKey<Entity>("player");
-                        // const player = ents.find(ent => ent.player.id === ws.clientId);
-                        // console.log(player);
-                        // sendDestroyEntityMessage(player, boardhouseBack);
+
+                        server.worldEngines.forEach(worldEngine => {
+                            findAndDestroyPlayerEntity(worldEngine, ws.clientId, server);
+                        });
                     }
                     break;
                 case ClientRoleTypes.SPECTATOR:
@@ -67,7 +66,8 @@ export function setUpGameServer(server: Server) {
     });
 }
 
-function findAndDestroyPlayerEntity(ents: Entity[], clientId: string, server: Server) {
+function findAndDestroyPlayerEntity(worldEngine: BaseState, clientId: string, server: Server) {
+    const ents = worldEngine.getEntitiesByKey<Entity>("player");
     let entsToDestroy: Entity[] = [];
 
     ents.forEach(ent => {
@@ -78,5 +78,6 @@ function findAndDestroyPlayerEntity(ents: Entity[], clientId: string, server: Se
         }
     });
 
-    sendDestroyEntitiesMessage(entsToDestroy, server);
+    if (entsToDestroy.length > 0)
+        sendDestroyEntitiesMessage(entsToDestroy, server, worldEngine);
 }

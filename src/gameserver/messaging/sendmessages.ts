@@ -6,11 +6,14 @@ import { MessageTypes } from "../../packets/messagetypes";
 import { NetEventMessage } from "../../packets/neteventmessage";
 import { NetEventTypes } from "../../packets/neteventtypes";
 import { EntityData } from "../../packets/entitydata";
+import { BaseState } from "../server/basestate";
+import { WorldTypes } from "../../packets/networldmessage";
 
-export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
+export function sendCreateEntitiesMessage(ents: Entity[], server: Server, worldType: WorldTypes) {
     let message: NetEntityMessage = {
         messageType: MessageTypes.NET_ENTITY_MESSAGE,
         eventType: NetEntityEventTypes.CREATE,
+        worldType: worldType,
         data: [],
     }
 
@@ -55,10 +58,11 @@ export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
     });
 }
 
-export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
+export function sendUpdateEntitiesMessage(ents: Entity[], server: Server, worldType: WorldTypes) {
     let message: NetEntityMessage = {
         messageType: MessageTypes.NET_ENTITY_MESSAGE,
         eventType: NetEntityEventTypes.UPDATE,
+        worldType: worldType,
         data: [],
     }
 
@@ -96,16 +100,17 @@ export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
     server.entityChangeList = [];
 }
 
-export function sendDestroyEntitiesMessage(ents: Entity[], server: Server) {
+export function sendDestroyEntitiesMessage(ents: Entity[], server: Server, worldEngine: BaseState) {
     let message: NetEntityMessage = {
         messageType: MessageTypes.NET_ENTITY_MESSAGE,
         eventType: NetEntityEventTypes.DESTROY,
+        worldType: worldEngine.worldType,
         data: [],
     }
 
     ents.forEach(ent => {
         // Remove entity from backend entity list.
-        server.currentState.removeEntity(ent);
+        worldEngine.removeEntity(ent);
         
         if (ent.netId) {
             const entData: EntityData = {

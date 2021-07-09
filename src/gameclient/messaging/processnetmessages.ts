@@ -22,14 +22,18 @@ export function processNetMessages(client: Client) {
 
         switch (message.messageType) {
             case MessageTypes.NET_ENTITY_MESSAGE:
-                processNetEntityMessage(message as NetEntityMessage, client);
+                const netEntityMessage = message as NetEntityMessage;
+                if (client.worldType ===  netEntityMessage.worldType)
+                    processNetEntityMessage(netEntityMessage, client);
                 break;
             case MessageTypes.NET_EVENT_MESSAGE:
-                processNetEventMessage(message as NetEventMessage, client);
+                const netEventMessage = message as NetEventMessage;
+                if (client.worldType ===  netEntityMessage.worldType)
+                    processNetEventMessage(netEventMessage, client);
                 break;
-            case MessageTypes.NET_WORLD_MESSAGE:
-                processNetWorldMessage(message as NetWorldMessage, client);
-                break;
+            // case MessageTypes.NET_WORLD_MESSAGE:
+            //     processNetWorldMessage(message as NetWorldMessage, client);
+            //     break;
         }
     }
 }

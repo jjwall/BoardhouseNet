@@ -9,6 +9,7 @@ export function sendPlayerJoinedMessage(client: Client) {
         eventType: ClientEventTypes.PLAYER_JOINED,
         clientId: client.currentClientId,
         playerClass: client.playerClass,
+        worldType: client.worldType,
     }
     
     console.log("client joining as player");
@@ -21,6 +22,7 @@ export function sendSpectatorJoinedMessage(client: Client) {
         eventType: ClientEventTypes.SPECTATOR_JOINED,
         clientId: client.currentClientId,
         playerClass: client.playerClass,
+        worldType: client.worldType,
     }
     
     console.log("client joining as spectator");
