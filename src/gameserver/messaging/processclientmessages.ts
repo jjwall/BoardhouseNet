@@ -12,19 +12,18 @@ import { createPage } from "../archetypes/page";
 import { createMagician } from "../archetypes/magician";
 import { createArcher } from "../archetypes/archer";
 import { PositionComponent, setPosition } from "../components/position";
-import { WorldTypes } from "../../packets/networldmessage";
 import { BaseState } from "../server/basestate";
 import { QueriedInput } from "../server/interfaces";
 
 // Will need more info pertaining to INPUT_TO_QUERY event.
-export function processClientMessages(ents: ReadonlyArray<Entity>, server: Server) {
+export function processClientMessages(server: Server) {
     server.messagesToProcess.forEach(message => {
         switch (message.messageType) {
             case MessageTypes.CLIENT_EVENT_MESSAGE:
-                processClientEventMessage(message as ClientEventMessage, ents, server);
+                processClientEventMessage(message as ClientEventMessage, server);
                 break;
             case MessageTypes.CLIENT_INPUT_MESSAGE:
-                processClientInputMessage(message as ClientInputMessage, ents, server);
+                processClientInputMessage(message as ClientInputMessage, server);
                 break;
         }
     });
@@ -32,7 +31,7 @@ export function processClientMessages(ents: ReadonlyArray<Entity>, server: Serve
     server.messagesToProcess = [];
 }
 
-function processClientEventMessage(message: ClientEventMessage, ents: ReadonlyArray<Entity>, server: Server) {
+function processClientEventMessage(message: ClientEventMessage, server: Server) {
     switch (message.eventType) {
         case ClientEventTypes.PLAYER_JOINED:
             processPlayerJoinedMessage(message, server);
@@ -43,7 +42,10 @@ function processClientEventMessage(message: ClientEventMessage, ents: ReadonlyAr
     }
 }
 
-function processClientInputMessage(message: ClientInputMessage, ents: ReadonlyArray<Entity>, server: Server) {
+function processClientInputMessage(message: ClientInputMessage, server: Server) {
+    const world = server.worldEngines.find(worldEngine => worldEngine.worldType === message.worldType);
+    const ents = world.getEntitiesByKey<Entity>("player");
+
     switch (message.inputType) {
         case ClientInputTypes.ATTACK:
             queryAttackInputMessage(message, server);
