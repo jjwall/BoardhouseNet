@@ -9,7 +9,7 @@ import { Client } from "../client/client";
  * @param hitbox
  * @param color color of hitBox graphic. Defaults to red if no parameter is passed in.
  */
- export function setHitboxGraphic(client: Client, entMesh: Mesh, hitbox: EntityDataHitbox, color: string = "#DC143C") : void {
+ export function setHitboxGraphic(client: Client, entMesh: Mesh, hitbox: HitboxData, color: string = "#DC143C") : void {
     if (client.displayHitBoxes) {
         const hitboxPlaneGeometry = new PlaneGeometry(hitbox.width, hitbox.height);
         const hitboxEdgesGeometry = new EdgesGeometry(hitboxPlaneGeometry);
@@ -17,13 +17,14 @@ import { Client } from "../client/client";
         const hitboxWireframe = new LineSegments(hitboxEdgesGeometry, hitboxMaterial);
         hitboxWireframe.position.x += hitbox.offsetX;
         hitboxWireframe.position.y += hitbox.offsetY;
+        hitboxWireframe.position.z += 1;
         const container = new Group();
         entMesh.add(container);
         container.add(hitboxWireframe);
     }
 }
 
-type EntityDataHitbox = {
+type HitboxData = {
     height: number;
     width: number;
     offsetX: number;

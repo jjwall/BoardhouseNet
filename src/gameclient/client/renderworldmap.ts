@@ -1,5 +1,6 @@
 import { BufferAttribute, BufferGeometry, Mesh, MeshBasicMaterial, NearestFilter, Vector3 } from "three";
 import { WorldLevelData } from "../../packets/worldleveldata";
+import { setHitboxGraphic } from "../components/hitbox";
 import { Client } from "./client";
 
 export function renderWorldMap(client: Client, worldLevelData: WorldLevelData) {
@@ -72,14 +73,11 @@ export function renderWorldMap(client: Client, worldLevelData: WorldLevelData) {
         tileMesh.position.copy(position);
         tileMesh.rotateZ(-deg*Math.PI / 180);
 
-        if (tile.flipX) {
+        if (tile.flipX)
             tileMesh.scale.x = -1;
-        }
 
-        // if (client.displayHitBoxes) {
-        // ...
-        //     tileMesh.add(hitboxGraphic);
-        // }
+        if (tile.hitbox)
+            setHitboxGraphic(client, tileMesh, tile.hitbox);
 
         client.tileMeshList.push(tileMesh);
         client.gameScene.add(tileMesh);

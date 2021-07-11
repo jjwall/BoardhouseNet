@@ -16,10 +16,14 @@ export interface WorldLevelData {
 
 export interface TileData {
     tileNumber: number;
-    // xIndex: number;
-    // yIndex: number;
     xPos: number;
     yPos: number;
     rot: number;
     flipX: boolean;
+    hitbox?: {
+        height: number;
+        width: number;
+        offsetX: number;
+        offsetY: number;
+    },
 }

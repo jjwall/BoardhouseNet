@@ -12,6 +12,7 @@ import { Entity } from "./entity";
 import { WorldTypes } from "../../../packets/networldmessage";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { TileData, WorldLevelData } from "../../../packets/worldleveldata";
+import { HitboxTypes, setHitbox } from "../../../gameserver/components/hitbox";
 
 /**
  * GameState that handles updating of all game-related systems.
@@ -48,7 +49,7 @@ export class GameState extends BaseState {
         this.registerEntity(cottage1, server);
         this.registerEntity(cottage2, server);
 
-        this.registerWorldLevelData(kenneyFantasy, "./data/textures/colored_packed.png");
+        this.worldLevelData = this.registerWorldLevelData(kenneyFantasy, "./data/textures/colored_packed.png");
     }
 
     // Register tiles for hit colision / traps.
@@ -67,13 +68,13 @@ export class GameState extends BaseState {
         });
     }
 
-    public registerWorldLevelData(tileMapData: TileMapSchema, tileSetTextureUrl: string): void {
-        let worldLevelData: WorldLevelData = {
+    public registerWorldLevelData(tileMapData: TileMapSchema, tileSetTextureUrl: string): WorldLevelData {
+        const worldLevelData: WorldLevelData = {
             worldType: this.worldType,
             levelTextureUrl: tileSetTextureUrl,
             pixelRatio: 8,
-            tileWidth: 16, // tileMapData.tilewidth,
-            tileHeight: 16, // tileMapData.tileheight
+            tileWidth: tileMapData.tilewidth,
+            tileHeight: tileMapData.tileheight,
             canvasTileSetTilesWide: 48,
             canvasTileSetTilesHigh: 22,
             canvasTileMapTilesWide: tileMapData.tileswide,
@@ -86,35 +87,44 @@ export class GameState extends BaseState {
 
         tileMapData.layers.forEach(layer => {
             layer.tiles.forEach(tile => {
+                const xPos = tile.x * scaledWidth + scaledWidth / 2;
+                const yPos = scaledHeight * worldLevelData.canvasTileSetTilesHigh - tile.y * scaledHeight + scaledHeight / 2;
                 let tileEnt = new Entity();
-                const xPos = tile.x*scaledWidth + scaledWidth/2;
-                const yPos = scaledHeight*worldLevelData.canvasTileSetTilesHigh - tile.y * scaledHeight + scaledHeight/2
                 tileEnt.pos = setPosition(xPos, yPos, 1);
                 
-                // switch (tile.tile) {
-                //     case 99:
-                //         // tileEnt.hitbox = ...
-                //         break;
-                //     case 1: //
-                // }
+                switch (tile.tile) {
+                    case 48: // single pine tree
+                    case 99: // double pine trees
+                        tileEnt.hitbox = setHitbox(HitboxTypes.TILE_OBSTACLE, [HitboxTypes.PLAYER], 128, 128);
+                        break;
+                }
+
                 const tileData: TileData = {
                     tileNumber: tile.tile,
-                    // xIndex: tile.x,
-                    // yIndex: tile.y,
                     xPos: xPos,
                     yPos: yPos,
                     rot: tile.rot,
                     flipX: tile.flipX,
                 }
 
-                worldLevelData.tiles.push(tileData);
+                // Set up hitbox data if exists for displaying hitbox graphics if needed for testing.
+                if (tileEnt.hitbox) {
+                    tileData.hitbox = {
+                        height: tileEnt.hitbox.height,
+                        width: tileEnt.hitbox.width,
+                        offsetX: tileEnt.hitbox.offsetX,
+                        offsetY: tileEnt.hitbox.offsetY,
+                    }
+                }
 
+                worldLevelData.tiles.push(tileData);
                 this.registerEntity(tileEnt, this.server);
             });
         });
 
-        this.worldLevelData = worldLevelData;
         console.log(`World Level Data for WorldType = "${worldLevelData.worldType}" registered.`);
+
+        return worldLevelData;
     }
 
     public update() : void {

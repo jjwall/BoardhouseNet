@@ -91,6 +91,7 @@ export const getManifold = (a: Rect, b: Rect): Manifold => {
 export const enum HitboxTypes {
     PLAYER,
     ENEMY,
+    TILE_OBSTACLE,
 }
 
 export type Rect = {

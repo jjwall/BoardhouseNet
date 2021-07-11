@@ -10,7 +10,6 @@ import { ClientEntity } from "./cliententity";
 import { NetIdToEntityMap } from "./interfaces";
 import { ClientRender } from "../renders/clientrender";
 import { PlayerClassTypes } from "../../packets/playerclasstypes";
-import { renderTileMap } from "./rendertilemap";
 import { WorldTypes } from "../../packets/networldmessage";
 
 export interface ClientConfig {
