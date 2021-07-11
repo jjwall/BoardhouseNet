@@ -7,7 +7,8 @@ import { NetEventMessage } from "../../packets/neteventmessage";
 import { NetEventTypes } from "../../packets/neteventtypes";
 import { EntityData } from "../../packets/entitydata";
 import { BaseState } from "../server/basestate";
-import { WorldTypes } from "../../packets/networldmessage";
+import { NetWorldEventTypes, NetWorldMessage, WorldTypes } from "../../packets/networldmessage";
+import { WorldLevelData } from "../../packets/worldleveldata";
 
 export function sendCreateEntitiesMessage(ents: Entity[], server: Server, worldType: WorldTypes) {
     let message: NetEntityMessage = {
@@ -173,7 +174,16 @@ export function sendNetEventMessage(ents: Entity[], server: Server, netEventType
 //#endregion
 
 //#region Send Net World Messages
-export function sendLoadWorldMessage() {
-    // ...
+export function sendLoadWorldMessage(server: Server, worldLevelData: WorldLevelData) {
+    let message: NetWorldMessage = {
+        messageType: MessageTypes.NET_WORLD_MESSAGE,
+        eventType: NetWorldEventTypes.LOAD_WORLD,
+        worldType: worldLevelData.worldType, // unnecessary
+        data: worldLevelData,
+    }
+
+    server.boardhouseServer.clients.forEach(client => {
+        client.send(JSON.stringify(message));
+    });
 }
 //#endregion

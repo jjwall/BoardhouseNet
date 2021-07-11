@@ -3,6 +3,7 @@ import { Server } from "./../server/server";
 import { Entity } from "../states/gameplay/entity";
 import { sendUpdateEntitiesMessage } from "../messaging/sendmessages";
 import { WorldTypes } from "../../packets/networldmessage";
+import { WorldLevelData } from "../../packets/worldleveldata";
 // import { Widget } from "./ui/widget";
 
 export abstract class BaseState {
@@ -16,6 +17,7 @@ export abstract class BaseState {
 
     // public rootWidget: Widget;
     public worldType: WorldTypes;
+    public worldLevelData: WorldLevelData;
 
     private ecsKeys: Array<string> = [];
 

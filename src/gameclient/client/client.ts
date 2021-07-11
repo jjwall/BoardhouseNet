@@ -246,9 +246,6 @@ export class Client {
 
                 // Set up ui camera.
                 this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
-
-                // Set up initial tilemap.
-                renderTileMap(this, "./data/textures/colored_packed.png", kenneyFantasy, 8);
                 break;
         }
     }

@@ -12,6 +12,7 @@ import { setSprite } from "../components/sprite";
 import { Message } from "../../packets/message";
 import { Client } from "../client/client";
 import { Vector3 } from "three";
+import { renderWorldMap } from "../client/renderworldmap";
 
 // Handle message based on the type of NetMessage.
 // Will need non-entity messages such as "CREATE_FIRE_BALL" with x,y,z location in Euler direction etc...
@@ -28,9 +29,9 @@ export function processNetMessages(client: Client) {
                 case MessageTypes.NET_EVENT_MESSAGE:
                     processNetEventMessage(message as NetEventMessage, client);
                     break;
-                // case MessageTypes.NET_WORLD_MESSAGE:
-                //     processNetWorldMessage(message as NetWorldMessage, client);
-                //     break;
+                case MessageTypes.NET_WORLD_MESSAGE:
+                    processNetWorldMessage(message as NetWorldMessage, client);
+                    break;
             }
         }
     }
@@ -188,9 +189,9 @@ function processNetWorldMessage(message: NetWorldMessage, client: Client) {
 }
 
 function loadWorld(message: NetWorldMessage, client: Client) {
-    if (client.worldType !== message.data.worldType) {
-        client.worldType = message.data.worldType;
-        // load world...
+    if (client.worldType === message.data.worldType) {
+        if (client.tileMeshList.length === 0) // this check is to ensure we don't keep reloading the same map. May need to consider an additional check when loading a new world.
+            renderWorldMap(client, message.data);
     }
 }
 //#endregion

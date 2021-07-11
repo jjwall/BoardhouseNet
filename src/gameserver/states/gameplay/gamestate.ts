@@ -10,6 +10,8 @@ import { BaseState } from "../../server/basestate";
 import { Server } from "./../../server/server";
 import { Entity } from "./entity";
 import { WorldTypes } from "../../../packets/networldmessage";
+import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
+import { TileData, WorldLevelData } from "../../../packets/worldleveldata";
 
 /**
  * GameState that handles updating of all game-related systems.
@@ -45,6 +47,8 @@ export class GameState extends BaseState {
     
         this.registerEntity(cottage1, server);
         this.registerEntity(cottage2, server);
+
+        this.registerWorldLevelData(kenneyFantasy, "./data/textures/colored_packed.png");
     }
 
     // Register tiles for hit colision / traps.
@@ -61,6 +65,56 @@ export class GameState extends BaseState {
                 this.registerEntity(tileEnt, this.server);
             });
         });
+    }
+
+    public registerWorldLevelData(tileMapData: TileMapSchema, tileSetTextureUrl: string): void {
+        let worldLevelData: WorldLevelData = {
+            worldType: this.worldType,
+            levelTextureUrl: tileSetTextureUrl,
+            pixelRatio: 8,
+            tileWidth: 16, // tileMapData.tilewidth,
+            tileHeight: 16, // tileMapData.tileheight
+            canvasTileSetTilesWide: 48,
+            canvasTileSetTilesHigh: 22,
+            canvasTileMapTilesWide: tileMapData.tileswide,
+            canvasTileMapTilesHigh: tileMapData.tileshigh,
+            tiles: [],
+        }
+
+        const scaledWidth = worldLevelData.tileWidth * worldLevelData.pixelRatio;
+        const scaledHeight = worldLevelData.tileHeight * worldLevelData.pixelRatio;
+
+        tileMapData.layers.forEach(layer => {
+            layer.tiles.forEach(tile => {
+                let tileEnt = new Entity();
+                const xPos = tile.x*scaledWidth + scaledWidth/2;
+                const yPos = scaledHeight*worldLevelData.canvasTileSetTilesHigh - tile.y * scaledHeight + scaledHeight/2
+                tileEnt.pos = setPosition(xPos, yPos, 1);
+                
+                // switch (tile.tile) {
+                //     case 99:
+                //         // tileEnt.hitbox = ...
+                //         break;
+                //     case 1: //
+                // }
+                const tileData: TileData = {
+                    tileNumber: tile.tile,
+                    // xIndex: tile.x,
+                    // yIndex: tile.y,
+                    xPos: xPos,
+                    yPos: yPos,
+                    rot: tile.rot,
+                    flipX: tile.flipX,
+                }
+
+                worldLevelData.tiles.push(tileData);
+
+                this.registerEntity(tileEnt, this.server);
+            });
+        });
+
+        this.worldLevelData = worldLevelData;
+        console.log(`World Level Data for WorldType = "${worldLevelData.worldType}" registered.`);
     }
 
     public update() : void {

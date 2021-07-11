@@ -3,7 +3,7 @@ import { GameState } from "../states/gameplay/gamestate";
 import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientInputMessage } from "../../packets/clientinputmessage";
-import { sendCreateEntitiesMessage } from "./sendmessages";
+import { sendCreateEntitiesMessage, sendLoadWorldMessage } from "./sendmessages";
 import { Server } from "../server/server";
 import { MessageTypes } from "../../packets/messagetypes";
 import { ClientInputTypes } from "../../packets/clientinputtypes";
@@ -113,6 +113,7 @@ function processPlayerJoinedMessage(message: ClientEventMessage, server: Server)
     // // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
         // Create all entities for connecting client.
+        sendLoadWorldMessage(server, clientWorld.worldLevelData);
         sendCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.worldType);
     }, 5000);
 
