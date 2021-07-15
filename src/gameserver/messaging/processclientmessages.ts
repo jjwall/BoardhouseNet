@@ -104,7 +104,7 @@ function processPlayerJoinedMessage(message: ClientEventMessage, server: Server)
             createMagician(server, clientWorld, message, magicianPos);
             break;
         case PlayerClassTypes.ARCHER:
-            const archerPos: PositionComponent = setPosition(450, 450, 5);
+            const archerPos: PositionComponent = setPosition(0, 0, 5);
             createArcher(server, clientWorld, message, archerPos);
             break;
     }

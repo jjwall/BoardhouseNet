@@ -84,10 +84,13 @@ export class CastleWorldEngine extends BaseWorldEngine {
         const scaledWidth = worldLevelData.tileWidth * worldLevelData.pixelRatio;
         const scaledHeight = worldLevelData.tileHeight * worldLevelData.pixelRatio;
 
+        const worldHeight = scaledHeight * worldLevelData.canvasTileMapTilesHigh;
+        const worldWidth = scaledWidth * worldLevelData.canvasTileMapTilesWide;
+
         tileMapData.layers.forEach(layer => {
             layer.tiles.forEach(tile => {
-                const xPos = tile.x * scaledWidth + scaledWidth / 2;
-                const yPos = scaledHeight * worldLevelData.canvasTileSetTilesHigh - tile.y * scaledHeight + scaledHeight / 2;
+                const xPos = tile.x * scaledWidth + scaledWidth / 2 - worldWidth / 2;
+                const yPos = scaledHeight * (worldLevelData.canvasTileMapTilesHigh - 1) - tile.y * scaledHeight + scaledHeight / 2 - worldHeight / 2;
                 let tileEnt = new Entity();
                 tileEnt.pos = setPosition(xPos, yPos, 1);
                 
