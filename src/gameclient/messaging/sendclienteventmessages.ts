@@ -1,7 +1,7 @@
 import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { MessageTypes } from "../../packets/messagetypes";
-import { Client } from "./../client/client";
+import { Client } from "../clientengine/client";
 
 export function sendPlayerJoinedMessage(client: Client) {
     const message: ClientEventMessage = {

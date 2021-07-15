@@ -1,5 +1,5 @@
 import { Mesh, PlaneGeometry, EdgesGeometry, LineSegments, LineBasicMaterial, Group } from "three";
-import { Client } from "../client/client";
+import { Client } from "../clientengine/client";
 
 /**
  * Helper to set visuals for a hitBox.

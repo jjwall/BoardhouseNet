@@ -2,7 +2,7 @@ import { ClientInputMessage } from "../../packets/clientinputmessage";
 import { ClientInputTypes } from "../../packets/clientinputtypes";
 import { WorldTypes } from "../../packets/networldmessage";
 import { MessageTypes } from "../../packets/messagetypes";
-import { Client } from "../client/client";
+import { Client } from "../clientengine/client";
 
 // Left movement key:
 export function sendLeftKeyDownMessage(client: Client) {

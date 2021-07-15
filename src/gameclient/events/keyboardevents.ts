@@ -1,5 +1,5 @@
 import { sendAttackMessage, sendDownKeyUpMessage, sendDownKeyDownMessage, sendLeftKeyDownMessage, sendLeftKeyUpMessage, sendRightKeyDownMessage, sendRightKeyUpMessage, sendUpKeyDownMessage, sendUpKeyUpMessage } from "../messaging/sendclientinputmessages";
-import { Client } from "../client/client";
+import { Client } from "../clientengine/client";
 
 // keyboard controls
 // visit https://keycode.info/ for other key codes.
