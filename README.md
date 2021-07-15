@@ -18,8 +18,8 @@ Go to ``localhost:8080`` to test it out. All production files will be contained 
 The project uses 4 different bundles: lobby server bundle, lobby client bundle, game server bundle, and game client bundle. The entry points for each bundle are as follows:
 * <u>lobby.js</u> (lobby server): src > lobbyserver > server.ts
 * <u>lobby-client.bundle.js</u>: src > lobbyclient > main.ts
-* <u>game-server.bundle.js</u>: src > gameserver > server > main.ts
-* <u>game-client.bundle.js</u>: src > gameclient > client > main.ts
+* <u>game-server.bundle.js</u>: src > gameserver > serverengine > main.ts
+* <u>game-client.bundle.js</u>: src > gameclient > clientengine > main.ts
 ___
 
 ### Lobby / Game Server Relationship
@@ -49,5 +49,13 @@ And in the ```spinupgameserver.ts``` file mentioned above you would need to make
 ```js
 var child = cp.spawn("node --inspect-brk ./server/game-server.bundle.js " + port, { shell: true });
 ```
+
+Next, you will need to spin up the lobby server as you normally would:
+
+```
+node lobby.js
+```
+
+Then, go to ``localhost:8080`` and create a room.
 
 Finally, when this child process is spawned, the process will rest at an internal breakpoint which will allow you to manually attach the debugger using your newly created launch.json in VS Code. Once attached you can continue debugging from the internal breakpoint to the first breakpoint that has been set in the child process' code.
