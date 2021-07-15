@@ -1,5 +1,5 @@
-import { Entity } from "../server/entity";
-import { BaseState } from "../server/basestate";
+import { Entity } from "../serverengine/entity";
+import { BaseState } from "../serverengine/basestate";
 
 export function playerSystem(ents: ReadonlyArray<Entity>, state: BaseState) {
     // ...

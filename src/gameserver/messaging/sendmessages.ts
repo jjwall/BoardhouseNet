@@ -1,12 +1,12 @@
-import { Entity } from "../server/entity";
+import { Entity } from "../serverengine/entity";
 import { NetEntityMessage } from "../../packets/netentitymessage";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
-import { Server } from "./../server/server";
+import { Server } from "../serverengine/server";
 import { MessageTypes } from "../../packets/messagetypes";
 import { NetEventMessage } from "../../packets/neteventmessage";
 import { NetEventTypes } from "../../packets/neteventtypes";
 import { EntityData } from "../../packets/entitydata";
-import { BaseState } from "../server/basestate";
+import { BaseState } from "../serverengine/basestate";
 import { NetWorldEventTypes, NetWorldMessage, WorldTypes } from "../../packets/networldmessage";
 import { WorldLevelData } from "../../packets/worldleveldata";
 

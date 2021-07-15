@@ -1,5 +1,5 @@
 import { RegistryKeyToSystemMap, RegistryKeyToEntityListMap } from "./interfaces";
-import { Server } from "./../server/server";
+import { Server } from "./server";
 import { Entity } from "./entity";
 import { sendUpdateEntitiesMessage } from "../messaging/sendmessages";
 import { WorldTypes } from "../../packets/networldmessage";

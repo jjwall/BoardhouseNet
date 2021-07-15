@@ -1,10 +1,10 @@
-import { Entity } from "../server/entity";
+import { Entity } from "../serverengine/entity";
 import { GameState } from "../states/gameplay/gamestate";
 import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientInputMessage } from "../../packets/clientinputmessage";
 import { sendCreateEntitiesMessage, sendLoadWorldMessage } from "./sendmessages";
-import { Server } from "../server/server";
+import { Server } from "../serverengine/server";
 import { MessageTypes } from "../../packets/messagetypes";
 import { ClientInputTypes } from "../../packets/clientinputtypes";
 import { PlayerClassTypes } from "../../packets/playerclasstypes";
@@ -12,8 +12,8 @@ import { createPage } from "../archetypes/page";
 import { createMagician } from "../archetypes/magician";
 import { createArcher } from "../archetypes/archer";
 import { PositionComponent, setPosition } from "../components/position";
-import { BaseState } from "../server/basestate";
-import { QueriedInput } from "../server/interfaces";
+import { BaseState } from "../serverengine/basestate";
+import { QueriedInput } from "../serverengine/interfaces";
 
 // Will need more info pertaining to INPUT_TO_QUERY event.
 export function processClientMessages(server: Server) {

@@ -3,9 +3,9 @@ import { setHitbox, HitboxTypes } from "../components/hitbox";
 import { PositionComponent } from "../components/position";
 import { setVelocity } from "../components/velocity";
 import { setControls } from "../components/control";
-import { Entity } from "../server/entity";
-import { BaseState } from "../server/basestate";
-import { Server } from "../server/server";
+import { Entity } from "../serverengine/entity";
+import { BaseState } from "../serverengine/basestate";
+import { Server } from "../serverengine/server";
 
 export function createPage(server: Server, worldEngine: BaseState, message: ClientEventMessage, pos: PositionComponent): Entity {
     let page = new Entity();

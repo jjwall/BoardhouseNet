@@ -1,6 +1,6 @@
 import { Rect, Manifold, getHitbox, getManifold, HitboxComponent, HitboxTypes } from "./../components/hitbox";
 import { PositionComponent } from "./../components/position";
-import { Entity } from "../server/entity";
+import { Entity } from "../serverengine/entity";
 
 /**
  * Collision system.
