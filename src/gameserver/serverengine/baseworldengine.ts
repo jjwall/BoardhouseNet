@@ -4,6 +4,7 @@ import { Entity } from "./entity";
 import { sendUpdateEntitiesMessage } from "../messaging/sendmessages";
 import { WorldTypes } from "../../packets/networldmessage";
 import { WorldLevelData } from "../../packets/worldleveldata";
+import { TileMapSchema } from "../../modules/tilemapping/tilemapschema";
 // import { Widget } from "./ui/widget";
 
 export abstract class BaseWorldEngine {
@@ -12,11 +13,16 @@ export abstract class BaseWorldEngine {
         this.worldType = worldType;
     }
 
-    public server: Server;
-    public abstract update() : void;
+    public abstract registerWorldLevelData(tileMapData: TileMapSchema, tileSetTextureUrl: string): WorldLevelData;
+
+    public abstract update(): void;
 
     // public rootWidget: Widget;
+
+    public server: Server;
+
     public worldType: WorldTypes;
+
     public worldLevelData: WorldLevelData;
 
     private ecsKeys: Array<string> = [];
