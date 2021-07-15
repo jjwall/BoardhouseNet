@@ -12,7 +12,7 @@ import { createPage } from "../archetypes/page";
 import { createMagician } from "../archetypes/magician";
 import { createArcher } from "../archetypes/archer";
 import { PositionComponent, setPosition } from "../components/position";
-import { BaseState } from "../serverengine/basestate";
+import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { QueriedInput } from "../serverengine/interfaces";
 
 // Will need more info pertaining to INPUT_TO_QUERY event.
@@ -87,7 +87,7 @@ function processClientInputMessage(message: ClientInputMessage, server: Server) 
 function processPlayerJoinedMessage(message: ClientEventMessage, server: Server) {
     console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.clientId}" joined as a player with class = "${message.playerClass}" in world = "${message.worldType}"`);
     console.log("create player entity");
-    let clientWorld: BaseState;
+    let clientWorld: BaseWorldEngine;
 
     try {
         clientWorld = server.worldEngines.find(worldEngine => worldEngine.worldType === message.worldType);

@@ -6,7 +6,7 @@ import { MessageTypes } from "../../packets/messagetypes";
 import { NetEventMessage } from "../../packets/neteventmessage";
 import { NetEventTypes } from "../../packets/neteventtypes";
 import { EntityData } from "../../packets/entitydata";
-import { BaseState } from "../serverengine/basestate";
+import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { NetWorldEventTypes, NetWorldMessage, WorldTypes } from "../../packets/networldmessage";
 import { WorldLevelData } from "../../packets/worldleveldata";
 
@@ -101,7 +101,7 @@ export function sendUpdateEntitiesMessage(ents: Entity[], server: Server, worldT
     server.entityChangeList = [];
 }
 
-export function sendDestroyEntitiesMessage(ents: Entity[], server: Server, worldEngine: BaseState) {
+export function sendDestroyEntitiesMessage(ents: Entity[], server: Server, worldEngine: BaseWorldEngine) {
     let message: NetEntityMessage = {
         messageType: MessageTypes.NET_ENTITY_MESSAGE,
         eventType: NetEntityEventTypes.DESTROY,

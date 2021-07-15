@@ -4,10 +4,10 @@ import { PositionComponent } from "../components/position";
 import { setVelocity } from "../components/velocity";
 import { setControls } from "../components/control";
 import { Entity } from "../serverengine/entity";
-import { BaseState } from "../serverengine/basestate";
+import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { Server } from "../serverengine/server";
 
-export function createPage(server: Server, worldEngine: BaseState, message: ClientEventMessage, pos: PositionComponent): Entity {
+export function createPage(server: Server, worldEngine: BaseWorldEngine, message: ClientEventMessage, pos: PositionComponent): Entity {
     let page = new Entity();
     page.player = { id: message.clientId };
     page.pos = pos;

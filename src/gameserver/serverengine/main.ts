@@ -2,7 +2,7 @@ import * as WebSocket from "ws";
 import { setUpClientToLobbyConnection } from "./setupclienttolobbyconnection";
 import { setUpGameServer } from "./setupgameserver";
 import { last } from "./helpers";
-import { BaseState } from "./basestate";
+import { BaseWorldEngine } from "./baseworldengine";
 import { GameState } from "../states/gameplay/gamestate";
 import { Server, ServerConfig } from "./server";
 import { WorldTypes } from "../../packets/networldmessage";

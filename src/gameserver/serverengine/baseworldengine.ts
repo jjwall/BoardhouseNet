@@ -6,7 +6,7 @@ import { WorldTypes } from "../../packets/networldmessage";
 import { WorldLevelData } from "../../packets/worldleveldata";
 // import { Widget } from "./ui/widget";
 
-export abstract class BaseState {
+export abstract class BaseWorldEngine {
     protected constructor(server: Server, worldType: WorldTypes) {
         this.server = server;
         this.worldType = worldType;
@@ -112,7 +112,7 @@ export abstract class BaseState {
      * @param system 
      * @param ecsKey Optional.
      */
-    protected registerSystem<E>(system: (ents: ReadonlyArray<E>, state: BaseState) => void, ecsKey?: keyof E) {
+    protected registerSystem<E>(system: (ents: ReadonlyArray<E>, state: BaseWorldEngine) => void, ecsKey?: keyof E) {
         if (ecsKey) {
             const ecsKeyValue = ecsKey.toString();
 

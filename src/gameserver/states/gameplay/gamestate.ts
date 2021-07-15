@@ -6,7 +6,7 @@ import { velocitySystem } from "../../systems/velocity";
 import { setControls } from "../../components/control";
 import { controlSystem } from "../../systems/control";
 import { playerSystem } from "../../systems/player";
-import { BaseState } from "../../serverengine/basestate";
+import { BaseWorldEngine } from "../../serverengine/baseworldengine";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
 import { WorldTypes } from "../../../packets/networldmessage";
@@ -17,7 +17,7 @@ import { HitboxTypes, setHitbox } from "../../../gameserver/components/hitbox";
 /**
  * GameState that handles updating of all game-related systems.
  */
-export class GameState extends BaseState {
+export class GameState extends BaseWorldEngine {
     // public rootWidget: Widget;
     constructor(server: Server, worldType: WorldTypes) {
         super(server, worldType);

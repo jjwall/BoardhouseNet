@@ -4,10 +4,10 @@ import { PositionComponent } from "../components/position";
 import { setVelocity } from "../components/velocity";
 import { setControls } from "../components/control";
 import { Entity } from "../serverengine/entity";
-import { BaseState } from "../serverengine/basestate";
+import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { Server } from "../serverengine/server";
 
-export function createMagician(server: Server, worldEngine: BaseState, message: ClientEventMessage, pos: PositionComponent): Entity {
+export function createMagician(server: Server, worldEngine: BaseWorldEngine, message: ClientEventMessage, pos: PositionComponent): Entity {
     let magician = new Entity();
     magician.player = { id: message.clientId };
     magician.pos = pos;

@@ -2,7 +2,7 @@ import { sendNetEventMessage } from "./../messaging/sendmessages";
 import { NetEventTypes } from "../../packets/neteventtypes";
 import { setPosition } from "../components/position";
 import { Entity } from "../serverengine/entity";
-import { BaseState } from "../serverengine/basestate";
+import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { Vector3 } from "three";
 
 /**
@@ -15,7 +15,7 @@ import { Vector3 } from "three";
 // TODO: (done) Handle dir for ents facing left or right based on their movement
 // -> Make sure this updates other player ents on current player's client.
 // TODO: Set up HitBox system & component.
-export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState) {
+export function controlSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWorldEngine) {
     let movementDirection = new Vector3(0,0,0);
     ents.forEach(ent => {
         let updatePlayerEnt = false;
@@ -84,7 +84,7 @@ export function controlSystem(ents: ReadonlyArray<Entity>, state: BaseState) {
                     attackEnt.pos = setPosition(ent.pos.loc.x + attackPosOffset, ent.pos.loc.y, ent.pos.loc.z + 1, atkDirection);
                     attackEnt.sprite = { url: "./data/textures/mediumExplosion1.png", pixelRatio: 4 };
                     attackEnts.push(attackEnt);
-                    sendNetEventMessage(attackEnts, state.server, NetEventTypes.PLAYER_ATTACK_ANIM_DISPLAY, state.worldType);
+                    sendNetEventMessage(attackEnts, worldEngine.server, NetEventTypes.PLAYER_ATTACK_ANIM_DISPLAY, worldEngine.worldType);
                   
                     // Start cooldown.
                     ent.control.attackCooldownTicks = 60;

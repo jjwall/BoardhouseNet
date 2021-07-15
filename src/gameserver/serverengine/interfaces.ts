@@ -1,5 +1,5 @@
 import * as WebSocket from "ws";
-import { BaseState } from "./basestate";
+import { BaseWorldEngine } from "./baseworldengine";
 import { Entity } from "./entity";
 import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientInputTypes } from "../../packets/clientinputtypes";
@@ -10,7 +10,7 @@ export interface NetIdToEntityMap {
 }
 
 export interface RegistryKeyToSystemMap {
-    [key: string]: (ents: ReadonlyArray<Object>, state: BaseState) => void;
+    [key: string]: (ents: ReadonlyArray<Object>, worldEngine: BaseWorldEngine) => void;
 }
 
 export interface RegistryKeyToEntityListMap {

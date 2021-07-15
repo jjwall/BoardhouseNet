@@ -7,7 +7,7 @@ import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
 import { Server } from "./server";
 import { last } from "./helpers";
-import { BaseState } from "./basestate";
+import { BaseWorldEngine } from "./baseworldengine";
 
 class MyWebSocket extends WebSocket {
     clientId: string;
@@ -66,7 +66,7 @@ export function setUpGameServer(server: Server) {
     });
 }
 
-function findAndDestroyPlayerEntity(worldEngine: BaseState, clientId: string, server: Server) {
+function findAndDestroyPlayerEntity(worldEngine: BaseWorldEngine, clientId: string, server: Server) {
     const ents = worldEngine.getEntitiesByKey<Entity>("player");
     let entsToDestroy: Entity[] = [];
 
