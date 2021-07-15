@@ -1,18 +1,29 @@
 import { RegistryKeyToSystemMap, RegistryKeyToEntityListMap } from "./interfaces";
-import { Server } from "./../server/server";
-import { Entity } from "../states/gameplay/entity";
+import { Server } from "./server";
+import { Entity } from "./entity";
 import { sendUpdateEntitiesMessage } from "../messaging/sendmessages";
+import { WorldTypes } from "../../packets/networldmessage";
+import { WorldLevelData } from "../../packets/worldleveldata";
+import { TileMapSchema } from "../../modules/tilemapping/tilemapschema";
 // import { Widget } from "./ui/widget";
 
-export abstract class BaseState {
-    protected constructor(server: Server) {
+export abstract class BaseWorldEngine {
+    protected constructor(server: Server, worldType: WorldTypes) {
         this.server = server;
+        this.worldType = worldType;
     }
 
-    public server: Server;
-    public abstract update() : void;
+    public abstract registerWorldLevelData(tileMapData: TileMapSchema, tileSetTextureUrl: string): WorldLevelData;
+
+    public abstract update(): void;
 
     // public rootWidget: Widget;
+
+    public server: Server;
+
+    public worldType: WorldTypes;
+
+    public worldLevelData: WorldLevelData;
 
     private ecsKeys: Array<string> = [];
 
@@ -26,7 +37,10 @@ export abstract class BaseState {
      * @param ecsKey 
      */
     public getEntitiesByKey<E>(ecsKey: keyof E | "global") {
-        return this.entityRegistry[ecsKey.toString()] as E[];
+        if (this.entityRegistry[ecsKey.toString()])
+            return this.entityRegistry[ecsKey.toString()] as E[];
+        else
+            return [];
     }
 
     /**
@@ -104,7 +118,7 @@ export abstract class BaseState {
      * @param system 
      * @param ecsKey Optional.
      */
-    protected registerSystem<E>(system: (ents: ReadonlyArray<E>, state: BaseState) => void, ecsKey?: keyof E) {
+    protected registerSystem<E>(system: (ents: ReadonlyArray<E>, state: BaseWorldEngine) => void, ecsKey?: keyof E) {
         if (ecsKey) {
             const ecsKeyValue = ecsKey.toString();
 
@@ -135,6 +149,6 @@ export abstract class BaseState {
 
         // Send update all entities after engine tick.
         if (this.server.entityChangeList.length > 0)
-            sendUpdateEntitiesMessage(this.server.entityChangeList, this.server);
+            sendUpdateEntitiesMessage(this.server.entityChangeList, this.server, this.worldType);
     }
 }

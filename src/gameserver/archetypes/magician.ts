@@ -3,10 +3,11 @@ import { setHitbox, HitboxTypes } from "../components/hitbox";
 import { PositionComponent } from "../components/position";
 import { setVelocity } from "../components/velocity";
 import { setControls } from "../components/control";
-import { Entity } from "../states/gameplay/entity";
-import { BaseState } from "../server/basestate";
+import { Entity } from "../serverengine/entity";
+import { BaseWorldEngine } from "../serverengine/baseworldengine";
+import { Server } from "../serverengine/server";
 
-export function createMagician(state: BaseState, message: ClientEventMessage, pos: PositionComponent): Entity {
+export function createMagician(server: Server, worldEngine: BaseWorldEngine, message: ClientEventMessage, pos: PositionComponent): Entity {
     let magician = new Entity();
     magician.player = { id: message.clientId };
     magician.pos = pos;
@@ -15,7 +16,8 @@ export function createMagician(state: BaseState, message: ClientEventMessage, po
     // magician.anim = { sequence: "blah", currentFrame: 0 };
     magician.control = setControls();
     magician.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 50, 50, -100, -10);
-    state.registerEntity(magician, state.server);
+
+    worldEngine.registerEntity(magician, server);
 
     return magician;
 }

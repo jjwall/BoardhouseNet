@@ -1,14 +1,14 @@
 import { PositionComponent } from "../components/position";
 import { VelocityComponent } from "../components/velocity";
-import { Entity } from "../states/gameplay/entity";
-import { BaseState } from "../server/basestate";
+import { Entity } from "../serverengine/entity";
+import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { Vector3 } from "three";
 
 /**
  * Velocity System.
  * @param ents 
  */
-export function velocitySystem(ents: ReadonlyArray<Entity>, state: BaseState) : void {
+export function velocitySystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWorldEngine) : void {
     ents.forEach(ent => { 
         if (ent.vel && ent.pos) {
             if (ent.vel.friction) {
@@ -21,7 +21,7 @@ export function velocitySystem(ents: ReadonlyArray<Entity>, state: BaseState) : 
             ent.pos.dir.applyEuler(ent.vel.rotational); // TODO: Need to have entityChange check for rotations.
 
             if (newPos.x !== currentPos.x || newPos.y !== currentPos.y)
-                state.server.entityChangeList.push(ent);
+                worldEngine.server.entityChangeList.push(ent);
         }
     });
 }

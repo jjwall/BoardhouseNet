@@ -1,15 +1,20 @@
-import { Entity } from "../states/gameplay/entity";
+import { Entity } from "../serverengine/entity";
 import { NetEntityMessage } from "../../packets/netentitymessage";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
-import { Server } from "./../server/server";
+import { Server } from "../serverengine/server";
 import { MessageTypes } from "../../packets/messagetypes";
 import { NetEventMessage } from "../../packets/neteventmessage";
 import { NetEventTypes } from "../../packets/neteventtypes";
+import { EntityData } from "../../packets/entitydata";
+import { BaseWorldEngine } from "../serverengine/baseworldengine";
+import { NetWorldEventTypes, NetWorldMessage, WorldTypes } from "../../packets/networldmessage";
+import { WorldLevelData } from "../../packets/worldleveldata";
 
-export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
+export function sendCreateEntitiesMessage(ents: Entity[], server: Server, worldType: WorldTypes) {
     let message: NetEntityMessage = {
         messageType: MessageTypes.NET_ENTITY_MESSAGE,
         eventType: NetEntityEventTypes.CREATE,
+        worldType: worldType,
         data: [],
     }
 
@@ -54,10 +59,11 @@ export function sendCreateEntitiesMessage(ents: Entity[], server: Server) {
     });
 }
 
-export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
+export function sendUpdateEntitiesMessage(ents: Entity[], server: Server, worldType: WorldTypes) {
     let message: NetEntityMessage = {
         messageType: MessageTypes.NET_ENTITY_MESSAGE,
         eventType: NetEntityEventTypes.UPDATE,
+        worldType: worldType,
         data: [],
     }
 
@@ -95,16 +101,17 @@ export function sendUpdateEntitiesMessage(ents: Entity[], server: Server) {
     server.entityChangeList = [];
 }
 
-export function sendDestroyEntitiesMessage(ents: Entity[], server: Server) {
+export function sendDestroyEntitiesMessage(ents: Entity[], server: Server, worldEngine: BaseWorldEngine) {
     let message: NetEntityMessage = {
         messageType: MessageTypes.NET_ENTITY_MESSAGE,
         eventType: NetEntityEventTypes.DESTROY,
+        worldType: worldEngine.worldType,
         data: [],
     }
 
     ents.forEach(ent => {
         // Remove entity from backend entity list.
-        server.currentState.removeEntity(ent);
+        worldEngine.removeEntity(ent);
         
         if (ent.netId) {
             const entData: EntityData = {
@@ -125,10 +132,11 @@ export function sendDestroyEntitiesMessage(ents: Entity[], server: Server) {
 // i.e. look at the attack in core systems, all that could be in a method called "sendPlayerAttackNetEventMessage" or something...
 // This function assumes entity data is needed to be sent for generic "sendNetEventMessage" method - in the future we may want 
 // more functionality, for example one net event might be "SwitchToEndGameScreen" or something and no ent data would need to be sent
-export function sendNetEventMessage(ents: Entity[], server: Server, netEventType: NetEventTypes) {
+export function sendNetEventMessage(ents: Entity[], server: Server, netEventType: NetEventTypes, worldType: WorldTypes) {
     let message: NetEventMessage = {
         messageType: MessageTypes.NET_EVENT_MESSAGE,
         eventType: netEventType,
+        worldType: worldType,
         data: [],
     }
 
@@ -158,6 +166,21 @@ export function sendNetEventMessage(ents: Entity[], server: Server, netEventType
             message.data.push(entData);
         }
     });
+
+    server.boardhouseServer.clients.forEach(client => {
+        client.send(JSON.stringify(message));
+    });
+}
+//#endregion
+
+//#region Send Net World Messages
+export function sendLoadWorldMessage(server: Server, worldLevelData: WorldLevelData) {
+    let message: NetWorldMessage = {
+        messageType: MessageTypes.NET_WORLD_MESSAGE,
+        eventType: NetWorldEventTypes.LOAD_WORLD,
+        worldType: worldLevelData.worldType, // unnecessary
+        data: worldLevelData,
+    }
 
     server.boardhouseServer.clients.forEach(client => {
         client.send(JSON.stringify(message));

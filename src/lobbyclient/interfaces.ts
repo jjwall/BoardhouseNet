@@ -3,6 +3,7 @@ export interface IGlobalLobby {
     roomNameInput: HTMLButtonElement,
     createRoomText: HTMLElement,
     classSelectRadioElements: NodeListOf<HTMLElement>,
+    worldSelectRadioElements: NodeListOf<HTMLElement>,
     gameRooms: HTMLElement,
     currentClientId: string,
 }

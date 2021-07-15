@@ -6,6 +6,7 @@ import { Client, ClientConfig } from "./client";
 import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
 import { PlayerClassTypes } from "../../packets/playerclasstypes";
+import { WorldTypes } from "../../packets/networldmessage";
 
 // TODO:
 // > Clean up Client class fields and config fields
@@ -24,6 +25,7 @@ const params = <URLSearchParams> new URLSearchParams(window.location.search);
 const config: ClientConfig = {
     role: params.get("clientRole") as ClientRoleTypes, // Role would change how event handling works. Only need player sending key press events for example.
     playerClass: params.get("playerClass") as PlayerClassTypes,
+    worldType: params.get("worldType") as WorldTypes,
     connection: <WebSocket> null,
     currentPort: <number>parseInt(params.get("port")),
     currentClientId: params.get("clientId"),

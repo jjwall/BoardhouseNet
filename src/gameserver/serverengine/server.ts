@@ -1,7 +1,8 @@
-import { Message } from "../../packets/message";
+import { processClientMessages, processQueriedInputs } from "../messaging/processclientmessages";
 import { NetIdToEntityMap, QueriedInput } from "./interfaces";
-import { Entity } from "../states/gameplay/entity";
-import { BaseState } from "./basestate";
+import { Entity } from "./entity";
+import { Message } from "../../packets/message";
+import { BaseWorldEngine } from "./baseworldengine";
 import * as WebSocket from "ws";
 
 export interface ServerConfig {
@@ -38,8 +39,13 @@ export class Server {
     public currentNetId: number;
     public netIdToEntityMap: NetIdToEntityMap; // -> this is to avoid having to do a search for the NetId all the time when updating / destroying entities
     public messagesToProcess: Array<Message>;
-    public currentState: BaseState;
+    public worldEngines: BaseWorldEngine[] = [];
     public entityChangeList: Entity[] = [];
     public queriedInputs: QueriedInput[] = [];
     // #endregion
+
+    public update() : void {
+        processClientMessages(this);
+        processQueriedInputs(this);
+    }
 }

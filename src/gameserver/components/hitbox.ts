@@ -1,7 +1,7 @@
 import { Mesh, Box3, PlaneGeometry, EdgesGeometry, LineSegments, LineBasicMaterial, MeshBasicMaterial } from "three";
-import { Entity } from "../states/gameplay/entity";
+import { Entity } from "../serverengine/entity";
 import { PositionComponent } from "./position";
-import { Server } from "../server/server";
+import { Server } from "../serverengine/server";
 
 /**
  * HitBox Component that represents the area that when colliding with
@@ -91,6 +91,7 @@ export const getManifold = (a: Rect, b: Rect): Manifold => {
 export const enum HitboxTypes {
     PLAYER,
     ENEMY,
+    TILE_OBSTACLE,
 }
 
 export type Rect = {

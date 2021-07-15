@@ -1,5 +1,5 @@
 import { Mesh, Scene, NearestFilter, PlaneGeometry, MeshBasicMaterial, Vector3 } from "three";
-import { Client } from "../client/client";
+import { Client } from "../clientengine/client";
 
 export type SpriteComponent = Mesh;
 

@@ -1,7 +1,7 @@
 import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { MessageTypes } from "../../packets/messagetypes";
-import { Client } from "./../client/client";
+import { Client } from "../clientengine/client";
 
 export function sendPlayerJoinedMessage(client: Client) {
     const message: ClientEventMessage = {
@@ -9,6 +9,7 @@ export function sendPlayerJoinedMessage(client: Client) {
         eventType: ClientEventTypes.PLAYER_JOINED,
         clientId: client.currentClientId,
         playerClass: client.playerClass,
+        worldType: client.worldType,
     }
     
     console.log("client joining as player");
@@ -21,6 +22,7 @@ export function sendSpectatorJoinedMessage(client: Client) {
         eventType: ClientEventTypes.SPECTATOR_JOINED,
         clientId: client.currentClientId,
         playerClass: client.playerClass,
+        worldType: client.worldType,
     }
     
     console.log("client joining as spectator");

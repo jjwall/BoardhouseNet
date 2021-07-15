@@ -1,6 +1,6 @@
-import { Entity } from "../states/gameplay/entity";
-import { BaseState } from "../server/basestate";
+import { Entity } from "../serverengine/entity";
+import { BaseWorldEngine } from "../serverengine/baseworldengine";
 
-export function playerSystem(ents: ReadonlyArray<Entity>, state: BaseState) {
+export function playerSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWorldEngine) {
     // ...
 }

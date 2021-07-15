@@ -10,7 +10,7 @@ import { ClientEntity } from "./cliententity";
 import { NetIdToEntityMap } from "./interfaces";
 import { ClientRender } from "../renders/clientrender";
 import { PlayerClassTypes } from "../../packets/playerclasstypes";
-import { renderTileMap } from "./rendertilemap";
+import { WorldTypes } from "../../packets/networldmessage";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -20,6 +20,7 @@ export interface ClientConfig {
     /// end state stuff ///
     role: ClientRoleTypes;
     playerClass: PlayerClassTypes;
+    worldType: WorldTypes;
     /// old configs
     connection: WebSocket;
     currentPort: number;
@@ -42,6 +43,7 @@ export class Client {
         ///
         this.role = config.role;
         this.playerClass = config.playerClass;
+        this.worldType = config.worldType;
         ///
         // vvv merged from old configs vvv
         this.connection = config.connection;
@@ -100,6 +102,7 @@ export class Client {
     public screenHeight: number;
     public worldWidth: number; // set in renderTileMap method
     public worldHeight: number; // set in renderTileMap method
+    public worldType: WorldTypes;
 
     public millisecondsPerGameTick: number;
 
@@ -242,9 +245,6 @@ export class Client {
 
                 // Set up ui camera.
                 this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
-
-                // Set up initial tilemap.
-                renderTileMap(this, "./data/textures/colored_packed.png", kenneyFantasy, 8);
                 break;
         }
     }

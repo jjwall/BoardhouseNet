@@ -1,3 +1,4 @@
+import { NetWorldEventTypes, NetWorldMessage } from "../../packets/networldmessage";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
 import { NetEntityMessage } from "../../packets/netentitymessage";
 import { NetEventMessage } from "../../packets/neteventmessage";
@@ -5,12 +6,13 @@ import { NetEventTypes } from "../../packets/neteventtypes";
 import { MessageTypes } from "../../packets/messagetypes";
 import { setHitboxGraphic } from "../components/hitbox";
 import { ClientRender } from "../renders/clientrender";
-import { ClientEntity } from "../client/cliententity";
+import { ClientEntity } from "../clientengine/cliententity";
 import { setPosition } from "../components/position";
 import { setSprite } from "../components/sprite";
 import { Message } from "../../packets/message";
-import { Client } from "../client/client";
+import { Client } from "../clientengine/client";
 import { Vector3 } from "three";
+import { renderWorldMap } from "../clientengine/renderworldmap";
 
 // Handle message based on the type of NetMessage.
 // Will need non-entity messages such as "CREATE_FIRE_BALL" with x,y,z location in Euler direction etc...
@@ -19,13 +21,18 @@ export function processNetMessages(client: Client) {
         const message: Message = JSON.parse(messageEvent.data);
         console.log("boardhouse: back to front message");
 
-        switch (message.messageType) {
-            case MessageTypes.NET_ENTITY_MESSAGE:
-                processNetEntityMessage(message as NetEntityMessage, client);
-                break;
-            case MessageTypes.NET_EVENT_MESSAGE:
-                processNetEventMessage(message as NetEventMessage, client);
-                break;
+        if (client.worldType === message.worldType) {
+            switch (message.messageType) {
+                case MessageTypes.NET_ENTITY_MESSAGE:
+                    processNetEntityMessage(message as NetEntityMessage, client);
+                    break;
+                case MessageTypes.NET_EVENT_MESSAGE:
+                    processNetEventMessage(message as NetEventMessage, client);
+                    break;
+                case MessageTypes.NET_WORLD_MESSAGE:
+                    processNetWorldMessage(message as NetWorldMessage, client);
+                    break;
+            }
         }
     }
 }
@@ -169,4 +176,22 @@ function renderPlayerAttackAnim(message: NetEventMessage, client: Client) {
     });
 }
 
+//#endregion
+
+//#region Net World Messages
+function processNetWorldMessage(message: NetWorldMessage, client: Client) {
+    switch (message.eventType) {
+        case NetWorldEventTypes.LOAD_WORLD:
+            loadWorld(message, client);
+            break;
+        // case ...
+    }
+}
+
+function loadWorld(message: NetWorldMessage, client: Client) {
+    if (client.worldType === message.data.worldType) {
+        if (client.tileMeshList.length === 0) // this check is to ensure we don't keep reloading the same map. May need to consider an additional check when loading a new world.
+            renderWorldMap(client, message.data);
+    }
+}
 //#endregion
