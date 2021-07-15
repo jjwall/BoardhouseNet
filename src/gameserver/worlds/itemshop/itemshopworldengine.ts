@@ -1,4 +1,4 @@
-import { kenneyFantasy } from "../../../modules/tilemapping/tilemaps/kenneyfantasy";
+import { kenneyItemShop } from "../../../modules/tilemapping/tilemaps/kenneyitemshop";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { TileData, WorldLevelData } from "../../../packets/worldleveldata";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
@@ -16,7 +16,7 @@ import { Entity } from "../../serverengine/entity";
 /**
  * World engine that handles updating of all world-related systems.
  */
-export class CastleWorldEngine extends BaseWorldEngine {
+export class ItemShopWorldEngine extends BaseWorldEngine {
     // public rootWidget: Widget;
     constructor(server: Server, worldType: WorldTypes) {
         super(server, worldType);
@@ -38,33 +38,7 @@ export class CastleWorldEngine extends BaseWorldEngine {
         ent.control = setControls();
         this.registerEntity(ent, server);
 
-        let cottage1 = new Entity();
-        cottage1.pos = setPosition(150, 450, 5);
-        cottage1.sprite = { url: "./data/textures/cottage.png", pixelRatio: 4 };
-        let cottage2 = new Entity();
-        cottage2.pos = setPosition(450, 450, 5);
-        cottage2.sprite = { url: "./data/textures/cottage.png", pixelRatio: 4 };
-    
-        this.registerEntity(cottage1, server);
-        this.registerEntity(cottage2, server);
-
-        this.worldLevelData = this.registerWorldLevelData(kenneyFantasy, "./data/textures/colored_packed.png");
-    }
-
-    // Register tiles for hit colision / traps.
-    // TO DO - Add hit collision
-    // TO DO - make this work...
-    private registerTileMap() : void {
-        const tileHeight: number = 16;
-        const tileWidth: number  = 16;
-
-        kenneyFantasy.layers.forEach(layer => {
-            layer.tiles.forEach(tile => {
-                let tileEnt = new Entity();
-                tileEnt.pos = setPosition(tile.x*tileWidth, tile.y*tileHeight, 1);
-                this.registerEntity(tileEnt, this.server);
-            });
-        });
+        this.worldLevelData = this.registerWorldLevelData(kenneyItemShop, "./data/textures/colored_packed.png");
     }
 
     public registerWorldLevelData(tileMapData: TileMapSchema, tileSetTextureUrl: string): WorldLevelData {
