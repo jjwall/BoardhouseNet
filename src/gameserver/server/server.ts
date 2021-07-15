@@ -1,6 +1,6 @@
 import { processClientMessages, processQueriedInputs } from "../messaging/processclientmessages";
 import { NetIdToEntityMap, QueriedInput } from "./interfaces";
-import { Entity } from "../states/gameplay/entity";
+import { Entity } from "./entity";
 import { Message } from "../../packets/message";
 import { BaseState } from "./basestate";
 import * as WebSocket from "ws";

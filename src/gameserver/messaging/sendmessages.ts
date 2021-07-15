@@ -1,4 +1,4 @@
-import { Entity } from "../states/gameplay/entity";
+import { Entity } from "../server/entity";
 import { NetEntityMessage } from "../../packets/netentitymessage";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
 import { Server } from "./../server/server";

@@ -1,6 +1,6 @@
 import { RegistryKeyToSystemMap, RegistryKeyToEntityListMap } from "./interfaces";
 import { Server } from "./../server/server";
-import { Entity } from "../states/gameplay/entity";
+import { Entity } from "./entity";
 import { sendUpdateEntitiesMessage } from "../messaging/sendmessages";
 import { WorldTypes } from "../../packets/networldmessage";
 import { WorldLevelData } from "../../packets/worldleveldata";

@@ -1,4 +1,4 @@
-import { Entity } from "../states/gameplay/entity";
+import { Entity } from "../server/entity";
 import { GameState } from "../states/gameplay/gamestate";
 import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";

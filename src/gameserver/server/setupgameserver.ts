@@ -2,7 +2,7 @@ import * as WebSocket from "ws";
 import { NetEntityMessage } from "../../packets/netentitymessage";
 import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { sendDestroyEntitiesMessage } from "../messaging/sendmessages";
-import { Entity } from "../states/gameplay/entity";
+import { Entity } from "./entity";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
 import { Server } from "./server";

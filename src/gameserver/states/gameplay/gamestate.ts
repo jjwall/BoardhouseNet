@@ -8,7 +8,7 @@ import { controlSystem } from "../../systems/control";
 import { playerSystem } from "../../systems/player";
 import { BaseState } from "../../server/basestate";
 import { Server } from "./../../server/server";
-import { Entity } from "./entity";
+import { Entity } from "../../server/entity";
 import { WorldTypes } from "../../../packets/networldmessage";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { TileData, WorldLevelData } from "../../../packets/worldleveldata";

@@ -1,5 +1,5 @@
 import { Mesh, Box3, PlaneGeometry, EdgesGeometry, LineSegments, LineBasicMaterial, MeshBasicMaterial } from "three";
-import { Entity } from "../states/gameplay/entity";
+import { Entity } from "../server/entity";
 import { PositionComponent } from "./position";
 import { Server } from "../server/server";
 

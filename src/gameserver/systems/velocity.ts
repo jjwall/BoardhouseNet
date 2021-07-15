@@ -1,6 +1,6 @@
 import { PositionComponent } from "../components/position";
 import { VelocityComponent } from "../components/velocity";
-import { Entity } from "../states/gameplay/entity";
+import { Entity } from "../server/entity";
 import { BaseState } from "../server/basestate";
 import { Vector3 } from "three";
 

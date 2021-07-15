@@ -1,6 +1,6 @@
 import * as WebSocket from "ws";
 import { BaseState } from "./basestate";
-import { Entity } from "../states/gameplay/entity";
+import { Entity } from "./entity";
 import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientInputTypes } from "../../packets/clientinputtypes";
 import { WorldTypes } from "../../packets/networldmessage";

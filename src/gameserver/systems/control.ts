@@ -1,7 +1,7 @@
 import { sendNetEventMessage } from "./../messaging/sendmessages";
 import { NetEventTypes } from "../../packets/neteventtypes";
 import { setPosition } from "../components/position";
-import { Entity } from "../states/gameplay/entity";
+import { Entity } from "../server/entity";
 import { BaseState } from "../server/basestate";
 import { Vector3 } from "three";
 

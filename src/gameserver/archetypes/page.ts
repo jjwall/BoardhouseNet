@@ -3,7 +3,7 @@ import { setHitbox, HitboxTypes } from "../components/hitbox";
 import { PositionComponent } from "../components/position";
 import { setVelocity } from "../components/velocity";
 import { setControls } from "../components/control";
-import { Entity } from "../states/gameplay/entity";
+import { Entity } from "../server/entity";
 import { BaseState } from "../server/basestate";
 import { Server } from "../server/server";
 
