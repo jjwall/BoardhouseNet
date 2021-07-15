@@ -3,7 +3,7 @@ import { setUpClientToLobbyConnection } from "./setupclienttolobbyconnection";
 import { setUpGameServer } from "./setupgameserver";
 import { last } from "./helpers";
 import { BaseWorldEngine } from "./baseworldengine";
-import { GameState } from "../states/gameplay/gamestate";
+import { CastleWorldEngine } from "../worlds/castle/castleworldengine";
 import { Server, ServerConfig } from "./server";
 import { WorldTypes } from "../../packets/networldmessage";
 
@@ -36,8 +36,8 @@ main();
 
 function main() {
     // initialize state stack
-    server.worldEngines.push(new GameState(server, WorldTypes.WORLD_1));
-    server.worldEngines.push(new GameState(server, WorldTypes.WORLD_2));
+    server.worldEngines.push(new CastleWorldEngine(server, WorldTypes.WORLD_1));
+    server.worldEngines.push(new CastleWorldEngine(server, WorldTypes.WORLD_2));
 
     // logic update loop
     setInterval(function (): void {

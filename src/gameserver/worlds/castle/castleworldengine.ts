@@ -12,12 +12,12 @@ import { Entity } from "../../serverengine/entity";
 import { WorldTypes } from "../../../packets/networldmessage";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { TileData, WorldLevelData } from "../../../packets/worldleveldata";
-import { HitboxTypes, setHitbox } from "../../../gameserver/components/hitbox";
+import { HitboxTypes, setHitbox } from "../../components/hitbox";
 
 /**
  * GameState that handles updating of all game-related systems.
  */
-export class GameState extends BaseWorldEngine {
+export class CastleWorldEngine extends BaseWorldEngine {
     // public rootWidget: Widget;
     constructor(server: Server, worldType: WorldTypes) {
         super(server, worldType);

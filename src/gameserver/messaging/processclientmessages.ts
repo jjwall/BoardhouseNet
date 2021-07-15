@@ -1,5 +1,4 @@
 import { Entity } from "../serverengine/entity";
-import { GameState } from "../states/gameplay/gamestate";
 import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientInputMessage } from "../../packets/clientinputmessage";
@@ -121,7 +120,7 @@ function processPlayerJoinedMessage(message: ClientEventMessage, server: Server)
 }
 
 // TODO: Make functional again.
-function processSpectatorJoinedMessage(message: ClientEventMessage, server: Server, state: GameState) {
+function processSpectatorJoinedMessage(message: ClientEventMessage, server: Server, worldEngine: BaseWorldEngine) {
     console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.clientId}" joined as a spectator`);
 
     // Dummy data... for testing stuff with spectator
@@ -132,7 +131,7 @@ function processSpectatorJoinedMessage(message: ClientEventMessage, server: Serv
     player.sprite = { url: "./data/textures/snow.png", pixelRatio: 4 };
     player.anim = { sequence: "blah", currentFrame: 0 };
 
-    state.registerEntity(player, server);
+    worldEngine.registerEntity(player, server);
 
     // Not exactly sure why we need this setTimeout here.
     // setTimeout(function() {
