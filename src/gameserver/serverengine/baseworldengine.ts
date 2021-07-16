@@ -23,6 +23,10 @@ export abstract class BaseWorldEngine {
 
     public worldType: WorldTypes;
 
+    public worldWidth: number;
+    
+    public worldHeight: number;
+
     public worldLevelData: WorldLevelData;
 
     private ecsKeys: Array<string> = [];

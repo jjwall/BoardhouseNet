@@ -3,8 +3,9 @@ import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { TileData, WorldLevelData } from "../../../packets/worldleveldata";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
 import { HitboxTypes, setHitbox } from "../../components/hitbox";
-import { WorldTypes } from "../../../packets/worldtypes";
 import { collisionSystem } from "../../systems/collision";
+import { worldEdgeSystem } from "../../systems/worldedge";
+import { WorldTypes } from "../../../packets/worldtypes";
 import { setPosition } from "../../components/position";
 import { velocitySystem } from "../../systems/velocity";
 import { setControls } from "../../components/control";
@@ -29,6 +30,7 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
         this.registerSystem(playerSystem, "player");
         this.registerSystem(velocitySystem);
         this.registerSystem(collisionSystem);
+        this.registerSystem(worldEdgeSystem);
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 
@@ -58,13 +60,13 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
         const scaledWidth = worldLevelData.tileWidth * worldLevelData.pixelRatio;
         const scaledHeight = worldLevelData.tileHeight * worldLevelData.pixelRatio;
 
-        const worldHeight = scaledHeight * worldLevelData.canvasTileMapTilesHigh;
-        const worldWidth = scaledWidth * worldLevelData.canvasTileMapTilesWide;
+        this.worldHeight = scaledHeight * worldLevelData.canvasTileMapTilesHigh;
+        this.worldWidth = scaledWidth * worldLevelData.canvasTileMapTilesWide;
 
         tileMapData.layers.forEach(layer => {
             layer.tiles.forEach(tile => {
-                const xPos = tile.x * scaledWidth + scaledWidth / 2 - worldWidth / 2;
-                const yPos = scaledHeight * (worldLevelData.canvasTileMapTilesHigh - 1) - tile.y * scaledHeight + scaledHeight / 2 - worldHeight / 2;
+                const xPos = tile.x * scaledWidth + scaledWidth / 2 - this.worldWidth / 2;
+                const yPos = scaledHeight * (worldLevelData.canvasTileMapTilesHigh - 1) - tile.y * scaledHeight + scaledHeight / 2 - this.worldHeight / 2;
                 let tileEnt = new Entity();
                 tileEnt.pos = setPosition(xPos, yPos, 1);
                 
