@@ -4,7 +4,7 @@ import { Entity } from "../serverengine/entity";
 
 export function worldEdgeSystem(ents: readonly Entity[], worldEngine: BaseWorldEngine) {
     for (const ent of ents) {
-        if (ent.pos) {
+        if (ent.pos && ent.hitbox) {
             const hitbox: Rect =
                 ent.hitbox ? getHitbox(ent) :
                 { left: ent.pos.loc.x, right: ent.pos.loc.x, bottom: ent.pos.loc.y, top: ent.pos.loc.y };
