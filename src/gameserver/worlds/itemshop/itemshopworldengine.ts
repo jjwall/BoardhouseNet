@@ -1,4 +1,4 @@
-import { kenneyItemShop } from "../../../modules/tilemapping/tilemaps/kenneyitemshop";
+import { kenneyItemShop2 } from "../../../modules/tilemapping/tilemaps/kenneyitemshop2";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { TileData, WorldLevelData } from "../../../packets/worldleveldata";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
@@ -38,7 +38,7 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
         ent.control = setControls();
         this.registerEntity(ent, server);
 
-        this.worldLevelData = this.registerWorldLevelData(kenneyItemShop, "./data/textures/colored_packed.png");
+        this.worldLevelData = this.registerWorldLevelData(kenneyItemShop2, "./data/textures/colored_packed.png");
     }
 
     public registerWorldLevelData(tileMapData: TileMapSchema, tileSetTextureUrl: string): WorldLevelData {
