@@ -7,8 +7,9 @@ import { NetEventMessage } from "../../packets/neteventmessage";
 import { NetEventTypes } from "../../packets/neteventtypes";
 import { EntityData } from "../../packets/entitydata";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
-import { NetWorldEventTypes, NetWorldMessage, WorldTypes } from "../../packets/networldmessage";
+import { NetWorldEventTypes, NetWorldMessage } from "../../packets/networldmessage";
 import { WorldLevelData } from "../../packets/worldleveldata";
+import { WorldTypes } from "../../packets/worldtypes";
 
 export function sendCreateEntitiesMessage(ents: Entity[], server: Server, worldType: WorldTypes) {
     let message: NetEntityMessage = {

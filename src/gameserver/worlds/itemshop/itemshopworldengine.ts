@@ -3,7 +3,7 @@ import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { TileData, WorldLevelData } from "../../../packets/worldleveldata";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
 import { HitboxTypes, setHitbox } from "../../components/hitbox";
-import { WorldTypes } from "../../../packets/networldmessage";
+import { WorldTypes } from "../../../packets/worldtypes";
 import { collisionSystem } from "../../systems/collision";
 import { setPosition } from "../../components/position";
 import { velocitySystem } from "../../systems/velocity";

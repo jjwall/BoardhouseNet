@@ -2,7 +2,7 @@ import { IGlobalLobby } from './interfaces';
 import { PortToConnectionsMap } from "../packets/porttoconnectionsmap";
 import { ClientRoleTypes } from '../packets/clientroletypes';
 import { PlayerClassTypes } from '../packets/playerclasstypes';
-import { WorldTypes } from '../packets/networldmessage';
+import { WorldTypes } from '../packets/worldtypes';
 
 export function populateRoomList(globalLobby: IGlobalLobby, portsToConnectionsMap: PortToConnectionsMap) {
     globalLobby.gameRooms.innerHTML = `

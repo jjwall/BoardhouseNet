@@ -3,7 +3,7 @@ import { BaseWorldEngine } from "./baseworldengine";
 import { Entity } from "./entity";
 import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientInputTypes } from "../../packets/clientinputtypes";
-import { WorldTypes } from "../../packets/networldmessage";
+import { WorldTypes } from "../../packets/worldtypes";
 
 export interface NetIdToEntityMap {
     [netId: number]: Entity;

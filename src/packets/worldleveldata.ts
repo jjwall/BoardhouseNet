@@ -1,4 +1,4 @@
-import { WorldTypes } from "./networldmessage";
+import { WorldTypes } from "./worldtypes";
 
 export interface WorldLevelData {
     worldType: WorldTypes;
