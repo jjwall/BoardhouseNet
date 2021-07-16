@@ -1,7 +1,9 @@
-import { NetWorldEventTypes, NetWorldMessage } from "../../packets/networldmessage";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
+import { NetWorldEventTypes } from "../../packets/networldeventtypes";
 import { NetEntityMessage } from "../../packets/netentitymessage";
+import { NetWorldMessage } from "../../packets/networldmessage";
 import { NetEventMessage } from "../../packets/neteventmessage";
+import { renderWorldMap } from "../clientengine/renderworldmap";
 import { NetEventTypes } from "../../packets/neteventtypes";
 import { MessageTypes } from "../../packets/messagetypes";
 import { setHitboxGraphic } from "../components/hitbox";
@@ -12,7 +14,6 @@ import { setSprite } from "../components/sprite";
 import { Message } from "../../packets/message";
 import { Client } from "../clientengine/client";
 import { Vector3 } from "three";
-import { renderWorldMap } from "../clientengine/renderworldmap";
 
 // Handle message based on the type of NetMessage.
 // Will need non-entity messages such as "CREATE_FIRE_BALL" with x,y,z location in Euler direction etc...
