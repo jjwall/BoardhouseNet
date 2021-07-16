@@ -15,7 +15,7 @@ export function createPage(server: Server, worldEngine: BaseWorldEngine, message
     page.sprite = { url: "./data/textures/msknight.png", pixelRatio: 4 };
     // page.anim = { sequence: "blah", currentFrame: 0 };
     page.control = setControls();
-    page.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 50, 50, 100, 100);
+    page.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 128, 128);
 
     worldEngine.registerEntity(page, server);
 

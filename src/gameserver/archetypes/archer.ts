@@ -15,7 +15,7 @@ export function createArcher(server: Server, worldEngine: BaseWorldEngine, messa
     archer.sprite = { url: "./data/textures/archer_girl_from_sketch.png", pixelRatio: 1 };
     // archer.anim = { sequence: "blah", currentFrame: 0 };
     archer.control = setControls();
-    archer.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 50, 50, 100, -10);
+    archer.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 50, 50);
 
     worldEngine.registerEntity(archer, server);
 

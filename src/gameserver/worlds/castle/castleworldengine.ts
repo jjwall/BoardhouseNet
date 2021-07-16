@@ -1,8 +1,8 @@
 import { kenneyFantasy } from "../../../modules/tilemapping/tilemaps/kenneyfantasy";
+import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { TileData, WorldLevelData } from "../../../packets/worldleveldata";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
-import { HitboxTypes, setHitbox } from "../../components/hitbox";
 import { worldEdgeSystem } from "../../systems/worldedge";
 import { collisionSystem } from "../../systems/collision";
 import { WorldTypes } from "../../../packets/worldtypes";
@@ -100,6 +100,29 @@ export class CastleWorldEngine extends BaseWorldEngine {
                     case 48: // single pine tree
                     case 99: // double pine trees
                         tileEnt.hitbox = setHitbox(HitboxTypes.TILE_OBSTACLE, [HitboxTypes.PLAYER], 128, 128);
+                        tileEnt.hitbox.onHit = function(tile, other, manifold) {
+                            if (other.hitbox.collideType === HitboxTypes.PLAYER) {
+                                const tileHitbox = getHitbox(tile);
+                                const playerHitbox = getHitbox(other);
+
+                                if (playerHitbox.left > tileHitbox.left) {
+                                    if (manifold.width <= manifold.height)
+                                        other.pos.loc.x += manifold.width;
+                                }
+                                if (playerHitbox.right < tileHitbox.right) {
+                                    if (manifold.width <= manifold.height)
+                                        other.pos.loc.x -= manifold.width;
+                                }
+                                if (playerHitbox.bottom > tileHitbox.bottom) {
+                                    if (manifold.width >= manifold.height)
+                                        other.pos.loc.y += manifold.height;
+                                }
+                                if (playerHitbox.top < tileHitbox.top) {
+                                    if (manifold.width >= manifold.height)
+                                        other.pos.loc.y -= manifold.height;
+                                }
+                            }
+                        }
                         break;
                 }
 
