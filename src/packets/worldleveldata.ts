@@ -25,5 +25,6 @@ export interface TileData {
         width: number;
         offsetX: number;
         offsetY: number;
+        color?: string;
     },
 }

@@ -19,6 +19,7 @@ export interface EntityData {
         width: number;
         offsetX: number;
         offsetY: number;
+        color?: string;
     },
     sprite?: {
         url: string;
