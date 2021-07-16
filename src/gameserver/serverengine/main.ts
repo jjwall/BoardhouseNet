@@ -35,8 +35,8 @@ main();
 
 function main() {
     // initialize state stack
-    server.worldEngines.push(new CastleWorldEngine(server, WorldTypes.WORLD_1));
-    server.worldEngines.push(new ItemShopWorldEngine(server, WorldTypes.WORLD_2));
+    server.worldEngines.push(new CastleWorldEngine(server, WorldTypes.CASTLE));
+    server.worldEngines.push(new ItemShopWorldEngine(server, WorldTypes.ITEM_SHOP));
 
     // logic update loop
     setInterval(function (): void {
