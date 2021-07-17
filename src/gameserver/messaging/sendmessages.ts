@@ -11,6 +11,7 @@ import { NetWorldMessage } from "../../packets/networldmessage";
 import { WorldLevelData } from "../../packets/worldleveldata";
 import { WorldTypes } from "../../packets/worldtypes";
 import { NetWorldEventTypes } from "../../packets/networldeventtypes";
+import { MyWebSocket } from "../serverengine/setupgameserver";
 
 export function sendCreateEntitiesMessage(ents: Entity[], server: Server, worldType: WorldTypes) {
     let message: NetEntityMessage = {
@@ -176,7 +177,7 @@ export function sendNetEventMessage(ents: Entity[], server: Server, netEventType
 //#endregion
 
 //#region Send Net World Messages
-export function sendLoadWorldMessage(server: Server, worldLevelData: WorldLevelData) {
+export function sendLoadWorldMessage(server: Server, worldLevelData: WorldLevelData, clientId: string) {
     let message: NetWorldMessage = {
         messageType: MessageTypes.NET_WORLD_MESSAGE,
         eventType: NetWorldEventTypes.LOAD_WORLD,
@@ -185,7 +186,48 @@ export function sendLoadWorldMessage(server: Server, worldLevelData: WorldLevelD
     }
 
     server.boardhouseServer.clients.forEach(client => {
-        client.send(JSON.stringify(message));
+        const myClient = client as MyWebSocket;
+
+        if (myClient.clientId === clientId) {
+            console.log(`sending load world message to client with clientId = ${clientId}`)
+            client.send(JSON.stringify(message));
+        }
+    });
+}
+
+export function sendUnloadWorldMessage(server: Server, worldLevelData: WorldLevelData, clientId: string) {
+    let message: NetWorldMessage = {
+        messageType: MessageTypes.NET_WORLD_MESSAGE,
+        eventType: NetWorldEventTypes.UNLOAD_WORLD,
+        worldType: worldLevelData.worldType, // unnecessary
+        data: worldLevelData,
+    }
+
+    server.boardhouseServer.clients.forEach(client => {
+        const myClient = client as MyWebSocket;
+
+        if (myClient.clientId === clientId) {
+            console.log(`sending unload world message to client with clientId = ${clientId}`)
+            client.send(JSON.stringify(message));
+        }
+    });
+}
+
+export function sendUnloadOldWorldLoadNewWorldMessage(server: Server, worldLevelData: WorldLevelData, clientId: string) {//, worldToLoad: WorldTypes) {
+    let message: NetWorldMessage = {
+        messageType: MessageTypes.NET_WORLD_MESSAGE,
+        eventType: NetWorldEventTypes.UNLOAD_WORLD_LOAD_WORLD,
+        worldType: worldLevelData.worldType,//worldToLoad, // unnecessary
+        data: worldLevelData,
+    }
+
+    server.boardhouseServer.clients.forEach(client => {
+        const myClient = client as MyWebSocket;
+
+        if (myClient.clientId === clientId) {
+            console.log(`sending un/load world message to client with clientId = ${clientId}`)
+            client.send(JSON.stringify(message));
+        }
     });
 }
 //#endregion

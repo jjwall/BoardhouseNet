@@ -92,6 +92,7 @@ export const enum HitboxTypes {
     PLAYER,
     ENEMY,
     TILE_OBSTACLE,
+    RED_FLOOR_TILE_EXIT_ITEM_SHOP, // castle loading zone
 }
 
 export type Rect = {

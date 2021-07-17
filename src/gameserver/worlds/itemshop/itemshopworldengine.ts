@@ -1,4 +1,6 @@
 import { kenneyItemShop2 } from "../../../modules/tilemapping/tilemaps/kenneyitemshop2";
+import { sendUnloadOldWorldLoadNewWorldMessage } from "../../messaging/sendmessages";
+import { findAndDestroyPlayerEntity } from "../../serverengine/setupgameserver";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { TileData, WorldLevelData } from "../../../packets/worldleveldata";
@@ -10,6 +12,7 @@ import { setPosition } from "../../components/position";
 import { velocitySystem } from "../../systems/velocity";
 import { setControls } from "../../components/control";
 import { controlSystem } from "../../systems/control";
+import { PlayerStates } from "../../components/player"
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
@@ -115,6 +118,25 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
 
                         break;
                     case 876: // red floor mat (to exit shop)
+                        tileEnt.hitbox = setHitbox(HitboxTypes.RED_FLOOR_TILE_EXIT_ITEM_SHOP, [HitboxTypes.PLAYER], 10, 128, 0, -50);
+                        tileEnt.hitbox.onHit = (tile, other, manifold) => {
+                            if (other.hitbox.collideType === HitboxTypes.PLAYER) {
+                                console.log("exiting shop...");
+                                const playerIndex = this.server.playerClientIds.indexOf(other.player.id);
+                                console.log(playerIndex);
+
+                                if (playerIndex > -1) {           
+                                    if (other.player.state === PlayerStates.LOADED) {
+                                        other.player.state = PlayerStates.UNLOADED;
+                                        findAndDestroyPlayerEntity(this, other.player.id, this.server);
+                                        const castleWorld = this.server.worldEngines.find(worldEngine => worldEngine.worldType === WorldTypes.CASTLE);
+
+                                        // this method can probably be simplified, i.e. don't need to "find" castle world
+                                        sendUnloadOldWorldLoadNewWorldMessage(this.server, castleWorld.worldLevelData, other.player.id);//, WorldTypes.CASTLE);
+                                    }
+                                }
+                            }
+                        }
                         break;
                 }
 

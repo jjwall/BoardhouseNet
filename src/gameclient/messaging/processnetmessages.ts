@@ -14,6 +14,7 @@ import { setSprite } from "../components/sprite";
 import { Message } from "../../packets/message";
 import { Client } from "../clientengine/client";
 import { Vector3 } from "three";
+import { sendPlayerJoinedMessage } from "./sendclienteventmessages";
 
 // Handle message based on the type of NetMessage.
 // Will need non-entity messages such as "CREATE_FIRE_BALL" with x,y,z location in Euler direction etc...
@@ -22,18 +23,18 @@ export function processNetMessages(client: Client) {
         const message: Message = JSON.parse(messageEvent.data);
         console.log("boardhouse: back to front message");
 
-        if (client.worldType === message.worldType) {
-            switch (message.messageType) {
-                case MessageTypes.NET_ENTITY_MESSAGE:
+        switch (message.messageType) {
+            case MessageTypes.NET_ENTITY_MESSAGE:
+                if (client.worldType === message.worldType)
                     processNetEntityMessage(message as NetEntityMessage, client);
-                    break;
-                case MessageTypes.NET_EVENT_MESSAGE:
+                break;
+            case MessageTypes.NET_EVENT_MESSAGE:
+                if (client.worldType === message.worldType)
                     processNetEventMessage(message as NetEventMessage, client);
-                    break;
-                case MessageTypes.NET_WORLD_MESSAGE:
-                    processNetWorldMessage(message as NetWorldMessage, client);
-                    break;
-            }
+                break;
+            case MessageTypes.NET_WORLD_MESSAGE:
+                processNetWorldMessage(message as NetWorldMessage, client);
+                break;
         }
     }
 }
@@ -185,14 +186,63 @@ function processNetWorldMessage(message: NetWorldMessage, client: Client) {
         case NetWorldEventTypes.LOAD_WORLD:
             loadWorld(message, client);
             break;
-        // case ...
+        case NetWorldEventTypes.UNLOAD_WORLD:
+            unloadWorld(message, client);
+            break;
+        case NetWorldEventTypes.UNLOAD_WORLD_LOAD_WORLD:
+            unloadOldWorldLoadNewWorld(message, client);
+            break;
     }
 }
 
 function loadWorld(message: NetWorldMessage, client: Client) {
-    if (client.worldType === message.data.worldType) {
-        if (client.tileMeshList.length === 0) // this check is to ensure we don't keep reloading the same map. May need to consider an additional check when loading a new world.
-            renderWorldMap(client, message.data);
+    console.log("load world...");
+    console.log(client.worldType);
+    // if (client.worldType === message.data.worldType) {
+
+    // Set world type.
+    client.worldType = message.worldType;
+
+    if (client.tileMeshList.length === 0) // this check is to ensure we don't keep reloading the same map. May need to consider an additional check when loading a new world.
+        renderWorldMap(client, message.data);
+    // }
+}
+
+function unloadWorld(message: NetWorldMessage, client: Client) {
+    // Remove tile meshes from game scene.
+    if (client.tileMeshList.length > 0) {
+        client.tileMeshList.forEach(mesh => {
+            client.gameScene.remove(mesh);
+        });
     }
+
+    // Empty tile mesh list.
+    client.tileMeshList = [];
+
+    // Remove entity meshs from game scene.
+    if (client.entityList.length > 0) {
+        client.entityList.forEach(entity => {
+            client.gameScene.remove(entity.sprite);
+        });
+    }
+    
+    // Empty entity list.
+    client.entityList = [];
+
+    // Remove render meshes from game scene.
+    if (client.renderList.length > 0) {
+        client.renderList.forEach(render => {
+            client.gameScene.remove(render.sprite);
+        });
+    }
+
+    // Empty render list.
+    client.renderList = [];
+}
+
+function unloadOldWorldLoadNewWorld(message: NetWorldMessage, client: Client) {
+    unloadWorld(message, client);
+    client.worldType = message.worldType;
+    sendPlayerJoinedMessage(client); // create new function, playerJoinedWorldAtPosition?
 }
 //#endregion

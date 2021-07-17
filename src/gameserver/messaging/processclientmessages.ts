@@ -83,7 +83,7 @@ function processClientInputMessage(message: ClientInputMessage, server: Server) 
  * @param server 
  * @param state 
  */
-function processPlayerJoinedMessage(message: ClientEventMessage, server: Server) {
+export function processPlayerJoinedMessage(message: ClientEventMessage, server: Server) {
     console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.clientId}" joined as a player with class = "${message.playerClass}" in world = "${message.worldType}"`);
     console.log("create player entity");
     let clientWorld: BaseWorldEngine;
@@ -112,7 +112,7 @@ function processPlayerJoinedMessage(message: ClientEventMessage, server: Server)
     // // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
         // Create all entities for connecting client.
-        sendLoadWorldMessage(server, clientWorld.worldLevelData);
+        sendLoadWorldMessage(server, clientWorld.worldLevelData, message.clientId);
         sendCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.worldType);
     }, 5000);
 
@@ -126,7 +126,7 @@ function processSpectatorJoinedMessage(message: ClientEventMessage, server: Serv
     // Dummy data... for testing stuff with spectator
     // Set up another player entity.
     let player = new Entity();
-    player.player = { id: message.clientId };
+    // player.player = { id: message.clientId };
     player.pos = setPosition(350, 150, 5);
     player.sprite = { url: "./data/textures/snow.png", pixelRatio: 4 };
     player.anim = { sequence: "blah", currentFrame: 0 };
