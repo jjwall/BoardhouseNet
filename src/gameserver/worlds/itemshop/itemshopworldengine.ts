@@ -1,8 +1,8 @@
 import { kenneyItemShop2 } from "../../../modules/tilemapping/tilemaps/kenneyitemshop2";
+import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { TileData, WorldLevelData } from "../../../packets/worldleveldata";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
-import { HitboxTypes, setHitbox } from "../../components/hitbox";
 import { collisionSystem } from "../../systems/collision";
 import { worldEdgeSystem } from "../../systems/worldedge";
 import { WorldTypes } from "../../../packets/worldtypes";
@@ -71,9 +71,50 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
                 tileEnt.pos = setPosition(xPos, yPos, 1);
                 
                 switch (tile.tile) {
-                    case 48: // single pine tree
-                    case 99: // double pine trees
+                    case 85: // coat
+                    case 86: // coat with hoodie
+                    case 87: // boots
+                    case 325: // bow 1
+                    case 326: // bow 2
+                    case 329: // bow 3
+                    case 339: // bookshelf
+                    case 340: // bookshelf with skull
+                    case 344: // table for item display
+                    case 345: // closed drawer
+                    case 371: // sword 1
+                    case 386: // counter end piece (top view)
+                    case 387: // counter end piece (side view)
+                    case 388: // counter middle piece (side view)
+                    case 416: // sword 2
+                    case 418: // sword 3
+                    case 448: // counter middle piece (top view)
                         tileEnt.hitbox = setHitbox(HitboxTypes.TILE_OBSTACLE, [HitboxTypes.PLAYER], 128, 128);
+                        tileEnt.hitbox.onHit = function(tile, other, manifold) {
+                            if (other.hitbox.collideType === HitboxTypes.PLAYER) {
+                                const tileHitbox = getHitbox(tile);
+                                const playerHitbox = getHitbox(other);
+
+                                if (playerHitbox.left > tileHitbox.left) {
+                                    if (manifold.width <= manifold.height)
+                                        other.pos.loc.x += manifold.width;
+                                }
+                                if (playerHitbox.right < tileHitbox.right) {
+                                    if (manifold.width <= manifold.height)
+                                        other.pos.loc.x -= manifold.width;
+                                }
+                                if (playerHitbox.bottom > tileHitbox.bottom) {
+                                    if (manifold.width >= manifold.height)
+                                        other.pos.loc.y += manifold.height;
+                                }
+                                if (playerHitbox.top < tileHitbox.top) {
+                                    if (manifold.width >= manifold.height)
+                                        other.pos.loc.y -= manifold.height;
+                                }
+                            }
+                        }
+
+                        break;
+                    case 876: // red floor mat (to exit shop)
                         break;
                 }
 
