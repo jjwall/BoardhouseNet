@@ -1,4 +1,4 @@
-import { kenneyFantasy } from "../../../modules/tilemapping/tilemaps/kenneyfantasy";
+import { kenneyFantasy2 } from "../../../modules/tilemapping/tilemaps/kenneyfantasy2";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { TileData, WorldLevelData } from "../../../packets/worldleveldata";
@@ -50,23 +50,7 @@ export class CastleWorldEngine extends BaseWorldEngine {
         this.registerEntity(cottage1, server);
         this.registerEntity(cottage2, server);
 
-        this.worldLevelData = this.registerWorldLevelData(kenneyFantasy, "./data/textures/colored_packed.png");
-    }
-
-    // Register tiles for hit colision / traps.
-    // TO DO - Add hit collision
-    // TO DO - make this work...
-    private registerTileMap() : void {
-        const tileHeight: number = 16;
-        const tileWidth: number  = 16;
-
-        kenneyFantasy.layers.forEach(layer => {
-            layer.tiles.forEach(tile => {
-                let tileEnt = new Entity();
-                tileEnt.pos = setPosition(tile.x*tileWidth, tile.y*tileHeight, 1);
-                this.registerEntity(tileEnt, this.server);
-            });
-        });
+        this.worldLevelData = this.registerWorldLevelData(kenneyFantasy2, "./data/textures/colored_packed.png");
     }
 
     public registerWorldLevelData(tileMapData: TileMapSchema, tileSetTextureUrl: string): WorldLevelData {
@@ -97,8 +81,32 @@ export class CastleWorldEngine extends BaseWorldEngine {
                 tileEnt.pos = setPosition(xPos, yPos, 1);
                 
                 switch (tile.tile) {
-                    case 48: // single pine tree
-                    case 99: // double pine trees
+                    case 149: // steel fence
+                    case 200: // straight river
+                    case 201: // river turn 
+                    case 245: // steel fence
+                    case 529: // stone stairs
+                    case 533: // red roof
+                    case 534: // red roof
+                    case 535: // red roof
+                    case 576: // square stone wall topper
+                    case 577: // pyramid stone wall topper
+                    case 578: // stone wall with cross window
+                    case 581: // red slanted roof (left)
+                    case 582: // red roof
+                    case 583: // red slanted roof (right)
+                    case 592: // stone pile
+                    case 624: // stone wall
+                    case 625: // stone wall with bar window
+                    case 631: // red wall with window
+                    case 676: // well
+                    case 727: // red brick wall
+                    case 730: // wooden slanted roof (left)
+                    case 731: // wooden roof
+                    case 732: // wooden slanted roof (right)
+                    case 778: // wooden wall with window (left)
+                    case 780: // wooden wall with window (right)
+                    case 827: // stone wall with square window
                         tileEnt.hitbox = setHitbox(HitboxTypes.TILE_OBSTACLE, [HitboxTypes.PLAYER], 128, 128);
                         tileEnt.hitbox.onHit = function(tile, other, manifold) {
                             if (other.hitbox.collideType === HitboxTypes.PLAYER) {
@@ -123,6 +131,11 @@ export class CastleWorldEngine extends BaseWorldEngine {
                                 }
                             }
                         }
+                        break;
+
+                    case 434: // inn door (use for item shop?)
+                        // teleport player into item shop world
+                        // ...
                         break;
                 }
 
