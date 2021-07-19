@@ -6,13 +6,15 @@ import { BaseWorldEngine } from "../../serverengine/baseworldengine";
 import { worldEdgeSystem } from "../../systems/worldedge";
 import { collisionSystem } from "../../systems/collision";
 import { WorldTypes } from "../../../packets/worldtypes";
-import { setPosition } from "../../components/position";
+import { PositionComponent, setPosition } from "../../components/position";
 import { velocitySystem } from "../../systems/velocity";
 import { setControls } from "../../components/control";
 import { controlSystem } from "../../systems/control";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
+import { sendPlayerToAnotherWorld } from "../../messaging/sendneteventmessages";
+import { PlayerStates } from "../../components/player";
 
 /**
  * World engine that handles updating of all world-related systems.
@@ -133,9 +135,23 @@ export class CastleWorldEngine extends BaseWorldEngine {
                         }
                         break;
 
-                    case 434: // inn door (use for item shop?)
+                    case 435: // inn door (use for item shop?)
                         // teleport player into item shop world
-                        // ...
+                        tileEnt.hitbox = setHitbox(HitboxTypes.INN_DOOR, [HitboxTypes.PLAYER], 10, 128, 0, 50);
+                        tileEnt.hitbox.onHit = (tile, other, manifold) => {
+                            if (other.hitbox.collideType === HitboxTypes.PLAYER) {
+                                console.log("exiting castle...");
+                                const playerIndex = this.server.playerClientIds.indexOf(other.player.id);
+                                console.log(playerIndex);
+
+                                if (playerIndex > -1) {           
+                                    if (other.player.state === PlayerStates.LOADED) {
+                                        const itemShopSpawnPosition: PositionComponent = setPosition(0, -500, 5);
+                                        sendPlayerToAnotherWorld(other, this, WorldTypes.ITEM_SHOP, itemShopSpawnPosition);
+                                    }
+                                }
+                            }
+                        }
                         break;
                 }
 

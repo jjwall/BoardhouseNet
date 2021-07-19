@@ -11,7 +11,7 @@ import { PlayerClassTypes } from "../../packets/playerclasstypes";
 
 export function createMagician(server: Server, worldEngine: BaseWorldEngine, clientId: string, pos: PositionComponent): Entity {
     let magician = new Entity();
-    magician.player = { id: clientId, state: PlayerStates.LOADED, class: PlayerClassTypes.MAGICIAN };
+    magician.player = { id: clientId, state: PlayerStates.UNLOADED, class: PlayerClassTypes.MAGICIAN };
     magician.pos = pos;
     magician.vel = setVelocity(15, 0.5);
     magician.sprite = { url: "./data/textures/snow.png", pixelRatio: 4 };

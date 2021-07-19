@@ -9,7 +9,7 @@ import { WorldTransitionData } from "../../packets/worldtransitiondata";
 
 export function sendPlayerToAnotherWorld(playerEnt: Entity, currentWorld: BaseWorldEngine, newWorldType: WorldTypes, newPos: PositionComponent) {
     playerEnt.player.state = PlayerStates.UNLOADED;
-    playerEnt.pos = newPos;
+    playerEnt.pos = newPos; // unncessary
 
     // Remove player entity from current World.
     findAndDestroyPlayerEntity(currentWorld, playerEnt.player.id, currentWorld.server);

@@ -126,7 +126,7 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
 
                                 if (playerIndex > -1) {           
                                     if (other.player.state === PlayerStates.LOADED) {
-                                        const castleSpawnPosition: PositionComponent = setPosition(0, -500, 5);
+                                        const castleSpawnPosition: PositionComponent = setPosition(765, -850, 5);
                                         sendPlayerToAnotherWorld(other, this, WorldTypes.CASTLE, castleSpawnPosition);
                                     }
                                 }

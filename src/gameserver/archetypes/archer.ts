@@ -11,7 +11,7 @@ import { PlayerClassTypes } from "../../packets/playerclasstypes";
 
 export function createArcher(server: Server, worldEngine: BaseWorldEngine, clientId: string, pos: PositionComponent): Entity {
     let archer = new Entity();
-    archer.player = { id: clientId, state: PlayerStates.LOADED, class: PlayerClassTypes.ARCHER };
+    archer.player = { id: clientId, state: PlayerStates.UNLOADED, class: PlayerClassTypes.ARCHER };
     archer.pos = pos;
     archer.vel = setVelocity(15, 0.5);
     archer.sprite = { url: "./data/textures/archer_girl_from_sketch.png", pixelRatio: 1 };

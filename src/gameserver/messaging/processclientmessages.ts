@@ -15,6 +15,7 @@ import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { QueriedInput } from "../serverengine/interfaces";
 import { ClientWorldMessage, ClientWorldMessageTypes } from "../../packets/clientworldmessage";
 import { WorldTransitionData } from "../../packets/worldtransitiondata";
+import { PlayerStates } from "../components/player";
 
 // Will need more info pertaining to INPUT_TO_QUERY event.
 export function processClientMessages(server: Server) {
@@ -92,6 +93,7 @@ function processClientInputMessage(message: ClientInputMessage, server: Server) 
 function processPlayerWorldTransitionMessage(data: WorldTransitionData, server: Server) {
     console.log(`(port: ${server.gameServerPort}): client with clientId = "${data.clientId}" transitioned as a player with class = "${data.playerClass}" in world = "${data.newWorldType}"`);
     let clientWorld: BaseWorldEngine;
+    let playerEnt: Entity;
 
     try {
         clientWorld = server.worldEngines.find(worldEngine => worldEngine.worldType === data.newWorldType);
@@ -102,15 +104,15 @@ function processPlayerWorldTransitionMessage(data: WorldTransitionData, server: 
     switch (data.playerClass) {
         case PlayerClassTypes.PAGE:
             const pagePos: PositionComponent = setPosition(data.newPos.x, data.newPos.y, 5);
-            createPage(server, clientWorld, data.clientId, pagePos);
+            playerEnt = createPage(server, clientWorld, data.clientId, pagePos);
             break;
         case PlayerClassTypes.MAGICIAN:
             const magicianPos: PositionComponent = setPosition(data.newPos.x, data.newPos.y, 5);
-            createMagician(server, clientWorld, data.clientId, magicianPos);
+            playerEnt = createMagician(server, clientWorld, data.clientId, magicianPos);
             break;
         case PlayerClassTypes.ARCHER:
             const archerPos: PositionComponent = setPosition(data.newPos.x, data.newPos.y, 5);
-            createArcher(server, clientWorld, data.clientId, archerPos);
+            playerEnt = createArcher(server, clientWorld, data.clientId, archerPos);
             break;
     }
 
@@ -119,6 +121,7 @@ function processPlayerWorldTransitionMessage(data: WorldTransitionData, server: 
         // Create all entities for connecting client.
         sendLoadWorldMessage(server, clientWorld.worldLevelData, data.clientId);
         sendCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, data.newWorldType);
+        playerEnt.player.state = PlayerStates.LOADED;
     }, 5000);
 }
 
@@ -133,6 +136,7 @@ export function processPlayerJoinedMessage(message: ClientEventMessage, server: 
     console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.clientId}" joined as a player with class = "${message.playerClass}" in world = "${message.worldType}"`);
     console.log("create player entity");
     let clientWorld: BaseWorldEngine;
+    let playerEnt: Entity;
 
     try {
         clientWorld = server.worldEngines.find(worldEngine => worldEngine.worldType === message.worldType);
@@ -143,15 +147,15 @@ export function processPlayerJoinedMessage(message: ClientEventMessage, server: 
     switch (message.playerClass) {
         case PlayerClassTypes.PAGE:
             const pagePos: PositionComponent = setPosition(150, 150, 5);
-            createPage(server, clientWorld, message.clientId, pagePos);
+            playerEnt = createPage(server, clientWorld, message.clientId, pagePos);
             break;
         case PlayerClassTypes.MAGICIAN:
             const magicianPos: PositionComponent = setPosition(150, 450, 5);
-            createMagician(server, clientWorld, message.clientId, magicianPos);
+            playerEnt = createMagician(server, clientWorld, message.clientId, magicianPos);
             break;
         case PlayerClassTypes.ARCHER:
             const archerPos: PositionComponent = setPosition(0, 0, 5);
-            createArcher(server, clientWorld, message.clientId, archerPos);
+            playerEnt = createArcher(server, clientWorld, message.clientId, archerPos);
             break;
     }
 
@@ -160,6 +164,7 @@ export function processPlayerJoinedMessage(message: ClientEventMessage, server: 
         // Create all entities for connecting client.
         sendLoadWorldMessage(server, clientWorld.worldLevelData, message.clientId);
         sendCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.worldType);
+        playerEnt.player.state = PlayerStates.LOADED;
     }, 5000);
 
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages
@@ -195,7 +200,7 @@ export function processQueriedInputs(server: Server) {
 
         ents.forEach(ent => {
             if (ent.player && ent.control) {
-                if (ent.player.id === input.clientId) {
+                if (ent.player.id === input.clientId && ent.player.state === PlayerStates.LOADED) {
                     switch (input.inputType) {
                         case ClientInputTypes.ATTACK:
                             processAttackInputMessage(ent);
@@ -227,7 +232,7 @@ function processAttackInputMessage(playerEnt: Entity) {
 function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
+            if (ent.player.id === message.clientId && ent.player.state === PlayerStates.LOADED) {
                 ent.control.left = true;
             }
         }
@@ -237,7 +242,7 @@ function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientI
 function processLeftKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
+            if (ent.player.id === message.clientId && ent.player.state === PlayerStates.LOADED) {
                 ent.control.left = false;
             }
         }
@@ -247,7 +252,7 @@ function processLeftKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientInp
 function processRightKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
+            if (ent.player.id === message.clientId && ent.player.state === PlayerStates.LOADED) {
                 ent.control.right = true;
             }
         }
@@ -257,7 +262,7 @@ function processRightKeyDownMessage(ents: ReadonlyArray<Entity>, message: Client
 function processRightKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
+            if (ent.player.id === message.clientId && ent.player.state === PlayerStates.LOADED) {
                 ent.control.right = false;
             }
         }
@@ -267,7 +272,7 @@ function processRightKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientIn
 function processUpKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
+            if (ent.player.id === message.clientId && ent.player.state === PlayerStates.LOADED) {
                 ent.control.up = true;
             }
         }
@@ -277,7 +282,7 @@ function processUpKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientInp
 function processUpKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
+            if (ent.player.id === message.clientId && ent.player.state === PlayerStates.LOADED) {
                 ent.control.up = false;
             }
         }
@@ -287,7 +292,7 @@ function processUpKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientInput
 function processDownKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
+            if (ent.player.id === message.clientId && ent.player.state === PlayerStates.LOADED) {
                 ent.control.down = true;
             }
         }
@@ -297,7 +302,7 @@ function processDownKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientI
 function processDownKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
+            if (ent.player.id === message.clientId && ent.player.state === PlayerStates.LOADED) {
                 ent.control.down = false;
             }
         }

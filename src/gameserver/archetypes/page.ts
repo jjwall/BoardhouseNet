@@ -11,7 +11,7 @@ import { PlayerClassTypes } from "../../packets/playerclasstypes";
 
 export function createPage(server: Server, worldEngine: BaseWorldEngine, clientId: string, pos: PositionComponent): Entity {
     let page = new Entity();
-    page.player = { id: clientId, state: PlayerStates.LOADED, class: PlayerClassTypes.PAGE };
+    page.player = { id: clientId, state: PlayerStates.UNLOADED, class: PlayerClassTypes.PAGE };
     page.pos = pos;
     page.vel = setVelocity(15, 0.5);
     page.sprite = { url: "./data/textures/msknight.png", pixelRatio: 4 };
