@@ -1,6 +1,7 @@
 import { kenneyItemShop2 } from "../../../modules/tilemapping/tilemaps/kenneyitemshop2";
 import { sendUnloadOldWorldLoadNewWorldMessage } from "../../messaging/sendmessages";
 import { findAndDestroyPlayerEntity } from "../../serverengine/setupgameserver";
+import { sendPlayerToAnotherWorld } from "../../messaging/sendneteventmessages";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { TileData, WorldLevelData } from "../../../packets/worldleveldata";
@@ -127,12 +128,7 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
 
                                 if (playerIndex > -1) {           
                                     if (other.player.state === PlayerStates.LOADED) {
-                                        other.player.state = PlayerStates.UNLOADED;
-                                        findAndDestroyPlayerEntity(this, other.player.id, this.server);
-                                        const castleWorld = this.server.worldEngines.find(worldEngine => worldEngine.worldType === WorldTypes.CASTLE);
-
-                                        // this method can probably be simplified, i.e. don't need to "find" castle world
-                                        sendUnloadOldWorldLoadNewWorldMessage(this.server, castleWorld.worldLevelData, other.player.id);//, WorldTypes.CASTLE);
+                                        sendPlayerToAnotherWorld(other, this, WorldTypes.CASTLE);
                                     }
                                 }
                             }

@@ -213,11 +213,11 @@ export function sendUnloadWorldMessage(server: Server, worldLevelData: WorldLeve
     });
 }
 
-export function sendUnloadOldWorldLoadNewWorldMessage(server: Server, worldLevelData: WorldLevelData, clientId: string) {//, worldToLoad: WorldTypes) {
+export function sendUnloadOldWorldLoadNewWorldMessage(server: Server, worldLevelData: WorldLevelData, clientId: string, worldToLoad: WorldTypes) {
     let message: NetWorldMessage = {
         messageType: MessageTypes.NET_WORLD_MESSAGE,
         eventType: NetWorldEventTypes.UNLOAD_WORLD_LOAD_WORLD,
-        worldType: worldLevelData.worldType,//worldToLoad, // unnecessary
+        worldType: worldToLoad,
         data: worldLevelData,
     }
 
