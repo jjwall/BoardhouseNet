@@ -13,6 +13,8 @@ import { createArcher } from "../archetypes/archer";
 import { PositionComponent, setPosition } from "../components/position";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { QueriedInput } from "../serverengine/interfaces";
+import { ClientWorldMessage, ClientWorldMessageTypes } from "../../packets/clientworldmessage";
+import { WorldTransitionData } from "../../packets/worldtransitiondata";
 
 // Will need more info pertaining to INPUT_TO_QUERY event.
 export function processClientMessages(server: Server) {
@@ -24,10 +26,21 @@ export function processClientMessages(server: Server) {
             case MessageTypes.CLIENT_INPUT_MESSAGE:
                 processClientInputMessage(message as ClientInputMessage, server);
                 break;
+            case MessageTypes.CLIENT_WORLD_MESSAGE:
+                processClientWorldMessages(message as ClientWorldMessage, server);
+                break
         }
     });
 
     server.messagesToProcess = [];
+}
+
+function processClientWorldMessages(message: ClientWorldMessage, server: Server) {
+    switch (message.eventTypes) {
+        case ClientWorldMessageTypes.PLAYER_WORLD_TRANSITION:
+            processPlayerWorldTransitionMessage(message.data, server);
+            break
+    }
 }
 
 function processClientEventMessage(message: ClientEventMessage, server: Server) {
@@ -76,6 +89,39 @@ function processClientInputMessage(message: ClientInputMessage, server: Server) 
     }
 }
 
+function processPlayerWorldTransitionMessage(data: WorldTransitionData, server: Server) {
+    console.log(`(port: ${server.gameServerPort}): client with clientId = "${data.clientId}" transitioned as a player with class = "${data.playerClass}" in world = "${data.newWorldType}"`);
+    let clientWorld: BaseWorldEngine;
+
+    try {
+        clientWorld = server.worldEngines.find(worldEngine => worldEngine.worldType === data.newWorldType);
+    } catch {
+        throw Error("unable to find world");
+    }
+    
+    switch (data.playerClass) {
+        case PlayerClassTypes.PAGE:
+            const pagePos: PositionComponent = setPosition(data.newPos.x, data.newPos.y, 5);
+            createPage(server, clientWorld, data.clientId, pagePos);
+            break;
+        case PlayerClassTypes.MAGICIAN:
+            const magicianPos: PositionComponent = setPosition(data.newPos.x, data.newPos.y, 5);
+            createMagician(server, clientWorld, data.clientId, magicianPos);
+            break;
+        case PlayerClassTypes.ARCHER:
+            const archerPos: PositionComponent = setPosition(data.newPos.x, data.newPos.y, 5);
+            createArcher(server, clientWorld, data.clientId, archerPos);
+            break;
+    }
+
+    // // Not exactly sure why we need this setTimeout here.
+    setTimeout(function() {
+        // Create all entities for connecting client.
+        sendLoadWorldMessage(server, clientWorld.worldLevelData, data.clientId);
+        sendCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, data.newWorldType);
+    }, 5000);
+}
+
 /**
  * Just because player joins, doesn't mean an ent necessarily needs to be created for them.
  * In this example we do just that.
@@ -97,15 +143,15 @@ export function processPlayerJoinedMessage(message: ClientEventMessage, server: 
     switch (message.playerClass) {
         case PlayerClassTypes.PAGE:
             const pagePos: PositionComponent = setPosition(150, 150, 5);
-            createPage(server, clientWorld, message, pagePos);
+            createPage(server, clientWorld, message.clientId, pagePos);
             break;
         case PlayerClassTypes.MAGICIAN:
             const magicianPos: PositionComponent = setPosition(150, 450, 5);
-            createMagician(server, clientWorld, message, magicianPos);
+            createMagician(server, clientWorld, message.clientId, magicianPos);
             break;
         case PlayerClassTypes.ARCHER:
             const archerPos: PositionComponent = setPosition(0, 0, 5);
-            createArcher(server, clientWorld, message, archerPos);
+            createArcher(server, clientWorld, message.clientId, archerPos);
             break;
     }
 

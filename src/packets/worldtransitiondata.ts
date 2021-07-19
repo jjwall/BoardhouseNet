@@ -1,7 +1,12 @@
-// import { NetWorldMessage } from "./networldmessage";
+import { PlayerClassTypes } from "./playerclasstypes";
+import { WorldTypes } from "./worldtypes";
 
-// export interface WorldTransitionData extends NetWorldMessage {
-//     data: {
-//         poop: number;
-//     }
-// }
+export interface WorldTransitionData {
+    clientId: string;
+    playerClass: PlayerClassTypes;
+    newWorldType: WorldTypes;
+    newPos: {
+        x: number;
+        y: number;
+    } 
+}

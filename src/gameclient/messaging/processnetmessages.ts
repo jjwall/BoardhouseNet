@@ -1,20 +1,22 @@
+import { WorldTransitionData } from "../../packets/worldtransitiondata";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
 import { NetWorldEventTypes } from "../../packets/networldeventtypes";
+import { sendPlayerJoinedMessage, sendPlayerJoinedWorldTransitionMessage } from "./sendclienteventmessages";
 import { NetEntityMessage } from "../../packets/netentitymessage";
 import { NetWorldMessage } from "../../packets/networldmessage";
 import { NetEventMessage } from "../../packets/neteventmessage";
 import { renderWorldMap } from "../clientengine/renderworldmap";
+import { WorldLevelData } from "../../packets/worldleveldata";
+import { ClientEntity } from "../clientengine/cliententity";
 import { NetEventTypes } from "../../packets/neteventtypes";
 import { MessageTypes } from "../../packets/messagetypes";
 import { setHitboxGraphic } from "../components/hitbox";
 import { ClientRender } from "../renders/clientrender";
-import { ClientEntity } from "../clientengine/cliententity";
 import { setPosition } from "../components/position";
 import { setSprite } from "../components/sprite";
 import { Message } from "../../packets/message";
 import { Client } from "../clientengine/client";
 import { Vector3 } from "three";
-import { sendPlayerJoinedMessage } from "./sendclienteventmessages";
 
 // Handle message based on the type of NetMessage.
 // Will need non-entity messages such as "CREATE_FIRE_BALL" with x,y,z location in Euler direction etc...
@@ -184,31 +186,31 @@ function renderPlayerAttackAnim(message: NetEventMessage, client: Client) {
 function processNetWorldMessage(message: NetWorldMessage, client: Client) {
     switch (message.eventType) {
         case NetWorldEventTypes.LOAD_WORLD:
-            loadWorld(message, client);
+            loadWorld(message.data as WorldLevelData, client);
             break;
         case NetWorldEventTypes.UNLOAD_WORLD:
-            unloadWorld(message, client);
+            unloadWorld(client);
             break;
         case NetWorldEventTypes.PLAYER_WORLD_TRANSITION:
-            transitionPlayerClientToNewWorld(message, client);
+            transitionPlayerClientToNewWorld(message.data as WorldTransitionData, client);
             break;
     }
 }
 
-function loadWorld(message: NetWorldMessage, client: Client) {
+function loadWorld(data: WorldLevelData, client: Client) {
     console.log("load world...");
     console.log(client.worldType);
     // if (client.worldType === message.data.worldType) {
 
     // Set world type.
-    client.worldType = message.worldType;
+    client.worldType = data.worldType;
 
     if (client.tileMeshList.length === 0) // this check is to ensure we don't keep reloading the same map. May need to consider an additional check when loading a new world.
-        renderWorldMap(client, message.data);
+        renderWorldMap(client, data);
     // }
 }
 
-function unloadWorld(message: NetWorldMessage, client: Client) {
+function unloadWorld(client: Client) {
     // Remove tile meshes from game scene.
     if (client.tileMeshList.length > 0) {
         client.tileMeshList.forEach(mesh => {
@@ -240,12 +242,13 @@ function unloadWorld(message: NetWorldMessage, client: Client) {
     client.renderList = [];
 }
 
-function transitionPlayerClientToNewWorld(message: NetWorldMessage, client: Client) {
+function transitionPlayerClientToNewWorld(data: WorldTransitionData, client: Client) {
     // Unload current world assets.
-    unloadWorld(message, client);
+    unloadWorld(client);
 
     // Set new world type client will be rendering.
-    client.worldType = message.worldType;
-    sendPlayerJoinedMessage(client); // create new function, playerJoinedWorldAtPosition?
+    client.worldType = data.newWorldType;
+    //sendPlayerJoinedMessage(client); // create new function, playerJoinedWorldAtPosition?
+    sendPlayerJoinedWorldTransitionMessage(client, data);
 }
 //#endregion

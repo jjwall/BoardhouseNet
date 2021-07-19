@@ -7,10 +7,11 @@ import { Entity } from "../serverengine/entity";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { Server } from "../serverengine/server";
 import { PlayerStates } from "../components/player";
+import { PlayerClassTypes } from "../../packets/playerclasstypes";
 
-export function createArcher(server: Server, worldEngine: BaseWorldEngine, message: ClientEventMessage, pos: PositionComponent): Entity {
+export function createArcher(server: Server, worldEngine: BaseWorldEngine, clientId: string, pos: PositionComponent): Entity {
     let archer = new Entity();
-    archer.player = { id: message.clientId, state: PlayerStates.LOADED };
+    archer.player = { id: clientId, state: PlayerStates.LOADED, class: PlayerClassTypes.ARCHER };
     archer.pos = pos;
     archer.vel = setVelocity(15, 0.5);
     archer.sprite = { url: "./data/textures/archer_girl_from_sketch.png", pixelRatio: 1 };

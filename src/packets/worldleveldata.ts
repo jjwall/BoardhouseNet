@@ -11,7 +11,6 @@ export interface WorldLevelData {
     canvasTileMapTilesWide: number;
     canvasTileMapTilesHigh: number;
     tiles: TileData[];
-
 }
 
 export interface TileData {

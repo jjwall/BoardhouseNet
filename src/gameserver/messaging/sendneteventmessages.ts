@@ -5,6 +5,7 @@ import { PositionComponent } from "../components/position";
 import { WorldTypes } from "../../packets/worldtypes";
 import { PlayerStates } from "../components/player";
 import { Entity } from "../serverengine/entity";
+import { WorldTransitionData } from "../../packets/worldtransitiondata";
 
 export function sendPlayerToAnotherWorld(playerEnt: Entity, currentWorld: BaseWorldEngine, newWorldType: WorldTypes, newPos: PositionComponent) {
     playerEnt.player.state = PlayerStates.UNLOADED;
@@ -18,5 +19,16 @@ export function sendPlayerToAnotherWorld(playerEnt: Entity, currentWorld: BaseWo
 
     // TODO: simplify "data"
     // this method can probably be simplified, i.e. don't need to "find" castle world
-    sendPlayerWorldTransitionMessage(currentWorld.server, castleWorld.worldLevelData, playerEnt.player.id, newWorldType);
+
+    const data: WorldTransitionData = {
+        playerClass: playerEnt.player.class,
+        clientId: playerEnt.player.id,
+        newWorldType: newWorldType,
+        newPos: {
+            x: newPos.loc.x,
+            y: newPos.loc.y
+        }
+    }
+
+    sendPlayerWorldTransitionMessage(currentWorld.server, data, playerEnt.player.id, newWorldType);
 };

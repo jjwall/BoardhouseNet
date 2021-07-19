@@ -12,6 +12,7 @@ import { WorldLevelData } from "../../packets/worldleveldata";
 import { WorldTypes } from "../../packets/worldtypes";
 import { NetWorldEventTypes } from "../../packets/networldeventtypes";
 import { MyWebSocket } from "../serverengine/setupgameserver";
+import { WorldTransitionData } from "../../packets/worldtransitiondata";
 
 export function sendCreateEntitiesMessage(ents: Entity[], server: Server, worldType: WorldTypes) {
     let message: NetEntityMessage = {
@@ -213,19 +214,19 @@ export function sendUnloadWorldMessage(server: Server, worldLevelData: WorldLeve
     });
 }
 
-export function sendPlayerWorldTransitionMessage(server: Server, worldLevelData: WorldLevelData, clientId: string, worldToLoad: WorldTypes) {
+export function sendPlayerWorldTransitionMessage(server: Server, worldTransitionData: WorldTransitionData, clientId: string, worldToLoad: WorldTypes) {
     let message: NetWorldMessage = {
         messageType: MessageTypes.NET_WORLD_MESSAGE,
         eventType: NetWorldEventTypes.PLAYER_WORLD_TRANSITION,
         worldType: worldToLoad,
-        data: worldLevelData,
+        data: worldTransitionData,
     }
 
     server.boardhouseServer.clients.forEach(client => {
         const myClient = client as MyWebSocket;
 
         if (myClient.clientId === clientId) {
-            console.log(`sending un/load world message to client with clientId = ${clientId}`)
+            console.log(`sending transition world message to client with clientId = ${clientId}`)
             client.send(JSON.stringify(message));
         }
     });
