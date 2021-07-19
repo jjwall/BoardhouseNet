@@ -241,7 +241,10 @@ function unloadWorld(message: NetWorldMessage, client: Client) {
 }
 
 function unloadOldWorldLoadNewWorld(message: NetWorldMessage, client: Client) {
+    // Unload current world assets.
     unloadWorld(message, client);
+
+    // Set new world type client will be rendering.
     client.worldType = message.worldType;
     sendPlayerJoinedMessage(client); // create new function, playerJoinedWorldAtPosition?
 }
