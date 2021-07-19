@@ -213,10 +213,10 @@ export function sendUnloadWorldMessage(server: Server, worldLevelData: WorldLeve
     });
 }
 
-export function sendUnloadOldWorldLoadNewWorldMessage(server: Server, worldLevelData: WorldLevelData, clientId: string, worldToLoad: WorldTypes) {
+export function sendPlayerWorldTransitionMessage(server: Server, worldLevelData: WorldLevelData, clientId: string, worldToLoad: WorldTypes) {
     let message: NetWorldMessage = {
         messageType: MessageTypes.NET_WORLD_MESSAGE,
-        eventType: NetWorldEventTypes.UNLOAD_WORLD_LOAD_WORLD,
+        eventType: NetWorldEventTypes.PLAYER_WORLD_TRANSITION,
         worldType: worldToLoad,
         data: worldLevelData,
     }
@@ -229,5 +229,9 @@ export function sendUnloadOldWorldLoadNewWorldMessage(server: Server, worldLevel
             client.send(JSON.stringify(message));
         }
     });
+}
+
+export function sendSpectatorWorldTransitionMessage() {
+    // ...
 }
 //#endregion

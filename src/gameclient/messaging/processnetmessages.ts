@@ -189,8 +189,8 @@ function processNetWorldMessage(message: NetWorldMessage, client: Client) {
         case NetWorldEventTypes.UNLOAD_WORLD:
             unloadWorld(message, client);
             break;
-        case NetWorldEventTypes.UNLOAD_WORLD_LOAD_WORLD:
-            unloadOldWorldLoadNewWorld(message, client);
+        case NetWorldEventTypes.PLAYER_WORLD_TRANSITION:
+            transitionPlayerClientToNewWorld(message, client);
             break;
     }
 }
@@ -240,7 +240,7 @@ function unloadWorld(message: NetWorldMessage, client: Client) {
     client.renderList = [];
 }
 
-function unloadOldWorldLoadNewWorld(message: NetWorldMessage, client: Client) {
+function transitionPlayerClientToNewWorld(message: NetWorldMessage, client: Client) {
     // Unload current world assets.
     unloadWorld(message, client);
 

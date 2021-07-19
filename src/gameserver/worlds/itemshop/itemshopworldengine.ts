@@ -1,6 +1,4 @@
 import { kenneyItemShop2 } from "../../../modules/tilemapping/tilemaps/kenneyitemshop2";
-import { sendUnloadOldWorldLoadNewWorldMessage } from "../../messaging/sendmessages";
-import { findAndDestroyPlayerEntity } from "../../serverengine/setupgameserver";
 import { sendPlayerToAnotherWorld } from "../../messaging/sendneteventmessages";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
@@ -9,7 +7,7 @@ import { BaseWorldEngine } from "../../serverengine/baseworldengine";
 import { collisionSystem } from "../../systems/collision";
 import { worldEdgeSystem } from "../../systems/worldedge";
 import { WorldTypes } from "../../../packets/worldtypes";
-import { setPosition } from "../../components/position";
+import { PositionComponent, setPosition } from "../../components/position";
 import { velocitySystem } from "../../systems/velocity";
 import { setControls } from "../../components/control";
 import { controlSystem } from "../../systems/control";
@@ -128,7 +126,8 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
 
                                 if (playerIndex > -1) {           
                                     if (other.player.state === PlayerStates.LOADED) {
-                                        sendPlayerToAnotherWorld(other, this, WorldTypes.CASTLE);
+                                        const castleSpawnPosition: PositionComponent = setPosition(0, -500, 5);
+                                        sendPlayerToAnotherWorld(other, this, WorldTypes.CASTLE, castleSpawnPosition);
                                     }
                                 }
                             }
