@@ -3,7 +3,7 @@ import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { MessageTypes } from "../../packets/messagetypes";
 import { Client } from "../clientengine/client";
-import { ClientWorldMessage, ClientWorldMessageTypes } from "../../packets/clientworldmessage";
+import { ClientWorldMessage, ClientWorldEventTypes } from "../../packets/clientworldmessage";
 
 export function sendPlayerJoinedMessage(client: Client) {
     const message: ClientEventMessage = {
@@ -21,7 +21,7 @@ export function sendPlayerJoinedMessage(client: Client) {
 // test message - may not need client world messages after and just use events instead
 export function sendPlayerJoinedWorldTransitionMessage(client: Client, data: WorldTransitionData) {
     const message: ClientWorldMessage = {
-        eventTypes: ClientWorldMessageTypes.PLAYER_WORLD_TRANSITION,
+        eventTypes: ClientWorldEventTypes.PLAYER_WORLD_TRANSITION,
         messageType: MessageTypes.CLIENT_WORLD_MESSAGE,
         worldType: client.worldType, // unnecessary
         data: data,

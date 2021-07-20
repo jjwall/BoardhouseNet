@@ -2,10 +2,10 @@ import { Message } from "./message";
 import { WorldTransitionData } from "./worldtransitiondata";
 
 export interface ClientWorldMessage extends Message {
-    eventTypes: ClientWorldMessageTypes;
+    eventTypes: ClientWorldEventTypes;
     data: WorldTransitionData;
 }
 
-export enum ClientWorldMessageTypes {
+export enum ClientWorldEventTypes {
     PLAYER_WORLD_TRANSITION = "PLAYER_WORLD_TRANSITION"
 }

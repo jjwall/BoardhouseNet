@@ -13,7 +13,7 @@ import { createArcher } from "../archetypes/archer";
 import { PositionComponent, setPosition } from "../components/position";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { QueriedInput } from "../serverengine/interfaces";
-import { ClientWorldMessage, ClientWorldMessageTypes } from "../../packets/clientworldmessage";
+import { ClientWorldMessage, ClientWorldEventTypes } from "../../packets/clientworldmessage";
 import { WorldTransitionData } from "../../packets/worldtransitiondata";
 import { PlayerStates } from "../components/player";
 
@@ -38,7 +38,7 @@ export function processClientMessages(server: Server) {
 
 function processClientWorldMessages(message: ClientWorldMessage, server: Server) {
     switch (message.eventTypes) {
-        case ClientWorldMessageTypes.PLAYER_WORLD_TRANSITION:
+        case ClientWorldEventTypes.PLAYER_WORLD_TRANSITION:
             processPlayerWorldTransitionMessage(message.data, server);
             break
     }
