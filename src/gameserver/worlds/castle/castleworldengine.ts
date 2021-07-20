@@ -1,20 +1,23 @@
-import { kenneyFantasy } from "../../../modules/tilemapping/tilemaps/kenneyfantasy";
+import { kenneyFantasy2 } from "../../../modules/tilemapping/tilemaps/kenneyfantasy2";
+import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { TileData, WorldLevelData } from "../../../packets/worldleveldata";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
-import { HitboxTypes, setHitbox } from "../../components/hitbox";
-import { WorldTypes } from "../../../packets/networldmessage";
+import { worldEdgeSystem } from "../../systems/worldedge";
 import { collisionSystem } from "../../systems/collision";
-import { setPosition } from "../../components/position";
+import { WorldTypes } from "../../../packets/worldtypes";
+import { PositionComponent, setPosition } from "../../components/position";
 import { velocitySystem } from "../../systems/velocity";
 import { setControls } from "../../components/control";
 import { controlSystem } from "../../systems/control";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
+import { sendPlayerToAnotherWorld } from "../../messaging/sendneteventmessages";
+import { PlayerStates } from "../../components/player";
 
 /**
- * GameState that handles updating of all game-related systems.
+ * World engine that handles updating of all world-related systems.
  */
 export class CastleWorldEngine extends BaseWorldEngine {
     // public rootWidget: Widget;
@@ -29,6 +32,7 @@ export class CastleWorldEngine extends BaseWorldEngine {
         this.registerSystem(playerSystem, "player");
         this.registerSystem(velocitySystem);
         this.registerSystem(collisionSystem);
+        this.registerSystem(worldEdgeSystem);
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 
@@ -48,23 +52,7 @@ export class CastleWorldEngine extends BaseWorldEngine {
         this.registerEntity(cottage1, server);
         this.registerEntity(cottage2, server);
 
-        this.worldLevelData = this.registerWorldLevelData(kenneyFantasy, "./data/textures/colored_packed.png");
-    }
-
-    // Register tiles for hit colision / traps.
-    // TO DO - Add hit collision
-    // TO DO - make this work...
-    private registerTileMap() : void {
-        const tileHeight: number = 16;
-        const tileWidth: number  = 16;
-
-        kenneyFantasy.layers.forEach(layer => {
-            layer.tiles.forEach(tile => {
-                let tileEnt = new Entity();
-                tileEnt.pos = setPosition(tile.x*tileWidth, tile.y*tileHeight, 1);
-                this.registerEntity(tileEnt, this.server);
-            });
-        });
+        this.worldLevelData = this.registerWorldLevelData(kenneyFantasy2, "./data/textures/colored_packed.png");
     }
 
     public registerWorldLevelData(tileMapData: TileMapSchema, tileSetTextureUrl: string): WorldLevelData {
@@ -84,17 +72,86 @@ export class CastleWorldEngine extends BaseWorldEngine {
         const scaledWidth = worldLevelData.tileWidth * worldLevelData.pixelRatio;
         const scaledHeight = worldLevelData.tileHeight * worldLevelData.pixelRatio;
 
+        this.worldHeight = scaledHeight * worldLevelData.canvasTileMapTilesHigh;
+        this.worldWidth = scaledWidth * worldLevelData.canvasTileMapTilesWide;
+
         tileMapData.layers.forEach(layer => {
             layer.tiles.forEach(tile => {
-                const xPos = tile.x * scaledWidth + scaledWidth / 2;
-                const yPos = scaledHeight * worldLevelData.canvasTileSetTilesHigh - tile.y * scaledHeight + scaledHeight / 2;
+                const xPos = tile.x * scaledWidth + scaledWidth / 2 - this.worldWidth / 2;
+                const yPos = scaledHeight * (worldLevelData.canvasTileMapTilesHigh - 1) - tile.y * scaledHeight + scaledHeight / 2 - this.worldHeight / 2;
                 let tileEnt = new Entity();
                 tileEnt.pos = setPosition(xPos, yPos, 1);
                 
                 switch (tile.tile) {
-                    case 48: // single pine tree
-                    case 99: // double pine trees
+                    case 149: // steel fence
+                    case 200: // straight river
+                    case 201: // river turn 
+                    case 245: // steel fence
+                    case 529: // stone stairs
+                    case 533: // red roof
+                    case 534: // red roof
+                    case 535: // red roof
+                    case 576: // square stone wall topper
+                    case 577: // pyramid stone wall topper
+                    case 578: // stone wall with cross window
+                    case 581: // red slanted roof (left)
+                    case 582: // red roof
+                    case 583: // red slanted roof (right)
+                    case 592: // stone pile
+                    case 624: // stone wall
+                    case 625: // stone wall with bar window
+                    case 631: // red wall with window
+                    case 676: // well
+                    case 727: // red brick wall
+                    case 730: // wooden slanted roof (left)
+                    case 731: // wooden roof
+                    case 732: // wooden slanted roof (right)
+                    case 778: // wooden wall with window (left)
+                    case 780: // wooden wall with window (right)
+                    case 827: // stone wall with square window
                         tileEnt.hitbox = setHitbox(HitboxTypes.TILE_OBSTACLE, [HitboxTypes.PLAYER], 128, 128);
+                        tileEnt.hitbox.onHit = function(tile, other, manifold) {
+                            if (other.hitbox.collideType === HitboxTypes.PLAYER) {
+                                const tileHitbox = getHitbox(tile);
+                                const playerHitbox = getHitbox(other);
+
+                                if (playerHitbox.left > tileHitbox.left) {
+                                    if (manifold.width <= manifold.height)
+                                        other.pos.loc.x += manifold.width;
+                                }
+                                if (playerHitbox.right < tileHitbox.right) {
+                                    if (manifold.width <= manifold.height)
+                                        other.pos.loc.x -= manifold.width;
+                                }
+                                if (playerHitbox.bottom > tileHitbox.bottom) {
+                                    if (manifold.width >= manifold.height)
+                                        other.pos.loc.y += manifold.height;
+                                }
+                                if (playerHitbox.top < tileHitbox.top) {
+                                    if (manifold.width >= manifold.height)
+                                        other.pos.loc.y -= manifold.height;
+                                }
+                            }
+                        }
+                        break;
+
+                    case 435: // inn door (use for item shop?)
+                        // teleport player into item shop world
+                        tileEnt.hitbox = setHitbox(HitboxTypes.INN_DOOR, [HitboxTypes.PLAYER], 10, 128, 0, 50);
+                        tileEnt.hitbox.onHit = (tile, other, manifold) => {
+                            if (other.hitbox.collideType === HitboxTypes.PLAYER) {
+                                console.log("exiting castle...");
+                                const playerIndex = this.server.playerClientIds.indexOf(other.player.id);
+                                console.log(playerIndex);
+
+                                if (playerIndex > -1) {           
+                                    if (other.player.state === PlayerStates.LOADED) {
+                                        const itemShopSpawnPosition: PositionComponent = setPosition(0, -500, 5);
+                                        sendPlayerToAnotherWorld(other, this, WorldTypes.ITEM_SHOP, itemShopSpawnPosition);
+                                    }
+                                }
+                            }
+                        }
                         break;
                 }
 

@@ -1,4 +1,4 @@
-import { WorldTypes } from "./networldmessage";
+import { WorldTypes } from "./worldtypes";
 
 export interface WorldLevelData {
     worldType: WorldTypes;
@@ -11,7 +11,6 @@ export interface WorldLevelData {
     canvasTileMapTilesWide: number;
     canvasTileMapTilesHigh: number;
     tiles: TileData[];
-
 }
 
 export interface TileData {
@@ -25,5 +24,6 @@ export interface TileData {
         width: number;
         offsetX: number;
         offsetY: number;
+        color?: string;
     },
 }

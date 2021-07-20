@@ -2,7 +2,7 @@ import { RegistryKeyToSystemMap, RegistryKeyToEntityListMap } from "./interfaces
 import { Server } from "./server";
 import { Entity } from "./entity";
 import { sendUpdateEntitiesMessage } from "../messaging/sendmessages";
-import { WorldTypes } from "../../packets/networldmessage";
+import { WorldTypes } from "../../packets/worldtypes";
 import { WorldLevelData } from "../../packets/worldleveldata";
 import { TileMapSchema } from "../../modules/tilemapping/tilemapschema";
 // import { Widget } from "./ui/widget";
@@ -22,6 +22,10 @@ export abstract class BaseWorldEngine {
     public server: Server;
 
     public worldType: WorldTypes;
+
+    public worldWidth: number;
+    
+    public worldHeight: number;
 
     public worldLevelData: WorldLevelData;
 

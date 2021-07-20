@@ -10,7 +10,7 @@ import { ClientEntity } from "./cliententity";
 import { NetIdToEntityMap } from "./interfaces";
 import { ClientRender } from "../renders/clientrender";
 import { PlayerClassTypes } from "../../packets/playerclasstypes";
-import { WorldTypes } from "../../packets/networldmessage";
+import { WorldTypes } from "../../packets/worldtypes";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -341,11 +341,11 @@ export class Client {
 
             // Ensure camera doesn't scroll past world edges.
             if (client.worldHeight > 0 && client.worldWidth > 0) {
-                cx = Math.max(cx, -client.worldWidth / 4 + client.screenWidth * 1.475); // -> >> 1.475 << change value based on World Size
-                cx = Math.min(cx, client.worldWidth / 1 - client.screenWidth / 2);
+                cx = Math.max(cx, -client.worldWidth / 2 + client.screenWidth / 2);
+                cx = Math.min(cx, client.worldWidth / 2 - client.screenWidth / 2);
         
-                cy = Math.max(cy, -client.worldHeight / 4 + client.screenHeight * 1.525); // -> >> 1.525 << change value based on World Size
-                cy = Math.min(cy, client.worldHeight / 1 - client.screenHeight / 2);
+                cy = Math.max(cy, -client.worldHeight / 2 + client.screenHeight / 2);
+                cy = Math.min(cy, client.worldHeight / 2 - client.screenHeight / 2);
             }
 
             const targetPos = new Vector3(

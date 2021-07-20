@@ -1,11 +1,10 @@
-import * as WebSocket from "ws";
 import { setUpClientToLobbyConnection } from "./setupclienttolobbyconnection";
-import { setUpGameServer } from "./setupgameserver";
-import { last } from "./helpers";
-import { BaseWorldEngine } from "./baseworldengine";
+import { ItemShopWorldEngine } from "../worlds/itemshop/itemshopworldengine";
 import { CastleWorldEngine } from "../worlds/castle/castleworldengine";
+import { WorldTypes } from "../../packets/worldtypes";
+import { setUpGameServer } from "./setupgameserver";
 import { Server, ServerConfig } from "./server";
-import { WorldTypes } from "../../packets/networldmessage";
+import * as WebSocket from "ws";
 
 // Server to-do:
 // 1. (done) Fix BaseState ecs registration - only global and control registering.. others throwing errors - need to debug
@@ -36,8 +35,8 @@ main();
 
 function main() {
     // initialize state stack
-    server.worldEngines.push(new CastleWorldEngine(server, WorldTypes.WORLD_1));
-    server.worldEngines.push(new CastleWorldEngine(server, WorldTypes.WORLD_2));
+    server.worldEngines.push(new CastleWorldEngine(server, WorldTypes.CASTLE));
+    server.worldEngines.push(new ItemShopWorldEngine(server, WorldTypes.ITEM_SHOP));
 
     // logic update loop
     setInterval(function (): void {

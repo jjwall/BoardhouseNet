@@ -13,6 +13,9 @@ import { createArcher } from "../archetypes/archer";
 import { PositionComponent, setPosition } from "../components/position";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { QueriedInput } from "../serverengine/interfaces";
+import { ClientWorldMessage, ClientWorldMessageTypes } from "../../packets/clientworldmessage";
+import { WorldTransitionData } from "../../packets/worldtransitiondata";
+import { PlayerStates } from "../components/player";
 
 // Will need more info pertaining to INPUT_TO_QUERY event.
 export function processClientMessages(server: Server) {
@@ -24,10 +27,21 @@ export function processClientMessages(server: Server) {
             case MessageTypes.CLIENT_INPUT_MESSAGE:
                 processClientInputMessage(message as ClientInputMessage, server);
                 break;
+            case MessageTypes.CLIENT_WORLD_MESSAGE:
+                processClientWorldMessages(message as ClientWorldMessage, server);
+                break
         }
     });
 
     server.messagesToProcess = [];
+}
+
+function processClientWorldMessages(message: ClientWorldMessage, server: Server) {
+    switch (message.eventTypes) {
+        case ClientWorldMessageTypes.PLAYER_WORLD_TRANSITION:
+            processPlayerWorldTransitionMessage(message.data, server);
+            break
+    }
 }
 
 function processClientEventMessage(message: ClientEventMessage, server: Server) {
@@ -76,6 +90,41 @@ function processClientInputMessage(message: ClientInputMessage, server: Server) 
     }
 }
 
+function processPlayerWorldTransitionMessage(data: WorldTransitionData, server: Server) {
+    console.log(`(port: ${server.gameServerPort}): client with clientId = "${data.clientId}" transitioned as a player with class = "${data.playerClass}" in world = "${data.newWorldType}"`);
+    let clientWorld: BaseWorldEngine;
+    let playerEnt: Entity;
+
+    try {
+        clientWorld = server.worldEngines.find(worldEngine => worldEngine.worldType === data.newWorldType);
+    } catch {
+        throw Error("unable to find world");
+    }
+    
+    switch (data.playerClass) {
+        case PlayerClassTypes.PAGE:
+            const pagePos: PositionComponent = setPosition(data.newPos.x, data.newPos.y, 5);
+            playerEnt = createPage(server, clientWorld, data.clientId, pagePos);
+            break;
+        case PlayerClassTypes.MAGICIAN:
+            const magicianPos: PositionComponent = setPosition(data.newPos.x, data.newPos.y, 5);
+            playerEnt = createMagician(server, clientWorld, data.clientId, magicianPos);
+            break;
+        case PlayerClassTypes.ARCHER:
+            const archerPos: PositionComponent = setPosition(data.newPos.x, data.newPos.y, 5);
+            playerEnt = createArcher(server, clientWorld, data.clientId, archerPos);
+            break;
+    }
+
+    // // Not exactly sure why we need this setTimeout here.
+    setTimeout(function() {
+        // Create all entities for connecting client.
+        sendLoadWorldMessage(server, clientWorld.worldLevelData, data.clientId);
+        sendCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, data.newWorldType);
+        playerEnt.player.state = PlayerStates.LOADED;
+    }, 5000);
+}
+
 /**
  * Just because player joins, doesn't mean an ent necessarily needs to be created for them.
  * In this example we do just that.
@@ -83,10 +132,11 @@ function processClientInputMessage(message: ClientInputMessage, server: Server) 
  * @param server 
  * @param state 
  */
-function processPlayerJoinedMessage(message: ClientEventMessage, server: Server) {
+export function processPlayerJoinedMessage(message: ClientEventMessage, server: Server) {
     console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.clientId}" joined as a player with class = "${message.playerClass}" in world = "${message.worldType}"`);
     console.log("create player entity");
     let clientWorld: BaseWorldEngine;
+    let playerEnt: Entity;
 
     try {
         clientWorld = server.worldEngines.find(worldEngine => worldEngine.worldType === message.worldType);
@@ -97,23 +147,24 @@ function processPlayerJoinedMessage(message: ClientEventMessage, server: Server)
     switch (message.playerClass) {
         case PlayerClassTypes.PAGE:
             const pagePos: PositionComponent = setPosition(150, 150, 5);
-            createPage(server, clientWorld, message, pagePos);
+            playerEnt = createPage(server, clientWorld, message.clientId, pagePos);
             break;
         case PlayerClassTypes.MAGICIAN:
             const magicianPos: PositionComponent = setPosition(150, 450, 5);
-            createMagician(server, clientWorld, message, magicianPos);
+            playerEnt = createMagician(server, clientWorld, message.clientId, magicianPos);
             break;
         case PlayerClassTypes.ARCHER:
-            const archerPos: PositionComponent = setPosition(450, 450, 5);
-            createArcher(server, clientWorld, message, archerPos);
+            const archerPos: PositionComponent = setPosition(0, 0, 5);
+            playerEnt = createArcher(server, clientWorld, message.clientId, archerPos);
             break;
     }
 
     // // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
         // Create all entities for connecting client.
-        sendLoadWorldMessage(server, clientWorld.worldLevelData);
+        sendLoadWorldMessage(server, clientWorld.worldLevelData, message.clientId);
         sendCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.worldType);
+        playerEnt.player.state = PlayerStates.LOADED;
     }, 5000);
 
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages
@@ -126,7 +177,7 @@ function processSpectatorJoinedMessage(message: ClientEventMessage, server: Serv
     // Dummy data... for testing stuff with spectator
     // Set up another player entity.
     let player = new Entity();
-    player.player = { id: message.clientId };
+    // player.player = { id: message.clientId };
     player.pos = setPosition(350, 150, 5);
     player.sprite = { url: "./data/textures/snow.png", pixelRatio: 4 };
     player.anim = { sequence: "blah", currentFrame: 0 };
@@ -149,7 +200,7 @@ export function processQueriedInputs(server: Server) {
 
         ents.forEach(ent => {
             if (ent.player && ent.control) {
-                if (ent.player.id === input.clientId) {
+                if (ent.player.id === input.clientId && ent.player.state === PlayerStates.LOADED) {
                     switch (input.inputType) {
                         case ClientInputTypes.ATTACK:
                             processAttackInputMessage(ent);
@@ -181,7 +232,7 @@ function processAttackInputMessage(playerEnt: Entity) {
 function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
+            if (ent.player.id === message.clientId && ent.player.state === PlayerStates.LOADED) {
                 ent.control.left = true;
             }
         }
@@ -191,7 +242,7 @@ function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientI
 function processLeftKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
+            if (ent.player.id === message.clientId && ent.player.state === PlayerStates.LOADED) {
                 ent.control.left = false;
             }
         }
@@ -201,7 +252,7 @@ function processLeftKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientInp
 function processRightKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
+            if (ent.player.id === message.clientId && ent.player.state === PlayerStates.LOADED) {
                 ent.control.right = true;
             }
         }
@@ -211,7 +262,7 @@ function processRightKeyDownMessage(ents: ReadonlyArray<Entity>, message: Client
 function processRightKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
+            if (ent.player.id === message.clientId && ent.player.state === PlayerStates.LOADED) {
                 ent.control.right = false;
             }
         }
@@ -221,7 +272,7 @@ function processRightKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientIn
 function processUpKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
+            if (ent.player.id === message.clientId && ent.player.state === PlayerStates.LOADED) {
                 ent.control.up = true;
             }
         }
@@ -231,7 +282,7 @@ function processUpKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientInp
 function processUpKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
+            if (ent.player.id === message.clientId && ent.player.state === PlayerStates.LOADED) {
                 ent.control.up = false;
             }
         }
@@ -241,7 +292,7 @@ function processUpKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientInput
 function processDownKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
+            if (ent.player.id === message.clientId && ent.player.state === PlayerStates.LOADED) {
                 ent.control.down = true;
             }
         }
@@ -251,7 +302,7 @@ function processDownKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientI
 function processDownKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientInputMessage) {
     ents.forEach(ent => {
         if (ent.player && ent.control) {
-            if (ent.player.id === message.clientId) {
+            if (ent.player.id === message.clientId && ent.player.state === PlayerStates.LOADED) {
                 ent.control.down = false;
             }
         }

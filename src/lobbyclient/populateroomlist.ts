@@ -2,7 +2,7 @@ import { IGlobalLobby } from './interfaces';
 import { PortToConnectionsMap } from "../packets/porttoconnectionsmap";
 import { ClientRoleTypes } from '../packets/clientroletypes';
 import { PlayerClassTypes } from '../packets/playerclasstypes';
-import { WorldTypes } from '../packets/networldmessage';
+import { WorldTypes } from '../packets/worldtypes';
 
 export function populateRoomList(globalLobby: IGlobalLobby, portsToConnectionsMap: PortToConnectionsMap) {
     globalLobby.gameRooms.innerHTML = `
@@ -82,15 +82,15 @@ function classSelectRadioValue (globalLobby: IGlobalLobby) : PlayerClassTypes {
 }
 
 function worldSelectRadioValue (globalLobby: IGlobalLobby) : WorldTypes {
-    let worldSelection = WorldTypes.WORLD_1;
+    let worldSelection = WorldTypes.CASTLE;
     for (var i = 0, length = globalLobby.worldSelectRadioElements.length; i < length; i++) {
         if ((globalLobby.worldSelectRadioElements[i] as HTMLInputElement).checked) {
             switch ((globalLobby.worldSelectRadioElements[i] as HTMLInputElement).value) {
-                case "world_1":
-                    worldSelection = WorldTypes.WORLD_1;
+                case "castle":
+                    worldSelection = WorldTypes.CASTLE;
                     break;
-                case "world_2":
-                    worldSelection = WorldTypes.WORLD_2;
+                case "item_shop":
+                    worldSelection = WorldTypes.ITEM_SHOP;
                     break;
             }
           break;

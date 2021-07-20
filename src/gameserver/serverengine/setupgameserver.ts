@@ -9,7 +9,7 @@ import { Server } from "./server";
 import { last } from "./helpers";
 import { BaseWorldEngine } from "./baseworldengine";
 
-class MyWebSocket extends WebSocket {
+export class MyWebSocket extends WebSocket {
     clientId: string;
     clientRole: ClientRoleTypes;
 }
@@ -66,7 +66,8 @@ export function setUpGameServer(server: Server) {
     });
 }
 
-function findAndDestroyPlayerEntity(worldEngine: BaseWorldEngine, clientId: string, server: Server) {
+// move to another spot?
+export function findAndDestroyPlayerEntity(worldEngine: BaseWorldEngine, clientId: string, server: Server) {
     const ents = worldEngine.getEntitiesByKey<Entity>("player");
     let entsToDestroy: Entity[] = [];
 

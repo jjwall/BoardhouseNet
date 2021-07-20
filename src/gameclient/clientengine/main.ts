@@ -6,7 +6,7 @@ import { Client, ClientConfig } from "./client";
 import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
 import { PlayerClassTypes } from "../../packets/playerclasstypes";
-import { WorldTypes } from "../../packets/networldmessage";
+import { WorldTypes } from "../../packets/worldtypes";
 
 // TODO:
 // > Clean up Client class fields and config fields
