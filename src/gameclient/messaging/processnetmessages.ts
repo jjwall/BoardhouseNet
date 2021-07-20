@@ -3,7 +3,7 @@ import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
 import { NetWorldEventTypes } from "../../packets/networldeventtypes";
 import { sendPlayerJoinedMessage, sendPlayerJoinedWorldTransitionMessage } from "./sendclienteventmessages";
 import { NetEntityMessage } from "../../packets/netentitymessage";
-import { NetWorldMessage } from "../../packets/networldmessage";
+import { MessageLoadWorld, MessagePlayerWorldTransition, NetWorldMessage } from "../../packets/networldmessage";
 import { NetEventMessage } from "../../packets/neteventmessage";
 import { renderWorldMap } from "../clientengine/renderworldmap";
 import { WorldLevelData } from "../../packets/worldleveldata";
@@ -186,27 +186,27 @@ function renderPlayerAttackAnim(message: NetEventMessage, client: Client) {
 function processNetWorldMessage(message: NetWorldMessage, client: Client) {
     switch (message.eventType) {
         case NetWorldEventTypes.LOAD_WORLD:
-            loadWorld(message.data as WorldLevelData, client);
+            loadWorld(message as MessageLoadWorld, client);
             break;
         case NetWorldEventTypes.UNLOAD_WORLD:
             unloadWorld(client);
             break;
         case NetWorldEventTypes.PLAYER_WORLD_TRANSITION:
-            transitionPlayerClientToNewWorld(message.data as WorldTransitionData, client);
+            transitionPlayerClientToNewWorld(message as MessagePlayerWorldTransition, client);
             break;
     }
 }
 
-function loadWorld(data: WorldLevelData, client: Client) {
+function loadWorld(message: MessageLoadWorld, client: Client) {
     console.log("load world...");
     console.log(client.worldType);
     // if (client.worldType === message.data.worldType) {
 
     // Set world type.
-    client.worldType = data.worldType;
+    client.worldType = message.data.worldType;
 
     if (client.tileMeshList.length === 0) // this check is to ensure we don't keep reloading the same map. May need to consider an additional check when loading a new world.
-        renderWorldMap(client, data);
+        renderWorldMap(client, message.data);
     // }
 }
 
@@ -242,13 +242,14 @@ function unloadWorld(client: Client) {
     client.renderList = [];
 }
 
-function transitionPlayerClientToNewWorld(data: WorldTransitionData, client: Client) {
+function transitionPlayerClientToNewWorld(message: MessagePlayerWorldTransition, client: Client) {
     // Unload current world assets.
     unloadWorld(client);
 
     // Set new world type client will be rendering.
-    client.worldType = data.newWorldType;
-    //sendPlayerJoinedMessage(client); // create new function, playerJoinedWorldAtPosition?
-    sendPlayerJoinedWorldTransitionMessage(client, data);
+    client.worldType = message.data.newWorldType;
+
+    // Send client world message that tells server to have player join new world.
+    sendPlayerJoinedWorldTransitionMessage(client, message.data);
 }
 //#endregion

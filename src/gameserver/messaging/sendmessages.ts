@@ -7,7 +7,7 @@ import { NetEventMessage } from "../../packets/neteventmessage";
 import { NetEventTypes } from "../../packets/neteventtypes";
 import { EntityData } from "../../packets/entitydata";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
-import { NetWorldMessage } from "../../packets/networldmessage";
+import { MessageLoadWorld, MessagePlayerWorldTransition, MessageUnloadWorld, NetWorldMessage } from "../../packets/networldmessage";
 import { WorldLevelData } from "../../packets/worldleveldata";
 import { WorldTypes } from "../../packets/worldtypes";
 import { NetWorldEventTypes } from "../../packets/networldeventtypes";
@@ -179,7 +179,7 @@ export function sendNetEventMessage(ents: Entity[], server: Server, netEventType
 
 //#region Send Net World Messages
 export function sendLoadWorldMessage(server: Server, worldLevelData: WorldLevelData, clientId: string) {
-    let message: NetWorldMessage = {
+    const message: MessageLoadWorld = {
         messageType: MessageTypes.NET_WORLD_MESSAGE,
         eventType: NetWorldEventTypes.LOAD_WORLD,
         worldType: worldLevelData.worldType, // unnecessary
@@ -197,11 +197,10 @@ export function sendLoadWorldMessage(server: Server, worldLevelData: WorldLevelD
 }
 
 export function sendUnloadWorldMessage(server: Server, worldLevelData: WorldLevelData, clientId: string) {
-    let message: NetWorldMessage = {
+    const message: MessageUnloadWorld = {
         messageType: MessageTypes.NET_WORLD_MESSAGE,
         eventType: NetWorldEventTypes.UNLOAD_WORLD,
         worldType: worldLevelData.worldType, // unnecessary
-        data: worldLevelData,
     }
 
     server.boardhouseServer.clients.forEach(client => {
@@ -215,10 +214,10 @@ export function sendUnloadWorldMessage(server: Server, worldLevelData: WorldLeve
 }
 
 export function sendPlayerWorldTransitionMessage(server: Server, worldTransitionData: WorldTransitionData, clientId: string, worldToLoad: WorldTypes) {
-    let message: NetWorldMessage = {
+    const message: MessagePlayerWorldTransition = {
         messageType: MessageTypes.NET_WORLD_MESSAGE,
         eventType: NetWorldEventTypes.PLAYER_WORLD_TRANSITION,
-        worldType: worldToLoad,
+        worldType: worldToLoad, // remove?
         data: worldTransitionData,
     }
 
