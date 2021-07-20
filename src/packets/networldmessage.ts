@@ -1,7 +1,12 @@
-import { NetWorldEventTypes } from "./networldeventtypes";
+import { WorldTransitionData } from "./worldtransitiondata";
 import { WorldLevelData } from "./worldleveldata";
 import { Message } from "./message";
-import { WorldTransitionData } from "./worldtransitiondata";
+
+export type NetWorldMessage = 
+    MessageLoadWorld | 
+    MessageUnloadWorld | 
+    MessagePlayerWorldTransition
+;
 
 export interface MessageLoadWorld extends Message {
     eventType: NetWorldEventTypes.LOAD_WORLD;
@@ -17,8 +22,8 @@ export interface MessagePlayerWorldTransition extends Message {
     data: WorldTransitionData;
 }
 
-export type NetWorldMessage = 
-    MessageLoadWorld | 
-    MessageUnloadWorld | 
-    MessagePlayerWorldTransition
-;
+export enum NetWorldEventTypes {
+    LOAD_WORLD = "LOAD_WORLD",
+    UNLOAD_WORLD = "UNLOAD_WORLD",
+    PLAYER_WORLD_TRANSITION = "PLAYER_WORLD_TRANSITION"
+}
