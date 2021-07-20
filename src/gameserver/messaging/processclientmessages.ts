@@ -13,7 +13,7 @@ import { createArcher } from "../archetypes/archer";
 import { PositionComponent, setPosition } from "../components/position";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { QueriedInput } from "../serverengine/interfaces";
-import { ClientWorldMessage, ClientWorldEventTypes } from "../../packets/clientworldmessage";
+import { ClientWorldMessage, ClientWorldEventTypes, MessagePlayerWorldTransition } from "../../packets/clientworldmessage";
 import { WorldTransitionData } from "../../packets/worldtransitiondata";
 import { PlayerStates } from "../components/player";
 
@@ -37,10 +37,10 @@ export function processClientMessages(server: Server) {
 }
 
 function processClientWorldMessages(message: ClientWorldMessage, server: Server) {
-    switch (message.eventTypes) {
+    switch (message.eventType) {
         case ClientWorldEventTypes.PLAYER_WORLD_TRANSITION:
-            processPlayerWorldTransitionMessage(message.data, server);
-            break
+            processPlayerWorldTransitionMessage(message, server);
+            break;
     }
 }
 
@@ -90,37 +90,37 @@ function processClientInputMessage(message: ClientInputMessage, server: Server) 
     }
 }
 
-function processPlayerWorldTransitionMessage(data: WorldTransitionData, server: Server) {
-    console.log(`(port: ${server.gameServerPort}): client with clientId = "${data.clientId}" transitioned as a player with class = "${data.playerClass}" in world = "${data.newWorldType}"`);
+function processPlayerWorldTransitionMessage(message: MessagePlayerWorldTransition, server: Server) {
+    console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.data.clientId}" transitioned as a player with class = "${message.data.playerClass}" in world = "${message.data.newWorldType}"`);
     let clientWorld: BaseWorldEngine;
     let playerEnt: Entity;
 
     try {
-        clientWorld = server.worldEngines.find(worldEngine => worldEngine.worldType === data.newWorldType);
+        clientWorld = server.worldEngines.find(worldEngine => worldEngine.worldType === message.data.newWorldType);
     } catch {
         throw Error("unable to find world");
     }
     
-    switch (data.playerClass) {
+    switch (message.data.playerClass) {
         case PlayerClassTypes.PAGE:
-            const pagePos: PositionComponent = setPosition(data.newPos.x, data.newPos.y, 5);
-            playerEnt = createPage(server, clientWorld, data.clientId, pagePos);
+            const pagePos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 5);
+            playerEnt = createPage(server, clientWorld, message.data.clientId, pagePos);
             break;
         case PlayerClassTypes.MAGICIAN:
-            const magicianPos: PositionComponent = setPosition(data.newPos.x, data.newPos.y, 5);
-            playerEnt = createMagician(server, clientWorld, data.clientId, magicianPos);
+            const magicianPos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 5);
+            playerEnt = createMagician(server, clientWorld, message.data.clientId, magicianPos);
             break;
         case PlayerClassTypes.ARCHER:
-            const archerPos: PositionComponent = setPosition(data.newPos.x, data.newPos.y, 5);
-            playerEnt = createArcher(server, clientWorld, data.clientId, archerPos);
+            const archerPos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 5);
+            playerEnt = createArcher(server, clientWorld, message.data.clientId, archerPos);
             break;
     }
 
     // // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
         // Create all entities for connecting client.
-        sendLoadWorldMessage(server, clientWorld.worldLevelData, data.clientId);
-        sendCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, data.newWorldType);
+        sendLoadWorldMessage(server, clientWorld.worldLevelData, message.data.clientId);
+        sendCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.data.newWorldType);
         playerEnt.player.state = PlayerStates.LOADED;
     }, 5000);
 }

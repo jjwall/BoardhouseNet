@@ -21,7 +21,7 @@ export function sendPlayerJoinedMessage(client: Client) {
 // test message - may not need client world messages after and just use events instead
 export function sendPlayerJoinedWorldTransitionMessage(client: Client, data: WorldTransitionData) {
     const message: ClientWorldMessage = {
-        eventTypes: ClientWorldEventTypes.PLAYER_WORLD_TRANSITION,
+        eventType: ClientWorldEventTypes.PLAYER_WORLD_TRANSITION,
         messageType: MessageTypes.CLIENT_WORLD_MESSAGE,
         worldType: client.worldType, // unnecessary
         data: data,
