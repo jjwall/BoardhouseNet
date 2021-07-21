@@ -3,21 +3,21 @@ import { WorldLevelData } from "./worldleveldata";
 import { Message } from "./message";
 
 export type NetWorldMessage = 
-    MessageLoadWorld | 
-    MessageUnloadWorld | 
-    MessagePlayerWorldTransition
+    NetMessageLoadWorld | 
+    NetMessageUnloadWorld | 
+    NetMessagePlayerWorldTransition
 ;
 
-export interface MessageLoadWorld extends Message {
+export interface NetMessageLoadWorld extends Message {
     eventType: NetWorldEventTypes.LOAD_WORLD;
     data: WorldLevelData;
 }
 
-export interface MessageUnloadWorld extends Message {
+export interface NetMessageUnloadWorld extends Message {
     eventType: NetWorldEventTypes.UNLOAD_WORLD;
 }
 
-export interface MessagePlayerWorldTransition extends Message {
+export interface NetMessagePlayerWorldTransition extends Message {
     eventType: NetWorldEventTypes.PLAYER_WORLD_TRANSITION;
     data: WorldTransitionData;
 }

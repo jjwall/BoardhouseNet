@@ -13,7 +13,7 @@ import { createArcher } from "../archetypes/archer";
 import { PositionComponent, setPosition } from "../components/position";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { QueriedInput } from "../serverengine/interfaces";
-import { ClientWorldMessage, ClientWorldEventTypes, MessagePlayerWorldTransition } from "../../packets/clientworldmessage";
+import { ClientWorldMessage, ClientWorldEventTypes, ClientMessagePlayerWorldTransition } from "../../packets/clientworldmessage";
 import { WorldTransitionData } from "../../packets/worldtransitiondata";
 import { PlayerStates } from "../components/player";
 
@@ -90,7 +90,7 @@ function processClientInputMessage(message: ClientInputMessage, server: Server) 
     }
 }
 
-function processPlayerWorldTransitionMessage(message: MessagePlayerWorldTransition, server: Server) {
+function processPlayerWorldTransitionMessage(message: ClientMessagePlayerWorldTransition, server: Server) {
     console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.data.clientId}" transitioned as a player with class = "${message.data.playerClass}" in world = "${message.data.newWorldType}"`);
     let clientWorld: BaseWorldEngine;
     let playerEnt: Entity;

@@ -1,4 +1,4 @@
-import { MessageLoadWorld, MessagePlayerWorldTransition, NetWorldMessage, NetWorldEventTypes } from "../../packets/networldmessage";
+import { NetMessageLoadWorld, NetMessagePlayerWorldTransition, NetWorldMessage, NetWorldEventTypes } from "../../packets/networldmessage";
 import { sendPlayerJoinedMessage, sendPlayerJoinedWorldTransitionMessage } from "./sendclienteventmessages";
 import { WorldTransitionData } from "../../packets/worldtransitiondata";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
@@ -185,18 +185,18 @@ function renderPlayerAttackAnim(message: NetEventMessage, client: Client) {
 function processNetWorldMessage(message: NetWorldMessage, client: Client) {
     switch (message.eventType) {
         case NetWorldEventTypes.LOAD_WORLD:
-            loadWorld(message as MessageLoadWorld, client);
+            loadWorld(message as NetMessageLoadWorld, client);
             break;
         case NetWorldEventTypes.UNLOAD_WORLD:
             unloadWorld(client);
             break;
         case NetWorldEventTypes.PLAYER_WORLD_TRANSITION:
-            transitionPlayerClientToNewWorld(message as MessagePlayerWorldTransition, client);
+            transitionPlayerClientToNewWorld(message as NetMessagePlayerWorldTransition, client);
             break;
     }
 }
 
-function loadWorld(message: MessageLoadWorld, client: Client) {
+function loadWorld(message: NetMessageLoadWorld, client: Client) {
     console.log("load world...");
     console.log(client.worldType);
     // if (client.worldType === message.data.worldType) {
@@ -241,7 +241,7 @@ function unloadWorld(client: Client) {
     client.renderList = [];
 }
 
-function transitionPlayerClientToNewWorld(message: MessagePlayerWorldTransition, client: Client) {
+function transitionPlayerClientToNewWorld(message: NetMessagePlayerWorldTransition, client: Client) {
     // Unload current world assets.
     unloadWorld(client);
 

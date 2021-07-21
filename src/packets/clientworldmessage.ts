@@ -2,11 +2,10 @@ import { Message } from "./message";
 import { WorldTransitionData } from "./worldtransitiondata";
 
 export type ClientWorldMessage =
-    MessagePlayerWorldTransition
+    ClientMessagePlayerWorldTransition
 ;
 
-// Rename to ClientMessagePlayerWorldTransition?
-export interface MessagePlayerWorldTransition extends Message {
+export interface ClientMessagePlayerWorldTransition extends Message {
     eventType: ClientWorldEventTypes.PLAYER_WORLD_TRANSITION;
     data: WorldTransitionData; // need something more specific to client?
 }

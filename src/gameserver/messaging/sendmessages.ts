@@ -1,4 +1,4 @@
-import { MessageLoadWorld, MessagePlayerWorldTransition, MessageUnloadWorld, NetWorldEventTypes } from "../../packets/networldmessage";
+import { NetMessageLoadWorld, NetMessagePlayerWorldTransition, NetMessageUnloadWorld, NetWorldEventTypes } from "../../packets/networldmessage";
 import { Entity } from "../serverengine/entity";
 import { NetEntityMessage } from "../../packets/netentitymessage";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
@@ -178,7 +178,7 @@ export function sendNetEventMessage(ents: Entity[], server: Server, netEventType
 
 //#region Send Net World Messages
 export function sendLoadWorldMessage(server: Server, worldLevelData: WorldLevelData, clientId: string) {
-    const message: MessageLoadWorld = {
+    const message: NetMessageLoadWorld = {
         messageType: MessageTypes.NET_WORLD_MESSAGE,
         eventType: NetWorldEventTypes.LOAD_WORLD,
         worldType: worldLevelData.worldType, // unnecessary
@@ -196,7 +196,7 @@ export function sendLoadWorldMessage(server: Server, worldLevelData: WorldLevelD
 }
 
 export function sendUnloadWorldMessage(server: Server, worldLevelData: WorldLevelData, clientId: string) {
-    const message: MessageUnloadWorld = {
+    const message: NetMessageUnloadWorld = {
         messageType: MessageTypes.NET_WORLD_MESSAGE,
         eventType: NetWorldEventTypes.UNLOAD_WORLD,
         worldType: worldLevelData.worldType, // unnecessary
@@ -213,7 +213,7 @@ export function sendUnloadWorldMessage(server: Server, worldLevelData: WorldLeve
 }
 
 export function sendPlayerWorldTransitionMessage(server: Server, worldTransitionData: WorldTransitionData, clientId: string, worldToLoad: WorldTypes) {
-    const message: MessagePlayerWorldTransition = {
+    const message: NetMessagePlayerWorldTransition = {
         messageType: MessageTypes.NET_WORLD_MESSAGE,
         eventType: NetWorldEventTypes.PLAYER_WORLD_TRANSITION,
         worldType: worldToLoad, // remove?
