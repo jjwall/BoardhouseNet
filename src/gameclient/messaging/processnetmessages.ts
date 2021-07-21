@@ -1,6 +1,6 @@
 import { NetMessageLoadWorld, NetMessagePlayerWorldTransition, NetWorldMessage, NetWorldEventTypes } from "../../packets/networldmessage";
 import { NetActionEventTypes, NetActionMessage, NetMessagePlayerAttackDisplay } from "../../packets/netactionmessage";
-import { sendPlayerJoinedMessage, sendPlayerJoinedWorldTransitionMessage } from "./sendclienteventmessages";
+import { sendPlayerWorldTransitionMessage } from "./sendclienteventmessages";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
 import { NetEntityMessage } from "../../packets/netentitymessage";
 import { renderWorldMap } from "../clientengine/renderworldmap";
@@ -245,6 +245,6 @@ function transitionPlayerClientToNewWorld(message: NetMessagePlayerWorldTransiti
     client.worldType = message.data.newWorldType;
 
     // Send client world message that tells server to have player join new world.
-    sendPlayerJoinedWorldTransitionMessage(client, message.data);
+    sendPlayerWorldTransitionMessage(client, message.data);
 }
 //#endregion

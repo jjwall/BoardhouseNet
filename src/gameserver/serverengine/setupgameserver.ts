@@ -8,6 +8,7 @@ import { ClientRoleTypes } from "../../packets/clientroletypes";
 import { Server } from "./server";
 import { last } from "./helpers";
 import { BaseWorldEngine } from "./baseworldengine";
+import { ClientWorldEventTypes, ClientWorldMessage } from "../../packets/clientworldmessage";
 
 export class MyWebSocket extends WebSocket {
     clientId: string;
@@ -22,18 +23,18 @@ export function setUpGameServer(server: Server) {
 
         ws.on("message", function incoming(message) {
             console.log(`(port: ${server.gameServerPort}) received: ${message}`);
-            const clientMessage: ClientEventMessage = JSON.parse(message.toString());
+            const clientMessage: ClientWorldMessage = JSON.parse(message.toString());
 
-            if (clientMessage.eventType === ClientEventTypes.PLAYER_JOINED) {
-                ws.clientId = clientMessage.clientId;
+            if (clientMessage.eventType === ClientWorldEventTypes.PLAYER_WORLD_JOIN) {
+                ws.clientId = clientMessage.data.clientId;
                 ws.clientRole = ClientRoleTypes.PLAYER;
-                server.playerClientIds.push(clientMessage.clientId);
+                server.playerClientIds.push(clientMessage.data.clientId);
             }
 
-            if (clientMessage.eventType === ClientEventTypes.SPECTATOR_JOINED) {
-                ws.clientId = clientMessage.clientId;
+            if (clientMessage.eventType === ClientWorldEventTypes.PLAYER_WORLD_JOIN) {
+                ws.clientId = clientMessage.data.clientId;
                 ws.clientRole = ClientRoleTypes.SPECTATOR;
-                server.spectatorClientIds.push(clientMessage.clientId);
+                server.spectatorClientIds.push(clientMessage.data.clientId);
             }
 
             server.messagesToProcess.push(clientMessage);

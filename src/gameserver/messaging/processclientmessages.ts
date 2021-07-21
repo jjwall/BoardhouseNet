@@ -1,6 +1,4 @@
 import { Entity } from "../serverengine/entity";
-import { ClientEventMessage } from "../../packets/clienteventmessage";
-import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientInputMessage } from "../../packets/clientinputmessage";
 import { sendCreateEntitiesMessage, sendLoadWorldMessage } from "./sendmessages";
 import { Server } from "../serverengine/server";
@@ -13,16 +11,13 @@ import { createArcher } from "../archetypes/archer";
 import { PositionComponent, setPosition } from "../components/position";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { QueriedInput } from "../serverengine/interfaces";
-import { ClientWorldMessage, ClientWorldEventTypes, ClientMessagePlayerWorldTransition } from "../../packets/clientworldmessage";
+import { ClientWorldMessage, ClientWorldEventTypes, ClientMessagePlayerWorldTransition, ClientMessagePlayerWorldJoin } from "../../packets/clientworldmessage";
 import { PlayerStates } from "../components/player";
 
 // Will need more info pertaining to INPUT_TO_QUERY event.
 export function processClientMessages(server: Server) {
     server.messagesToProcess.forEach(message => {
         switch (message.messageType) {
-            case MessageTypes.CLIENT_EVENT_MESSAGE:
-                processClientEventMessage(message as ClientEventMessage, server);
-                break;
             case MessageTypes.CLIENT_INPUT_MESSAGE:
                 processClientInputMessage(message as ClientInputMessage, server);
                 break;
@@ -37,22 +32,25 @@ export function processClientMessages(server: Server) {
 
 function processClientWorldMessages(message: ClientWorldMessage, server: Server) {
     switch (message.eventType) {
+        case ClientWorldEventTypes.PLAYER_WORLD_JOIN:
+            processPlayerWorldJoinMessage(message as ClientMessagePlayerWorldJoin, server);
+            break;
         case ClientWorldEventTypes.PLAYER_WORLD_TRANSITION:
-            processPlayerWorldTransitionMessage(message, server);
+            processPlayerWorldTransitionMessage(message as ClientMessagePlayerWorldTransition, server);
             break;
     }
 }
 
-function processClientEventMessage(message: ClientEventMessage, server: Server) {
-    switch (message.eventType) {
-        case ClientEventTypes.PLAYER_JOINED:
-            processPlayerJoinedMessage(message, server);
-            break;
-        case ClientEventTypes.SPECTATOR_JOINED:
-            // processSpectatorJoinedMessage(message, server, state);
-            break;
-    }
-}
+// function processClientEventMessage(message: ClientEventMessage, server: Server) {
+//     switch (message.eventType) {
+//         case ClientEventTypes.PLAYER_JOINED:
+//             processPlayerWorldJoinMessage(message, server);
+//             break;
+//         case ClientEventTypes.SPECTATOR_JOINED:
+//             // processSpectatorJoinedMessage(message, server, state);
+//             break;
+//     }
+// }
 
 function processClientInputMessage(message: ClientInputMessage, server: Server) {
     const world = server.worldEngines.find(worldEngine => worldEngine.worldType === message.worldType);
@@ -131,38 +129,38 @@ function processPlayerWorldTransitionMessage(message: ClientMessagePlayerWorldTr
  * @param server 
  * @param state 
  */
-export function processPlayerJoinedMessage(message: ClientEventMessage, server: Server) {
-    console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.clientId}" joined as a player with class = "${message.playerClass}" in world = "${message.worldType}"`);
+export function processPlayerWorldJoinMessage(message: ClientMessagePlayerWorldJoin, server: Server) {
+    console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.data.clientId}" joined as a player with class = "${message.data.playerClass}" in world = "${message.data.worldType}"`);
     console.log("create player entity");
     let clientWorld: BaseWorldEngine;
     let playerEnt: Entity;
 
     try {
-        clientWorld = server.worldEngines.find(worldEngine => worldEngine.worldType === message.worldType);
+        clientWorld = server.worldEngines.find(worldEngine => worldEngine.worldType === message.data.worldType);
     } catch {
         throw Error("unable to find world");
     }
     
-    switch (message.playerClass) {
+    switch (message.data.playerClass) {
         case PlayerClassTypes.PAGE:
             const pagePos: PositionComponent = setPosition(150, 150, 5);
-            playerEnt = createPage(server, clientWorld, message.clientId, pagePos);
+            playerEnt = createPage(server, clientWorld, message.data.clientId, pagePos);
             break;
         case PlayerClassTypes.MAGICIAN:
             const magicianPos: PositionComponent = setPosition(150, 450, 5);
-            playerEnt = createMagician(server, clientWorld, message.clientId, magicianPos);
+            playerEnt = createMagician(server, clientWorld, message.data.clientId, magicianPos);
             break;
         case PlayerClassTypes.ARCHER:
             const archerPos: PositionComponent = setPosition(0, 0, 5);
-            playerEnt = createArcher(server, clientWorld, message.clientId, archerPos);
+            playerEnt = createArcher(server, clientWorld, message.data.clientId, archerPos);
             break;
     }
 
     // // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
         // Create all entities for connecting client.
-        sendLoadWorldMessage(server, clientWorld.worldLevelData, message.clientId);
-        sendCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.worldType);
+        sendLoadWorldMessage(server, clientWorld.worldLevelData, message.data.clientId);
+        sendCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.data.worldType);
         playerEnt.player.state = PlayerStates.LOADED;
     }, 5000);
 
@@ -170,7 +168,7 @@ export function processPlayerJoinedMessage(message: ClientEventMessage, server: 
 }
 
 // TODO: Make functional again.
-function processSpectatorJoinedMessage(message: ClientEventMessage, server: Server, worldEngine: BaseWorldEngine) {
+function processSpectatorJoinedMessage(message: any, server: Server, worldEngine: BaseWorldEngine) {
     console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.clientId}" joined as a spectator`);
 
     // Dummy data... for testing stuff with spectator

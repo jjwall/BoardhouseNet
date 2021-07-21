@@ -1,4 +1,4 @@
-import { sendPlayerJoinedMessage, sendSpectatorJoinedMessage } from "../messaging/sendclienteventmessages";
+import { sendPlayerWorldJoinMessage, sendSpectatorJoinedMessage } from "../messaging/sendclienteventmessages";
 import { setEventListeners } from "./seteventlisteners";
 import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 import { processNetMessages } from "../messaging/processnetmessages";
@@ -66,7 +66,7 @@ client.connection = new WebSocket("ws://" +
 client.connection.onopen = function() {
     switch (client.role) {
         case ClientRoleTypes.PLAYER:
-            sendPlayerJoinedMessage(client);
+            sendPlayerWorldJoinMessage(client);
             break;
         case ClientRoleTypes.SPECTATOR:
             sendSpectatorJoinedMessage(client);

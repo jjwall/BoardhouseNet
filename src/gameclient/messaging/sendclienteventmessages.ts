@@ -1,25 +1,27 @@
-import { ClientWorldMessage, ClientWorldEventTypes } from "../../packets/clientworldmessage";
+import { ClientWorldMessage, ClientWorldEventTypes, ClientMessagePlayerWorldJoin } from "../../packets/clientworldmessage";
 import { WorldTransitionData } from "../../packets/worldtransitiondata";
 import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { MessageTypes } from "../../packets/message";
 import { Client } from "../clientengine/client";
 
-export function sendPlayerJoinedMessage(client: Client) {
-    const message: ClientEventMessage = {
-        messageType: MessageTypes.CLIENT_EVENT_MESSAGE,
-        eventType: ClientEventTypes.PLAYER_JOINED,
-        clientId: client.currentClientId,
-        playerClass: client.playerClass,
-        worldType: client.worldType,
+export function sendPlayerWorldJoinMessage(client: Client) {
+    const message: ClientMessagePlayerWorldJoin = {
+        messageType: MessageTypes.CLIENT_WORLD_MESSAGE,
+        eventType: ClientWorldEventTypes.PLAYER_WORLD_JOIN,
+        worldType: null, // discard
+        data: {
+            clientId: client.currentClientId,
+            playerClass: client.playerClass,
+            worldType: client.worldType,
+        }
     }
     
     console.log("client joining as player");
     client.connection.send(JSON.stringify(message));
 }
 
-// test message - may not need client world messages after and just use events instead
-export function sendPlayerJoinedWorldTransitionMessage(client: Client, data: WorldTransitionData) {
+export function sendPlayerWorldTransitionMessage(client: Client, data: WorldTransitionData) {
     const message: ClientWorldMessage = {
         eventType: ClientWorldEventTypes.PLAYER_WORLD_TRANSITION,
         messageType: MessageTypes.CLIENT_WORLD_MESSAGE,
