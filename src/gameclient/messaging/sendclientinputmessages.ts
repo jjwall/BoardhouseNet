@@ -1,6 +1,6 @@
 import { ClientInputMessage } from "../../packets/clientinputmessage";
 import { ClientInputTypes } from "../../packets/clientinputtypes";
-import { MessageTypes } from "../../packets/messagetypes";
+import { MessageTypes } from "../../packets/message";
 import { Client } from "../clientengine/client";
 
 // Left movement key:

@@ -1,9 +1,9 @@
+import { ClientWorldMessage, ClientWorldEventTypes } from "../../packets/clientworldmessage";
 import { WorldTransitionData } from "../../packets/worldtransitiondata";
 import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientEventTypes } from "../../packets/clienteventtypes";
-import { MessageTypes } from "../../packets/messagetypes";
+import { MessageTypes } from "../../packets/message";
 import { Client } from "../clientengine/client";
-import { ClientWorldMessage, ClientWorldEventTypes } from "../../packets/clientworldmessage";
 
 export function sendPlayerJoinedMessage(client: Client) {
     const message: ClientEventMessage = {

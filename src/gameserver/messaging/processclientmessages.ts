@@ -4,7 +4,7 @@ import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientInputMessage } from "../../packets/clientinputmessage";
 import { sendCreateEntitiesMessage, sendLoadWorldMessage } from "./sendmessages";
 import { Server } from "../serverengine/server";
-import { MessageTypes } from "../../packets/messagetypes";
+import { MessageTypes } from "../../packets/message";
 import { ClientInputTypes } from "../../packets/clientinputtypes";
 import { PlayerClassTypes } from "../../packets/playerclasstypes";
 import { createPage } from "../archetypes/page";
@@ -14,7 +14,6 @@ import { PositionComponent, setPosition } from "../components/position";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { QueriedInput } from "../serverengine/interfaces";
 import { ClientWorldMessage, ClientWorldEventTypes, ClientMessagePlayerWorldTransition } from "../../packets/clientworldmessage";
-import { WorldTransitionData } from "../../packets/worldtransitiondata";
 import { PlayerStates } from "../components/player";
 
 // Will need more info pertaining to INPUT_TO_QUERY event.

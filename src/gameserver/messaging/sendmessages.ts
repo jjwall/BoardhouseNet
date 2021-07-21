@@ -3,7 +3,7 @@ import { Entity } from "../serverengine/entity";
 import { NetEntityMessage } from "../../packets/netentitymessage";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
 import { Server } from "../serverengine/server";
-import { MessageTypes } from "../../packets/messagetypes";
+import { MessageTypes } from "../../packets/message";
 import { EntityData } from "../../packets/entitydata";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { WorldLevelData } from "../../packets/worldleveldata";
