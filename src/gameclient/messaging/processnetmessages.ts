@@ -3,11 +3,9 @@ import { sendPlayerJoinedMessage, sendPlayerJoinedWorldTransitionMessage } from 
 import { WorldTransitionData } from "../../packets/worldtransitiondata";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
 import { NetEntityMessage } from "../../packets/netentitymessage";
-import { NetEventMessage } from "../../packets/neteventmessage";
 import { renderWorldMap } from "../clientengine/renderworldmap";
 import { WorldLevelData } from "../../packets/worldleveldata";
 import { ClientEntity } from "../clientengine/cliententity";
-import { NetEventTypes } from "../../packets/neteventtypes";
 import { MessageTypes } from "../../packets/messagetypes";
 import { setHitboxGraphic } from "../components/hitbox";
 import { ClientRender } from "../renders/clientrender";
@@ -16,6 +14,7 @@ import { setSprite } from "../components/sprite";
 import { Message } from "../../packets/message";
 import { Client } from "../clientengine/client";
 import { Vector3 } from "three";
+import { NetActionEventTypes, NetActionMessage, NetMessagePlayerAttackDisplay } from "../../packets/netactionmessage";
 
 // Handle message based on the type of NetMessage.
 // Will need non-entity messages such as "CREATE_FIRE_BALL" with x,y,z location in Euler direction etc...
@@ -29,9 +28,8 @@ export function processNetMessages(client: Client) {
                 if (client.worldType === message.worldType)
                     processNetEntityMessage(message as NetEntityMessage, client);
                 break;
-            case MessageTypes.NET_EVENT_MESSAGE:
-                if (client.worldType === message.worldType)
-                    processNetEventMessage(message as NetEventMessage, client);
+            case MessageTypes.NET_ACTION_MESSAGE:
+                processNetActionMessage(message as NetActionMessage, client);
                 break;
             case MessageTypes.NET_WORLD_MESSAGE:
                 processNetWorldMessage(message as NetWorldMessage, client);
@@ -148,35 +146,36 @@ function destroyEntities(message: NetEntityMessage, client: Client) {
 
 //#endregion
 
-//#region Net Event Messages
+//#region Net Action Messages
 
-function processNetEventMessage(message: NetEventMessage, client: Client) {
+function processNetActionMessage(message: NetActionMessage, client: Client) {
     switch (message.eventType) {
-        case NetEventTypes.PLAYER_ATTACK_ANIM_DISPLAY:
-            renderPlayerAttackAnim(message, client);
+        case NetActionEventTypes.PLAYER_ATTACK_ANIM_DISPLAY:
+            renderPlayerAttackAnim(message as NetMessagePlayerAttackDisplay, client);
             break;
         // case ...
     }
 }
 
-function renderPlayerAttackAnim(message: NetEventMessage, client: Client) {
-    console.log("Attack! - render from server");
-    // taken from create ent
+function renderPlayerAttackAnim(message: NetMessagePlayerAttackDisplay, client: Client) {
+    if (message.data.worldType === client.worldType) {
+        console.log("Attack! - render from server");
 
-    message.data.forEach(entData => {
-        // set up render archetypes methods?
-        let clientRender = new ClientRender(120);
-        const dir = new Vector3(entData.pos.dir.x, entData.pos.dir.y, entData.pos.dir.z);
-        clientRender.pos = setPosition(entData.pos.loc.x, entData.pos.loc.y, entData.pos.loc.z, dir, entData.pos.flipX);
-        clientRender.sprite = setSprite(entData.sprite.url, client.gameScene, client, entData.sprite.pixelRatio);
-        clientRender.pos.teleport = entData.pos.teleport;
+        message.data.ents.forEach(entData => {
+            // set up render archetypes methods?
+            let clientRender = new ClientRender(120);
+            const dir = new Vector3(entData.pos.dir.x, entData.pos.dir.y, entData.pos.dir.z);
+            clientRender.pos = setPosition(entData.pos.loc.x, entData.pos.loc.y, entData.pos.loc.z, dir, entData.pos.flipX);
+            clientRender.sprite = setSprite(entData.sprite.url, client.gameScene, client, entData.sprite.pixelRatio);
+            clientRender.pos.teleport = entData.pos.teleport;
 
-        if (entData.anim) {
-            // clientEnt.anim = setAnim(...);
-        }
+            if (entData.anim) {
+                // clientEnt.anim = setAnim(...);
+            }
 
-        client.renderList.push(clientRender);
-    });
+            client.renderList.push(clientRender);
+        });
+    }
 }
 
 //#endregion

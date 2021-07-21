@@ -4,14 +4,13 @@ import { NetEntityMessage } from "../../packets/netentitymessage";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
 import { Server } from "../serverengine/server";
 import { MessageTypes } from "../../packets/messagetypes";
-import { NetEventMessage } from "../../packets/neteventmessage";
-import { NetEventTypes } from "../../packets/neteventtypes";
 import { EntityData } from "../../packets/entitydata";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { WorldLevelData } from "../../packets/worldleveldata";
 import { WorldTypes } from "../../packets/worldtypes";
 import { MyWebSocket } from "../serverengine/setupgameserver";
 import { WorldTransitionData } from "../../packets/worldtransitiondata";
+import { NetActionEventTypes, NetActionMessage } from "../../packets/netactionmessage";
 
 export function sendCreateEntitiesMessage(ents: Entity[], server: Server, worldType: WorldTypes) {
     let message: NetEntityMessage = {
@@ -135,12 +134,17 @@ export function sendDestroyEntitiesMessage(ents: Entity[], server: Server, world
 // i.e. look at the attack in core systems, all that could be in a method called "sendPlayerAttackNetEventMessage" or something...
 // This function assumes entity data is needed to be sent for generic "sendNetEventMessage" method - in the future we may want 
 // more functionality, for example one net event might be "SwitchToEndGameScreen" or something and no ent data would need to be sent
-export function sendNetEventMessage(ents: Entity[], server: Server, netEventType: NetEventTypes, worldType: WorldTypes) {
-    let message: NetEventMessage = {
-        messageType: MessageTypes.NET_EVENT_MESSAGE,
+export function broadcastNetActionMessage(ents: Entity[], server: Server, netEventType: NetActionEventTypes, worldType: WorldTypes) {
+    // NetMessagePlayerAttackDisplay...
+
+    const message: NetActionMessage = {
+        messageType: MessageTypes.NET_ACTION_MESSAGE,
         eventType: netEventType,
         worldType: worldType,
-        data: [],
+        data: {
+            ents: [],
+            worldType: worldType,
+        }
     }
 
     // All ent data is purely for rendering attack animation purposes.
@@ -166,7 +170,7 @@ export function sendNetEventMessage(ents: Entity[], server: Server, netEventType
                 anim: ent.anim,
             }
 
-            message.data.push(entData);
+            message.data.ents.push(entData);
         }
     });
 
