@@ -1,9 +1,9 @@
-import { broadcastNetActionMessage } from "./../messaging/sendmessages";
+import { broadcastNetActionMessage } from "./../messaging/sendnetactionmessages";
+import { NetActionEventTypes } from "../../packets/netactionmessage";
+import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { setPosition } from "../components/position";
 import { Entity } from "../serverengine/entity";
-import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { Vector3 } from "three";
-import { NetActionEventTypes } from "../../packets/netactionmessage";
 
 /**
  * Control system.

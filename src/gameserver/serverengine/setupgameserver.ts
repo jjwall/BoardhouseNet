@@ -1,10 +1,10 @@
-import * as WebSocket from "ws";
-import { sendDestroyEntitiesMessage } from "../messaging/sendmessages";
-import { Entity } from "./entity";
-import { ClientRoleTypes } from "../../packets/clientroletypes";
-import { Server } from "./server";
-import { BaseWorldEngine } from "./baseworldengine";
 import { ClientWorldEventTypes, ClientWorldMessage } from "../../packets/clientworldmessage";
+import { broadcastDestroyEntitiesMessage } from "../messaging/sendnetentitymessages";
+import { ClientRoleTypes } from "../../packets/clientroletypes";
+import { BaseWorldEngine } from "./baseworldengine";
+import { Entity } from "./entity";
+import { Server } from "./server";
+import * as WebSocket from "ws";
 
 export class MyWebSocket extends WebSocket {
     clientId: string;
@@ -77,5 +77,5 @@ export function findAndDestroyPlayerEntity(worldEngine: BaseWorldEngine, clientI
     });
 
     if (entsToDestroy.length > 0)
-        sendDestroyEntitiesMessage(entsToDestroy, server, worldEngine);
+        broadcastDestroyEntitiesMessage(entsToDestroy, server, worldEngine);
 }

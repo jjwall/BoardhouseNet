@@ -1,7 +1,7 @@
 import { RegistryKeyToSystemMap, RegistryKeyToEntityListMap } from "./interfaces";
 import { Server } from "./server";
 import { Entity } from "./entity";
-import { sendUpdateEntitiesMessage } from "../messaging/sendmessages";
+import { broadcastUpdateEntitiesMessage } from "../messaging/sendnetentitymessages";
 import { WorldTypes } from "../../packets/worldtypes";
 import { WorldLevelData } from "../../packets/worldleveldata";
 import { TileMapSchema } from "../../modules/tilemapping/tilemapschema";
@@ -153,6 +153,6 @@ export abstract class BaseWorldEngine {
 
         // Send update all entities after engine tick.
         if (this.server.entityChangeList.length > 0)
-            sendUpdateEntitiesMessage(this.server.entityChangeList, this.server, this.worldType);
+            broadcastUpdateEntitiesMessage(this.server.entityChangeList, this.server, this.worldType);
     }
 }

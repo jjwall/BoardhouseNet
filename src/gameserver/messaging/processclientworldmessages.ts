@@ -1,8 +1,9 @@
 import { ClientMessagePlayerWorldTransition, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin } from "../../packets/clientworldmessage";
-import { sendCreateEntitiesMessage, sendLoadWorldMessage } from "./sendmessages";
+import { broadcastCreateEntitiesMessage } from "./sendnetentitymessages";
 import { PositionComponent, setPosition } from "../components/position";
 import { PlayerClassTypes } from "../../packets/playerclasstypes";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
+import { sendLoadWorldMessage } from "./sendnetworldmessages";
 import { createMagician } from "../archetypes/magician";
 import { PlayerStates } from "../components/player";
 import { createArcher } from "../archetypes/archer";
@@ -48,7 +49,7 @@ import { createPage } from "../archetypes/page";
     setTimeout(function() {
         // Create all entities for connecting client.
         sendLoadWorldMessage(server, clientWorld.worldLevelData, message.data.clientId);
-        sendCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.data.worldType);
+        broadcastCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.data.worldType);
         playerEnt.player.state = PlayerStates.LOADED;
     }, 5000);
 
@@ -85,7 +86,7 @@ export function processPlayerWorldTransitionMessage(message: ClientMessagePlayer
     setTimeout(function() {
         // Create all entities for connecting client.
         sendLoadWorldMessage(server, clientWorld.worldLevelData, message.data.clientId);
-        sendCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.data.newWorldType);
+        broadcastCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.data.newWorldType);
         playerEnt.player.state = PlayerStates.LOADED;
     }, 5000);
 }
@@ -104,6 +105,6 @@ export function processSpectatorWorldJoinMessage(message: ClientMessageSpectator
     setTimeout(function() {
         // Create all entities for connecting client.
         sendLoadWorldMessage(server, clientWorld.worldLevelData, message.data.clientId);
-        sendCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.data.worldType);
+        broadcastCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.data.worldType);
     }, 5000);
 }
