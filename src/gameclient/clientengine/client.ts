@@ -3,14 +3,14 @@ import { kenneyFantasy } from "../../modules/tilemapping/tilemaps/kenneyfantasy"
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
-import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
-import { ClientRoleTypes } from "../../packets/clientroletypes";
+import { GameServerStateTypes } from "../../packets/enums/gameserverstatetypes";
+import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
 import { EventTypes } from "../events/eventtypes";
 import { ClientEntity } from "./cliententity";
 import { NetIdToEntityMap } from "./interfaces";
 import { ClientRender } from "../renders/clientrender";
-import { PlayerClassTypes } from "../../packets/playerclasstypes";
-import { WorldTypes } from "../../packets/worldtypes";
+import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
+import { WorldTypes } from "../../packets/enums/worldtypes";
 
 export interface ClientConfig {
     /// state stuff ///

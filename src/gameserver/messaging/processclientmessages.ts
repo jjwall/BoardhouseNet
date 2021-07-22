@@ -1,4 +1,4 @@
-import { MessageTypes } from "../../packets/message";
+import { MessageTypes } from "../../packets/messages/message";
 import { Entity } from "../serverengine/entity";
 import { Server } from "../serverengine/server";
 import { 
@@ -24,14 +24,14 @@ import {
     ClientMessageRightKeyUp, 
     ClientMessageUpKeyDown,
     ClientMessageUpKeyUp } 
-from "../../packets/clientinputmessage";
+from "../../packets/messages/clientinputmessage";
 import { 
     ClientWorldMessage, 
     ClientWorldEventTypes, 
     ClientMessagePlayerWorldTransition, 
     ClientMessagePlayerWorldJoin, 
     ClientMessageSpectatorWorldJoin } 
-from "../../packets/clientworldmessage";
+from "../../packets/messages/clientworldmessage";
 import { 
     processPlayerWorldJoinMessage, 
     processPlayerWorldTransitionMessage, 

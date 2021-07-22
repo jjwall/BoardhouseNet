@@ -1,5 +1,5 @@
-import { PlayerClassTypes } from "./playerclasstypes";
-import { WorldTypes } from "./worldtypes";
+import { PlayerClassTypes } from "../enums/playerclasstypes";
+import { WorldTypes } from "../enums/worldtypes";
 
 export interface WorldTransitionData {
     clientId: string;

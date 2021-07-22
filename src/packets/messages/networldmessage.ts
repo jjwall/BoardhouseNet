@@ -1,5 +1,5 @@
-import { WorldTransitionData } from "./worldtransitiondata";
-import { WorldLevelData } from "./worldleveldata";
+import { WorldTransitionData } from "../data/worldtransitiondata";
+import { WorldLevelData } from "../data/worldleveldata";
 import { Message } from "./message";
 
 export type NetWorldMessage = 

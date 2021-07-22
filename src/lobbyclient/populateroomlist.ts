@@ -1,8 +1,8 @@
 import { IGlobalLobby } from './interfaces';
-import { PortToConnectionsMap } from "../packets/porttoconnectionsmap";
-import { ClientRoleTypes } from '../packets/clientroletypes';
-import { PlayerClassTypes } from '../packets/playerclasstypes';
-import { WorldTypes } from '../packets/worldtypes';
+import { PortToConnectionsMap } from "../packets/misc/porttoconnectionsmap";
+import { ClientRoleTypes } from '../packets/enums/clientroletypes';
+import { PlayerClassTypes } from '../packets/enums/playerclasstypes';
+import { WorldTypes } from '../packets/enums/worldtypes';
 
 export function populateRoomList(globalLobby: IGlobalLobby, portsToConnectionsMap: PortToConnectionsMap) {
     globalLobby.gameRooms.innerHTML = `

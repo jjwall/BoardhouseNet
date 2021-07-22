@@ -1,5 +1,5 @@
 import { broadcastNetActionMessage } from "./../messaging/sendnetactionmessages";
-import { NetActionEventTypes } from "../../packets/netactionmessage";
+import { NetActionEventTypes } from "../../packets/messages/netactionmessage";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { setPosition } from "../components/position";
 import { Entity } from "../serverengine/entity";

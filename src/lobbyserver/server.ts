@@ -5,8 +5,8 @@ import * as WebSocket from 'ws';
 import * as bodyParser from 'body-parser';
 import { findOpenPort } from './findopenport';
 import { IPortToPendingRequestsMap } from './interfaces';
-import { GameServerInfo } from "../packets/gameserverinfo";
-import { PortToConnectionsMap } from "../packets/porttoconnectionsmap";
+import { GameServerInfo } from "../packets/misc/gameserverinfo";
+import { PortToConnectionsMap } from "../packets/misc/porttoconnectionsmap";
 import { isEmpty } from './helpers';
 import { requestConnections } from './requestconnections';
 

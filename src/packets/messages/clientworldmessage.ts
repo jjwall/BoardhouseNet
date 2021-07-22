@@ -1,5 +1,5 @@
-import { WorldTransitionData } from "./worldtransitiondata";
-import { WorldJoinData } from "./worldjoindata";
+import { WorldTransitionData } from "../data/worldtransitiondata";
+import { WorldJoinData } from "../data/worldjoindata";
 import { Message } from "./message";
 
 export type ClientWorldMessage =

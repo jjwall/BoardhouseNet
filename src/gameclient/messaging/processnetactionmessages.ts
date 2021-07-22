@@ -1,4 +1,4 @@
-import { NetMessagePlayerAttackDisplay } from "../../packets/netactionmessage";
+import { NetMessagePlayerAttackDisplay } from "../../packets/messages/netactionmessage";
 import { ClientRender } from "../renders/clientrender";
 import { setPosition } from "../components/position";
 import { setSprite } from "../components/sprite";

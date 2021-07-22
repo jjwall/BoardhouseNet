@@ -1,6 +1,6 @@
-import { EntityData } from "./entitydata";
+import { EntityData } from "../data/entitydata";
 import { Message } from "./message";
-import { WorldTypes } from "./worldtypes";
+import { WorldTypes } from "../enums/worldtypes";
 
 export type NetActionMessage =
     NetMessagePlayerAttackDisplay

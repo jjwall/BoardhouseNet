@@ -1,4 +1,4 @@
-import { NetMessageLoadWorld, NetMessagePlayerWorldTransition } from "../../packets/networldmessage";
+import { NetMessageLoadWorld, NetMessagePlayerWorldTransition } from "../../packets/messages/networldmessage";
 import { sendPlayerWorldTransitionMessage } from "./sendclientworldmessages";
 import { renderWorldMap } from "../clientengine/renderworldmap";
 import { Client } from "../clientengine/client";

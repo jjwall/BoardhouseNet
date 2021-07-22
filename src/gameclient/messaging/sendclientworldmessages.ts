@@ -1,6 +1,6 @@
-import { ClientWorldEventTypes, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin, ClientMessagePlayerWorldTransition } from "../../packets/clientworldmessage";
-import { WorldTransitionData } from "../../packets/worldtransitiondata";
-import { MessageTypes } from "../../packets/message";
+import { ClientWorldEventTypes, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin, ClientMessagePlayerWorldTransition } from "../../packets/messages/clientworldmessage";
+import { WorldTransitionData } from "../../packets/data/worldtransitiondata";
+import { MessageTypes } from "../../packets/messages/message";
 import { Client } from "../clientengine/client";
 
 export function sendPlayerWorldJoinMessage(client: Client) {

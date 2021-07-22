@@ -1,5 +1,5 @@
-import { ClientInputTypes } from "../../packets/clientinputmessage";
-import { WorldTypes } from "../../packets/worldtypes";
+import { ClientInputTypes } from "../../packets/messages/clientinputmessage";
+import { WorldTypes } from "../../packets/enums/worldtypes";
 import { BaseWorldEngine } from "./baseworldengine";
 import { Entity } from "./entity";
 

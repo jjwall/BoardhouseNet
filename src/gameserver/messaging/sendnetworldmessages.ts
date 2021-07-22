@@ -1,9 +1,9 @@
-import { NetMessageLoadWorld, NetMessagePlayerWorldTransition, NetMessageUnloadWorld, NetWorldEventTypes } from "../../packets/networldmessage";
-import { WorldTransitionData } from "../../packets/worldtransitiondata";
-import { WorldLevelData } from "../../packets/worldleveldata";
+import { NetMessageLoadWorld, NetMessagePlayerWorldTransition, NetMessageUnloadWorld, NetWorldEventTypes } from "../../packets/messages/networldmessage";
+import { WorldTransitionData } from "../../packets/data/worldtransitiondata";
+import { WorldLevelData } from "../../packets/data/worldleveldata";
 import { MyWebSocket } from "../serverengine/setupgameserver";
-import { WorldTypes } from "../../packets/worldtypes";
-import { MessageTypes } from "../../packets/message";
+import { WorldTypes } from "../../packets/enums/worldtypes";
+import { MessageTypes } from "../../packets/messages/message";
 import { Server } from "../serverengine/server";
 
 export function sendLoadWorldMessage(server: Server, worldLevelData: WorldLevelData, clientId: string) {

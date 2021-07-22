@@ -1,4 +1,4 @@
-import { MessageTypes } from "../../packets/message";
+import { MessageTypes } from "../../packets/messages/message";
 import { Client } from "../clientengine/client";
 import {
     ClientInputTypes, 
@@ -11,7 +11,7 @@ import {
     ClientMessageRightKeyUp, 
     ClientMessageUpKeyDown, 
     ClientMessageUpKeyUp } 
-from "../../packets/clientinputmessage";
+from "../../packets/messages/clientinputmessage";
 
 // Left movement key:
 export function sendLeftKeyDownMessage(client: Client) {

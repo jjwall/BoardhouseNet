@@ -1,7 +1,7 @@
-import { ClientMessagePlayerWorldTransition, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin } from "../../packets/clientworldmessage";
+import { ClientMessagePlayerWorldTransition, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin } from "../../packets/messages/clientworldmessage";
 import { broadcastCreateEntitiesMessage } from "./sendnetentitymessages";
 import { PositionComponent, setPosition } from "../components/position";
-import { PlayerClassTypes } from "../../packets/playerclasstypes";
+import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { sendLoadWorldMessage } from "./sendnetworldmessages";
 import { createMagician } from "../archetypes/magician";

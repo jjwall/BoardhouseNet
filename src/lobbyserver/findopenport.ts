@@ -1,7 +1,7 @@
 import { IPortToPendingRequestsMap } from "./interfaces";
 import { Response, Request } from 'express';
 import { spinUpGameServer } from './spinupgameserver';
-import { PortToConnectionsMap } from "../packets/porttoconnectionsmap";
+import { PortToConnectionsMap } from "../packets/misc/porttoconnectionsmap";
 
 /**
  * Finds an open port to create a new game room on and then spins up new game server on that port.

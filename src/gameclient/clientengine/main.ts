@@ -3,10 +3,10 @@ import { setEventListeners } from "./seteventlisteners";
 import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 import { processNetMessages } from "../messaging/processnetmessages";
 import { Client, ClientConfig } from "./client";
-import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
-import { ClientRoleTypes } from "../../packets/clientroletypes";
-import { PlayerClassTypes } from "../../packets/playerclasstypes";
-import { WorldTypes } from "../../packets/worldtypes";
+import { GameServerStateTypes } from "../../packets/enums/gameserverstatetypes";
+import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
+import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
+import { WorldTypes } from "../../packets/enums/worldtypes";
 
 // TODO:
 // > Clean up Client class fields and config fields

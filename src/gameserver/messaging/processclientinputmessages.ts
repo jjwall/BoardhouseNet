@@ -13,7 +13,7 @@ import {
     ClientMessageRightKeyUp, 
     ClientMessageUpKeyDown,
     ClientMessageUpKeyUp } 
-from "../../packets/clientinputmessage";
+from "../../packets/messages/clientinputmessage";
 
 export function queryAttackInputMessage(message: ClientMessageAttack, server: Server) {
     const quieredAttackInput: QueriedInput = {

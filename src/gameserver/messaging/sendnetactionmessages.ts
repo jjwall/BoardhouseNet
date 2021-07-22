@@ -1,7 +1,7 @@
-import { NetActionEventTypes, NetActionMessage } from "../../packets/netactionmessage";
-import { EntityData } from "../../packets/entitydata";
-import { WorldTypes } from "../../packets/worldtypes";
-import { MessageTypes } from "../../packets/message";
+import { NetActionEventTypes, NetActionMessage } from "../../packets/messages/netactionmessage";
+import { EntityData } from "../../packets/data/entitydata";
+import { WorldTypes } from "../../packets/enums/worldtypes";
+import { MessageTypes } from "../../packets/messages/message";
 import { Entity } from "../serverengine/entity";
 import { Server } from "../serverengine/server";
 

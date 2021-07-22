@@ -1,4 +1,4 @@
-import { InputData } from "./inputdata";
+import { InputData } from "../data/inputdata";
 import { Message } from "./message";
 
 export type ClientInputMessage = 

@@ -1,4 +1,4 @@
-import { NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEntities } from "../../packets/netentitymessage";
+import { NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEntities } from "../../packets/messages/netentitymessage";
 import { ClientEntity } from "../clientengine/cliententity";
 import { setHitboxGraphic } from "../components/hitbox";
 import { setPosition } from "../components/position";

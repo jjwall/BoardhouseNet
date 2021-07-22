@@ -1,10 +1,10 @@
-import { NetEntityMessage, NetEntityEventTypes, NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEntities } from "../../packets/netentitymessage";
-import { NetMessageLoadWorld, NetMessagePlayerWorldTransition, NetWorldMessage, NetWorldEventTypes } from "../../packets/networldmessage";
-import { NetActionEventTypes, NetActionMessage, NetMessagePlayerAttackDisplay } from "../../packets/netactionmessage";
+import { NetEntityMessage, NetEntityEventTypes, NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEntities } from "../../packets/messages/netentitymessage";
+import { NetMessageLoadWorld, NetMessagePlayerWorldTransition, NetWorldMessage, NetWorldEventTypes } from "../../packets/messages/networldmessage";
+import { NetActionEventTypes, NetActionMessage, NetMessagePlayerAttackDisplay } from "../../packets/messages/netactionmessage";
 import { loadWorld, transitionPlayerClientToNewWorld, unloadWorld } from "./processnetworldmessages";
 import { createEntities, destroyEntities, updateEntities } from "./processnetentitymessages";
 import { renderPlayerAttackAnim } from "./processnetactionmessages";
-import { Message, MessageTypes } from "../../packets/message";
+import { Message, MessageTypes } from "../../packets/messages/message";
 import { Client } from "../clientengine/client";
 
 export function processNetMessages(client: Client) {

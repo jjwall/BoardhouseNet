@@ -1,6 +1,6 @@
-import { ClientWorldEventTypes, ClientWorldMessage } from "../../packets/clientworldmessage";
+import { ClientWorldEventTypes, ClientWorldMessage } from "../../packets/messages/clientworldmessage";
 import { broadcastDestroyEntitiesMessage } from "../messaging/sendnetentitymessages";
-import { ClientRoleTypes } from "../../packets/clientroletypes";
+import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
 import { BaseWorldEngine } from "./baseworldengine";
 import { Entity } from "./entity";
 import { Server } from "./server";
