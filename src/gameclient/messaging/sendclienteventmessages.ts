@@ -1,7 +1,5 @@
 import { ClientWorldMessage, ClientWorldEventTypes, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin } from "../../packets/clientworldmessage";
 import { WorldTransitionData } from "../../packets/worldtransitiondata";
-import { ClientEventMessage } from "../../packets/clienteventmessage";
-import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { MessageTypes } from "../../packets/message";
 import { Client } from "../clientengine/client";
 

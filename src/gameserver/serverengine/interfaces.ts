@@ -1,7 +1,5 @@
-import * as WebSocket from "ws";
 import { BaseWorldEngine } from "./baseworldengine";
 import { Entity } from "./entity";
-import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { ClientInputTypes } from "../../packets/clientinputtypes";
 import { WorldTypes } from "../../packets/worldtypes";
 

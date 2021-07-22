@@ -1,12 +1,8 @@
 import * as WebSocket from "ws";
-import { NetEntityMessage } from "../../packets/netentitymessage";
-import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { sendDestroyEntitiesMessage } from "../messaging/sendmessages";
 import { Entity } from "./entity";
-import { ClientEventTypes } from "../../packets/clienteventtypes";
 import { ClientRoleTypes } from "../../packets/clientroletypes";
 import { Server } from "./server";
-import { last } from "./helpers";
 import { BaseWorldEngine } from "./baseworldengine";
 import { ClientWorldEventTypes, ClientWorldMessage } from "../../packets/clientworldmessage";
 

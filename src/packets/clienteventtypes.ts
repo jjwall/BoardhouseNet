@@ -1,4 +1,0 @@
-export enum ClientEventTypes {
-    PLAYER_JOINED = "PLAYER_JOINED",
-    SPECTATOR_JOINED = "SPECTATOR_JOINED",
-}
