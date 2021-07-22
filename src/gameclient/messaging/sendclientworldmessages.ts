@@ -7,7 +7,6 @@ export function sendPlayerWorldJoinMessage(client: Client) {
     const message: ClientMessagePlayerWorldJoin = {
         messageType: MessageTypes.CLIENT_WORLD_MESSAGE,
         eventType: ClientWorldEventTypes.PLAYER_WORLD_JOIN,
-        worldType: null, // discard
         data: {
             clientId: client.currentClientId,
             playerClass: client.playerClass,
@@ -23,7 +22,6 @@ export function sendPlayerWorldTransitionMessage(client: Client, data: WorldTran
     const message: ClientMessagePlayerWorldTransition = {
         eventType: ClientWorldEventTypes.PLAYER_WORLD_TRANSITION,
         messageType: MessageTypes.CLIENT_WORLD_MESSAGE,
-        worldType: client.worldType, // unnecessary
         data: data,
     }
 
@@ -35,7 +33,6 @@ export function sendSpectatorWorldJoinMessage(client: Client) {
     const message: ClientMessageSpectatorWorldJoin = {
         messageType: MessageTypes.CLIENT_WORLD_MESSAGE,
         eventType: ClientWorldEventTypes.SPECTATOR_WORLD_JOIN,
-        worldType: null, // discard
         data: {
             clientId: client.currentClientId,
             playerClass: client.playerClass,

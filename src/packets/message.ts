@@ -2,7 +2,6 @@ import { WorldTypes } from "./worldtypes";
 
 export interface Message {
     messageType: MessageTypes;
-    worldType: WorldTypes;
 }
 
 export enum MessageTypes {

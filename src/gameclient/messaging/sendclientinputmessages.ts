@@ -18,7 +18,6 @@ export function sendLeftKeyDownMessage(client: Client) {
     const message: ClientMessageLeftKeyDown  = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.LEFT_KEY_DOWN,
-        worldType: null,
         data: {
             clientId: client.currentClientId,
             worldType: client.worldType,
@@ -32,7 +31,6 @@ export function sendLeftKeyUpMessage(client: Client) {
     const message: ClientMessageLeftKeyUp  = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.LEFT_KEY_UP,
-        worldType: null,
         data: {
             clientId: client.currentClientId,
             worldType: client.worldType,
@@ -47,7 +45,6 @@ export function sendRightKeyDownMessage(client: Client) {
     const message: ClientMessageRightKeyDown  = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.RIGHT_KEY_DOWN,
-        worldType: null,
         data: {
             clientId: client.currentClientId,
             worldType: client.worldType,
@@ -61,7 +58,6 @@ export function sendRightKeyUpMessage(client: Client) {
     const message: ClientMessageRightKeyUp  = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.RIGHT_KEY_UP,
-        worldType: null,
         data: {
             clientId: client.currentClientId,
             worldType: client.worldType,
@@ -76,7 +72,6 @@ export function sendUpKeyDownMessage(client: Client) {
     const message: ClientMessageUpKeyDown  = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.UP_KEY_DOWN,
-        worldType: null,
         data: {
             clientId: client.currentClientId,
             worldType: client.worldType,
@@ -90,7 +85,6 @@ export function sendUpKeyUpMessage(client: Client) {
     const message: ClientMessageUpKeyUp  = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.UP_KEY_UP,
-        worldType: null,
         data: {
             clientId: client.currentClientId,
             worldType: client.worldType,
@@ -105,7 +99,6 @@ export function sendDownKeyDownMessage(client: Client) {
     const message: ClientMessageDownKeyDown  = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.DOWN_KEY_DOWN,
-        worldType: null,
         data: {
             clientId: client.currentClientId,
             worldType: client.worldType,
@@ -119,7 +112,6 @@ export function sendDownKeyUpMessage(client: Client) {
     const message: ClientMessageDownKeyUp  = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.DOWN_KEY_UP,
-        worldType: null,
         data: {
             clientId: client.currentClientId,
             worldType: client.worldType,
@@ -134,7 +126,6 @@ export function sendAttackMessage(client: Client) {
     const message: ClientMessageAttack  = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.ATTACK,
-        worldType: null,
         data: {
             clientId: client.currentClientId,
             worldType: client.worldType,

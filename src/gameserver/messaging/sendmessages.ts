@@ -15,7 +15,6 @@ export function sendCreateEntitiesMessage(ents: Entity[], server: Server, worldT
     let message: NetMessageCreateEntities = {
         messageType: MessageTypes.NET_ENTITY_MESSAGE,
         eventType: NetEntityEventTypes.CREATE,
-        worldType: worldType,
         data: {
             worldType: worldType,
             ents: [],
@@ -67,7 +66,6 @@ export function sendUpdateEntitiesMessage(ents: Entity[], server: Server, worldT
     let message: NetMessageUpdateEntities = {
         messageType: MessageTypes.NET_ENTITY_MESSAGE,
         eventType: NetEntityEventTypes.UPDATE,
-        worldType: worldType,
         data: {
             worldType: worldType,
             ents: [],
@@ -112,7 +110,6 @@ export function sendDestroyEntitiesMessage(ents: Entity[], server: Server, world
     let message: NetMessageDestroyEntities = {
         messageType: MessageTypes.NET_ENTITY_MESSAGE,
         eventType: NetEntityEventTypes.DESTROY,
-        worldType: worldEngine.worldType,
         data: {
             worldType: worldEngine.worldType,
             ents: [],
@@ -148,7 +145,6 @@ export function broadcastNetActionMessage(ents: Entity[], server: Server, netEve
     const message: NetActionMessage = {
         messageType: MessageTypes.NET_ACTION_MESSAGE,
         eventType: netEventType,
-        worldType: worldType,
         data: {
             ents: [],
             worldType: worldType,
@@ -193,7 +189,6 @@ export function sendLoadWorldMessage(server: Server, worldLevelData: WorldLevelD
     const message: NetMessageLoadWorld = {
         messageType: MessageTypes.NET_WORLD_MESSAGE,
         eventType: NetWorldEventTypes.LOAD_WORLD,
-        worldType: worldLevelData.worldType, // unnecessary
         data: worldLevelData,
     }
 
@@ -211,7 +206,6 @@ export function sendUnloadWorldMessage(server: Server, worldLevelData: WorldLeve
     const message: NetMessageUnloadWorld = {
         messageType: MessageTypes.NET_WORLD_MESSAGE,
         eventType: NetWorldEventTypes.UNLOAD_WORLD,
-        worldType: worldLevelData.worldType, // unnecessary
     }
 
     server.boardhouseServer.clients.forEach(client => {
@@ -228,7 +222,6 @@ export function sendPlayerWorldTransitionMessage(server: Server, worldTransition
     const message: NetMessagePlayerWorldTransition = {
         messageType: MessageTypes.NET_WORLD_MESSAGE,
         eventType: NetWorldEventTypes.PLAYER_WORLD_TRANSITION,
-        worldType: worldToLoad, // remove?
         data: worldTransitionData,
     }
 
