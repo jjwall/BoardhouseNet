@@ -1,4 +1,4 @@
-import { ClientWorldMessage, ClientWorldEventTypes, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin } from "../../packets/clientworldmessage";
+import { ClientWorldEventTypes, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin, ClientMessagePlayerWorldTransition } from "../../packets/clientworldmessage";
 import { WorldTransitionData } from "../../packets/worldtransitiondata";
 import { MessageTypes } from "../../packets/message";
 import { Client } from "../clientengine/client";
@@ -20,7 +20,7 @@ export function sendPlayerWorldJoinMessage(client: Client) {
 }
 
 export function sendPlayerWorldTransitionMessage(client: Client, data: WorldTransitionData) {
-    const message: ClientWorldMessage = {
+    const message: ClientMessagePlayerWorldTransition = {
         eventType: ClientWorldEventTypes.PLAYER_WORLD_TRANSITION,
         messageType: MessageTypes.CLIENT_WORLD_MESSAGE,
         worldType: client.worldType, // unnecessary
