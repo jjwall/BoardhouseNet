@@ -1,6 +1,6 @@
 import { NetMessageLoadWorld, NetMessagePlayerWorldTransition, NetMessageUnloadWorld, NetWorldEventTypes } from "../../packets/networldmessage";
 import { Entity } from "../serverengine/entity";
-import { NetEntityMessage } from "../../packets/netentitymessage";
+import { NetEntityMessage, NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEntities } from "../../packets/netentitymessage";
 import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
 import { Server } from "../serverengine/server";
 import { MessageTypes } from "../../packets/message";
@@ -13,11 +13,14 @@ import { WorldTransitionData } from "../../packets/worldtransitiondata";
 import { NetActionEventTypes, NetActionMessage } from "../../packets/netactionmessage";
 
 export function sendCreateEntitiesMessage(ents: Entity[], server: Server, worldType: WorldTypes) {
-    let message: NetEntityMessage = {
+    let message: NetMessageCreateEntities = {
         messageType: MessageTypes.NET_ENTITY_MESSAGE,
         eventType: NetEntityEventTypes.CREATE,
         worldType: worldType,
-        data: [],
+        data: {
+            worldType: worldType,
+            ents: [],
+        },
     }
 
     ents.forEach(ent => {
@@ -52,7 +55,7 @@ export function sendCreateEntitiesMessage(ents: Entity[], server: Server, worldT
                 }
             }
 
-            message.data.push(entData);
+            message.data.ents.push(entData);
         }
     });
 
@@ -62,11 +65,14 @@ export function sendCreateEntitiesMessage(ents: Entity[], server: Server, worldT
 }
 
 export function sendUpdateEntitiesMessage(ents: Entity[], server: Server, worldType: WorldTypes) {
-    let message: NetEntityMessage = {
+    let message: NetMessageUpdateEntities = {
         messageType: MessageTypes.NET_ENTITY_MESSAGE,
         eventType: NetEntityEventTypes.UPDATE,
         worldType: worldType,
-        data: [],
+        data: {
+            worldType: worldType,
+            ents: [],
+        },
     }
 
     ents.forEach(ent => {
@@ -92,7 +98,7 @@ export function sendUpdateEntitiesMessage(ents: Entity[], server: Server, worldT
                 player: ent.player,
             }
 
-            message.data.push(entData);
+            message.data.ents.push(entData);
         }
     });
 
@@ -104,11 +110,14 @@ export function sendUpdateEntitiesMessage(ents: Entity[], server: Server, worldT
 }
 
 export function sendDestroyEntitiesMessage(ents: Entity[], server: Server, worldEngine: BaseWorldEngine) {
-    let message: NetEntityMessage = {
+    let message: NetMessageDestroyEntities = {
         messageType: MessageTypes.NET_ENTITY_MESSAGE,
         eventType: NetEntityEventTypes.DESTROY,
         worldType: worldEngine.worldType,
-        data: [],
+        data: {
+            worldType: worldEngine.worldType,
+            ents: [],
+        },
     }
 
     ents.forEach(ent => {
@@ -120,7 +129,7 @@ export function sendDestroyEntitiesMessage(ents: Entity[], server: Server, world
                 netId: ent.netId,
             }
 
-            message.data.push(entData);
+            message.data.ents.push(entData);
         }
     });
     
