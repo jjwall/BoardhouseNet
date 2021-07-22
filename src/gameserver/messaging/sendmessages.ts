@@ -193,7 +193,7 @@ export function sendLoadWorldMessage(server: Server, worldLevelData: WorldLevelD
         const myClient = client as MyWebSocket;
 
         if (myClient.clientId === clientId) {
-            console.log(`sending load world message to client with clientId = ${clientId}`)
+            console.log(`(port: ${server.gameServerPort}): sending load world message to client with clientId = "${clientId}"`)
             client.send(JSON.stringify(message));
         }
     });
@@ -210,7 +210,7 @@ export function sendUnloadWorldMessage(server: Server, worldLevelData: WorldLeve
         const myClient = client as MyWebSocket;
 
         if (myClient.clientId === clientId) {
-            console.log(`sending unload world message to client with clientId = ${clientId}`)
+            console.log(`(port: ${server.gameServerPort}): sending unload world message to client with clientId = "${clientId}"`)
             client.send(JSON.stringify(message));
         }
     });
@@ -228,7 +228,7 @@ export function sendPlayerWorldTransitionMessage(server: Server, worldTransition
         const myClient = client as MyWebSocket;
 
         if (myClient.clientId === clientId) {
-            console.log(`sending transition world message to client with clientId = ${clientId}`)
+            console.log(`(port: ${server.gameServerPort}): sending transition world message to client with clientId = "${clientId}"`)
             client.send(JSON.stringify(message));
         }
     });

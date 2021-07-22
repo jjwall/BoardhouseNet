@@ -11,10 +11,9 @@ import { createArcher } from "../archetypes/archer";
 import { PositionComponent, setPosition } from "../components/position";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { QueriedInput } from "../serverengine/interfaces";
-import { ClientWorldMessage, ClientWorldEventTypes, ClientMessagePlayerWorldTransition, ClientMessagePlayerWorldJoin } from "../../packets/clientworldmessage";
+import { ClientWorldMessage, ClientWorldEventTypes, ClientMessagePlayerWorldTransition, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin } from "../../packets/clientworldmessage";
 import { PlayerStates } from "../components/player";
 
-// Will need more info pertaining to INPUT_TO_QUERY event.
 export function processClientMessages(server: Server) {
     server.messagesToProcess.forEach(message => {
         switch (message.messageType) {
@@ -38,19 +37,15 @@ function processClientWorldMessages(message: ClientWorldMessage, server: Server)
         case ClientWorldEventTypes.PLAYER_WORLD_TRANSITION:
             processPlayerWorldTransitionMessage(message as ClientMessagePlayerWorldTransition, server);
             break;
+        case ClientWorldEventTypes.SPECTATOR_WORLD_JOIN:
+            processSpectatorWorldJoinMessage(message as ClientMessageSpectatorWorldJoin, server);
+            break;
+        // case ClientWorldEventTypes.SPECTATOR_WORLD_TRANSITION:
+        //     processSpectatorWorldTransitionMessage(message as ClientMessageSpectatorWorldTransition, server);
+        //     break;
+
     }
 }
-
-// function processClientEventMessage(message: ClientEventMessage, server: Server) {
-//     switch (message.eventType) {
-//         case ClientEventTypes.PLAYER_JOINED:
-//             processPlayerWorldJoinMessage(message, server);
-//             break;
-//         case ClientEventTypes.SPECTATOR_JOINED:
-//             // processSpectatorJoinedMessage(message, server, state);
-//             break;
-//     }
-// }
 
 function processClientInputMessage(message: ClientInputMessage, server: Server) {
     const world = server.worldEngines.find(worldEngine => worldEngine.worldType === message.worldType);
@@ -167,25 +162,22 @@ export function processPlayerWorldJoinMessage(message: ClientMessagePlayerWorldJ
     // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages
 }
 
-// TODO: Make functional again.
-function processSpectatorJoinedMessage(message: any, server: Server, worldEngine: BaseWorldEngine) {
-    console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.clientId}" joined as a spectator`);
+// TODO: Give spectators the abilities to control camera / follow players / swap worlds etc.
+function processSpectatorWorldJoinMessage(message: ClientMessageSpectatorWorldJoin, server: Server) {
+    console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.data.clientId}" joined as a spectator in world = "${message.data.worldType}"`);
+    let clientWorld: BaseWorldEngine;
 
-    // Dummy data... for testing stuff with spectator
-    // Set up another player entity.
-    let player = new Entity();
-    // player.player = { id: message.clientId };
-    player.pos = setPosition(350, 150, 5);
-    player.sprite = { url: "./data/textures/snow.png", pixelRatio: 4 };
-    player.anim = { sequence: "blah", currentFrame: 0 };
+    try {
+        clientWorld = server.worldEngines.find(worldEngine => worldEngine.worldType === message.data.worldType);
+    } catch {
+        throw Error("unable to find world");
+    }
 
-    worldEngine.registerEntity(player, server);
-
-    // Not exactly sure why we need this setTimeout here.
-    // setTimeout(function() {
+    setTimeout(function() {
         // Create all entities for connecting client.
-        // sendCreateEntitiesMessage(state.getEntitiesByKey<Entity>("global"), server);
-    // }, 5000);
+        sendLoadWorldMessage(server, clientWorld.worldLevelData, message.data.clientId);
+        sendCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.data.worldType);
+    }, 5000);
 }
 
 // TRY TO REDUCE THIS TO BIG O OF N and not N^2

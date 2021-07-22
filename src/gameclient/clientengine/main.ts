@@ -1,4 +1,4 @@
-import { sendPlayerWorldJoinMessage, sendSpectatorJoinedMessage } from "../messaging/sendclienteventmessages";
+import { sendPlayerWorldJoinMessage, sendSpectatorWorldJoinMessage } from "../messaging/sendclienteventmessages";
 import { setEventListeners } from "./seteventlisteners";
 import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 import { processNetMessages } from "../messaging/processnetmessages";
@@ -69,7 +69,7 @@ client.connection.onopen = function() {
             sendPlayerWorldJoinMessage(client);
             break;
         case ClientRoleTypes.SPECTATOR:
-            sendSpectatorJoinedMessage(client);
+            sendSpectatorWorldJoinMessage(client);
             break;
     }
 }

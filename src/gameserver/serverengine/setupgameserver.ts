@@ -31,7 +31,7 @@ export function setUpGameServer(server: Server) {
                 server.playerClientIds.push(clientMessage.data.clientId);
             }
 
-            if (clientMessage.eventType === ClientWorldEventTypes.PLAYER_WORLD_JOIN) {
+            if (clientMessage.eventType === ClientWorldEventTypes.SPECTATOR_WORLD_JOIN) {
                 ws.clientId = clientMessage.data.clientId;
                 ws.clientRole = ClientRoleTypes.SPECTATOR;
                 server.spectatorClientIds.push(clientMessage.data.clientId);

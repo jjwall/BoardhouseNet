@@ -54,7 +54,8 @@ function joinEvent (element:HTMLElement, port:String, globalLobby: IGlobalLobby)
 
 function spectateEvent (element:HTMLElement, port:String, globalLobby: IGlobalLobby) {
     element.onclick = function() {
-        window.location.href = `/playgame?port=${port}&clientId=${globalLobby.currentClientId}&clientRole=${ClientRoleTypes.SPECTATOR}&playerClass=${PlayerClassTypes.NULL}`
+        const worldSelection = worldSelectRadioValue(globalLobby);
+        window.location.href = `/playgame?port=${port}&clientId=${globalLobby.currentClientId}&clientRole=${ClientRoleTypes.SPECTATOR}&playerClass=${PlayerClassTypes.NULL}&worldType=${worldSelection}`
         console.log(port);
     }
 }
