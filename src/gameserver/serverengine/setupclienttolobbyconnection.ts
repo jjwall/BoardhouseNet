@@ -1,5 +1,5 @@
 import * as WebSocket from "ws";
-import { GameServerInfo } from "../../packets/gameserverinfo";
+import { GameServerInfo } from "../../packets/misc/gameserverinfo";
 import { Server } from "./server";
 
 export function setUpClientToLobbyConnection(server: Server) {

@@ -1,4 +1,3 @@
-import { ClientEventMessage } from "../../packets/clienteventmessage";
 import { setHitbox, HitboxTypes } from "../components/hitbox";
 import { PositionComponent } from "../components/position";
 import { setVelocity } from "../components/velocity";
@@ -7,7 +6,7 @@ import { Entity } from "../serverengine/entity";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { Server } from "../serverengine/server";
 import { PlayerStates } from "../components/player";
-import { PlayerClassTypes } from "../../packets/playerclasstypes";
+import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 
 export function createMagician(server: Server, worldEngine: BaseWorldEngine, clientId: string, pos: PositionComponent): Entity {
     let magician = new Entity();

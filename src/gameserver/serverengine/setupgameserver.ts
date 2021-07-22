@@ -1,13 +1,10 @@
-import * as WebSocket from "ws";
-import { NetEntityMessage } from "../../packets/netentitymessage";
-import { ClientEventMessage } from "../../packets/clienteventmessage";
-import { sendDestroyEntitiesMessage } from "../messaging/sendmessages";
-import { Entity } from "./entity";
-import { ClientEventTypes } from "../../packets/clienteventtypes";
-import { ClientRoleTypes } from "../../packets/clientroletypes";
-import { Server } from "./server";
-import { last } from "./helpers";
+import { ClientWorldEventTypes, ClientWorldMessage } from "../../packets/messages/clientworldmessage";
+import { broadcastDestroyEntitiesMessage } from "../messaging/sendnetentitymessages";
+import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
 import { BaseWorldEngine } from "./baseworldengine";
+import { Entity } from "./entity";
+import { Server } from "./server";
+import * as WebSocket from "ws";
 
 export class MyWebSocket extends WebSocket {
     clientId: string;
@@ -22,18 +19,18 @@ export function setUpGameServer(server: Server) {
 
         ws.on("message", function incoming(message) {
             console.log(`(port: ${server.gameServerPort}) received: ${message}`);
-            const clientMessage: ClientEventMessage = JSON.parse(message.toString());
+            const clientMessage: ClientWorldMessage = JSON.parse(message.toString());
 
-            if (clientMessage.eventType === ClientEventTypes.PLAYER_JOINED) {
-                ws.clientId = clientMessage.clientId;
+            if (clientMessage.eventType === ClientWorldEventTypes.PLAYER_WORLD_JOIN) {
+                ws.clientId = clientMessage.data.clientId;
                 ws.clientRole = ClientRoleTypes.PLAYER;
-                server.playerClientIds.push(clientMessage.clientId);
+                server.playerClientIds.push(clientMessage.data.clientId);
             }
 
-            if (clientMessage.eventType === ClientEventTypes.SPECTATOR_JOINED) {
-                ws.clientId = clientMessage.clientId;
+            if (clientMessage.eventType === ClientWorldEventTypes.SPECTATOR_WORLD_JOIN) {
+                ws.clientId = clientMessage.data.clientId;
                 ws.clientRole = ClientRoleTypes.SPECTATOR;
-                server.spectatorClientIds.push(clientMessage.clientId);
+                server.spectatorClientIds.push(clientMessage.data.clientId);
             }
 
             server.messagesToProcess.push(clientMessage);
@@ -80,5 +77,5 @@ export function findAndDestroyPlayerEntity(worldEngine: BaseWorldEngine, clientI
     });
 
     if (entsToDestroy.length > 0)
-        sendDestroyEntitiesMessage(entsToDestroy, server, worldEngine);
+        broadcastDestroyEntitiesMessage(entsToDestroy, server, worldEngine);
 }

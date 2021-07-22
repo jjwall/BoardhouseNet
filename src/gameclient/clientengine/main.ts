@@ -1,12 +1,12 @@
-import { sendPlayerJoinedMessage, sendSpectatorJoinedMessage } from "../messaging/sendclienteventmessages";
+import { sendPlayerWorldJoinMessage, sendSpectatorWorldJoinMessage } from "../messaging/sendclientworldmessages";
 import { setEventListeners } from "./seteventlisteners";
 import { OrthographicCamera, WebGLRenderer, Scene, Color } from "three";
 import { processNetMessages } from "../messaging/processnetmessages";
 import { Client, ClientConfig } from "./client";
-import { GameServerStateTypes } from "../../packets/gameserverstatetypes";
-import { ClientRoleTypes } from "../../packets/clientroletypes";
-import { PlayerClassTypes } from "../../packets/playerclasstypes";
-import { WorldTypes } from "../../packets/worldtypes";
+import { GameServerStateTypes } from "../../packets/enums/gameserverstatetypes";
+import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
+import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
+import { WorldTypes } from "../../packets/enums/worldtypes";
 
 // TODO:
 // > Clean up Client class fields and config fields
@@ -66,10 +66,10 @@ client.connection = new WebSocket("ws://" +
 client.connection.onopen = function() {
     switch (client.role) {
         case ClientRoleTypes.PLAYER:
-            sendPlayerJoinedMessage(client);
+            sendPlayerWorldJoinMessage(client);
             break;
         case ClientRoleTypes.SPECTATOR:
-            sendSpectatorJoinedMessage(client);
+            sendSpectatorWorldJoinMessage(client);
             break;
     }
 }

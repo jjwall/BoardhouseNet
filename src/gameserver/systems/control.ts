@@ -1,8 +1,8 @@
-import { sendNetEventMessage } from "./../messaging/sendmessages";
-import { NetEventTypes } from "../../packets/neteventtypes";
+import { broadcastNetActionMessage } from "./../messaging/sendnetactionmessages";
+import { NetActionEventTypes } from "../../packets/messages/netactionmessage";
+import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { setPosition } from "../components/position";
 import { Entity } from "../serverengine/entity";
-import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { Vector3 } from "three";
 
 /**
@@ -84,7 +84,7 @@ export function controlSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWorl
                     attackEnt.pos = setPosition(ent.pos.loc.x + attackPosOffset, ent.pos.loc.y, ent.pos.loc.z + 1, atkDirection);
                     attackEnt.sprite = { url: "./data/textures/mediumExplosion1.png", pixelRatio: 4 };
                     attackEnts.push(attackEnt);
-                    sendNetEventMessage(attackEnts, worldEngine.server, NetEventTypes.PLAYER_ATTACK_ANIM_DISPLAY, worldEngine.worldType);
+                    broadcastNetActionMessage(attackEnts, worldEngine.server, NetActionEventTypes.PLAYER_ATTACK_ANIM_DISPLAY, worldEngine.worldType);
                   
                     // Start cooldown.
                     ent.control.attackCooldownTicks = 60;

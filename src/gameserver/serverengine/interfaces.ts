@@ -1,9 +1,7 @@
-import * as WebSocket from "ws";
+import { ClientInputTypes } from "../../packets/messages/clientinputmessage";
+import { WorldTypes } from "../../packets/enums/worldtypes";
 import { BaseWorldEngine } from "./baseworldengine";
 import { Entity } from "./entity";
-import { ClientEventMessage } from "../../packets/clienteventmessage";
-import { ClientInputTypes } from "../../packets/clientinputtypes";
-import { WorldTypes } from "../../packets/worldtypes";
 
 export interface NetIdToEntityMap {
     [netId: number]: Entity;

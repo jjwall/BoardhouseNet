@@ -1,8 +1,9 @@
-import { processClientMessages, processQueriedInputs } from "../messaging/processclientmessages";
+import { processQueriedInputs } from "../messaging/processclientinputmessages";
+import { processClientMessages } from "../messaging/processclientmessages";
 import { NetIdToEntityMap, QueriedInput } from "./interfaces";
-import { Entity } from "./entity";
-import { Message } from "../../packets/message";
 import { BaseWorldEngine } from "./baseworldengine";
+import { Message } from "../../packets/messages/message";
+import { Entity } from "./entity";
 import * as WebSocket from "ws";
 
 export interface ServerConfig {

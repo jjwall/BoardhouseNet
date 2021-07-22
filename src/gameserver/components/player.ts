@@ -1,4 +1,4 @@
-import { PlayerClassTypes } from "../../packets/playerclasstypes";
+import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 
 /**
  * Player component.

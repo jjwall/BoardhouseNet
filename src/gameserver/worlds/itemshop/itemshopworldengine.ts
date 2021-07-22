@@ -2,11 +2,11 @@ import { kenneyItemShop2 } from "../../../modules/tilemapping/tilemaps/kenneyite
 import { sendPlayerToAnotherWorld } from "../../messaging/sendneteventmessages";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
-import { TileData, WorldLevelData } from "../../../packets/worldleveldata";
+import { TileData, WorldLevelData } from "../../../packets/data/worldleveldata";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
 import { collisionSystem } from "../../systems/collision";
 import { worldEdgeSystem } from "../../systems/worldedge";
-import { WorldTypes } from "../../../packets/worldtypes";
+import { WorldTypes } from "../../../packets/enums/worldtypes";
 import { PositionComponent, setPosition } from "../../components/position";
 import { velocitySystem } from "../../systems/velocity";
 import { setControls } from "../../components/control";

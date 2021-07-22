@@ -1,12 +1,13 @@
 import { findAndDestroyPlayerEntity } from "../serverengine/setupgameserver";
-import { sendPlayerWorldTransitionMessage } from "./sendmessages";
+import { sendPlayerWorldTransitionMessage } from "./sendnetworldmessages";
+import { WorldTransitionData } from "../../packets/data/worldtransitiondata";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { PositionComponent } from "../components/position";
-import { WorldTypes } from "../../packets/worldtypes";
+import { WorldTypes } from "../../packets/enums/worldtypes";
 import { PlayerStates } from "../components/player";
 import { Entity } from "../serverengine/entity";
-import { WorldTransitionData } from "../../packets/worldtransitiondata";
 
+// Where to put this function?
 export function sendPlayerToAnotherWorld(playerEnt: Entity, currentWorld: BaseWorldEngine, newWorldType: WorldTypes, newPos: PositionComponent) {
     playerEnt.player.state = PlayerStates.UNLOADED;
     playerEnt.pos = newPos; // unncessary

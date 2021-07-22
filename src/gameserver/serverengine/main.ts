@@ -1,7 +1,7 @@
 import { setUpClientToLobbyConnection } from "./setupclienttolobbyconnection";
 import { ItemShopWorldEngine } from "../worlds/itemshop/itemshopworldengine";
 import { CastleWorldEngine } from "../worlds/castle/castleworldengine";
-import { WorldTypes } from "../../packets/worldtypes";
+import { WorldTypes } from "../../packets/enums/worldtypes";
 import { setUpGameServer } from "./setupgameserver";
 import { Server, ServerConfig } from "./server";
 import * as WebSocket from "ws";

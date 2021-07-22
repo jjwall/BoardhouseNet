@@ -1,5 +1,5 @@
 import { BufferAttribute, BufferGeometry, Mesh, MeshBasicMaterial, NearestFilter, Vector3 } from "three";
-import { WorldLevelData } from "../../packets/worldleveldata";
+import { WorldLevelData } from "../../packets/data/worldleveldata";
 import { setHitboxGraphic } from "../components/hitbox";
 import { Client } from "./client";
 
