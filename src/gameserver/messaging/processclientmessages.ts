@@ -1,9 +1,8 @@
-import { ClientInputMessage, ClientMessageAttack, ClientMessageDownKeyDown, ClientMessageDownKeyUp, ClientMessageLeftKeyDown, ClientMessageLeftKeyUp, ClientMessageRightKeyDown, ClientMessageRightKeyUp, ClientMessageUpKeyDown, ClientMessageUpKeyUp } from "../../packets/clientinputmessage";
+import { ClientInputTypes, ClientInputMessage, ClientMessageAttack, ClientMessageDownKeyDown, ClientMessageDownKeyUp, ClientMessageLeftKeyDown, ClientMessageLeftKeyUp, ClientMessageRightKeyDown, ClientMessageRightKeyUp, ClientMessageUpKeyDown, ClientMessageUpKeyUp } from "../../packets/clientinputmessage";
 import { Entity } from "../serverengine/entity";
 import { sendCreateEntitiesMessage, sendLoadWorldMessage } from "./sendmessages";
 import { Server } from "../serverengine/server";
 import { MessageTypes } from "../../packets/message";
-import { ClientInputTypes } from "../../packets/clientinputtypes";
 import { PlayerClassTypes } from "../../packets/playerclasstypes";
 import { createPage } from "../archetypes/page";
 import { createMagician } from "../archetypes/magician";

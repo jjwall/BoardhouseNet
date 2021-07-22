@@ -1,7 +1,17 @@
-import { ClientInputMessage, ClientMessageAttack, ClientMessageDownKeyDown, ClientMessageDownKeyUp, ClientMessageLeftKeyDown, ClientMessageLeftKeyUp, ClientMessageRightKeyDown, ClientMessageRightKeyUp, ClientMessageUpKeyDown, ClientMessageUpKeyUp } from "../../packets/clientinputmessage";
-import { ClientInputTypes } from "../../packets/clientinputtypes";
 import { MessageTypes } from "../../packets/message";
 import { Client } from "../clientengine/client";
+import {
+    ClientInputTypes, 
+    ClientMessageAttack, 
+    ClientMessageDownKeyDown, 
+    ClientMessageDownKeyUp, 
+    ClientMessageLeftKeyDown, 
+    ClientMessageLeftKeyUp, 
+    ClientMessageRightKeyDown, 
+    ClientMessageRightKeyUp, 
+    ClientMessageUpKeyDown, 
+    ClientMessageUpKeyUp } 
+from "../../packets/clientinputmessage";
 
 // Left movement key:
 export function sendLeftKeyDownMessage(client: Client) {

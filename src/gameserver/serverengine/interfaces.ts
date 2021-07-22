@@ -1,7 +1,7 @@
+import { ClientInputTypes } from "../../packets/clientinputmessage";
+import { WorldTypes } from "../../packets/worldtypes";
 import { BaseWorldEngine } from "./baseworldengine";
 import { Entity } from "./entity";
-import { ClientInputTypes } from "../../packets/clientinputtypes";
-import { WorldTypes } from "../../packets/worldtypes";
 
 export interface NetIdToEntityMap {
     [netId: number]: Entity;
