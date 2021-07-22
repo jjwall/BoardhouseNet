@@ -1,8 +1,7 @@
 import { NetMessageLoadWorld, NetMessagePlayerWorldTransition, NetWorldMessage, NetWorldEventTypes } from "../../packets/networldmessage";
 import { NetActionEventTypes, NetActionMessage, NetMessagePlayerAttackDisplay } from "../../packets/netactionmessage";
 import { sendPlayerWorldTransitionMessage } from "./sendclientworldmessages";
-import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
-import { NetEntityMessage, NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEntities } from "../../packets/netentitymessage";
+import { NetEntityMessage, NetEntityEventTypes, NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEntities } from "../../packets/netentitymessage";
 import { renderWorldMap } from "../clientengine/renderworldmap";
 import { Message, MessageTypes } from "../../packets/message";
 import { ClientEntity } from "../clientengine/cliententity";

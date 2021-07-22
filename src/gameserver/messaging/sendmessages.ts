@@ -1,7 +1,6 @@
 import { NetMessageLoadWorld, NetMessagePlayerWorldTransition, NetMessageUnloadWorld, NetWorldEventTypes } from "../../packets/networldmessage";
 import { Entity } from "../serverengine/entity";
-import { NetEntityMessage, NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEntities } from "../../packets/netentitymessage";
-import { NetEntityEventTypes } from "../../packets/netentityeventtypes";
+import { NetEntityEventTypes, NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEntities } from "../../packets/netentitymessage";
 import { Server } from "../serverengine/server";
 import { MessageTypes } from "../../packets/message";
 import { EntityData } from "../../packets/entitydata";

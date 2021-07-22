@@ -1,4 +1,3 @@
-import { NetEntityEventTypes } from "./netentityeventtypes";
 import { EntityData } from "./entitydata";
 import { Message } from "./message";
 import { WorldTypes } from "./worldtypes";
@@ -31,4 +30,10 @@ export interface NetMessageDestroyEntities extends Message {
         worldType: WorldTypes;
         ents: EntityData[];
     }
+}
+
+export enum NetEntityEventTypes {
+    CREATE = "CREATE",
+    UPDATE = "UPDATE",
+    DESTROY = "DESTROY"
 }
