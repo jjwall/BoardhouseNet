@@ -354,7 +354,10 @@ export class Client {
                 0,
             );
 
-            client.gameCamera.position.lerp(targetPos, 0.2);
+            if (client.currentPlayerEntity.pos.teleport)
+                client.gameCamera.position.copy(targetPos);
+            else
+                client.gameCamera.position.lerp(targetPos, 0.2);
         }
     }
 

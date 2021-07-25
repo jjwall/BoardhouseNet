@@ -15,8 +15,8 @@ import * as WebSocket from "ws";
 // 4. (done) Need to implement NetToEntity map
 // 5. (done) Need to implement entity change list to loop through and update ents in batch at end of engine tick
 // 6. (done) client player's ents should have +1 to their z-index so they are always rendered over other player's ents
-// 7. Refactor "sendmessages.ts" - should be split into "sendnetnentitymessages.ts" and "sendneteventmessages.ts"
-// -> same story for "processclientmessages.ts"
+// 7. (done) Refactor "sendmessages.ts" - should be split into "sendnetnentitymessages.ts" and "sendneteventmessages.ts"
+// -> (done) same story for "processclientmessages.ts"
 
 // Handle client to lobby server connection.
 const config: ServerConfig = {
