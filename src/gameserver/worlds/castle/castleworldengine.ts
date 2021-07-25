@@ -1,20 +1,20 @@
 import { kenneyFantasy2 } from "../../../modules/tilemapping/tilemaps/kenneyfantasy2";
+import { TileData, WorldLevelData } from "../../../packets/data/worldleveldata";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
-import { TileData, WorldLevelData } from "../../../packets/data/worldleveldata";
+import { PositionComponent, setPosition } from "../../components/position";
+import { transitionPlayerToAnotherWorld } from "../../messaging/helpers";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
+import { WorldTypes } from "../../../packets/enums/worldtypes";
 import { worldEdgeSystem } from "../../systems/worldedge";
 import { collisionSystem } from "../../systems/collision";
-import { WorldTypes } from "../../../packets/enums/worldtypes";
-import { PositionComponent, setPosition } from "../../components/position";
 import { velocitySystem } from "../../systems/velocity";
+import { PlayerStates } from "../../components/player";
 import { setControls } from "../../components/control";
 import { controlSystem } from "../../systems/control";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
-import { sendPlayerToAnotherWorld } from "../../messaging/sendneteventmessages";
-import { PlayerStates } from "../../components/player";
 
 /**
  * World engine that handles updating of all world-related systems.
@@ -147,7 +147,7 @@ export class CastleWorldEngine extends BaseWorldEngine {
                                 if (playerIndex > -1) {           
                                     if (other.player.state === PlayerStates.LOADED) {
                                         const itemShopSpawnPosition: PositionComponent = setPosition(0, -500, 5);
-                                        sendPlayerToAnotherWorld(other, this, WorldTypes.ITEM_SHOP, itemShopSpawnPosition);
+                                        transitionPlayerToAnotherWorld(other, this, WorldTypes.ITEM_SHOP, itemShopSpawnPosition);
                                     }
                                 }
                             }

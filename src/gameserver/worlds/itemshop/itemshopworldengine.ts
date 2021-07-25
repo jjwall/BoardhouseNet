@@ -1,13 +1,13 @@
 import { kenneyItemShop2 } from "../../../modules/tilemapping/tilemaps/kenneyitemshop2";
-import { sendPlayerToAnotherWorld } from "../../messaging/sendneteventmessages";
+import { TileData, WorldLevelData } from "../../../packets/data/worldleveldata";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
-import { TileData, WorldLevelData } from "../../../packets/data/worldleveldata";
+import { PositionComponent, setPosition } from "../../components/position";
+import { transitionPlayerToAnotherWorld } from "../../messaging/helpers";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
+import { WorldTypes } from "../../../packets/enums/worldtypes";
 import { collisionSystem } from "../../systems/collision";
 import { worldEdgeSystem } from "../../systems/worldedge";
-import { WorldTypes } from "../../../packets/enums/worldtypes";
-import { PositionComponent, setPosition } from "../../components/position";
 import { velocitySystem } from "../../systems/velocity";
 import { setControls } from "../../components/control";
 import { controlSystem } from "../../systems/control";
@@ -127,7 +127,7 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
                                 if (playerIndex > -1) {           
                                     if (other.player.state === PlayerStates.LOADED) {
                                         const castleSpawnPosition: PositionComponent = setPosition(765, -850, 5);
-                                        sendPlayerToAnotherWorld(other, this, WorldTypes.CASTLE, castleSpawnPosition);
+                                        transitionPlayerToAnotherWorld(other, this, WorldTypes.CASTLE, castleSpawnPosition);
                                     }
                                 }
                             }

@@ -1,8 +1,6 @@
 import { ClientWorldEventTypes, ClientWorldMessage } from "../../packets/messages/clientworldmessage";
-import { broadcastDestroyEntitiesMessage } from "../messaging/sendnetentitymessages";
 import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
-import { BaseWorldEngine } from "./baseworldengine";
-import { Entity } from "./entity";
+import { findAndDestroyPlayerEntity } from "../messaging/helpers";
 import { Server } from "./server";
 import * as WebSocket from "ws";
 
@@ -61,21 +59,4 @@ export function setUpGameServer(server: Server) {
             }
         })
     });
-}
-
-// move to another spot?
-export function findAndDestroyPlayerEntity(worldEngine: BaseWorldEngine, clientId: string, server: Server) {
-    const ents = worldEngine.getEntitiesByKey<Entity>("player");
-    let entsToDestroy: Entity[] = [];
-
-    ents.forEach(ent => {
-        if (ent.player) {
-            if (ent.player.id === clientId) {
-                entsToDestroy.push(ent);
-            }
-        }
-    });
-
-    if (entsToDestroy.length > 0)
-        broadcastDestroyEntitiesMessage(entsToDestroy, server, worldEngine);
 }

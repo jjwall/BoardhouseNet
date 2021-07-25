@@ -1,14 +1,30 @@
-import { findAndDestroyPlayerEntity } from "../serverengine/setupgameserver";
-import { sendPlayerWorldTransitionMessage } from "./sendnetworldmessages";
 import { WorldTransitionData } from "../../packets/data/worldtransitiondata";
+import { sendPlayerWorldTransitionMessage } from "./sendnetworldmessages";
+import { broadcastDestroyEntitiesMessage } from "./sendnetentitymessages";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { PositionComponent } from "../components/position";
 import { WorldTypes } from "../../packets/enums/worldtypes";
 import { PlayerStates } from "../components/player";
 import { Entity } from "../serverengine/entity";
+import { Server } from "../serverengine/server";
 
-// Where to put this function?
-export function sendPlayerToAnotherWorld(playerEnt: Entity, currentWorld: BaseWorldEngine, newWorldType: WorldTypes, newPos: PositionComponent) {
+export function findAndDestroyPlayerEntity(worldEngine: BaseWorldEngine, clientId: string, server: Server) {
+    const ents = worldEngine.getEntitiesByKey<Entity>("player");
+    let entsToDestroy: Entity[] = [];
+
+    ents.forEach(ent => {
+        if (ent.player) {
+            if (ent.player.id === clientId) {
+                entsToDestroy.push(ent);
+            }
+        }
+    });
+
+    if (entsToDestroy.length > 0)
+        broadcastDestroyEntitiesMessage(entsToDestroy, server, worldEngine);
+}
+
+export function transitionPlayerToAnotherWorld(playerEnt: Entity, currentWorld: BaseWorldEngine, newWorldType: WorldTypes, newPos: PositionComponent) {
     playerEnt.player.state = PlayerStates.UNLOADED;
     playerEnt.pos = newPos; // unncessary
 
