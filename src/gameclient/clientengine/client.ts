@@ -1,5 +1,4 @@
 import { BufferGeometry, ShapeBufferGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh } from "three";
-import { kenneyFantasy } from "../../modules/tilemapping/tilemaps/kenneyfantasy";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
@@ -11,6 +10,7 @@ import { NetIdToEntityMap } from "./interfaces";
 import { ClientRender } from "../renders/clientrender";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { WorldTypes } from "../../packets/enums/worldtypes";
+import { SceneTransition } from "../renders/scenetransitions";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -80,6 +80,7 @@ export class Client {
     public entityList: ClientEntity[] = [];
     public NetIdToEntityMap: NetIdToEntityMap = {};
     public renderList: ClientRender[] = [];
+    public sceneTransitions: SceneTransition[] = [];
     public tileMeshList: Mesh[] = [];
 
     /// end state stuff
@@ -333,6 +334,25 @@ export class Client {
         this.renderList = newRenderList;
     }
 
+    public updateSceneTransitions(transitions: SceneTransition[]) {
+        let transitionsToDiscard: SceneTransition[] = [];
+        
+        transitions.forEach(transition => {
+            if (transition.ticks >= 0) {
+                transition.ticks--;
+                transition.fadeOut.trigger();
+            }
+            else {
+                transitionsToDiscard.push(transition);
+            }
+        });
+        
+        transitionsToDiscard.forEach(transition => {
+            if (transition.sprite)
+                this.gameScene.remove(transition.sprite);
+        });
+    }
+
     public centerCamera(client: Client) {
         // Center camera over current Player Entity.
         if (client.currentPlayerEntity) {
@@ -364,6 +384,7 @@ export class Client {
     public render() : void {
         this.updateClientEntPositions(this.entityList);
         this.updateClientRenders(this.renderList);
+        this.updateSceneTransitions(this.sceneTransitions);
         this.centerCamera(this);
 
         this.renderer.clear();

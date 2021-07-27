@@ -2,6 +2,7 @@ import { NetMessageLoadWorld, NetMessagePlayerWorldTransition } from "../../pack
 import { sendPlayerWorldTransitionMessage } from "./sendclientworldmessages";
 import { renderWorldMap } from "../clientengine/renderworldmap";
 import { Client } from "../clientengine/client";
+import { renderSceneFadeIn } from "../renders/scenetransitions";
 
 export function loadWorld(message: NetMessageLoadWorld, client: Client) {
     console.log("load world...");
@@ -17,6 +18,8 @@ export function loadWorld(message: NetMessageLoadWorld, client: Client) {
 }
 
 export function unloadWorld(client: Client) {
+    console.log("unloading world...");
+
     // Remove tile meshes from game scene.
     if (client.tileMeshList.length > 0) {
         client.tileMeshList.forEach(mesh => {
@@ -46,6 +49,8 @@ export function unloadWorld(client: Client) {
 
     // Empty render list.
     client.renderList = [];
+
+    renderSceneFadeIn(client);
 }
 
 export function transitionPlayerClientToNewWorld(message: NetMessagePlayerWorldTransition, client: Client) {
