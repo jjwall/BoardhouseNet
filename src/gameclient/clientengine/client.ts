@@ -346,7 +346,7 @@ export class Client {
                 }
 
                 transition.ticks--;
-                transition.fadeOut.trigger();
+                transition.fade.trigger();
             }
             else {
                 if (transition.onDone)

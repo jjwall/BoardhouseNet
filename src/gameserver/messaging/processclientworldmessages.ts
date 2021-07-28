@@ -88,7 +88,7 @@ export function processPlayerWorldTransitionMessage(message: ClientMessagePlayer
         sendLoadWorldMessage(server, clientWorld.worldLevelData, message.data.clientId);
         broadcastCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.data.newWorldType);
         playerEnt.player.state = PlayerStates.LOADED;
-    }, 5000);
+    }, 2000);
 }
 
 // TODO: Give spectators the abilities to control camera / follow players / swap worlds etc.

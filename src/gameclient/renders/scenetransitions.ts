@@ -10,11 +10,9 @@ export class SceneTransition {
 
     public pos: PositionComponent;
     public sprite: SpriteComponent;
-    public fadeOut: FadeComponent;
-    public fadeIn: FadeComponent;
+    public fade: FadeComponent;
     public ticks: number;
     public onDone: () => void;
-    public done: boolean = false;
 }
 
 export interface FadeComponent {
@@ -28,17 +26,17 @@ export function renderSceneFadeOut(client: Client, onDone?: () => void) {
     client.sceneTransitionDone = false;
 
     // Set up transition mesh.
-    let sceneTransition = new SceneTransition(100);
+    let sceneTransition = new SceneTransition(50);
     const cameraPos = client.gameCamera.position;
     sceneTransition.pos = setPosition(cameraPos.x, cameraPos.y, 25);
     sceneTransition.pos.teleport = true;
     const geometry = new PlaneGeometry(10000, 5000);
     const material = new MeshBasicMaterial({ color: '#000000', transparent: true, opacity: 0 });
     sceneTransition.sprite = new Mesh(geometry, material);
-    sceneTransition.fadeOut = { trigger: null };
+    sceneTransition.fade = { trigger: null };
 
-    sceneTransition.fadeOut.trigger = function() {
-        (sceneTransition.sprite.material as Material).opacity += 0.01;
+    sceneTransition.fade.trigger = function() {
+        (sceneTransition.sprite.material as Material).opacity += 0.02;
     }
 
     if (onDone)
@@ -53,27 +51,27 @@ export function renderSceneFadeOut(client: Client, onDone?: () => void) {
 
 export function renderSceneFadeIn(client: Client) {
     console.log("scene fade in");
-    let sceneTransition = new SceneTransition(100);
+
+    // Set client sceneTransitionDone field to false.
+    client.sceneTransitionDone = false;
+
+    // Set up transition mesh.
+    let sceneTransition = new SceneTransition(25);
     const cameraPos = client.gameCamera.position;
-    const playerPos = client.currentPlayerEntity.pos;
-    // sceneTransition.pos = setPosition(playerPos.loc.x, playerPos.loc.y, 25);
     sceneTransition.pos = setPosition(cameraPos.x, cameraPos.y, 25);
     sceneTransition.pos.teleport = true;
     const geometry = new PlaneGeometry(10000, 5000);
     const material = new MeshBasicMaterial({ color: '#000000', transparent: true });
     sceneTransition.sprite = new Mesh(geometry, material);
+    sceneTransition.fade = { trigger: null };
 
-    // clientRender.fadeIn = { ticks: 500, trigger: null };
-    // clientRender.fadeIn.trigger = function() {
-    //     (clientRender.sprite.material as Material).opacity += 0.005;
-    // }
-
-    sceneTransition.fadeOut = { trigger: null };
-    sceneTransition.fadeOut.trigger = function() {
-        (sceneTransition.sprite.material as Material).opacity -= 0.01;
+    sceneTransition.fade.trigger = function() {
+        (sceneTransition.sprite.material as Material).opacity -= 0.04;
     }
 
+    // Add transition mesh to game scene.
     client.gameScene.add(sceneTransition.sprite);
-    // clientRender.sprite = setSprite()
-    // client.sceneTransitions.push(sceneTransition);
+
+    // Set client scene transition field.
+    client.sceneTransition = sceneTransition;
 }
