@@ -13,17 +13,50 @@ export class SceneTransition {
     public fadeOut: FadeComponent;
     public fadeIn: FadeComponent;
     public ticks: number;
+    public onDone: () => void;
+    public done: boolean = false;
 }
 
 export interface FadeComponent {
-    ticks: number;
     trigger: () => void;
+}
+
+export function renderSceneFadeOut(client: Client, onDone?: () => void) {
+    console.log("scene fade in");
+
+    // Set client sceneTransitionDone field to false.
+    client.sceneTransitionDone = false;
+
+    // Set up transition mesh.
+    let sceneTransition = new SceneTransition(100);
+    const cameraPos = client.gameCamera.position;
+    sceneTransition.pos = setPosition(cameraPos.x, cameraPos.y, 25);
+    sceneTransition.pos.teleport = true;
+    const geometry = new PlaneGeometry(10000, 5000);
+    const material = new MeshBasicMaterial({ color: '#000000', transparent: true, opacity: 0 });
+    sceneTransition.sprite = new Mesh(geometry, material);
+    sceneTransition.fadeOut = { trigger: null };
+
+    sceneTransition.fadeOut.trigger = function() {
+        (sceneTransition.sprite.material as Material).opacity += 0.01;
+    }
+
+    if (onDone)
+        sceneTransition.onDone = onDone;
+
+    // Add transition mesh to game scene.
+    client.gameScene.add(sceneTransition.sprite);
+
+    // Set client scene transition field.
+    client.sceneTransition = sceneTransition;
 }
 
 export function renderSceneFadeIn(client: Client) {
     console.log("scene fade in");
     let sceneTransition = new SceneTransition(100);
     const cameraPos = client.gameCamera.position;
+    const playerPos = client.currentPlayerEntity.pos;
+    // sceneTransition.pos = setPosition(playerPos.loc.x, playerPos.loc.y, 25);
     sceneTransition.pos = setPosition(cameraPos.x, cameraPos.y, 25);
     sceneTransition.pos.teleport = true;
     const geometry = new PlaneGeometry(10000, 5000);
@@ -35,12 +68,12 @@ export function renderSceneFadeIn(client: Client) {
     //     (clientRender.sprite.material as Material).opacity += 0.005;
     // }
 
-    sceneTransition.fadeOut = { ticks: 100, trigger: null };
+    sceneTransition.fadeOut = { trigger: null };
     sceneTransition.fadeOut.trigger = function() {
         (sceneTransition.sprite.material as Material).opacity -= 0.01;
     }
 
     client.gameScene.add(sceneTransition.sprite);
     // clientRender.sprite = setSprite()
-    client.sceneTransitions.push(sceneTransition);
+    // client.sceneTransitions.push(sceneTransition);
 }

@@ -2,7 +2,7 @@ import { NetMessageLoadWorld, NetMessagePlayerWorldTransition } from "../../pack
 import { sendPlayerWorldTransitionMessage } from "./sendclientworldmessages";
 import { renderWorldMap } from "../clientengine/renderworldmap";
 import { Client } from "../clientengine/client";
-import { renderSceneFadeIn } from "../renders/scenetransitions";
+import { renderSceneFadeIn, renderSceneFadeOut } from "../renders/scenetransitions";
 
 export function loadWorld(message: NetMessageLoadWorld, client: Client) {
     console.log("load world...");
@@ -39,6 +39,7 @@ export function unloadWorld(client: Client) {
     
     // Empty entity list.
     client.entityList = [];
+    client.NetIdToEntityMap = {};
 
     // Remove render meshes from game scene.
     if (client.renderList.length > 0) {
@@ -49,13 +50,17 @@ export function unloadWorld(client: Client) {
 
     // Empty render list.
     client.renderList = [];
-
-    renderSceneFadeIn(client);
 }
 
 export function transitionPlayerClientToNewWorld(message: NetMessagePlayerWorldTransition, client: Client) {
     // Unload current world assets.
-    unloadWorld(client);
+    // unloadWorld(client);
+    renderSceneFadeOut(client, () => {
+        if (!client.sceneTransitionDone) {
+            unloadWorld(client);
+            client.sceneTransitionDone = true;
+        }
+    });
 
     // Set new world type client will be rendering.
     client.worldType = message.data.newWorldType;

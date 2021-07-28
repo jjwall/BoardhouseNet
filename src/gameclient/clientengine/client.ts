@@ -80,7 +80,8 @@ export class Client {
     public entityList: ClientEntity[] = [];
     public NetIdToEntityMap: NetIdToEntityMap = {};
     public renderList: ClientRender[] = [];
-    public sceneTransitions: SceneTransition[] = [];
+    public sceneTransition: SceneTransition = undefined;
+    public sceneTransitionDone: boolean = false;
     public tileMeshList: Mesh[] = [];
 
     /// end state stuff
@@ -236,7 +237,8 @@ export class Client {
                 console.log("initializing client for game play state");
                 // Set up game scene.
                 this.gameScene = new Scene();
-                this.gameScene.background = new Color("#FFFFFF");
+                // this.gameScene.background = new Color("#FFFFFF");
+                this.gameScene.background = new Color("#000000");
 
                 // Set up game camera.
                 this.gameCamera = new OrthographicCamera(0, this.screenWidth, this.screenHeight, 0, -1000, 1000);
@@ -334,23 +336,28 @@ export class Client {
         this.renderList = newRenderList;
     }
 
-    public updateSceneTransitions(transitions: SceneTransition[]) {
-        let transitionsToDiscard: SceneTransition[] = [];
-        
-        transitions.forEach(transition => {
+
+    public updateSceneTransitions(transition: SceneTransition) {
+        if (transition) {
             if (transition.ticks >= 0) {
+                if (transition.pos && transition.sprite) {
+                    const targetPos = new Vector3(transition.pos.loc.x, transition.pos.loc.y, transition.pos.loc.z);
+                    transition.sprite.position.copy(targetPos);
+                }
+
                 transition.ticks--;
                 transition.fadeOut.trigger();
             }
             else {
-                transitionsToDiscard.push(transition);
+                if (transition.onDone)
+                    transition.onDone();
+
+                if (transition.sprite)
+                    this.gameScene.remove(transition.sprite);
+
+            transition = undefined;
             }
-        });
-        
-        transitionsToDiscard.forEach(transition => {
-            if (transition.sprite)
-                this.gameScene.remove(transition.sprite);
-        });
+        }
     }
 
     public centerCamera(client: Client) {
@@ -384,7 +391,7 @@ export class Client {
     public render() : void {
         this.updateClientEntPositions(this.entityList);
         this.updateClientRenders(this.renderList);
-        this.updateSceneTransitions(this.sceneTransitions);
+        this.updateSceneTransitions(this.sceneTransition);
         this.centerCamera(this);
 
         this.renderer.clear();
