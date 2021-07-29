@@ -11,6 +11,7 @@ import { ClientRender } from "../renders/clientrender";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { WorldTypes } from "../../packets/enums/worldtypes";
 import { SceneTransition } from "../renders/scenetransitions";
+import { animationSystem } from "../systems/animation";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -393,6 +394,7 @@ export class Client {
         this.updateClientRenders(this.renderList);
         this.updateSceneTransitions(this.sceneTransition);
         this.centerCamera(this);
+        animationSystem(this.entityList, this);
 
         this.renderer.clear();
         this.renderer.render(this.gameScene, this.gameCamera);

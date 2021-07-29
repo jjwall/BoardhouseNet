@@ -2,8 +2,8 @@
  * List of all possible animation sequences.
  */
  export const enum SequenceTypes {
-    idle,
-    walk,
-    run,
-    attack
+    IDLE = "IDLE",
+    WALK = "WALK",
+    RUN = "RUN",
+    ATTACK = "ATTACK",
 }

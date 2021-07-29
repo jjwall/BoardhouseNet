@@ -6,7 +6,7 @@
      * Key into an animation sequence using the
      * index of the SequenceTypes enum.
      */
-    [index: number]: Array<{
+    [index: string]: Array<{
         /**
          * Number of ticks until the next frame is displayed.
          */

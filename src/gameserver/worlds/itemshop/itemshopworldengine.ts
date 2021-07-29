@@ -15,6 +15,8 @@ import { PlayerStates } from "../../components/player"
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
+import { SequenceTypes } from "../../../modules/animations/sequencetypes";
+import { necroAnim } from "../../../modules/animations/animationdata/necro";
 
 /**
  * World engine that handles updating of all world-related systems.
@@ -45,6 +47,7 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
         let necro = new Entity();
         necro.pos = setPosition(0, 0, 5);
         necro.sprite = { url: "./data/textures/necroattack1.png", pixelRatio: 8 };
+        necro.anim = { sequence: SequenceTypes.WALK, blob: necroAnim };
 
         this.registerEntity(necro, server);
 

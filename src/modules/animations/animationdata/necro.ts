@@ -1,33 +1,33 @@
 import { AnimationSchema } from "../animationschema";
 import { SequenceTypes } from "../sequencetypes";
 
-export const workerAnim: AnimationSchema = {
-    [SequenceTypes.walk]: [
+export const necroAnim: AnimationSchema = {
+    [SequenceTypes.WALK]: [
         {
             ticks: 15,
-            texture: "data/textures/necrowalk1.png",
+            texture: "./data/textures/necrowalk1.png",
             nextFrame: 1
        },
         {
             ticks: 15,
-            texture: "data/textures/necrowalk2.png",
+            texture: "./data/textures/necrowalk2.png",
             nextFrame: 2
        },
         {
             ticks: 15,
-            texture: "data/textures/necrowalk3.png",
+            texture: "./data/textures/necrowalk3.png",
             nextFrame: 0
        }
     ],
-    [SequenceTypes.attack]: [
+    [SequenceTypes.ATTACK]: [
         {
             ticks: 15,
-            texture: "data/textures/necroattack1.png",
+            texture: "./data/textures/necroattack1.png",
             nextFrame: 1
        },
         {
             ticks: 15,
-            texture: "data/textures/necroattack2.png",
+            texture: "./data/textures/necroattack2.png",
             nextFrame: 0
        }
     ]
