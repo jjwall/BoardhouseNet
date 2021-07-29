@@ -44,13 +44,13 @@ export class CastleWorldEngine extends BaseWorldEngine {
         this.registerEntity(ent, server);
 
         let cottage1 = new Entity();
-        cottage1.pos = setPosition(150, 450, 5);
+        cottage1.pos = setPosition(150, 450, 3);
         cottage1.sprite = { url: "./data/textures/cottage.png", pixelRatio: 4 };
         let cottage2 = new Entity();
-        cottage2.pos = setPosition(450, 450, 5);
+        cottage2.pos = setPosition(450, 450, 3);
         cottage2.sprite = { url: "./data/textures/cottage.png", pixelRatio: 4 };
         let magicCircle = new Entity();
-        magicCircle.pos = setPosition(450, 250, 5, new Vector3(1, -1, 0));
+        magicCircle.pos = setPosition(450, 250, 3, new Vector3(1, -1, 0));
         magicCircle.sprite = { url: "./data/textures/magic_circle.png", pixelRatio: 1 };
     
         // this.registerEntity(cottage1, server);

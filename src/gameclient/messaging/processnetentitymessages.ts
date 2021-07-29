@@ -66,9 +66,9 @@ export function updateEntities(message: NetMessageUpdateEntities, client: Client
                     clientEnt.pos.flipX = entData.pos.flipX;
                 }
         
-                // if (clientEnt.anim) {
-                //     clientEnt.anim = changeSequence(entData.anim.sequence, entData.anim.blob)
-                // }
+                if (clientEnt.anim) {
+                    clientEnt.anim = changeSequence(entData.anim.sequence, clientEnt.anim);
+                }
             }
         });
     }

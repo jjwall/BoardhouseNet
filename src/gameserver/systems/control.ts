@@ -1,4 +1,6 @@
 import { broadcastDisplayPlayerAttackMessage } from "./../messaging/sendnetactionmessages";
+import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
+import { SequenceTypes } from "../../modules/animations/sequencetypes";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { setPosition } from "../components/position";
 import { Entity } from "../serverengine/entity";
@@ -92,6 +94,16 @@ export function controlSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWorl
                 else {
                     ent.control.attack = false;
                 }
+            }
+
+            // Handle animations.
+            switch (ent.player.class) {
+                case PlayerClassTypes.MAGICIAN:
+                    if (ent.control.up || ent.control.down || ent.control.left || ent.control.right)
+                        ent.anim.sequence = SequenceTypes.WALK;
+                    else
+                        ent.anim.sequence = SequenceTypes.IDLE;
+                    break;
             }
 
             // Check to see if we need to push changed ent data to change list.

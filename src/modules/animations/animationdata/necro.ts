@@ -2,6 +2,13 @@ import { AnimationSchema } from "../animationschema";
 import { SequenceTypes } from "../sequencetypes";
 
 export const necroAnim: AnimationSchema = {
+    [SequenceTypes.IDLE]: [
+        {
+            ticks: 0,
+            texture: "./data/textures/necrowalk1.png",
+            nextFrame: 0
+       },
+    ],
     [SequenceTypes.WALK]: [
         {
             ticks: 15,

@@ -36,7 +36,7 @@ import { createPage } from "../archetypes/page";
             playerEnt = createPage(server, clientWorld, message.data.clientId, pagePos);
             break;
         case PlayerClassTypes.MAGICIAN:
-            const magicianPos: PositionComponent = setPosition(150, 450, 5);
+            const magicianPos: PositionComponent = setPosition(150, 150, 5);
             playerEnt = createMagician(server, clientWorld, message.data.clientId, magicianPos);
             break;
         case PlayerClassTypes.ARCHER:
