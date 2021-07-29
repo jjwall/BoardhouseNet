@@ -49,6 +49,11 @@ const config: ClientConfig = {
         "./data/textures/archer_girl_from_sketch.png",
         "./data/textures/colored_packed.png",
         "./data/textures/magic_circle.png",
+        "./data/textures/necrowalk1.png",
+        "./data/textures/necrowalk2.png",
+        "./data/textures/necrowalk3.png",
+        "./data/textures/necroattack1.png",
+        "./data/textures/necroattack2.png",
     ],
     audioUrls: [
         "./data/audio/Pale_Blue.mp3",

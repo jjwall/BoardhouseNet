@@ -42,6 +42,12 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
         ent.control = setControls();
         this.registerEntity(ent, server);
 
+        let necro = new Entity();
+        necro.pos = setPosition(0, 0, 5);
+        necro.sprite = { url: "./data/textures/necroattack1.png", pixelRatio: 8 };
+
+        this.registerEntity(necro, server);
+
         this.worldLevelData = this.registerWorldLevelData(kenneyItemShop2, "./data/textures/colored_packed.png");
     }
 
