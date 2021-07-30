@@ -54,6 +54,9 @@ const config: ClientConfig = {
         "./data/textures/necrowalk3.png",
         "./data/textures/necroattack1.png",
         "./data/textures/necroattack2.png",
+        "./data/textures/unholyblast1.png",
+        "./data/textures/unholyblast2.png",
+        "./data/textures/unholyblast3.png",
     ],
     audioUrls: [
         "./data/audio/Pale_Blue.mp3",

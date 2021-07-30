@@ -5,6 +5,7 @@ import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { setPosition } from "../components/position";
 import { Entity } from "../serverengine/entity";
 import { Vector3 } from "three";
+import { mageBasicAttack } from "./mage/basicattack";
 
 /**
  * Control system.
@@ -74,25 +75,32 @@ export function controlSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWorl
 
             // Attack
             if (ent.control.attack) {
-                if (ent.control.attackCooldownTicks <= 0) {
-                    // Send attack msg (test code for now)
-                    let attackPosOffset = 100;
-                    if (ent.pos.flipX)
-                        attackPosOffset -= 200;
-                    let attackEnts: Entity[] = [];
-                    let attackEnt: Entity = new Entity();
-                    let atkDirection = new Vector3(.5,.5,0);
-                    attackEnt.pos = setPosition(ent.pos.loc.x + attackPosOffset, ent.pos.loc.y, ent.pos.loc.z + 1, atkDirection);
-                    attackEnt.sprite = { url: "./data/textures/mediumExplosion1.png", pixelRatio: 4 };
-                    attackEnts.push(attackEnt);
-                    broadcastDisplayPlayerAttackMessage(attackEnts, worldEngine.server, worldEngine.worldType);
-                  
-                    // Start cooldown.
-                    ent.control.attackCooldownTicks = 60;
-                    ent.control.attack = false;
-                }
-                else {
-                    ent.control.attack = false;
+                switch (ent.player.class) {
+                    case PlayerClassTypes.MAGICIAN:
+                        mageBasicAttack(ent, worldEngine);
+                        break;
+                    case PlayerClassTypes.ARCHER:
+                    case PlayerClassTypes.PAGE:
+                        if (ent.control.attackCooldownTicks <= 0) {
+                            // Send attack msg (test code for now)
+                            let attackPosOffset = 100;
+                            if (ent.pos.flipX)
+                                attackPosOffset -= 200;
+                            let attackEnts: Entity[] = [];
+                            let attackEnt: Entity = new Entity();
+                            let atkDirection = new Vector3(.5,.5,0);
+                            attackEnt.pos = setPosition(ent.pos.loc.x + attackPosOffset, ent.pos.loc.y, ent.pos.loc.z + 1, atkDirection);
+                            attackEnt.sprite = { url: "./data/textures/mediumExplosion1.png", pixelRatio: 4 };
+                            attackEnts.push(attackEnt);
+                            broadcastDisplayPlayerAttackMessage(attackEnts, worldEngine.server, worldEngine.worldType);
+                            
+                            // Start cooldown.
+                            ent.control.attackCooldownTicks = 60;
+                            ent.control.attack = false;
+                        }
+                        else {
+                            ent.control.attack = false;
+                        }
                 }
             }
 
