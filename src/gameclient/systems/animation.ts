@@ -2,12 +2,13 @@ import { MeshBasicMaterial, NearestFilter, Mesh } from "three";
 import { ClientEntity } from "../clientengine/cliententity";
 import { AnimationComponent } from "./../components/animation";
 import { Client } from "../clientengine/client";
+import { ClientRender } from "../renders/clientrender";
 
 /**
  * Animation System.
  * @param ents Lists of ents to run system with. Must have anim and sprite components.
  */
-export function animationSystem(ents: ReadonlyArray<ClientEntity>, client: Client) : void {
+export function animationSystem(ents: ReadonlyArray<ClientEntity | ClientRender>, client: Client) : void {
     ents.forEach(ent => {
         if (ent.anim && ent.sprite) {
             ent.anim.ticks--;

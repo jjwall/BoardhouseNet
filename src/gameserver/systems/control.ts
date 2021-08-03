@@ -22,96 +22,106 @@ export function controlSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWorl
     ents.forEach(ent => {
         let updatePlayerEnt = false;
         if (ent.control && ent.pos && ent.vel) {
-            // Left
-            if (ent.control.left) {
-                // ent.pos.loc.x -= 25;
-                // ent.pos.dir.setX(-1);
-                // ent.pos.dir.setY(0);
-                movementDirection.setX(-1);
-                movementDirection.setY(0);
-                ent.vel.positional.add(movementDirection.multiplyScalar(ent.vel.acceleration));
-                ent.pos.flipX = true;
-
-                // updatePlayerEnt = true;
-            }
-
-            // Right
-            if (ent.control.right) {
-                // ent.pos.loc.x += 25;
-                // ent.pos.dir.setX(1);
-                // ent.pos.dir.setY(0);
-                movementDirection.setX(1);
-                movementDirection.setY(0);
-                ent.vel.positional.add(movementDirection.multiplyScalar(ent.vel.acceleration));
-                ent.pos.flipX = false;
-
-                // updatePlayerEnt = true;
-            }
-
-            // Up
-            if (ent.control.up) {
-                // ent.pos.loc.y += 25;
-                movementDirection.setX(0);
-                movementDirection.setY(1);
-                ent.vel.positional.add(movementDirection.multiplyScalar(ent.vel.acceleration));
-
-                // updatePlayerEnt = true;
-            }
-
-            // Down 
-            if (ent.control.down) {
-                // ent.pos.loc.y -= 25;
-                movementDirection.setX(0);
-                movementDirection.setY(-1);
-                ent.vel.positional.add(movementDirection.multiplyScalar(ent.vel.acceleration));
-
-                // updatePlayerEnt = true;
-            }
-
-            // Reduce attack cooldown by one tick.
-            if (ent.control.attackCooldownTicks > 0) {
-                ent.control.attackCooldownTicks--;
-            }
-
-            // Attack
-            if (ent.control.attack) {
-                switch (ent.player.class) {
-                    case PlayerClassTypes.MAGICIAN:
-                        mageBasicAttack(ent, worldEngine);
-                        break;
-                    case PlayerClassTypes.ARCHER:
-                    case PlayerClassTypes.PAGE:
-                        if (ent.control.attackCooldownTicks <= 0) {
-                            // Send attack msg (test code for now)
-                            let attackPosOffset = 100;
-                            if (ent.pos.flipX)
-                                attackPosOffset -= 200;
-                            let attackEnts: Entity[] = [];
-                            let attackEnt: Entity = new Entity();
-                            let atkDirection = new Vector3(.5,.5,0);
-                            attackEnt.pos = setPosition(ent.pos.loc.x + attackPosOffset, ent.pos.loc.y, ent.pos.loc.z + 1, atkDirection);
-                            attackEnt.sprite = { url: "./data/textures/mediumExplosion1.png", pixelRatio: 4 };
-                            attackEnts.push(attackEnt);
-                            broadcastDisplayPlayerAttackMessage(attackEnts, worldEngine.server, worldEngine.worldType);
-                            
-                            // Start cooldown.
-                            ent.control.attackCooldownTicks = 60;
-                            ent.control.attack = false;
-                        }
-                        else {
-                            ent.control.attack = false;
-                        }
-                }
-            }
 
             // Handle animations.
             switch (ent.player.class) {
                 case PlayerClassTypes.MAGICIAN:
-                    if (ent.control.up || ent.control.down || ent.control.left || ent.control.right)
+                    if (ent.control.studderTicks > 0) {
+                        ent.anim.sequence = SequenceTypes.ATTACK;
+                    }
+                    else if (ent.control.up || ent.control.down || ent.control.left || ent.control.right)
                         ent.anim.sequence = SequenceTypes.WALK;
                     else
                         ent.anim.sequence = SequenceTypes.IDLE;
                     break;
+            }
+
+            // Process studder.
+            if (ent.control.studderTicks > 0) {
+                ent.control.studderTicks--;
+            }
+            else {
+                // Left
+                if (ent.control.left) {
+                    // ent.pos.loc.x -= 25;
+                    // ent.pos.dir.setX(-1);
+                    // ent.pos.dir.setY(0);
+                    movementDirection.setX(-1);
+                    movementDirection.setY(0);
+                    ent.vel.positional.add(movementDirection.multiplyScalar(ent.vel.acceleration));
+                    ent.pos.flipX = true;
+
+                    // updatePlayerEnt = true;
+                }
+
+                // Right
+                if (ent.control.right) {
+                    // ent.pos.loc.x += 25;
+                    // ent.pos.dir.setX(1);
+                    // ent.pos.dir.setY(0);
+                    movementDirection.setX(1);
+                    movementDirection.setY(0);
+                    ent.vel.positional.add(movementDirection.multiplyScalar(ent.vel.acceleration));
+                    ent.pos.flipX = false;
+
+                    // updatePlayerEnt = true;
+                }
+
+                // Up
+                if (ent.control.up) {
+                    // ent.pos.loc.y += 25;
+                    movementDirection.setX(0);
+                    movementDirection.setY(1);
+                    ent.vel.positional.add(movementDirection.multiplyScalar(ent.vel.acceleration));
+
+                    // updatePlayerEnt = true;
+                }
+
+                // Down 
+                if (ent.control.down) {
+                    // ent.pos.loc.y -= 25;
+                    movementDirection.setX(0);
+                    movementDirection.setY(-1);
+                    ent.vel.positional.add(movementDirection.multiplyScalar(ent.vel.acceleration));
+
+                    // updatePlayerEnt = true;
+                }
+
+                // Reduce attack cooldown by one tick.
+                if (ent.control.attackCooldownTicks > 0) {
+                    ent.control.attackCooldownTicks--;
+                }
+
+                // Attack
+                if (ent.control.attack) {
+                    switch (ent.player.class) {
+                        case PlayerClassTypes.MAGICIAN:
+                            mageBasicAttack(ent, worldEngine);
+                            break;
+                        case PlayerClassTypes.ARCHER:
+                        case PlayerClassTypes.PAGE:
+                            if (ent.control.attackCooldownTicks <= 0) {
+                                // Send attack msg (test code for now)
+                                let attackPosOffset = 100;
+                                if (ent.pos.flipX)
+                                    attackPosOffset -= 200;
+                                let attackEnts: Entity[] = [];
+                                let attackEnt: Entity = new Entity();
+                                let atkDirection = new Vector3(.5,.5,0);
+                                attackEnt.pos = setPosition(ent.pos.loc.x + attackPosOffset, ent.pos.loc.y, ent.pos.loc.z + 1, atkDirection);
+                                attackEnt.sprite = { url: "./data/textures/mediumExplosion1.png", pixelRatio: 4 };
+                                attackEnts.push(attackEnt);
+                                broadcastDisplayPlayerAttackMessage(attackEnts, worldEngine.server, worldEngine.worldType);
+                                
+                                // Start cooldown.
+                                ent.control.attackCooldownTicks = 60;
+                                ent.control.attack = false;
+                            }
+                            else {
+                                ent.control.attack = false;
+                            }
+                    }
+                }
             }
 
             // Check to see if we need to push changed ent data to change list.

@@ -395,6 +395,7 @@ export class Client {
         this.updateSceneTransitions(this.sceneTransition);
         this.centerCamera(this);
         animationSystem(this.entityList, this);
+        animationSystem(this.renderList, this);
 
         this.renderer.clear();
         this.renderer.render(this.gameScene, this.gameCamera);

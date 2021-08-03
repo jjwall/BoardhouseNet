@@ -2,6 +2,8 @@ import { broadcastDisplayPlayerAttackMessage } from "../../messaging/sendnetacti
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
 import { setPosition } from "../../components/position";
 import { Entity } from "../../serverengine/entity";
+import { SequenceTypes } from "../../../modules/animations/sequencetypes";
+import { necroBasicAttackAnim } from "../../../modules/animations/animationdata/necrobasicattack";
 
 export function mageBasicAttack(mage: Entity, worldEngine: BaseWorldEngine) {
     if (mage.control.attackCooldownTicks <= 0) {
@@ -14,11 +16,15 @@ export function mageBasicAttack(mage: Entity, worldEngine: BaseWorldEngine) {
         let attackEnt: Entity = new Entity();
         attackEnt.pos = setPosition(mage.pos.loc.x + attackPosOffset, mage.pos.loc.y, mage.pos.loc.z + 1);
         attackEnt.sprite = { url: "./data/textures/unholyblast1.png", pixelRatio: 8 };
+        attackEnt.anim = { sequence: SequenceTypes.ATTACK, blob: necroBasicAttackAnim };
         attackEnts.push(attackEnt);
         broadcastDisplayPlayerAttackMessage(attackEnts, worldEngine.server, worldEngine.worldType);
         
-        // Start cooldown.
+        // Start attack cooldown.
         mage.control.attackCooldownTicks = 60;
+
+        // Set number of studder ticks.
+        mage.control.studderTicks = 20;
         mage.control.attack = false;
     }
     else {

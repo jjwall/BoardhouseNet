@@ -5,6 +5,7 @@
     jump: boolean;
     attack: boolean;
     attackCooldownTicks: number;
+    studderTicks: number;
     left: boolean;
     right: boolean;
     up: boolean;
@@ -19,6 +20,7 @@ export function setControls(): ControlComponent {
         jump: false,
         attack: false,
         attackCooldownTicks: 0,
+        studderTicks: 0,
         left: false,
         right: false,
         up: false,
