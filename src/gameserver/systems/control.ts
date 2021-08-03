@@ -22,7 +22,6 @@ export function controlSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWorl
     ents.forEach(ent => {
         let updatePlayerEnt = false;
         if (ent.control && ent.pos && ent.vel) {
-
             // Handle animations.
             switch (ent.player.class) {
                 case PlayerClassTypes.MAGICIAN:

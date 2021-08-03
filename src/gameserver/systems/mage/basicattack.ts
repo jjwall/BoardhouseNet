@@ -21,10 +21,10 @@ export function mageBasicAttack(mage: Entity, worldEngine: BaseWorldEngine) {
         broadcastDisplayPlayerAttackMessage(attackEnts, worldEngine.server, worldEngine.worldType);
         
         // Start attack cooldown.
-        mage.control.attackCooldownTicks = 60;
+        mage.control.attackCooldownTicks = 20;
 
         // Set number of studder ticks.
-        mage.control.studderTicks = 20;
+        mage.control.studderTicks = 5;
         mage.control.attack = false;
     }
     else {
