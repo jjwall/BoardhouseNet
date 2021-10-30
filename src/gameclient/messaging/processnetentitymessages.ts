@@ -5,6 +5,7 @@ import { setPosition } from "../components/position";
 import { setSprite } from "../components/sprite";
 import { Client } from "../clientengine/client";
 import { Vector3 } from "three";
+import { changeSequence, setAnimation } from "../components/animation";
 
 // Create front-end representations of EntData list. Should pass in all entities
 // using the "global" ecsKey when a player or spectator first joins (or scene transition happens).
@@ -28,7 +29,7 @@ export function createEntities(message: NetMessageCreateEntities, client: Client
                     setHitboxGraphic(client, clientEnt.sprite, entData.hitbox);
 
                 if (entData.anim) {
-                    // clientEnt.anim = setAnim(...);
+                    clientEnt.anim = setAnimation(entData.anim.sequence, entData.anim.blob);
                 }
 
                 if (entData.player) {
@@ -65,9 +66,9 @@ export function updateEntities(message: NetMessageUpdateEntities, client: Client
                     clientEnt.pos.flipX = entData.pos.flipX;
                 }
         
-                // if (clientEnt.anim) {
-                    // clientEnt.anim = setAnim(...);
-                // }
+                if (clientEnt.anim) {
+                    clientEnt.anim = changeSequence(entData.anim.sequence, clientEnt.anim);
+                }
             }
         });
     }

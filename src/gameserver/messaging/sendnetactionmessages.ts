@@ -1,7 +1,7 @@
-import { NetActionEventTypes, NetActionMessage } from "../../packets/messages/netactionmessage";
+import { NetActionEventTypes, NetMessagePlayerAttackDisplay } from "../../packets/messages/netactionmessage";
+import { MessageTypes } from "../../packets/messages/message";
 import { EntityData } from "../../packets/data/entitydata";
 import { WorldTypes } from "../../packets/enums/worldtypes";
-import { MessageTypes } from "../../packets/messages/message";
 import { Entity } from "../serverengine/entity";
 import { Server } from "../serverengine/server";
 
@@ -9,12 +9,12 @@ import { Server } from "../serverengine/server";
 // i.e. look at the attack in core systems, all that could be in a method called "sendPlayerAttackNetEventMessage" or something...
 // This function assumes entity data is needed to be sent for generic "sendNetEventMessage" method - in the future we may want 
 // more functionality, for example one net event might be "SwitchToEndGameScreen" or something and no ent data would need to be sent
-export function broadcastNetActionMessage(ents: Entity[], server: Server, netEventType: NetActionEventTypes, worldType: WorldTypes) {
+export function broadcastDisplayPlayerAttackMessage(ents: Entity[], server: Server, worldType: WorldTypes) {
     // NetMessagePlayerAttackDisplay...
 
-    const message: NetActionMessage = {
+    const message: NetMessagePlayerAttackDisplay = {
         messageType: MessageTypes.NET_ACTION_MESSAGE,
-        eventType: netEventType,
+        eventType: NetActionEventTypes.PLAYER_ATTACK_ANIM_DISPLAY,
         data: {
             ents: [],
             worldType: worldType,

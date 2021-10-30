@@ -1,5 +1,4 @@
 import { BufferGeometry, ShapeBufferGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh } from "three";
-import { kenneyFantasy } from "../../modules/tilemapping/tilemaps/kenneyfantasy";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
@@ -11,6 +10,8 @@ import { NetIdToEntityMap } from "./interfaces";
 import { ClientRender } from "../renders/clientrender";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { WorldTypes } from "../../packets/enums/worldtypes";
+import { SceneTransition } from "../renders/scenetransitions";
+import { animationSystem } from "../systems/animation";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -80,6 +81,8 @@ export class Client {
     public entityList: ClientEntity[] = [];
     public NetIdToEntityMap: NetIdToEntityMap = {};
     public renderList: ClientRender[] = [];
+    public sceneTransition: SceneTransition = undefined;
+    public sceneTransitionDone: boolean = false;
     public tileMeshList: Mesh[] = [];
 
     /// end state stuff
@@ -235,7 +238,8 @@ export class Client {
                 console.log("initializing client for game play state");
                 // Set up game scene.
                 this.gameScene = new Scene();
-                this.gameScene.background = new Color("#FFFFFF");
+                // this.gameScene.background = new Color("#FFFFFF");
+                this.gameScene.background = new Color("#000000");
 
                 // Set up game camera.
                 this.gameCamera = new OrthographicCamera(0, this.screenWidth, this.screenHeight, 0, -1000, 1000);
@@ -333,6 +337,30 @@ export class Client {
         this.renderList = newRenderList;
     }
 
+
+    public updateSceneTransitions(transition: SceneTransition) {
+        if (transition) {
+            if (transition.ticks >= 0) {
+                if (transition.pos && transition.sprite) {
+                    const targetPos = new Vector3(transition.pos.loc.x, transition.pos.loc.y, transition.pos.loc.z);
+                    transition.sprite.position.copy(targetPos);
+                }
+
+                transition.ticks--;
+                transition.fade.trigger();
+            }
+            else {
+                if (transition.onDone)
+                    transition.onDone();
+
+                if (transition.sprite)
+                    this.gameScene.remove(transition.sprite);
+
+            transition = undefined;
+            }
+        }
+    }
+
     public centerCamera(client: Client) {
         // Center camera over current Player Entity.
         if (client.currentPlayerEntity) {
@@ -364,7 +392,10 @@ export class Client {
     public render() : void {
         this.updateClientEntPositions(this.entityList);
         this.updateClientRenders(this.renderList);
+        this.updateSceneTransitions(this.sceneTransition);
         this.centerCamera(this);
+        animationSystem(this.entityList, this);
+        animationSystem(this.renderList, this);
 
         this.renderer.clear();
         this.renderer.render(this.gameScene, this.gameCamera);

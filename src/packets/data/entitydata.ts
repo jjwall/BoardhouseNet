@@ -1,3 +1,6 @@
+import { AnimationSchema } from "../../modules/animations/animationschema";
+import { SequenceTypes } from "../../modules/animations/sequencetypes";
+
 export interface EntityData {
     netId?: number;
     pos?: {
@@ -26,7 +29,8 @@ export interface EntityData {
         pixelRatio: number;
     },
     anim?: {
-        sequence: string;
+        sequence: SequenceTypes;
+        blob: AnimationSchema;
     }
     player?: {
         id: string;

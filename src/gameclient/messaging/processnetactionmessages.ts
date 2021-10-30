@@ -4,6 +4,7 @@ import { setPosition } from "../components/position";
 import { setSprite } from "../components/sprite";
 import { Client } from "../clientengine/client";
 import { Vector3 } from "three";
+import { setAnimation } from "../components/animation";
 
 export function renderPlayerAttackAnim(message: NetMessagePlayerAttackDisplay, client: Client) {
     if (message.data.worldType === client.worldType) {
@@ -18,7 +19,7 @@ export function renderPlayerAttackAnim(message: NetMessagePlayerAttackDisplay, c
             clientRender.pos.teleport = entData.pos.teleport;
 
             if (entData.anim) {
-                // clientEnt.anim = setAnim(...);
+                clientRender.anim = setAnimation(entData.anim.sequence, entData.anim.blob);
             }
 
             client.renderList.push(clientRender);

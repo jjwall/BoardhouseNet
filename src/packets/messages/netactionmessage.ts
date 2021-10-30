@@ -12,7 +12,7 @@ export interface NetMessagePlayerAttackDisplay extends Message {
         worldType: WorldTypes;
         ents: EntityData[];  // will use Entity Data to display anims (for now)
     }
-} 
+}
 
 export enum NetActionEventTypes {
     PLAYER_ATTACK_ANIM_DISPLAY = "PLAYER_ATTACK_ANIM_DISPLAY",

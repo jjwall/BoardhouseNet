@@ -36,7 +36,7 @@ import { createPage } from "../archetypes/page";
             playerEnt = createPage(server, clientWorld, message.data.clientId, pagePos);
             break;
         case PlayerClassTypes.MAGICIAN:
-            const magicianPos: PositionComponent = setPosition(150, 450, 5);
+            const magicianPos: PositionComponent = setPosition(150, 150, 5);
             playerEnt = createMagician(server, clientWorld, message.data.clientId, magicianPos);
             break;
         case PlayerClassTypes.ARCHER:
@@ -88,7 +88,7 @@ export function processPlayerWorldTransitionMessage(message: ClientMessagePlayer
         sendLoadWorldMessage(server, clientWorld.worldLevelData, message.data.clientId);
         broadcastCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.data.newWorldType);
         playerEnt.player.state = PlayerStates.LOADED;
-    }, 5000);
+    }, 2000);
 }
 
 // TODO: Give spectators the abilities to control camera / follow players / swap worlds etc.
