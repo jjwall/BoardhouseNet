@@ -15,6 +15,7 @@ import { controlSystem } from "../../systems/control";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
+import { skillsSystem } from "../../systems/skills";
 import { Vector3 } from "three";
 
 /**
@@ -34,6 +35,7 @@ export class CastleWorldEngine extends BaseWorldEngine {
         this.registerSystem(velocitySystem);
         this.registerSystem(collisionSystem);
         this.registerSystem(worldEdgeSystem);
+        this.registerSystem(skillsSystem);
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 

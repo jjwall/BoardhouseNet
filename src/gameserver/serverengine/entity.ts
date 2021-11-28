@@ -5,6 +5,7 @@ import { ControlComponent} from "../components/control";
 import { HitboxComponent } from "../components/hitbox";
 import { PlayerComponent } from "../components/player";
 import { SpriteComponent } from "../components/sprite";
+import { SkillsComponent } from "../components/skills";
 
 export class Entity {
     netId: number;
@@ -15,4 +16,5 @@ export class Entity {
     anim: AnimationComponent;
     hitbox: HitboxComponent;
     control: ControlComponent;
+    skills: SkillsComponent;
 }

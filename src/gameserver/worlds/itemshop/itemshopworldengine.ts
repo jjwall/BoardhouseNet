@@ -1,22 +1,23 @@
 import { kenneyItemShop2 } from "../../../modules/tilemapping/tilemaps/kenneyitemshop2";
 import { TileData, WorldLevelData } from "../../../packets/data/worldleveldata";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
+import { necroAnim } from "../../../modules/animations/animationdata/necro";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { PositionComponent, setPosition } from "../../components/position";
+import { SequenceTypes } from "../../../modules/animations/sequencetypes";
 import { transitionPlayerToAnotherWorld } from "../../messaging/helpers";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
 import { WorldTypes } from "../../../packets/enums/worldtypes";
 import { collisionSystem } from "../../systems/collision";
 import { worldEdgeSystem } from "../../systems/worldedge";
 import { velocitySystem } from "../../systems/velocity";
+import { PlayerStates } from "../../components/player";
 import { setControls } from "../../components/control";
 import { controlSystem } from "../../systems/control";
-import { PlayerStates } from "../../components/player"
+import { skillsSystem } from "../../systems/skills";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
-import { SequenceTypes } from "../../../modules/animations/sequencetypes";
-import { necroAnim } from "../../../modules/animations/animationdata/necro";
 
 /**
  * World engine that handles updating of all world-related systems.
@@ -35,6 +36,7 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
         this.registerSystem(velocitySystem);
         this.registerSystem(collisionSystem);
         this.registerSystem(worldEdgeSystem);
+        this.registerSystem(skillsSystem); // comment out to test no skills in item shop?
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 
