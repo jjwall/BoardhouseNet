@@ -2,13 +2,14 @@ import { MessageTypes } from "../../packets/messages/message";
 import { Client } from "../clientengine/client";
 import {
     ClientInputTypes, 
-    ClientMessageAttack, 
     ClientMessageDownKeyDown, 
     ClientMessageDownKeyUp, 
     ClientMessageLeftKeyDown, 
     ClientMessageLeftKeyUp, 
     ClientMessageRightKeyDown, 
     ClientMessageRightKeyUp, 
+    ClientMessageSkillOne, 
+    ClientMessageSkillTwo, 
     ClientMessageUpKeyDown, 
     ClientMessageUpKeyUp } 
 from "../../packets/messages/clientinputmessage";
@@ -121,11 +122,24 @@ export function sendDownKeyUpMessage(client: Client) {
     client.connection.send(JSON.stringify(message));
 }
 
-// Attack key:
-export function sendAttackMessage(client: Client) {
-    const message: ClientMessageAttack  = {
+// Skill inputs:
+export function sendSkillOneMessage(client: Client) {
+    const message: ClientMessageSkillOne  = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
-        inputType: ClientInputTypes.ATTACK,
+        inputType: ClientInputTypes.SKILL_ONE,
+        data: {
+            clientId: client.currentClientId,
+            worldType: client.worldType,
+        }
+    }   
+    
+    client.connection.send(JSON.stringify(message));
+}
+
+export function sendSkillTwoMessage(client: Client) {
+    const message: ClientMessageSkillTwo  = {
+        messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
+        inputType: ClientInputTypes.SKILL_TWO,
         data: {
             clientId: client.currentClientId,
             worldType: client.worldType,

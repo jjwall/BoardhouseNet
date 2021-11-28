@@ -10,12 +10,11 @@ import {
     processRightKeyUpMessage, 
     processUpKeyDownMessage, 
     processUpKeyUpMessage, 
-    queryAttackInputMessage }
+    queryInputMessage }
 from "./processclientinputmessages";
 import { 
     ClientInputTypes, 
     ClientInputMessage, 
-    ClientMessageAttack, 
     ClientMessageDownKeyDown, 
     ClientMessageDownKeyUp, 
     ClientMessageLeftKeyDown, 
@@ -75,8 +74,9 @@ function processClientInputMessage(message: ClientInputMessage, server: Server) 
     const ents = world.getEntitiesByKey<Entity>("player");
 
     switch (message.inputType) {
-        case ClientInputTypes.ATTACK:
-            queryAttackInputMessage(message as ClientMessageAttack, server);
+        case ClientInputTypes.SKILL_ONE:
+        case ClientInputTypes.SKILL_TWO:
+            queryInputMessage(message, server);
             break;
         case ClientInputTypes.LEFT_KEY_DOWN:
             processLeftKeyDownMessage(ents, message as ClientMessageLeftKeyDown);

@@ -1,4 +1,4 @@
-import { sendAttackMessage, sendDownKeyUpMessage, sendDownKeyDownMessage, sendLeftKeyDownMessage, sendLeftKeyUpMessage, sendRightKeyDownMessage, sendRightKeyUpMessage, sendUpKeyDownMessage, sendUpKeyUpMessage } from "../messaging/sendclientinputmessages";
+import { sendDownKeyUpMessage, sendDownKeyDownMessage, sendLeftKeyDownMessage, sendLeftKeyUpMessage, sendRightKeyDownMessage, sendRightKeyUpMessage, sendUpKeyDownMessage, sendUpKeyUpMessage, sendSkillOneMessage, sendSkillTwoMessage } from "../messaging/sendclientinputmessages";
 import { Client } from "../clientengine/client";
 
 // keyboard controls
@@ -37,11 +37,18 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
             }
             break;
 
-        case 32: // spacebar
+        // case 32: // spacebar
         case 90: // z
-            if (!client.keySpaceIsDown) {
-                client.keySpaceIsDown = true;
-                sendAttackMessage(client);
+            if (!client.keyZIsDown) {
+                client.keyZIsDown = true;
+                sendSkillOneMessage(client);
+            }
+            break;
+        
+        case 88: // x
+            if (!client.keyXIsDown) {
+                client.keyXIsDown = true;
+                sendSkillTwoMessage(client);
             }
             break;
     }
@@ -81,10 +88,16 @@ export function handleKeyUpEvent(client: Client, e: KeyboardEvent) {
             }
             break;
 
-        case 32: // spacebar
+        // case 32: // spacebar
         case 90: // z
-            if (client.keySpaceIsDown) {
-                client.keySpaceIsDown = false;
+            if (client.keyZIsDown) {
+                client.keyZIsDown = false;
+            }
+            break;
+        
+        case 88: // x
+            if (client.keyXIsDown) {
+                client.keyXIsDown = false;
             }
             break;
     }

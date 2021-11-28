@@ -54,9 +54,10 @@ export class Client {
         this.hostName = config.hostName;
         this.keyLeftIsDown = false;
         this.keyRightIsDown = false;
-        this.keySpaceIsDown = false;
         this.keyUpIsDown = false;
         this.keyDownIsDown = false;
+        this.keyZIsDown = false;
+        this.keyXIsDown = false;
 
         // ...
         // vvv regular engine stuff vvv
@@ -97,7 +98,8 @@ export class Client {
     keyRightIsDown: boolean;
     keyUpIsDown: boolean;
     keyDownIsDown: boolean;
-    keySpaceIsDown: boolean;
+    keyZIsDown: boolean;
+    keyXIsDown: boolean;
 
     /// ^^^ old configs ^^^
 

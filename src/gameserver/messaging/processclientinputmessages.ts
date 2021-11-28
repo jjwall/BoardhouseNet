@@ -3,8 +3,8 @@ import { PlayerStates } from "../components/player";
 import { Entity } from "../serverengine/entity";
 import { Server } from "../serverengine/server";
 import { 
+    ClientInputMessage,
     ClientInputTypes, 
-    ClientMessageAttack, 
     ClientMessageDownKeyDown, 
     ClientMessageDownKeyUp, 
     ClientMessageLeftKeyDown, 
@@ -15,19 +15,27 @@ import {
     ClientMessageUpKeyUp } 
 from "../../packets/messages/clientinputmessage";
 
-export function queryAttackInputMessage(message: ClientMessageAttack, server: Server) {
-    const quieredAttackInput: QueriedInput = {
+export function queryInputMessage(message: ClientInputMessage, server: Server) {
+    const quieredInput: QueriedInput = {
         inputType: message.inputType,
         worldType: message.data.worldType,
         clientId: message.data.clientId,
     }
-    server.queriedInputs.push(quieredAttackInput);
+    server.queriedInputs.push(quieredInput);
 }
 
-export function processAttackInputMessage(playerEnt: Entity) {
-    // playerEnt.control.attack = true;
-    if (playerEnt.skillSlots)
-        playerEnt.skillSlots.getSkillOne().triggerAction = true
+export function processSkillOneInputMessage(playerEnt: Entity) {
+    const skillOne = playerEnt?.skillSlots?.getSkillOne()
+
+    if (skillOne)
+        skillOne.triggerAction = true
+}
+
+export function processSkillTwoInputMessage(playerEnt: Entity) {
+    const skillTwo = playerEnt?.skillSlots?.getSkillTwo()
+
+    if (skillTwo)
+        skillTwo.triggerAction = true
 }
 
 export function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientMessageLeftKeyDown) {
@@ -121,8 +129,11 @@ export function processQueriedInputs(server: Server) {
             if (ent.player && ent.control) { // && ent.skillSlots
                 if (ent.player.id === input.clientId && ent.player.state === PlayerStates.LOADED) {
                     switch (input.inputType) {
-                        case ClientInputTypes.ATTACK:
-                            processAttackInputMessage(ent);
+                        case ClientInputTypes.SKILL_ONE:
+                            processSkillOneInputMessage(ent);
+                            break;
+                        case ClientInputTypes.SKILL_TWO:
+                            processSkillTwoInputMessage(ent);
                             break;
                         // case ...
                     }
