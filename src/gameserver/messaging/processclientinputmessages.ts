@@ -25,7 +25,9 @@ export function queryAttackInputMessage(message: ClientMessageAttack, server: Se
 }
 
 export function processAttackInputMessage(playerEnt: Entity) {
-    playerEnt.control.attack = true;
+    // playerEnt.control.attack = true;
+    if (playerEnt.skillSlots)
+        playerEnt.skillSlots.getSkillOne().triggerAction = true
 }
 
 export function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientMessageLeftKeyDown) {
@@ -116,7 +118,7 @@ export function processQueriedInputs(server: Server) {
         const ents = currentWorld.getEntitiesByKey<Entity>("player");
 
         ents.forEach(ent => {
-            if (ent.player && ent.control) {
+            if (ent.player && ent.control) { // && ent.skillSlots
                 if (ent.player.id === input.clientId && ent.player.state === PlayerStates.LOADED) {
                     switch (input.inputType) {
                         case ClientInputTypes.ATTACK:

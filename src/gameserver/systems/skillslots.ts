@@ -9,17 +9,17 @@ export function skillSlotsSystem(ents: readonly Entity[], worldEngine: BaseWorld
             const skillTwo = ent.skillSlots.getSkillTwo()
             reduceRemainingTicks(skillOne)
             reduceRemainingTicks(skillTwo)
-            checkAndTriggerAction(skillOne)
-            checkAndTriggerAction(skillTwo)
+            checkAndTriggerAction(skillOne, ent, worldEngine)
+            checkAndTriggerAction(skillTwo, ent, worldEngine)
         }
     })   
 }
 
-function checkAndTriggerAction(skill: Skill) {
+function checkAndTriggerAction(skill: Skill, entDoingAction: Entity, worldEngine: BaseWorldEngine) {
     if (skill?.triggerAction) {
         if (skill.cooldownRemainingTicks <= 0) {
             // Action tied to skill is triggered.
-            skill.action()
+            skill.action(entDoingAction, worldEngine)
             skill.triggerAction = false
 
             // Start skill cooldown.

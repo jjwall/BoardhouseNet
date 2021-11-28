@@ -1,3 +1,6 @@
+import { BaseWorldEngine } from "../serverengine/baseworldengine"
+import { Entity } from "../serverengine/entity"
+
 export class SkillSlotsComponent {
     private skillSlotOne: Skill
     private skillSlotTwo: Skill
@@ -21,10 +24,10 @@ export interface Skill {
     cooldownSetTicks: number
     cooldownRemainingTicks: number
     triggerAction: boolean
-    action(): void
+    action(entDoingAction: Entity, worldEngine: BaseWorldEngine): void
 }
 
-export function setSkill(castTimeTicks: number, cooldownTicks: number, action: () => void): Skill {
+export function initializeSkill(castTimeTicks: number, cooldownTicks: number, action: (entDoingAction: Entity, worldEngine: BaseWorldEngine) => void): Skill {
     return {
         castTimeSetTicks: castTimeTicks,
         castTimeRemainingTicks: 0,
