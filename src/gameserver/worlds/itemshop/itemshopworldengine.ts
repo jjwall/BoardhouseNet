@@ -14,7 +14,7 @@ import { velocitySystem } from "../../systems/velocity";
 import { PlayerStates } from "../../components/player";
 import { setControls } from "../../components/control";
 import { controlSystem } from "../../systems/control";
-import { skillsSystem } from "../../systems/skills";
+import { skillSlotsSystem } from "../../systems/skillslots";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
@@ -36,7 +36,7 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
         this.registerSystem(velocitySystem);
         this.registerSystem(collisionSystem);
         this.registerSystem(worldEdgeSystem);
-        this.registerSystem(skillsSystem); // comment out to test no skills in item shop?
+        this.registerSystem(skillSlotsSystem); // comment out to test no skills in item shop?
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 

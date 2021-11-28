@@ -1,12 +1,12 @@
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { Entity } from "../serverengine/entity";
-import { Skill } from "../components/skills";
+import { Skill } from "../components/skillslots";
 
-export function skillsSystem(ents: readonly Entity[], worldEngine: BaseWorldEngine) {
+export function skillSlotsSystem(ents: readonly Entity[], worldEngine: BaseWorldEngine) {
     ents.forEach(ent => {
-        if (ent.skills) {
-            const skillOne = ent.skills.getSkillOne()
-            const skillTwo = ent.skills.getSkillTwo()
+        if (ent.skillSlots) {
+            const skillOne = ent.skillSlots.getSkillOne()
+            const skillTwo = ent.skillSlots.getSkillTwo()
             reduceRemainingTicks(skillOne)
             reduceRemainingTicks(skillTwo)
             checkAndTriggerAction(skillOne)

@@ -1,4 +1,4 @@
-export class SkillsComponent {
+export class SkillSlotsComponent {
     private skillSlotOne: Skill
     private skillSlotTwo: Skill
     setSkillOne(value: Skill) {

@@ -7,6 +7,7 @@ import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { Server } from "../serverengine/server";
 import { PlayerStates } from "../components/player";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
+import { SkillSlotsComponent } from "../components/skillslots";
 
 export function createArcher(server: Server, worldEngine: BaseWorldEngine, clientId: string, pos: PositionComponent): Entity {
     let archer = new Entity();
@@ -17,6 +18,7 @@ export function createArcher(server: Server, worldEngine: BaseWorldEngine, clien
     // archer.anim = { sequence: "blah", currentFrame: 0 };
     archer.control = setControls();
     archer.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 50, 50, 0, -50);
+    archer.skillSlots = new SkillSlotsComponent()
 
     worldEngine.registerEntity(archer, server);
 
