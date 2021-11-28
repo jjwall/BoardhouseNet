@@ -12,6 +12,7 @@ import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { WorldTypes } from "../../packets/enums/worldtypes";
 import { SceneTransition } from "../renders/scenetransitions";
 import { animationSystem } from "../systems/animation";
+import { centerCameraOnPlayer } from "./camera";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -361,39 +362,11 @@ export class Client {
         }
     }
 
-    public centerCamera(client: Client) {
-        // Center camera over current Player Entity.
-        if (client.currentPlayerEntity) {
-            let cx = client.currentPlayerEntity.pos.loc.x;
-            let cy = client.currentPlayerEntity.pos.loc.y;
-
-            // Ensure camera doesn't scroll past world edges.
-            if (client.worldHeight > 0 && client.worldWidth > 0) {
-                cx = Math.max(cx, -client.worldWidth / 2 + client.screenWidth / 2);
-                cx = Math.min(cx, client.worldWidth / 2 - client.screenWidth / 2);
-        
-                cy = Math.max(cy, -client.worldHeight / 2 + client.screenHeight / 2);
-                cy = Math.min(cy, client.worldHeight / 2 - client.screenHeight / 2);
-            }
-
-            const targetPos = new Vector3(
-                cx - client.screenWidth / 2, 
-                cy - client.screenHeight / 2, 
-                0,
-            );
-
-            if (client.currentPlayerEntity.pos.teleport)
-                client.gameCamera.position.copy(targetPos);
-            else
-                client.gameCamera.position.lerp(targetPos, 0.2);
-        }
-    }
-
     public render() : void {
         this.updateClientEntPositions(this.entityList);
         this.updateClientRenders(this.renderList);
         this.updateSceneTransitions(this.sceneTransition);
-        this.centerCamera(this);
+        centerCameraOnPlayer(this, this.currentPlayerEntity);
         animationSystem(this.entityList, this);
         animationSystem(this.renderList, this);
 

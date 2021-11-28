@@ -4,6 +4,7 @@
   "description": "A full-stack environment for the boardhouse game framework.",
   "main": "index.js",
   "scripts": {
+    "start": "cd dist && node lobby.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build-lobby && npm run build-game",
     "build-client": "npm run build-lobby-client && npm run build-game-client",
