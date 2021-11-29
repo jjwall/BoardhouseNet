@@ -306,8 +306,10 @@ export class Client {
                 if (render.sprite && render.pos) {
                     const targetPos = new Vector3(render.pos.loc.x, render.pos.loc.y, render.pos.loc.z);
                     
-                    if (render.pos.teleport)
+                    if (render.pos.teleport) {
                         render.sprite.position.copy(targetPos);
+                        render.pos.teleport = false
+                    }
                     else
                         render.sprite.position.lerp(targetPos, 0.2);
                     

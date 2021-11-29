@@ -9,7 +9,18 @@ import { Server } from "../serverengine/server";
 // i.e. look at the attack in core systems, all that could be in a method called "sendPlayerAttackNetEventMessage" or something...
 // This function assumes entity data is needed to be sent for generic "sendNetEventMessage" method - in the future we may want 
 // more functionality, for example one net event might be "SwitchToEndGameScreen" or something and no ent data would need to be sent
-export function broadcastDisplayPlayerAttackMessage(ents: Entity[], server: Server, worldType: WorldTypes) {
+
+
+// New TODO: should refactor this to be named "broadcastRenderPlayerSkillMessage"
+// -> clean up Message interface name and data
+// -> obviously shouldn't have 100 parameters here
+// -> can refer to idea for param obj from basic action
+// -> since this method is becoming the original idea for "generically creating an action"
+// -> method in /actions directory will always be calling this
+// Reconsider sening list of Ents here
+// -> Do we need ents?
+// -> Can we just use special render data instead? Does it matter?
+export function broadcastDisplayPlayerAttackMessage(entDoingAction: Entity, ents: Entity[], renderDuration: number, renderTracksCaster: boolean, offsetPosX: number, offsetPosY: number, server: Server, worldType: WorldTypes) {
     // NetMessagePlayerAttackDisplay...
 
     const message: NetMessagePlayerAttackDisplay = {
@@ -18,6 +29,11 @@ export function broadcastDisplayPlayerAttackMessage(ents: Entity[], server: Serv
         data: {
             ents: [],
             worldType: worldType,
+            entDoingActionNetId: entDoingAction.netId,
+            renderDuration: renderDuration,
+            renderTracksCaster: renderTracksCaster,
+            offsetPosX: offsetPosX,
+            offsetPosY: offsetPosY,
         }
     }
 

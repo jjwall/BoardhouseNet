@@ -10,6 +10,8 @@ import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { SequenceTypes } from "../../modules/animations/sequencetypes";
 import { necroAnim } from "../../modules/animations/animationdata/necro";
 import { zelfinAnim } from "../../modules/animations/animationdata/zelfin"
+import { initializeSkill, SkillSlotsComponent } from "../components/skillslots";
+import { basicSwordAttack } from "../actions/sword";
 
 export function createMagician(server: Server, worldEngine: BaseWorldEngine, clientId: string, pos: PositionComponent): Entity {
     let magician = new Entity();
@@ -20,6 +22,8 @@ export function createMagician(server: Server, worldEngine: BaseWorldEngine, cli
     magician.anim = { sequence: SequenceTypes.IDLE, blob: zelfinAnim };
     magician.movement = setMovement();
     magician.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 50, 50, 0, -50);
+    magician.skillSlots = new SkillSlotsComponent()
+    magician.skillSlots.setSkillOne(initializeSkill(20, 20, basicSwordAttack))
 
     worldEngine.registerEntity(magician, server);
 

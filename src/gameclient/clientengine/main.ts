@@ -65,6 +65,10 @@ const config: ClientConfig = {
         "./data/textures/zelfin006.png",
         "./data/textures/zelfin007.png",
         "./data/textures/zelfin008.png",
+        "./data/textures/basic_sword_attack001.png",
+        "./data/textures/basic_sword_attack002.png",
+        "./data/textures/basic_sword_attack003.png",
+        "./data/textures/basic_sword_attack004.png",
     ],
     audioUrls: [
         "./data/audio/Pale_Blue.mp3",
