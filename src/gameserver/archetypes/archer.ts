@@ -21,7 +21,7 @@ export function createArcher(server: Server, worldEngine: BaseWorldEngine, clien
     archer.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 50, 50, 0, -50);
     archer.skillSlots = new SkillSlotsComponent()
     // archer.skillSlots.setSkillOne(initializeSkill(20, 20, () => { console.log("skilllling")}))
-    archer.skillSlots.setSkillOne(initializeSkill(20, 20, basicSwordAttack))
+    archer.skillSlots.setSkillOne(initializeSkill(6, 20, basicSwordAttack))
 
     worldEngine.registerEntity(archer, server);
 

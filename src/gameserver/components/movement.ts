@@ -3,7 +3,7 @@
  */
  export interface MovementComponent {
     attackCooldownTicks: number;
-    studderTicks: number;
+    stutterTicks: number;
     left: boolean;
     right: boolean;
     up: boolean;
@@ -16,7 +16,7 @@
 export function setMovement(): MovementComponent {
     return {
         attackCooldownTicks: 0,
-        studderTicks: 0,
+        stutterTicks: 0,
         left: false,
         right: false,
         up: false,

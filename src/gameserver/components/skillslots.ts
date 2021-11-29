@@ -19,18 +19,18 @@ export class SkillSlotsComponent {
 }
 
 export interface Skill {
-    castTimeSetTicks: number
-    castTimeRemainingTicks: number
+    // castTimeSetTicks: number
+    // castTimeRemainingTicks: number
+    stutterSetTicks: number
     cooldownSetTicks: number
     cooldownRemainingTicks: number
     triggerAction: boolean
     action(entDoingAction: Entity, worldEngine: BaseWorldEngine): void
 }
 
-export function initializeSkill(castTimeTicks: number, cooldownTicks: number, action: (entDoingAction: Entity, worldEngine: BaseWorldEngine) => void): Skill {
+export function initializeSkill(stutterSetTicks: number, cooldownTicks: number, action: (entDoingAction: Entity, worldEngine: BaseWorldEngine) => void): Skill {
     return {
-        castTimeSetTicks: castTimeTicks,
-        castTimeRemainingTicks: 0,
+        stutterSetTicks: stutterSetTicks,
         cooldownSetTicks: cooldownTicks,
         cooldownRemainingTicks: 0,
         triggerAction: false,

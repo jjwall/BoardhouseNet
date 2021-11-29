@@ -4,7 +4,8 @@ import { setPosition } from "../components/position";
 import { setSprite } from "../components/sprite";
 import { Client } from "../clientengine/client";
 import { Vector3 } from "three";
-import { setAnimation } from "../components/animation";
+import { changeSequence, setAnimation } from "../components/animation";
+import { SequenceTypes } from "../../modules/animations/sequencetypes";
 
 // This method will eventually be "renderPlayerSkill"
 // Will clean up NetMessagePlayerAttackDisplay data
@@ -21,6 +22,9 @@ export function renderPlayerAttackAnim(message: NetMessagePlayerAttackDisplay, c
 
             if (message.data.renderTracksCaster) {
                 const entDoingAction = client.NetIdToEntityMap[message.data.entDoingActionNetId]
+
+                // where and how we change anim?
+                // entDoingAction.anim = changeSequence(SequenceTypes.ATTACK, entDoingAction.anim)
 
                 clientRender.pos = {
                     loc: undefined,

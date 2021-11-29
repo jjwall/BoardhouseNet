@@ -24,6 +24,11 @@ function checkAndTriggerAction(skill: Skill, entDoingAction: Entity, worldEngine
 
             // Start skill cooldown.
             skill.cooldownRemainingTicks = skill.cooldownSetTicks
+
+            // Set stutter ticks.
+            if (entDoingAction.movement) {
+                entDoingAction.movement.stutterTicks = skill.stutterSetTicks
+            }
         }
         else {
             skill.triggerAction = false
@@ -33,9 +38,9 @@ function checkAndTriggerAction(skill: Skill, entDoingAction: Entity, worldEngine
 
 function reduceRemainingTicks(skill: Skill) {
     if (skill) {
-        if (skill.castTimeRemainingTicks > 0) {
-            skill.castTimeRemainingTicks--
-        }
+        // if (skill.castTimeRemainingTicks > 0) {
+        //     skill.castTimeRemainingTicks--
+        // }
 
         if (skill.cooldownRemainingTicks > 0) {
             skill.cooldownRemainingTicks--

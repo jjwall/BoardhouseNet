@@ -16,7 +16,7 @@ export function movementSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWor
             // Handle animations.
             switch (ent.player.class) {
                 case PlayerClassTypes.MAGICIAN:
-                    if (ent.movement.studderTicks > 0) {
+                    if (ent.movement.stutterTicks > 0) {
                         ent.anim.sequence = SequenceTypes.ATTACK;
                     }
                     else if (ent.movement.up || ent.movement.down || ent.movement.left || ent.movement.right)
@@ -26,9 +26,9 @@ export function movementSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWor
                     break;
             }
 
-            // Process studder.
-            if (ent.movement.studderTicks > 0) {
-                ent.movement.studderTicks--;
+            // Process stutter.
+            if (ent.movement.stutterTicks > 0) {
+                ent.movement.stutterTicks--;
             }
             else {
                 // Left
