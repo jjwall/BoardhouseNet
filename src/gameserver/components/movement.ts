@@ -1,9 +1,7 @@
 /**
- * Control component.
+ * Movement component.
  */
- export interface ControlComponent {
-    jump: boolean;
-    attack: boolean;
+ export interface MovementComponent {
     attackCooldownTicks: number;
     studderTicks: number;
     left: boolean;
@@ -15,10 +13,8 @@
 /**
  * Helper for initializing ControlComponent with starting values.
  */
-export function setControls(): ControlComponent {
+export function setMovement(): MovementComponent {
     return {
-        jump: false,
-        attack: false,
         attackCooldownTicks: 0,
         studderTicks: 0,
         left: false,

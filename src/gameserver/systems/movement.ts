@@ -8,18 +8,18 @@ import { Vector3 } from "three";
  * Movement system.
  * @param ents Ents from the control entitities registry.
  */
-export function controlSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWorldEngine) {
+export function movementSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWorldEngine) {
     let movementDirection = new Vector3(0,0,0);
     ents.forEach(ent => {
         let updatePlayerEnt = false;
-        if (ent.control && ent.pos && ent.vel) {
+        if (ent.movement && ent.pos && ent.vel) {
             // Handle animations.
             switch (ent.player.class) {
                 case PlayerClassTypes.MAGICIAN:
-                    if (ent.control.studderTicks > 0) {
+                    if (ent.movement.studderTicks > 0) {
                         ent.anim.sequence = SequenceTypes.ATTACK;
                     }
-                    else if (ent.control.up || ent.control.down || ent.control.left || ent.control.right)
+                    else if (ent.movement.up || ent.movement.down || ent.movement.left || ent.movement.right)
                         ent.anim.sequence = SequenceTypes.WALK;
                     else
                         ent.anim.sequence = SequenceTypes.IDLE;
@@ -27,12 +27,12 @@ export function controlSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWorl
             }
 
             // Process studder.
-            if (ent.control.studderTicks > 0) {
-                ent.control.studderTicks--;
+            if (ent.movement.studderTicks > 0) {
+                ent.movement.studderTicks--;
             }
             else {
                 // Left
-                if (ent.control.left) {
+                if (ent.movement.left) {
                     // ent.pos.loc.x -= 25;
                     // ent.pos.dir.setX(-1);
                     // ent.pos.dir.setY(0);
@@ -45,7 +45,7 @@ export function controlSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWorl
                 }
 
                 // Right
-                if (ent.control.right) {
+                if (ent.movement.right) {
                     // ent.pos.loc.x += 25;
                     // ent.pos.dir.setX(1);
                     // ent.pos.dir.setY(0);
@@ -58,7 +58,7 @@ export function controlSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWorl
                 }
 
                 // Up
-                if (ent.control.up) {
+                if (ent.movement.up) {
                     // ent.pos.loc.y += 25;
                     movementDirection.setX(0);
                     movementDirection.setY(1);
@@ -68,7 +68,7 @@ export function controlSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWorl
                 }
 
                 // Down 
-                if (ent.control.down) {
+                if (ent.movement.down) {
                     // ent.pos.loc.y -= 25;
                     movementDirection.setX(0);
                     movementDirection.setY(-1);
@@ -78,8 +78,8 @@ export function controlSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWorl
                 }
 
                 // Reduce attack cooldown by one tick.
-                if (ent.control.attackCooldownTicks > 0) {
-                    ent.control.attackCooldownTicks--;
+                if (ent.movement.attackCooldownTicks > 0) {
+                    ent.movement.attackCooldownTicks--;
                 }
             }
 

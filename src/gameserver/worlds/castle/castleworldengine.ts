@@ -10,8 +10,8 @@ import { worldEdgeSystem } from "../../systems/worldedge";
 import { collisionSystem } from "../../systems/collision";
 import { velocitySystem } from "../../systems/velocity";
 import { PlayerStates } from "../../components/player";
-import { setControls } from "../../components/control";
-import { controlSystem } from "../../systems/control";
+import { setMovement } from "../../components/movement";
+import { movementSystem } from "../../systems/movement";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
@@ -30,7 +30,7 @@ export class CastleWorldEngine extends BaseWorldEngine {
         // let rootComponent = renderGameUi(this.uiScene, this.rootWidget);
 
         // Register systems.
-        this.registerSystem(controlSystem, "control");
+        this.registerSystem(movementSystem, "movement");
         this.registerSystem(playerSystem, "player");
         this.registerSystem(velocitySystem);
         this.registerSystem(collisionSystem);
@@ -42,7 +42,7 @@ export class CastleWorldEngine extends BaseWorldEngine {
         // TODO: Make it where you don't have to do this, delay on entity creation breaks stuff
         // I guess just create other ents first
         let ent = new Entity();
-        ent.control = setControls();
+        ent.movement = setMovement();
         this.registerEntity(ent, server);
 
         let cottage1 = new Entity();

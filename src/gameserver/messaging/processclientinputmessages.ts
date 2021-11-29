@@ -40,9 +40,9 @@ export function processSkillTwoInputMessage(playerEnt: Entity) {
 
 export function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientMessageLeftKeyDown) {
     ents.forEach(ent => {
-        if (ent.player && ent.control) {
+        if (ent.player && ent.movement) {
             if (ent.player.id === message.data.clientId && ent.player.state === PlayerStates.LOADED) {
-                ent.control.left = true;
+                ent.movement.left = true;
             }
         }
     });
@@ -50,9 +50,9 @@ export function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: 
 
 export function processLeftKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientMessageLeftKeyUp) {
     ents.forEach(ent => {
-        if (ent.player && ent.control) {
+        if (ent.player && ent.movement) {
             if (ent.player.id === message.data.clientId && ent.player.state === PlayerStates.LOADED) {
-                ent.control.left = false;
+                ent.movement.left = false;
             }
         }
     });
@@ -60,9 +60,9 @@ export function processLeftKeyUpMessage(ents: ReadonlyArray<Entity>, message: Cl
 
 export function processRightKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientMessageRightKeyDown) {
     ents.forEach(ent => {
-        if (ent.player && ent.control) {
+        if (ent.player && ent.movement) {
             if (ent.player.id === message.data.clientId && ent.player.state === PlayerStates.LOADED) {
-                ent.control.right = true;
+                ent.movement.right = true;
             }
         }
     });
@@ -70,9 +70,9 @@ export function processRightKeyDownMessage(ents: ReadonlyArray<Entity>, message:
 
 export function processRightKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientMessageRightKeyUp) {
     ents.forEach(ent => {
-        if (ent.player && ent.control) {
+        if (ent.player && ent.movement) {
             if (ent.player.id === message.data.clientId && ent.player.state === PlayerStates.LOADED) {
-                ent.control.right = false;
+                ent.movement.right = false;
             }
         }
     });
@@ -80,9 +80,9 @@ export function processRightKeyUpMessage(ents: ReadonlyArray<Entity>, message: C
 
 export function processUpKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientMessageUpKeyDown) {
     ents.forEach(ent => {
-        if (ent.player && ent.control) {
+        if (ent.player && ent.movement) {
             if (ent.player.id === message.data.clientId && ent.player.state === PlayerStates.LOADED) {
-                ent.control.up = true;
+                ent.movement.up = true;
             }
         }
     });
@@ -90,9 +90,9 @@ export function processUpKeyDownMessage(ents: ReadonlyArray<Entity>, message: Cl
 
 export function processUpKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientMessageUpKeyUp) {
     ents.forEach(ent => {
-        if (ent.player && ent.control) {
+        if (ent.player && ent.movement) {
             if (ent.player.id === message.data.clientId && ent.player.state === PlayerStates.LOADED) {
-                ent.control.up = false;
+                ent.movement.up = false;
             }
         }
     });
@@ -100,9 +100,9 @@ export function processUpKeyUpMessage(ents: ReadonlyArray<Entity>, message: Clie
 
 export function processDownKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientMessageDownKeyDown) {
     ents.forEach(ent => {
-        if (ent.player && ent.control) {
+        if (ent.player && ent.movement) {
             if (ent.player.id === message.data.clientId && ent.player.state === PlayerStates.LOADED) {
-                ent.control.down = true;
+                ent.movement.down = true;
             }
         }
     });
@@ -110,9 +110,9 @@ export function processDownKeyDownMessage(ents: ReadonlyArray<Entity>, message: 
 
 export function processDownKeyUpMessage(ents: ReadonlyArray<Entity>, message: ClientMessageDownKeyUp) {
     ents.forEach(ent => {
-        if (ent.player && ent.control) {
+        if (ent.player && ent.movement) {
             if (ent.player.id === message.data.clientId && ent.player.state === PlayerStates.LOADED) {
-                ent.control.down = false;
+                ent.movement.down = false;
             }
         }
     });
@@ -126,7 +126,7 @@ export function processQueriedInputs(server: Server) {
         const ents = currentWorld.getEntitiesByKey<Entity>("player");
 
         ents.forEach(ent => {
-            if (ent.player && ent.control) { // && ent.skillSlots
+            if (ent.player && ent.movement) { // && ent.skillSlots
                 if (ent.player.id === input.clientId && ent.player.state === PlayerStates.LOADED) {
                     switch (input.inputType) {
                         case ClientInputTypes.SKILL_ONE:
