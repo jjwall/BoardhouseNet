@@ -367,7 +367,7 @@ export class Client {
                 if (transition.sprite)
                     this.gameScene.remove(transition.sprite);
 
-            transition = undefined;
+                transition = undefined;
             }
         }
     }

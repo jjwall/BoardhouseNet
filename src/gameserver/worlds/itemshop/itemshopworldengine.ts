@@ -18,6 +18,7 @@ import { skillSlotsSystem } from "../../systems/skillslots";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
+import { timerSystem } from "../../systems/timer";
 
 /**
  * World engine that handles updating of all world-related systems.
@@ -37,6 +38,7 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
         this.registerSystem(collisionSystem);
         this.registerSystem(worldEdgeSystem);
         this.registerSystem(skillSlotsSystem); // comment out to test no skills in item shop?
+        this.registerSystem(timerSystem);
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 

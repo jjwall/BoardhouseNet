@@ -8,6 +8,7 @@ import { fishAnim } from "../../../modules/animations/animationdata/fish";
 import { transitionPlayerToAnotherWorld } from "../../messaging/helpers";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
 import { WorldTypes } from "../../../packets/enums/worldtypes";
+import { skillSlotsSystem } from "../../systems/skillslots";
 import { worldEdgeSystem } from "../../systems/worldedge";
 import { collisionSystem } from "../../systems/collision";
 import { velocitySystem } from "../../systems/velocity";
@@ -17,7 +18,7 @@ import { movementSystem } from "../../systems/movement";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
-import { skillSlotsSystem } from "../../systems/skillslots";
+import { timerSystem } from "../../systems/timer";
 import { Vector3 } from "three";
 
 /**
@@ -38,6 +39,7 @@ export class CastleWorldEngine extends BaseWorldEngine {
         this.registerSystem(collisionSystem);
         this.registerSystem(worldEdgeSystem);
         this.registerSystem(skillSlotsSystem);
+        this.registerSystem(timerSystem);
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 
