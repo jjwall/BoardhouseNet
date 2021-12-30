@@ -3,6 +3,8 @@ import { TileData, WorldLevelData } from "../../../packets/data/worldleveldata";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { PositionComponent, setPosition } from "../../components/position";
+import { SequenceTypes } from "../../../modules/animations/sequencetypes";
+import { fishAnim } from "../../../modules/animations/animationdata/fish";
 import { transitionPlayerToAnotherWorld } from "../../messaging/helpers";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
 import { WorldTypes } from "../../../packets/enums/worldtypes";
@@ -54,10 +56,15 @@ export class CastleWorldEngine extends BaseWorldEngine {
         let magicCircle = new Entity();
         magicCircle.pos = setPosition(450, 250, 3, new Vector3(1, -1, 0));
         magicCircle.sprite = { url: "./data/textures/magic_circle.png", pixelRatio: 1 };
+        let fish = new Entity();
+        fish.pos = setPosition(1400, 250, 3);
+        fish.sprite = { url: "./data/textures/fish001.png", pixelRatio: 4 };
+        fish.anim = { sequence: SequenceTypes.IDLE, blob: fishAnim }
     
         // this.registerEntity(cottage1, server);
         // this.registerEntity(cottage2, server);
         this.registerEntity(magicCircle, server);
+        this.registerEntity(fish, server);
 
         this.worldLevelData = this.registerWorldLevelData(kenneyFantasy2, "./data/textures/colored_packed.png");
     }
