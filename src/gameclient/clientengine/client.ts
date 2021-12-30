@@ -272,7 +272,13 @@ export class Client {
     private updateClientEntPositions(ents: ReadonlyArray<ClientEntity>) {
         ents.forEach(ent => {
             if (ent.sprite && ent.pos) {
-                const targetPos = new Vector3(ent.pos.loc.x, ent.pos.loc.y, ent.pos.loc.z);
+                let targetPos = new Vector3(ent.pos.loc.x, ent.pos.loc.y, ent.pos.loc.z);
+
+                // Need to make this recursive to consider grand parents
+                if (ent.parentNetId) {
+                    if (this.NetIdToEntityMap[ent.parentNetId])
+                        targetPos.add(this.NetIdToEntityMap[ent.parentNetId].pos.loc);
+                }
                 
                 if (ent.pos.teleport)
                     ent.sprite.position.copy(targetPos);

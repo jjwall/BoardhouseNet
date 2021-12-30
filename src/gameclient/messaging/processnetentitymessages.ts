@@ -25,6 +25,9 @@ export function createEntities(message: NetMessageCreateEntities, client: Client
                 clientEnt.sprite = setSprite(entData.sprite.url, client.gameScene, client, entData.sprite.pixelRatio);
                 clientEnt.pos.teleport = entData.pos.teleport;
 
+                if (entData.parentNetId)
+                    clientEnt.parentNetId = entData.parentNetId;
+
                 if (entData.hitbox)
                     setHitboxGraphic(client, clientEnt.sprite, entData.hitbox);
 

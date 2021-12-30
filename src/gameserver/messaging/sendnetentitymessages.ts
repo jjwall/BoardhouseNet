@@ -48,6 +48,10 @@ export function broadcastCreateEntitiesMessage(ents: Entity[], server: Server, w
                 }
             }
 
+            if (ent.parent) {
+                entData.parentNetId = ent.parent.netId
+            }
+
             message.data.ents.push(entData);
         }
     });

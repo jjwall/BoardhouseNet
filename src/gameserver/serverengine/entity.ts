@@ -9,6 +9,7 @@ import { SkillSlotsComponent } from "../components/skillslots";
 
 export class Entity {
     netId: number;
+    parent?: Entity;
     player: PlayerComponent;
     pos: PositionComponent;
     vel: VelocityComponent;
