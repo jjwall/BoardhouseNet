@@ -82,6 +82,9 @@ export class Client {
     public uiCamera: Camera;
     public entityList: ClientEntity[] = [];
     public NetIdToEntityMap: NetIdToEntityMap = {};
+    /**
+     * @deprecated use entities instead
+     */
     public renderList: ClientRender[] = [];
     public sceneTransition: SceneTransition = undefined;
     public sceneTransitionDone: boolean = false;
@@ -299,10 +302,20 @@ export class Client {
                 }
             
                 ent.sprite.rotation.set(0, 0, Math.atan2(ent.pos.dir.y, ent.pos.dir.x));
+
+                // Make sure child is now lerping if parent is.
+                if (ent.parentNetId) {
+                    if (this.NetIdToEntityMap[ent.parentNetId]) {
+                        ent.pos.teleport = this.NetIdToEntityMap[ent.parentNetId].pos.teleport
+                    }
+                }
             }
         });
     }
 
+    /**
+     * @deprecated use entities instead
+     */
     private updateClientRenders(renders: ReadonlyArray<ClientRender>) {
         let newRenderList: ClientRender[] = [];
         let rendersToDiscard: ClientRender[] = [];
@@ -374,7 +387,7 @@ export class Client {
 
     public render() : void {
         this.updateClientEntPositions(this.entityList);
-        this.updateClientRenders(this.renderList);
+        // this.updateClientRenders(this.renderList);
         this.updateSceneTransitions(this.sceneTransition);
         centerCameraOnPlayer(this, this.currentPlayerEntity);
         animationSystem(this.entityList, this);

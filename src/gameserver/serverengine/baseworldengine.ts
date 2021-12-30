@@ -100,7 +100,7 @@ export abstract class BaseWorldEngine {
                 }
             }
             catch (err) {
-                console.log(`Trying to remove an entity from entitryRegistry of ecs key: "${key}" but this registry has not been set up yet. To remedy this solution, make sure to register an entity with ALL ecs registered components`);
+                // console.log(`Trying to remove an entity from entitryRegistry of ecs key: "${key}" but this registry has not been set up yet. To remedy this solution, make sure to register an entity with ALL ecs registered components`);
             }
         });
 
