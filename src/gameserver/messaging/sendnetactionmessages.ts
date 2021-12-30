@@ -25,6 +25,9 @@ import { Server } from "../serverengine/server";
 // existing entity methods and ent data, instead of a brand new set of "client render" data
 // This method was once consumed in the basicsSwordAttack method like this:
 // broadcastDisplayPlayerAttackMessage(attackingEnt, swordRenders, 40, true, offsetPosX, offsetPosY, worldEngine.server, worldEngine.worldType);
+/**
+ * @deprecated use broadcastCreateEntitiesMessage instead
+ */
 export function broadcastDisplayPlayerAttackMessage(entDoingAction: Entity, ents: Entity[], renderDuration: number, renderTracksCaster: boolean, offsetPosX: number, offsetPosY: number, server: Server, worldType: WorldTypes) {
     // NetMessagePlayerAttackDisplay...
 

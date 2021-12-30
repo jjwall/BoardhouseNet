@@ -7,6 +7,7 @@ import { setPosition } from "../components/position";
 import { Entity } from "../serverengine/entity";
 import { swordAnim } from "../../modules/animations/animationdata/sword";
 import { setTimer } from "../components/timer";
+import { HitboxTypes, setHitbox } from "../components/hitbox";
 
 // Note: weird performance issues when updating position after setting within this method
 export function basicSwordAttack(attackingEnt: Entity, worldEngine: BaseWorldEngine) {
@@ -15,15 +16,17 @@ export function basicSwordAttack(attackingEnt: Entity, worldEngine: BaseWorldEng
     let offsetPosY = 0;
 
     if (attackingEnt.pos.flipX) {
-        offsetPosX = 0;
+        offsetPosX = -150;
         offsetPosY = 0;
-        swordAttack.pos = setPosition(offsetPosX, 0, 1);
+        swordAttack.hitbox = setHitbox(HitboxTypes.PLAYER_SWORD_ATTACK, [HitboxTypes.ENEMY], 200, 200, offsetPosX, offsetPosY);
+        swordAttack.pos = setPosition(0, 0, 1);
         swordAttack.pos.flipX = true
     }
     else {
-        offsetPosX = 0;
+        offsetPosX = 150;
         offsetPosY = 0;
-        swordAttack.pos = setPosition(offsetPosX, 0, 1);
+        swordAttack.hitbox = setHitbox(HitboxTypes.PLAYER_SWORD_ATTACK, [HitboxTypes.ENEMY], 200, 200, offsetPosX, offsetPosY);
+        swordAttack.pos = setPosition(0, 0, 1);
     }
 
     swordAttack.sprite = { url: "./data/textures/basic_sword_attack001.png", pixelRatio: 8 };

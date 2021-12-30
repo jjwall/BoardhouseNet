@@ -31,7 +31,7 @@ export function setHitbox(collideType: HitboxTypes, collidesWith: HitboxTypes[],
     let hitbox: HitboxComponent = { collideType: collideType, collidesWith: collidesWith, height: 0, width: 0, offsetX: offsetX, offsetY: offsetY };
 
     if (height <= 0 || width <= 0)
-        throw Error("overrides can't be less than or equal to 0.");
+        throw Error("height and width can't be less than or equal to 0.");
         
     hitbox.height = height;
     hitbox.width = width;
@@ -94,6 +94,7 @@ export const enum HitboxTypes {
     TILE_OBSTACLE,
     RED_FLOOR_TILE_EXIT_ITEM_SHOP, // castle loading zone
     INN_DOOR, // item shop loading zone
+    PLAYER_SWORD_ATTACK,
 }
 
 export type Rect = {

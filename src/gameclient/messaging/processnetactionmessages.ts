@@ -11,6 +11,9 @@ import { SequenceTypes } from "../../modules/animations/sequencetypes";
 // Will clean up NetMessagePlayerAttackDisplay data
 // Move away from copying position ref like -> clientRender.pos.loc = entDoingAction.pos.loc
 // -> should instead use some sort of "follow" logic, which is where we could account for offset X & Y
+/**
+ * @deprecated use custom action method instead
+ */
 export function renderPlayerAttackAnim(message: NetMessagePlayerAttackDisplay, client: Client) {
     if (message.data.worldType === client.worldType) {
         console.log("Attack! - render from server");
