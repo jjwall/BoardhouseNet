@@ -1,4 +1,4 @@
-import { sendDownKeyUpMessage, sendDownKeyDownMessage, sendLeftKeyDownMessage, sendLeftKeyUpMessage, sendRightKeyDownMessage, sendRightKeyUpMessage, sendUpKeyDownMessage, sendUpKeyUpMessage, sendSkillOneMessage, sendSkillTwoMessage } from "../messaging/sendclientinputmessages";
+import { sendDownKeyUpMessage, sendDownKeyDownMessage, sendLeftKeyDownMessage, sendLeftKeyUpMessage, sendRightKeyDownMessage, sendRightKeyUpMessage, sendUpKeyDownMessage, sendUpKeyUpMessage, sendSkillOneReleaseMessage, sendSkillTwoReleaseMessage, sendSkillOnePressMessage, sendSkillTwoPressMessage } from "../messaging/sendclientinputmessages";
 import { Client } from "../clientengine/client";
 
 // keyboard controls
@@ -41,14 +41,14 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
         case 90: // z
             if (!client.keyZIsDown) {
                 client.keyZIsDown = true;
-                sendSkillOneMessage(client);
+                sendSkillOnePressMessage(client);
             }
             break;
         
         case 88: // x
             if (!client.keyXIsDown) {
                 client.keyXIsDown = true;
-                sendSkillTwoMessage(client);
+                sendSkillTwoPressMessage(client);
             }
             break;
     }
@@ -92,12 +92,14 @@ export function handleKeyUpEvent(client: Client, e: KeyboardEvent) {
         case 90: // z
             if (client.keyZIsDown) {
                 client.keyZIsDown = false;
+                sendSkillOneReleaseMessage(client);
             }
             break;
         
         case 88: // x
             if (client.keyXIsDown) {
                 client.keyXIsDown = false;
+                sendSkillTwoReleaseMessage(client);
             }
             break;
     }

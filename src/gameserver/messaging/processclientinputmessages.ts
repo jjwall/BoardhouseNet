@@ -24,18 +24,32 @@ export function queryInputMessage(message: ClientInputMessage, server: Server) {
     server.queriedInputs.push(quieredInput);
 }
 
-export function processSkillOneInputMessage(playerEnt: Entity) {
+export function processSkillOnePressInputMessage(playerEnt: Entity) {
     const skillOne = playerEnt?.skillSlots?.getSkillOne()
 
     if (skillOne)
-        skillOne.triggerAction = true
+        skillOne.triggerPressAction = true
 }
 
-export function processSkillTwoInputMessage(playerEnt: Entity) {
+export function processSkillOneReleaseInputMessage(playerEnt: Entity) {
+    const skillOne = playerEnt?.skillSlots?.getSkillOne()
+
+    if (skillOne)
+        skillOne.triggerReleaseAction = true
+}
+
+export function processSkillTwoPressInputMessage(playerEnt: Entity) {
     const skillTwo = playerEnt?.skillSlots?.getSkillTwo()
 
     if (skillTwo)
-        skillTwo.triggerAction = true
+        skillTwo.triggerPressAction = true
+}
+
+export function processSkillTwoReleaseInputMessage(playerEnt: Entity) {
+    const skillTwo = playerEnt?.skillSlots?.getSkillTwo()
+
+    if (skillTwo)
+        skillTwo.triggerReleaseAction = true
 }
 
 export function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientMessageLeftKeyDown) {
@@ -129,11 +143,17 @@ export function processQueriedInputs(server: Server) {
             if (ent.player && ent.movement) { // && ent.skillSlots
                 if (ent.player.id === input.clientId && ent.player.state === PlayerStates.LOADED) {
                     switch (input.inputType) {
-                        case ClientInputTypes.SKILL_ONE:
-                            processSkillOneInputMessage(ent);
+                        case ClientInputTypes.SKILL_ONE_PRESS:
+                            processSkillOnePressInputMessage(ent);
                             break;
-                        case ClientInputTypes.SKILL_TWO:
-                            processSkillTwoInputMessage(ent);
+                        case ClientInputTypes.SKILL_ONE_RELEASE:
+                            processSkillOneReleaseInputMessage(ent);
+                            break;
+                        case ClientInputTypes.SKILL_TWO_PRESS:
+                            processSkillTwoPressInputMessage(ent);
+                            break;
+                        case ClientInputTypes.SKILL_TWO_RELEASE:
+                            processSkillTwoReleaseInputMessage(ent);
                             break;
                         // case ...
                     }

@@ -24,16 +24,25 @@ export interface Skill {
     stutterSetTicks: number
     cooldownSetTicks: number
     cooldownRemainingTicks: number
-    triggerAction: boolean
-    action(entDoingAction: Entity, worldEngine: BaseWorldEngine): void
+    triggerPressAction: boolean
+    triggerReleaseAction: boolean
+    pressAction?(entDoingAction: Entity, worldEngine: BaseWorldEngine): void
+    releaseAction?(entDoingAction: Entity, worldEngine: BaseWorldEngine): void
 }
 
-export function initializeSkill(stutterSetTicks: number, cooldownTicks: number, action: (entDoingAction: Entity, worldEngine: BaseWorldEngine) => void): Skill {
+export function initializeSkill(
+    stutterSetTicks: number, 
+    cooldownTicks: number, 
+    pressAction: undefined | ((entDoingAction: Entity, worldEngine: BaseWorldEngine) => void),
+    releaseAction: undefined | ((entDoingAction: Entity, worldEngine: BaseWorldEngine) => void),
+    ): Skill {
     return {
         stutterSetTicks: stutterSetTicks,
         cooldownSetTicks: cooldownTicks,
         cooldownRemainingTicks: 0,
-        triggerAction: false,
-        action: action
+        triggerPressAction: false,
+        triggerReleaseAction: false,
+        pressAction: pressAction,
+        releaseAction: releaseAction
     }
 }

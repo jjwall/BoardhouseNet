@@ -9,19 +9,31 @@ export function skillSlotsSystem(ents: readonly Entity[], worldEngine: BaseWorld
             const skillTwo = ent.skillSlots.getSkillTwo()
             reduceRemainingTicks(skillOne)
             reduceRemainingTicks(skillTwo)
-            checkAndTriggerAction(skillOne, ent, worldEngine)
-            checkAndTriggerAction(skillTwo, ent, worldEngine)
+            checkAndTriggerPressAction(skillOne, ent, worldEngine)
+            checkAndTriggerPressAction(skillTwo, ent, worldEngine)
+            checkAndTriggerReleaseAction(skillOne, ent, worldEngine)
+            checkAndTriggerReleaseAction(skillTwo, ent, worldEngine)
         }
     })   
 }
 
-function checkAndTriggerAction(skill: Skill, entDoingAction: Entity, worldEngine: BaseWorldEngine) {
-    if (skill?.triggerAction) {
+/**
+ * Press action performed successfully starts cooldown.
+ * @param skill 
+ * @param entDoingAction 
+ * @param worldEngine 
+ */
+function checkAndTriggerPressAction(skill: Skill, entDoingAction: Entity, worldEngine: BaseWorldEngine) {
+    if (skill?.triggerPressAction) {
+        // TODO: Make cooldown more cohesive with new press and release actions
+        
         if (skill.cooldownRemainingTicks <= 0) {
-            // Action tied to skill is triggered.
-            skill.action(entDoingAction, worldEngine)
-            skill.triggerAction = false
+            if (skill.pressAction) {
+                skill.pressAction(entDoingAction, worldEngine)
+            }
 
+            skill.triggerPressAction = false
+            
             // Start skill cooldown.
             skill.cooldownRemainingTicks = skill.cooldownSetTicks
 
@@ -31,8 +43,31 @@ function checkAndTriggerAction(skill: Skill, entDoingAction: Entity, worldEngine
             }
         }
         else {
-            skill.triggerAction = false
+            skill.triggerPressAction = false
         }
+    }
+}
+
+/**
+ * Release action does not trigger cooldown.
+ * @param skill 
+ * @param entDoingAction 
+ * @param worldEngine 
+ */
+function checkAndTriggerReleaseAction(skill: Skill, entDoingAction: Entity, worldEngine: BaseWorldEngine) {
+    if (skill?.triggerReleaseAction) {
+        // TODO: Make cooldown more cohesive with new press and release actions
+        // if (skill.cooldownRemainingTicks <= 0) { 
+            if (skill.releaseAction) {
+                // Action tied to skill is triggered.
+                skill.releaseAction(entDoingAction, worldEngine)
+            }
+
+            skill.triggerReleaseAction = false
+        // }
+        // else {
+        //     skill.triggerReleaseAction = false
+        // }
     }
 }
 

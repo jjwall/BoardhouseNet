@@ -74,8 +74,10 @@ function processClientInputMessage(message: ClientInputMessage, server: Server) 
     const ents = world.getEntitiesByKey<Entity>("player");
 
     switch (message.inputType) {
-        case ClientInputTypes.SKILL_ONE:
-        case ClientInputTypes.SKILL_TWO:
+        case ClientInputTypes.SKILL_ONE_PRESS:
+        case ClientInputTypes.SKILL_ONE_RELEASE:
+        case ClientInputTypes.SKILL_TWO_PRESS:
+        case ClientInputTypes.SKILL_TWO_RELEASE:
             queryInputMessage(message, server);
             break;
         case ClientInputTypes.LEFT_KEY_DOWN:

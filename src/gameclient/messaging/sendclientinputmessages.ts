@@ -8,8 +8,10 @@ import {
     ClientMessageLeftKeyUp, 
     ClientMessageRightKeyDown, 
     ClientMessageRightKeyUp, 
-    ClientMessageSkillOne, 
-    ClientMessageSkillTwo, 
+    ClientMessageSkillOnePress, 
+    ClientMessageSkillOneRelease, 
+    ClientMessageSkillTwoPress, 
+    ClientMessageSkillTwoRelease, 
     ClientMessageUpKeyDown, 
     ClientMessageUpKeyUp } 
 from "../../packets/messages/clientinputmessage";
@@ -123,10 +125,10 @@ export function sendDownKeyUpMessage(client: Client) {
 }
 
 // Skill inputs:
-export function sendSkillOneMessage(client: Client) {
-    const message: ClientMessageSkillOne  = {
+export function sendSkillOnePressMessage(client: Client) {
+    const message: ClientMessageSkillOnePress  = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
-        inputType: ClientInputTypes.SKILL_ONE,
+        inputType: ClientInputTypes.SKILL_ONE_PRESS,
         data: {
             clientId: client.currentClientId,
             worldType: client.worldType,
@@ -136,10 +138,36 @@ export function sendSkillOneMessage(client: Client) {
     client.connection.send(JSON.stringify(message));
 }
 
-export function sendSkillTwoMessage(client: Client) {
-    const message: ClientMessageSkillTwo  = {
+export function sendSkillOneReleaseMessage(client: Client) {
+    const message: ClientMessageSkillOneRelease  = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
-        inputType: ClientInputTypes.SKILL_TWO,
+        inputType: ClientInputTypes.SKILL_ONE_RELEASE,
+        data: {
+            clientId: client.currentClientId,
+            worldType: client.worldType,
+        }
+    }   
+    
+    client.connection.send(JSON.stringify(message));
+}
+
+export function sendSkillTwoPressMessage(client: Client) {
+    const message: ClientMessageSkillTwoPress  = {
+        messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
+        inputType: ClientInputTypes.SKILL_TWO_PRESS,
+        data: {
+            clientId: client.currentClientId,
+            worldType: client.worldType,
+        }
+    }   
+    
+    client.connection.send(JSON.stringify(message));
+}
+
+export function sendSkillTwoReleaseMessage(client: Client) {
+    const message: ClientMessageSkillTwoRelease  = {
+        messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
+        inputType: ClientInputTypes.SKILL_TWO_RELEASE,
         data: {
             clientId: client.currentClientId,
             worldType: client.worldType,
