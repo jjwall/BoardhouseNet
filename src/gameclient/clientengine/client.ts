@@ -272,16 +272,28 @@ export class Client {
         }
     }
 
+    private getWorldPosition(ent: Readonly<ClientEntity>): Vector3 {
+        const pos = new Vector3(ent.pos.loc.x, ent.pos.loc.y, ent.pos.loc.z);
+
+        const getParent = (e: Readonly<ClientEntity>) => {
+            if (!e.parentNetId) return null;
+            return this.NetIdToEntityMap[e.parentNetId];
+        };
+    
+        let ancestor = getParent(ent);
+
+        while (ancestor) {
+            pos.add(ancestor.pos.loc);
+            ancestor = getParent(ancestor);
+        }
+    
+        return pos;
+    }
+
     private updateClientEntPositions(ents: ReadonlyArray<ClientEntity>) {
         ents.forEach(ent => {
             if (ent.sprite && ent.pos) {
-                let targetPos = new Vector3(ent.pos.loc.x, ent.pos.loc.y, ent.pos.loc.z);
-
-                // Need to make this recursive to consider grand parents
-                if (ent.parentNetId) {
-                    if (this.NetIdToEntityMap[ent.parentNetId])
-                        targetPos.add(this.NetIdToEntityMap[ent.parentNetId].pos.loc);
-                }
+                let targetPos = this.getWorldPosition(ent);
                 
                 if (ent.pos.teleport)
                     ent.sprite.position.copy(targetPos);
@@ -391,7 +403,7 @@ export class Client {
         this.updateSceneTransitions(this.sceneTransition);
         centerCameraOnPlayer(this, this.currentPlayerEntity);
         animationSystem(this.entityList, this);
-        animationSystem(this.renderList, this);
+        // animationSystem(this.renderList, this);
 
         this.renderer.clear();
         this.renderer.render(this.gameScene, this.gameCamera);
