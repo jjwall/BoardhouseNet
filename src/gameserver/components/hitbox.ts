@@ -2,7 +2,7 @@ import { Mesh, Box3, PlaneGeometry, EdgesGeometry, LineSegments, LineBasicMateri
 import { Entity } from "../serverengine/entity";
 import { PositionComponent } from "./position";
 import { Server } from "../serverengine/server";
-import { getWorldPosition } from "../serverengine/helpers";
+import { getWorldPosition } from "./position";
 
 /**
  * HitBox Component that represents the area that when colliding with
