@@ -61,7 +61,11 @@ export class CastleWorldEngine extends BaseWorldEngine {
         let fish = new Entity();
         fish.pos = setPosition(1400, 250, 3);
         fish.sprite = { url: "./data/textures/fish001.png", pixelRatio: 4 };
-        fish.anim = { sequence: SequenceTypes.IDLE, blob: fishAnim }
+        fish.anim = { sequence: SequenceTypes.IDLE, blob: fishAnim };
+        fish.hitbox = setHitbox(HitboxTypes.FISH_MOUTH, [HitboxTypes.PLAYER_SWORD_ATTACK], 10, 10, 15, -2);
+        fish.hitbox.onHit = (tile, other, manifold) => {
+            console.log("IS THIS GONNA HIT???")
+        }
     
         // this.registerEntity(cottage1, server);
         // this.registerEntity(cottage2, server);

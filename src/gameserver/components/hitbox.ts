@@ -2,6 +2,7 @@ import { Mesh, Box3, PlaneGeometry, EdgesGeometry, LineSegments, LineBasicMateri
 import { Entity } from "../serverengine/entity";
 import { PositionComponent } from "./position";
 import { Server } from "../serverengine/server";
+import { getWorldPosition } from "../serverengine/helpers";
 
 /**
  * HitBox Component that represents the area that when colliding with
@@ -39,34 +40,16 @@ export function setHitbox(collideType: HitboxTypes, collidesWith: HitboxTypes[],
     return hitbox;
 }
 
-/**
- * Helper to set visuals for a hitBox.
- * Used for testing hit collision assumptions.
- * @param entMesh Could be optional. Not every hitBox will have an associated ent mesh.
- * However, would need a way to remove it if added directly to scene.
- * @param hitbox
- * @param color color of hitBox graphic. Defaults to red if no parameter is passed in.
- */
-// export function setHitboxGraphic(server: Server, entMesh: Mesh, hitbox: HitboxComponent, color: string = "#DC143C") : void {
-//     if (server.displayHitBoxes) {
-//         const hitBoxPlaneGeometry = new PlaneGeometry(hitbox.width, hitbox.height);
-//         const hitBoxEdgesGeometry = new EdgesGeometry(hitBoxPlaneGeometry);
-//         const hitBoxMaterial = new LineBasicMaterial({ color: color });
-//         const hitBoxWireframe = new LineSegments(hitBoxEdgesGeometry, hitBoxMaterial);
-//         hitBoxWireframe.position.x += hitbox.offsetX;
-//         hitBoxWireframe.position.y += hitbox.offsetY;
-//         // TODO // Don't rotate hitbox graphic with the parent object, actual hitbox does not rotate.
-//         // -> need to add gyroscope from three.js for this
-//         entMesh.add(hitBoxWireframe);
-//     }
-// }
+export const getHitbox = (e: Entity): Rect => {
+    const globalPos = getWorldPosition(e);
 
-export const getHitbox = (e: Entity): Rect => ({
-    left: e.pos.loc.x + e.hitbox.offsetX - e.hitbox.width / 2,
-    right: e.pos.loc.x + e.hitbox.offsetX + e.hitbox.width / 2,
-    bottom: e.pos.loc.y + e.hitbox.offsetY - e.hitbox.height / 2,
-    top: e.pos.loc.y + e.hitbox.offsetY + e.hitbox.height / 2,
-});
+    return {
+        left: globalPos.x + e.hitbox.offsetX - e.hitbox.width / 2,
+        right: globalPos.x + e.hitbox.offsetX + e.hitbox.width / 2,
+        bottom: globalPos.y + e.hitbox.offsetY - e.hitbox.height / 2,
+        top: globalPos.y + e.hitbox.offsetY + e.hitbox.height / 2,
+    }
+};
 
 export const getManifold = (a: Rect, b: Rect): Manifold => {
     const rect = {
@@ -95,6 +78,7 @@ export const enum HitboxTypes {
     RED_FLOOR_TILE_EXIT_ITEM_SHOP, // castle loading zone
     INN_DOOR, // item shop loading zone
     PLAYER_SWORD_ATTACK,
+    FISH_MOUTH,
 }
 
 export type Rect = {
