@@ -5,22 +5,22 @@ export const zelfinAnim: AnimationSchema = {
     [SequenceTypes.IDLE]: [
         {
             ticks: 40,
-            texture: "./data/textures/zelfin001.png",
+            texture: "./data/textures/zelfin003.png",
             nextFrame: 1
         },
         {
             ticks: 2,
-            texture: "./data/textures/zelfin002.png",
+            texture: "./data/textures/zelfin004.png",
             nextFrame: 2
         },
         {
             ticks: 40,
-            texture: "./data/textures/zelfin003.png",
+            texture: "./data/textures/zelfin001.png",
             nextFrame: 3
         },
         {
             ticks: 2,
-            texture: "./data/textures/zelfin004.png",
+            texture: "./data/textures/zelfin002.png",
             nextFrame: 0
         }
     ],

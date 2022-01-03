@@ -1,5 +1,3 @@
-import { necroBasicAttackAnim } from "../../modules/animations/animationdata/necrobasicattack";
-import { broadcastDisplayPlayerAttackMessage } from "../messaging/sendnetactionmessages";
 import { broadcastCreateEntitiesMessage, broadcastDestroyEntitiesMessage } from "../messaging/sendnetentitymessages";
 import { SequenceTypes } from "../../modules/animations/sequencetypes";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
@@ -31,19 +29,25 @@ export function basicSwordAttack(attackingEnt: Entity, worldEngine: BaseWorldEng
 
     swordAttack.sprite = { url: "./data/textures/basic_sword_attack001.png", pixelRatio: 8 };
     swordAttack.anim = { sequence: SequenceTypes.ATTACK, blob: swordAnim };
+
+    // Set parent Since we're setting position relative to attacking ent.
     swordAttack.parent = attackingEnt;
 
     // Set attack sequence. Idle will be set in movement system after stutter ticks reaches 0.
     attackingEnt.anim.sequence = SequenceTypes.ATTACK
     worldEngine.server.entityChangeList.push(attackingEnt);
 
+    // Action's duration.
     swordAttack.timer = setTimer(15, () => {
-        // attackingEnt.anim.sequence = SequenceTypes.IDLE
-        // worldEngine.server.entityChangeList.push(attackingEnt);
         broadcastDestroyEntitiesMessage([swordAttack], worldEngine.server, worldEngine);
+
+        // Don't interrupt walking animation, otherwise set IDLE once action is ended.
+        if (attackingEnt.anim.sequence !== SequenceTypes.WALK) {
+            attackingEnt.anim.sequence = SequenceTypes.IDLE;
+            worldEngine.server.entityChangeList.push(attackingEnt);
+        }
     });
+
     worldEngine.registerEntity(swordAttack, worldEngine.server);
     broadcastCreateEntitiesMessage([swordAttack], worldEngine.server, worldEngine.worldType);
-
-    // broadcast update message here to display player attack animation?
 }

@@ -15,7 +15,7 @@ export function movementSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWor
         if (ent.movement && ent.pos && ent.vel) {
             // Set animation sequences.
             if (ent.movement.stutterTicks > 0)
-                updatePlayerEnt = true // unnecessary
+                ent.anim.sequence = SequenceTypes.ATTACK
             else if (ent.movement.up || ent.movement.down || ent.movement.left || ent.movement.right)
                 ent.anim.sequence = SequenceTypes.WALK;
             else
