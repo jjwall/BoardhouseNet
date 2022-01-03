@@ -38,12 +38,12 @@ export const zelfinAnim: AnimationSchema = {
     ],
     [SequenceTypes.ATTACK]: [
         {
-            ticks: 15,
+            ticks: 10,
             texture: "./data/textures/zelfin007.png",
             nextFrame: 1
         },
         {
-            ticks: 15,
+            ticks: 10,
             texture: "./data/textures/zelfin008.png",
             nextFrame: 1
         }

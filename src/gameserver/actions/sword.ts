@@ -32,7 +32,14 @@ export function basicSwordAttack(attackingEnt: Entity, worldEngine: BaseWorldEng
     swordAttack.sprite = { url: "./data/textures/basic_sword_attack001.png", pixelRatio: 8 };
     swordAttack.anim = { sequence: SequenceTypes.ATTACK, blob: swordAnim };
     swordAttack.parent = attackingEnt;
+
+    // Set attack sequence. Idle will be set in movement system after stutter ticks reaches 0.
+    attackingEnt.anim.sequence = SequenceTypes.ATTACK
+    worldEngine.server.entityChangeList.push(attackingEnt);
+
     swordAttack.timer = setTimer(15, () => {
+        // attackingEnt.anim.sequence = SequenceTypes.IDLE
+        // worldEngine.server.entityChangeList.push(attackingEnt);
         broadcastDestroyEntitiesMessage([swordAttack], worldEngine.server, worldEngine);
     });
     worldEngine.registerEntity(swordAttack, worldEngine.server);

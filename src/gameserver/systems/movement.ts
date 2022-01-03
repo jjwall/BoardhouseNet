@@ -13,18 +13,13 @@ export function movementSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWor
     ents.forEach(ent => {
         let updatePlayerEnt = false;
         if (ent.movement && ent.pos && ent.vel) {
-            // Handle animations.
-            switch (ent.player.class) {
-                case PlayerClassTypes.MAGICIAN:
-                    if (ent.movement.stutterTicks > 0) {
-                        ent.anim.sequence = SequenceTypes.ATTACK;
-                    }
-                    else if (ent.movement.up || ent.movement.down || ent.movement.left || ent.movement.right)
-                        ent.anim.sequence = SequenceTypes.WALK;
-                    else
-                        ent.anim.sequence = SequenceTypes.IDLE;
-                    break;
-            }
+            // Set animation sequences.
+            if (ent.movement.stutterTicks > 0)
+                updatePlayerEnt = true // unnecessary
+            else if (ent.movement.up || ent.movement.down || ent.movement.left || ent.movement.right)
+                ent.anim.sequence = SequenceTypes.WALK;
+            else
+                ent.anim.sequence = SequenceTypes.IDLE;
 
             // Process stutter.
             if (ent.movement.stutterTicks > 0) {

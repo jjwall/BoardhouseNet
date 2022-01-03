@@ -9,6 +9,7 @@ import { SequenceTypes } from "../../modules/animations/sequencetypes";
     blob: AnimationSchema;
     ticks: number;
     frame: number;
+    changingSequence: boolean;
 }
 
 /**
@@ -22,6 +23,7 @@ export function setAnimation(startingSequence: SequenceTypes, animBlob: Animatio
         blob: animBlob,
         ticks: animBlob[startingSequence][0].ticks,
         frame: 0,
+        changingSequence: false
     }
 }
 
@@ -33,6 +35,7 @@ export function setAnimation(startingSequence: SequenceTypes, animBlob: Animatio
  */
 export function changeSequence(sequence: SequenceTypes, anim: AnimationComponent, frame: number = 0) : AnimationComponent {
     if (anim.sequence !== sequence) {
+        anim.changingSequence = true;
         anim.sequence = sequence;
         anim.frame = frame;
     }

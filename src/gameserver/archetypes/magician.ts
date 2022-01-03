@@ -22,8 +22,8 @@ export function createMagician(server: Server, worldEngine: BaseWorldEngine, cli
     magician.anim = { sequence: SequenceTypes.IDLE, blob: zelfinAnim };
     magician.movement = setMovement();
     magician.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 50, 50, 0, -50);
-    magician.skillSlots = new SkillSlotsComponent()
-    magician.skillSlots.setSkillOne(initializeSkill(6, 20, basicSwordAttack, undefined))
+    magician.skillSlots = new SkillSlotsComponent();
+    magician.skillSlots.setSkillOne(initializeSkill(6, 20, basicSwordAttack, undefined));
 
     worldEngine.registerEntity(magician, server);
 
