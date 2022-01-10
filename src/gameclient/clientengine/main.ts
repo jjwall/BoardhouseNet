@@ -124,21 +124,24 @@ function main(canvasContainer: HTMLElement) {
         e.preventDefault();
     };
 
-    let fps: number = 0;
-    let totalTime: number = 0;
-    let currentTime: number = 0;
+    const fps = 144;
+    // let fps: number = 0;
+    // let totalTime: number = 0;
+    // let currentTime: number = 0;
 
     // set up event listeners
     setEventListeners(renderer.domElement, client);
 
     // render update loop
     function renderLoop(timeStamp: number) {
-        requestAnimationFrame(renderLoop);
-        currentTime = timeStamp - totalTime;
-        totalTime = timeStamp;
-        fps = 1 / (currentTime / 1000);
+        setTimeout(function() {
+            requestAnimationFrame(renderLoop);
+            // currentTime = timeStamp - totalTime;
+            // totalTime = timeStamp;
+            // fps = 1 / (currentTime / 1000);
 
-        client.render();
+            client.render();
+        }, 1000 / fps);
     }
 
     // start the render loop
