@@ -20,4 +20,5 @@ export class Entity {
     movement: MovementComponent;
     timer: TimerComponent;
     skillSlots: SkillSlotsComponent;
+    actionReticle: Entity;
 }

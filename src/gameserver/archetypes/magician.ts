@@ -12,6 +12,7 @@ import { necroAnim } from "../../modules/animations/animationdata/necro";
 import { zelfinAnim } from "../../modules/animations/animationdata/zelfin"
 import { initializeSkill, SkillSlotsComponent } from "../components/skillslots";
 import { basicSwordAttack } from "../actions/sword";
+import { fireballPress, fireballRelease } from "../actions/fireball";
 
 export function createMagician(server: Server, worldEngine: BaseWorldEngine, clientId: string, pos: PositionComponent): Entity {
     let magician = new Entity();
@@ -24,6 +25,7 @@ export function createMagician(server: Server, worldEngine: BaseWorldEngine, cli
     magician.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 50, 50, 0, -50);
     magician.skillSlots = new SkillSlotsComponent();
     magician.skillSlots.setSkillOne(initializeSkill(6, 20, basicSwordAttack, undefined));
+    magician.skillSlots.setSkillTwo(initializeSkill(0, 0, fireballPress, fireballRelease));
 
     worldEngine.registerEntity(magician, server);
 

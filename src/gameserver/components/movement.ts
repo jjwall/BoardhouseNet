@@ -1,13 +1,18 @@
+import { BaseWorldEngine } from "../serverengine/baseworldengine";
+import { Entity } from "../serverengine/entity";
+
 /**
  * Movement component.
  */
  export interface MovementComponent {
-    attackCooldownTicks: number;
-    stutterTicks: number;
     left: boolean;
     right: boolean;
     up: boolean;
     down: boolean;
+    stutterTicks: number;
+    actionOverride: ((entPerformingAction: Entity, worldEngine: BaseWorldEngine) => any) | undefined;
+    /** @deprecated I think? */
+    attackCooldownTicks: number;
 }
 
 /**
@@ -15,11 +20,12 @@
  */
 export function setMovement(): MovementComponent {
     return {
-        attackCooldownTicks: 0,
-        stutterTicks: 0,
         left: false,
         right: false,
         up: false,
         down: false,
+        stutterTicks: 0,
+        actionOverride: undefined,
+        attackCooldownTicks: 0,
     };
 }
