@@ -1,6 +1,7 @@
 import { Vector3 } from "three";
 import { SequenceTypes } from "../../modules/animations/sequencetypes";
 import { getWorldPosition, setPosition } from "../components/position";
+import { setTimer } from "../components/timer";
 import { setVelocity } from "../components/velocity";
 import { broadcastCreateEntitiesMessage, broadcastDestroyEntitiesMessage } from "../messaging/sendnetentitymessages";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
@@ -63,18 +64,41 @@ export function fireballHold(attackingEnt: Entity, worldEngine: BaseWorldEngine)
     }
 }
 
+// Can spam - fix with cooldown.
 export function fireballRelease(attackingEnt: Entity, worldEngine: BaseWorldEngine) {
-    console.log("BLAM! FIREBALL!");
-    // get direction from reticle to attacking ent...
-    if (attackingEnt.movement) {
-        attackingEnt.movement.actionOverride = undefined;
-    }
-
-    // if (attackingEnt?.movement?.actionOverride)
-
     if (attackingEnt?.actionReticle) {
+        // Get angle of reticle to player char.
+        const reticleWorldPos = getWorldPosition(attackingEnt.actionReticle);
+        const angle = Math.atan2(reticleWorldPos.y - attackingEnt.pos.loc.y, reticleWorldPos.x - attackingEnt.pos.loc.x);
+        const fireballDirection = new Vector3(Math.cos(angle), Math.sin(angle), 5);
+
+        // Create fireball and launch in direction of desired angle.
+        let fireball = new Entity();
+        fireball.pos = setPosition(attackingEnt.pos.loc.x, attackingEnt.pos.loc.y, 5);
+        fireball.sprite = { url: "./data/textures/standardbullet.png", pixelRatio: 4 };
+        fireball.vel = setVelocity(15, 0);
+        fireball.vel.positional.add(fireballDirection.multiplyScalar(fireball.vel.acceleration));
+        fireball.timer = setTimer(100, () => {
+            broadcastDestroyEntitiesMessage([fireball], worldEngine.server, worldEngine);
+        });
+
+        // Register fireball ent and broadcast creation event.
+        worldEngine.registerEntity(fireball, worldEngine.server);
+        broadcastCreateEntitiesMessage([fireball], worldEngine.server, worldEngine.worldType);
+
+        // Destroy reticle and free up reference.
         broadcastDestroyEntitiesMessage([attackingEnt.actionReticle], worldEngine.server, worldEngine);
         attackingEnt.actionReticle.parent = undefined;
         attackingEnt.actionReticle = undefined;
+    }
+
+    // Set character animation back to idle once Fireball has been cast.
+    if (attackingEnt.anim) {
+        attackingEnt.anim.sequence = SequenceTypes.IDLE;
+    }
+
+    // Free up reference to action override so player can resume movement.
+    if (attackingEnt?.movement?.actionOverride) {
+        attackingEnt.movement.actionOverride = undefined;
     }
 }

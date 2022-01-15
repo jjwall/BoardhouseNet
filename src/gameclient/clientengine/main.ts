@@ -71,6 +71,7 @@ const config: ClientConfig = {
         "./data/textures/basic_sword_attack004.png",
         "./data/textures/fish001.png",
         "./data/textures/fish002.png",
+        "./data/textures/standardbullet.png"
     ],
     audioUrls: [
         "./data/audio/Pale_Blue.mp3",
