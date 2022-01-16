@@ -1,11 +1,12 @@
-import { Vector3 } from "three";
+import { broadcastCreateEntitiesMessage, broadcastDestroyEntitiesMessage } from "../messaging/sendnetentitymessages";
+import { actionReticleAnim } from "../../modules/animations/animationdata/actionreticle";
 import { SequenceTypes } from "../../modules/animations/sequencetypes";
 import { getWorldPosition, setPosition } from "../components/position";
-import { setTimer } from "../components/timer";
-import { setVelocity } from "../components/velocity";
-import { broadcastCreateEntitiesMessage, broadcastDestroyEntitiesMessage } from "../messaging/sendnetentitymessages";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
+import { setVelocity } from "../components/velocity";
 import { Entity } from "../serverengine/entity";
+import { setTimer } from "../components/timer";
+import { Vector3 } from "three";
 
 export function fireballPress(attackingEnt: Entity, worldEngine: BaseWorldEngine) {
     if (attackingEnt.movement) {
@@ -28,8 +29,9 @@ export function fireballHold(attackingEnt: Entity, worldEngine: BaseWorldEngine)
         else {
             offsetPosX = 150;
         }
-        magicReticle.pos = setPosition(offsetPosX, offsetPosY, 4, new Vector3(1, -1, 0));
-        magicReticle.sprite = { url: "./data/textures/magic_circle.png", pixelRatio: 0.25 };
+        magicReticle.pos = setPosition(offsetPosX, offsetPosY, 5);
+        magicReticle.sprite = { url: "./data/textures/action_reticle001.png", pixelRatio: 8 };
+        magicReticle.anim = { sequence: SequenceTypes.IDLE, blob: actionReticleAnim };
 
         // Set parent Since we're setting position relative to attacking ent.
         magicReticle.parent = attackingEnt;
