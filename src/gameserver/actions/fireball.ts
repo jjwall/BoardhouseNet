@@ -16,10 +16,13 @@ export function fireballPress(attackingEnt: Entity, worldEngine: BaseWorldEngine
 
 export function fireballHold(attackingEnt: Entity, worldEngine: BaseWorldEngine) {
     if (attackingEnt.anim) {
-        attackingEnt.anim.sequence = SequenceTypes.ATTACK;
+        attackingEnt.anim.sequence = SequenceTypes.ACTION_HOLD;
     }
 
     if (!attackingEnt.actionReticle) {
+        // if if (attackingEnt.movement) { 
+            // start directional start
+            // }
         let magicReticle = new Entity();
         let offsetPosX = 0;
         let offsetPosY = 0;

@@ -47,5 +47,12 @@ export const zelfinAnim: AnimationSchema = {
             texture: "./data/textures/zelfin008.png",
             nextFrame: 1
         }
-    ]
+    ],
+    [SequenceTypes.ACTION_HOLD]: [
+        {
+            ticks: 50,
+            texture: "./data/textures/zelfin007.png",
+            nextFrame: 0
+        },
+    ],
 }
