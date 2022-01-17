@@ -20,19 +20,57 @@ export function fireballHold(attackingEnt: Entity, worldEngine: BaseWorldEngine)
     }
 
     if (!attackingEnt.actionReticle) {
-        // if if (attackingEnt.movement) { 
-            // start directional start
-            // }
+        const offsetPosX = 150;
+        const offsetPosY = 150;
+        let unitCircleCoordinateX = 0;
+        let unitCircleCoordinateY = 0;
+
+        if (attackingEnt.movement) {
+            if (attackingEnt.movement.right && attackingEnt.movement.up) {
+                unitCircleCoordinateX = Math.sqrt(2) / 2;
+                unitCircleCoordinateY = Math.sqrt(2) / 2;
+            }
+            else if (attackingEnt.movement.right && attackingEnt.movement.down) {
+                unitCircleCoordinateX = Math.sqrt(2) / 2;
+                unitCircleCoordinateY = -Math.sqrt(2) / 2;
+            }
+            else if (attackingEnt.movement.left && attackingEnt.movement.down) {
+                unitCircleCoordinateX = -Math.sqrt(2) / 2;
+                unitCircleCoordinateY = -Math.sqrt(2) / 2;
+            }
+            else if (attackingEnt.movement.left && attackingEnt.movement.up) {
+                unitCircleCoordinateX = -Math.sqrt(2) / 2;
+                unitCircleCoordinateY = Math.sqrt(2) / 2;
+            }
+            else if (attackingEnt.movement.up) {
+                unitCircleCoordinateX = 0;
+                unitCircleCoordinateY = 1;
+            }
+            else if (attackingEnt.movement.right) {
+                unitCircleCoordinateX = 1;
+                unitCircleCoordinateY = 0;
+            }
+            else if (attackingEnt.movement.down) {
+                unitCircleCoordinateX = 0;
+                unitCircleCoordinateY = -1;
+            }
+            else if (attackingEnt.movement.left) {
+                unitCircleCoordinateX = -1;
+                unitCircleCoordinateY = 0;
+            }
+            else {
+                if (attackingEnt.pos.flipX) {
+                    unitCircleCoordinateX = -1;
+                    unitCircleCoordinateY = 0;
+                }
+                else {
+                    unitCircleCoordinateX = 1;
+                    unitCircleCoordinateY = 0;
+                }
+            }
+        }
         let magicReticle = new Entity();
-        let offsetPosX = 0;
-        let offsetPosY = 0;
-        if (attackingEnt.pos.flipX) {
-            offsetPosX = -150;
-        }
-        else {
-            offsetPosX = 150;
-        }
-        magicReticle.pos = setPosition(offsetPosX, offsetPosY, 5);
+        magicReticle.pos = setPosition(offsetPosX * unitCircleCoordinateX, offsetPosY * unitCircleCoordinateY, 5);
         magicReticle.sprite = { url: "./data/textures/action_reticle001.png", pixelRatio: 8 };
         magicReticle.anim = { sequence: SequenceTypes.IDLE, blob: actionReticleAnim };
 
@@ -163,10 +201,10 @@ export function fireballHold(attackingEnt: Entity, worldEngine: BaseWorldEngine)
 
             else if (attackingEnt.movement.up) {
                 if (angle >= 0) {
-                    if (angle >= Math.PI / 2) {
+                    if (angle > Math.PI / 2) {
                         angle -= Math.PI / 16;
                     }
-                    else if (angle < Math.PI / 2) {
+                    else if (angle <= Math.PI / 2) {
                         angle += Math.PI / 16;
                     }
                 }
