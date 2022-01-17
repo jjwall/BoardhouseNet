@@ -1,6 +1,6 @@
 import { broadcastCreateEntitiesMessage, broadcastDestroyEntitiesMessage } from "../messaging/sendnetentitymessages";
-import { PositionComponent } from "src/gameclient/components/position";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
+import { PositionComponent } from "../components/position";
 import { Entity } from "../serverengine/entity";
 import { setTimer } from "../components/timer";
 

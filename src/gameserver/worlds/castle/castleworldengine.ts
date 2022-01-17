@@ -15,6 +15,7 @@ import { velocitySystem } from "../../systems/velocity";
 import { PlayerStates } from "../../components/player";
 import { setMovement } from "../../components/movement";
 import { movementSystem } from "../../systems/movement";
+import { createGoblin } from "../../archetypes/goblin";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
@@ -66,6 +67,9 @@ export class CastleWorldEngine extends BaseWorldEngine {
         fish.hitbox.onHit = (tile, other, manifold) => {
             console.log("IS THIS GONNA HIT???")
         }
+
+        const goblinPosition = setPosition(-300, 100, 4);
+        createGoblin(this, goblinPosition);
     
         // this.registerEntity(cottage1, server);
         // this.registerEntity(cottage2, server);
