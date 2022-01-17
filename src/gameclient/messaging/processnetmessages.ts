@@ -40,6 +40,9 @@ function processNetEntityMessage(message: NetEntityMessage, client: Client) {
     }
 }
 
+/**
+ * @deprecated use processNetEntityMessage instead
+ */
 function processNetActionMessage(message: NetActionMessage, client: Client) {
     switch (message.eventType) {
         case NetActionEventTypes.PLAYER_ATTACK_ANIM_DISPLAY:

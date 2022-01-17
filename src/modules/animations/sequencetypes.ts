@@ -6,4 +6,5 @@
     WALK = "WALK",
     RUN = "RUN",
     ATTACK = "ATTACK",
+    ACTION_HOLD = "ACTION_HOLD",
 }

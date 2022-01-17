@@ -1,18 +1,24 @@
+import { SkillSlotsComponent } from "../components/skillslots";
 import { AnimationComponent } from "../components/animation";
 import { PositionComponent } from "../components/position";
 import { VelocityComponent } from "../components/velocity";
-import { ControlComponent} from "../components/control";
+import { MovementComponent} from "../components/movement";
 import { HitboxComponent } from "../components/hitbox";
 import { PlayerComponent } from "../components/player";
 import { SpriteComponent } from "../components/sprite";
+import { TimerComponent } from "../components/timer";
 
 export class Entity {
     netId: number;
+    parent?: Entity;
     player: PlayerComponent;
     pos: PositionComponent;
     vel: VelocityComponent;
     sprite: SpriteComponent;
     anim: AnimationComponent;
     hitbox: HitboxComponent;
-    control: ControlComponent;
+    movement: MovementComponent;
+    timer: TimerComponent;
+    skillSlots: SkillSlotsComponent;
+    actionReticle: Entity;
 }

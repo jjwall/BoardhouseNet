@@ -1,5 +1,6 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
     target: 'web',
@@ -10,8 +11,15 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: 'ts-loader',
-                exclude: /node_modules/
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            transpileOnly: true,
+                        },
+                    },
+                ]
             }
         ]
     },
@@ -23,7 +31,8 @@ module.exports = {
                 { from: './data', to: './../data' },
                 { from: './node_modules/three/build/three.min.js' }
             ]
-        })
+        }),
+        new ForkTsCheckerWebpackPlugin()
     ],
     resolve: {
         extensions: ['.tsx', '.ts', '.js']

@@ -10,7 +10,10 @@ export type ClientInputMessage =
     ClientMessageUpKeyUp |
     ClientMessageDownKeyDown |
     ClientMessageDownKeyUp |
-    ClientMessageAttack
+    ClientMessageSkillOnePress |
+    ClientMessageSkillOneRelease |
+    ClientMessageSkillTwoPress |
+    ClientMessageSkillTwoRelease
 ;
 
 // Left movement key:
@@ -57,15 +60,35 @@ export interface ClientMessageDownKeyUp extends Message {
     data: InputData;
 }
 
-// Attack key:
-export interface ClientMessageAttack extends Message {
-    inputType: ClientInputTypes.ATTACK;
+// Skill inputs (queried inputs):
+export interface ClientMessageSkillOnePress extends Message {
+    inputType: ClientInputTypes.SKILL_ONE_PRESS;
+    data: InputData;
+}
+
+export interface ClientMessageSkillOneRelease extends Message {
+    inputType: ClientInputTypes.SKILL_ONE_RELEASE;
+    data: InputData;
+}
+
+export interface ClientMessageSkillTwoPress extends Message {
+    inputType: ClientInputTypes.SKILL_TWO_PRESS;
+    data: InputData;
+}
+
+export interface ClientMessageSkillTwoRelease extends Message {
+    inputType: ClientInputTypes.SKILL_TWO_RELEASE;
     data: InputData;
 }
 
 // Client Input Types:
 export enum ClientInputTypes {
-    ATTACK = "ATTACK",
+    // Queried inputs:
+    SKILL_ONE_PRESS = "SKILL_ONE_PRESS",
+    SKILL_TWO_PRESS = "SKILL_TWO_PRESS",
+    SKILL_ONE_RELEASE = "SKILL_ONE_RELEASE",
+    SKILL_TWO_RELEASE = "SKILL_TWO_RELEASE",
+    // Immediate inputs:
     LEFT_KEY_DOWN = "LEFT_KEY_DOWN",
     LEFT_KEY_UP = "LEFT_KEY_UP",
     RIGHT_KEY_DOWN = "RIGHT_KEY_DOWN",

@@ -54,9 +54,10 @@ export class Client {
         this.hostName = config.hostName;
         this.keyLeftIsDown = false;
         this.keyRightIsDown = false;
-        this.keySpaceIsDown = false;
         this.keyUpIsDown = false;
         this.keyDownIsDown = false;
+        this.keyZIsDown = false;
+        this.keyXIsDown = false;
 
         // ...
         // vvv regular engine stuff vvv
@@ -81,6 +82,9 @@ export class Client {
     public uiCamera: Camera;
     public entityList: ClientEntity[] = [];
     public NetIdToEntityMap: NetIdToEntityMap = {};
+    /**
+     * @deprecated use entities instead
+     */
     public renderList: ClientRender[] = [];
     public sceneTransition: SceneTransition = undefined;
     public sceneTransitionDone: boolean = false;
@@ -97,7 +101,8 @@ export class Client {
     keyRightIsDown: boolean;
     keyUpIsDown: boolean;
     keyDownIsDown: boolean;
-    keySpaceIsDown: boolean;
+    keyZIsDown: boolean;
+    keyXIsDown: boolean;
 
     /// ^^^ old configs ^^^
 
@@ -267,10 +272,28 @@ export class Client {
         }
     }
 
+    private getWorldPosition(ent: Readonly<ClientEntity>): Vector3 {
+        const pos = new Vector3(ent.pos.loc.x, ent.pos.loc.y, ent.pos.loc.z);
+
+        const getParent = (e: Readonly<ClientEntity>) => {
+            if (!e.parentNetId) return null;
+            return this.NetIdToEntityMap[e.parentNetId];
+        };
+    
+        let ancestor = getParent(ent);
+
+        while (ancestor) {
+            pos.add(ancestor.pos.loc);
+            ancestor = getParent(ancestor);
+        }
+    
+        return pos;
+    }
+
     private updateClientEntPositions(ents: ReadonlyArray<ClientEntity>) {
         ents.forEach(ent => {
             if (ent.sprite && ent.pos) {
-                const targetPos = new Vector3(ent.pos.loc.x, ent.pos.loc.y, ent.pos.loc.z);
+                let targetPos = this.getWorldPosition(ent);
                 
                 if (ent.pos.teleport)
                     ent.sprite.position.copy(targetPos);
@@ -291,10 +314,20 @@ export class Client {
                 }
             
                 ent.sprite.rotation.set(0, 0, Math.atan2(ent.pos.dir.y, ent.pos.dir.x));
+
+                // Make sure child is now lerping if parent is.
+                if (ent.parentNetId) {
+                    if (this.NetIdToEntityMap[ent.parentNetId]) {
+                        ent.pos.teleport = this.NetIdToEntityMap[ent.parentNetId].pos.teleport
+                    }
+                }
             }
         });
     }
 
+    /**
+     * @deprecated use entities instead
+     */
     private updateClientRenders(renders: ReadonlyArray<ClientRender>) {
         let newRenderList: ClientRender[] = [];
         let rendersToDiscard: ClientRender[] = [];
@@ -304,8 +337,10 @@ export class Client {
                 if (render.sprite && render.pos) {
                     const targetPos = new Vector3(render.pos.loc.x, render.pos.loc.y, render.pos.loc.z);
                     
-                    if (render.pos.teleport)
+                    if (render.pos.teleport) {
                         render.sprite.position.copy(targetPos);
+                        render.pos.teleport = false
+                    }
                     else
                         render.sprite.position.lerp(targetPos, 0.2);
                     
@@ -357,18 +392,18 @@ export class Client {
                 if (transition.sprite)
                     this.gameScene.remove(transition.sprite);
 
-            transition = undefined;
+                transition = undefined;
             }
         }
     }
 
     public render() : void {
         this.updateClientEntPositions(this.entityList);
-        this.updateClientRenders(this.renderList);
+        // this.updateClientRenders(this.renderList);
         this.updateSceneTransitions(this.sceneTransition);
         centerCameraOnPlayer(this, this.currentPlayerEntity);
         animationSystem(this.entityList, this);
-        animationSystem(this.renderList, this);
+        // animationSystem(this.renderList, this);
 
         this.renderer.clear();
         this.renderer.render(this.gameScene, this.gameCamera);

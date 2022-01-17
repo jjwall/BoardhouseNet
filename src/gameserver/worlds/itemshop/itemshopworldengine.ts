@@ -1,22 +1,24 @@
 import { kenneyItemShop2 } from "../../../modules/tilemapping/tilemaps/kenneyitemshop2";
 import { TileData, WorldLevelData } from "../../../packets/data/worldleveldata";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
+import { necroAnim } from "../../../modules/animations/animationdata/necro";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { PositionComponent, setPosition } from "../../components/position";
+import { SequenceTypes } from "../../../modules/animations/sequencetypes";
 import { transitionPlayerToAnotherWorld } from "../../messaging/helpers";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
 import { WorldTypes } from "../../../packets/enums/worldtypes";
 import { collisionSystem } from "../../systems/collision";
 import { worldEdgeSystem } from "../../systems/worldedge";
 import { velocitySystem } from "../../systems/velocity";
-import { setControls } from "../../components/control";
-import { controlSystem } from "../../systems/control";
-import { PlayerStates } from "../../components/player"
+import { PlayerStates } from "../../components/player";
+import { setMovement } from "../../components/movement";
+import { movementSystem } from "../../systems/movement";
+import { skillSlotsSystem } from "../../systems/skillslots";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
-import { SequenceTypes } from "../../../modules/animations/sequencetypes";
-import { necroAnim } from "../../../modules/animations/animationdata/necro";
+import { timerSystem } from "../../systems/timer";
 
 /**
  * World engine that handles updating of all world-related systems.
@@ -30,18 +32,20 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
         // let rootComponent = renderGameUi(this.uiScene, this.rootWidget);
 
         // Register systems.
-        this.registerSystem(controlSystem, "control");
+        this.registerSystem(movementSystem, "movement");
         this.registerSystem(playerSystem, "player");
         this.registerSystem(velocitySystem);
         this.registerSystem(collisionSystem);
         this.registerSystem(worldEdgeSystem);
+        this.registerSystem(skillSlotsSystem); // comment out to test no skills in item shop?
+        this.registerSystem(timerSystem);
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 
         // TODO: Make it where you don't have to do this, delay on entity creation breaks stuff
         // I guess just create other ents first
         let ent = new Entity();
-        ent.control = setControls();
+        ent.movement = setMovement();
         this.registerEntity(ent, server);
 
         // let necro = new Entity();

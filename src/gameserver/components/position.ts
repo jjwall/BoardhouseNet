@@ -1,4 +1,5 @@
 import { Vector3 } from "three";
+import { Entity } from "../serverengine/entity";
 
 /**
  * Position component.
@@ -35,4 +36,27 @@ export function setPosition(xPos: number, yPos: number, zPos: number, startingDi
         position.wrap = wrap;
 
     return position;
+}
+
+/**
+ * Returns world position location.
+ * @param ent 
+ * @returns 
+ */
+export function getWorldPosition(ent: Readonly<Entity>): Vector3 {
+    const pos = new Vector3(ent.pos.loc.x, ent.pos.loc.y, ent.pos.loc.z);
+
+    const getParent = (e: Readonly<Entity>) => {
+        if (!e.parent) return null;
+        return e.parent;
+    };
+
+    let ancestor = getParent(ent);
+
+    while (ancestor) {
+        pos.add(ancestor.pos.loc);
+        ancestor = getParent(ancestor);
+    }
+
+    return pos;
 }

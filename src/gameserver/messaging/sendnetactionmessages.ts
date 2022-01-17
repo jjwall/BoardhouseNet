@@ -9,7 +9,26 @@ import { Server } from "../serverengine/server";
 // i.e. look at the attack in core systems, all that could be in a method called "sendPlayerAttackNetEventMessage" or something...
 // This function assumes entity data is needed to be sent for generic "sendNetEventMessage" method - in the future we may want 
 // more functionality, for example one net event might be "SwitchToEndGameScreen" or something and no ent data would need to be sent
-export function broadcastDisplayPlayerAttackMessage(ents: Entity[], server: Server, worldType: WorldTypes) {
+
+
+// New TODO: should refactor this to be named "broadcastRenderPlayerSkillMessage"
+// -> clean up Message interface name and data
+// -> obviously shouldn't have 100 parameters here
+// -> can refer to idea for param obj from basic action
+// -> since this method is becoming the original idea for "generically creating an action"
+// -> method in /actions directory will always be calling this
+// Reconsider sening list of Ents here
+// -> Do we need ents?
+// -> Can we just use special render data instead? Does it matter?
+
+// UPDATE: This method and all of net action messaging systems are likely deprecated in lieu of using
+// existing entity methods and ent data, instead of a brand new set of "client render" data
+// This method was once consumed in the basicsSwordAttack method like this:
+// broadcastDisplayPlayerAttackMessage(attackingEnt, swordRenders, 40, true, offsetPosX, offsetPosY, worldEngine.server, worldEngine.worldType);
+/**
+ * @deprecated use broadcastCreateEntitiesMessage instead
+ */
+export function broadcastDisplayPlayerAttackMessage(entDoingAction: Entity, ents: Entity[], renderDuration: number, renderTracksCaster: boolean, offsetPosX: number, offsetPosY: number, server: Server, worldType: WorldTypes) {
     // NetMessagePlayerAttackDisplay...
 
     const message: NetMessagePlayerAttackDisplay = {
@@ -18,6 +37,11 @@ export function broadcastDisplayPlayerAttackMessage(ents: Entity[], server: Serv
         data: {
             ents: [],
             worldType: worldType,
+            entDoingActionNetId: entDoingAction.netId,
+            renderDuration: renderDuration,
+            renderTracksCaster: renderTracksCaster,
+            offsetPosX: offsetPosX,
+            offsetPosY: offsetPosY,
         }
     }
 

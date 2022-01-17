@@ -3,18 +3,22 @@ import { TileData, WorldLevelData } from "../../../packets/data/worldleveldata";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { PositionComponent, setPosition } from "../../components/position";
+import { SequenceTypes } from "../../../modules/animations/sequencetypes";
+import { fishAnim } from "../../../modules/animations/animationdata/fish";
 import { transitionPlayerToAnotherWorld } from "../../messaging/helpers";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
 import { WorldTypes } from "../../../packets/enums/worldtypes";
+import { skillSlotsSystem } from "../../systems/skillslots";
 import { worldEdgeSystem } from "../../systems/worldedge";
 import { collisionSystem } from "../../systems/collision";
 import { velocitySystem } from "../../systems/velocity";
 import { PlayerStates } from "../../components/player";
-import { setControls } from "../../components/control";
-import { controlSystem } from "../../systems/control";
+import { setMovement } from "../../components/movement";
+import { movementSystem } from "../../systems/movement";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
+import { timerSystem } from "../../systems/timer";
 import { Vector3 } from "three";
 
 /**
@@ -29,18 +33,20 @@ export class CastleWorldEngine extends BaseWorldEngine {
         // let rootComponent = renderGameUi(this.uiScene, this.rootWidget);
 
         // Register systems.
-        this.registerSystem(controlSystem, "control");
+        this.registerSystem(movementSystem, "movement");
         this.registerSystem(playerSystem, "player");
         this.registerSystem(velocitySystem);
         this.registerSystem(collisionSystem);
         this.registerSystem(worldEdgeSystem);
+        this.registerSystem(skillSlotsSystem);
+        this.registerSystem(timerSystem);
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 
         // TODO: Make it where you don't have to do this, delay on entity creation breaks stuff
         // I guess just create other ents first
         let ent = new Entity();
-        ent.control = setControls();
+        ent.movement = setMovement();
         this.registerEntity(ent, server);
 
         let cottage1 = new Entity();
@@ -52,10 +58,19 @@ export class CastleWorldEngine extends BaseWorldEngine {
         let magicCircle = new Entity();
         magicCircle.pos = setPosition(450, 250, 3, new Vector3(1, -1, 0));
         magicCircle.sprite = { url: "./data/textures/magic_circle.png", pixelRatio: 1 };
+        let fish = new Entity();
+        fish.pos = setPosition(1400, 250, 3);
+        fish.sprite = { url: "./data/textures/fish001.png", pixelRatio: 4 };
+        fish.anim = { sequence: SequenceTypes.IDLE, blob: fishAnim };
+        fish.hitbox = setHitbox(HitboxTypes.FISH_MOUTH, [HitboxTypes.PLAYER_SWORD_ATTACK], 10, 10, 15, -2);
+        fish.hitbox.onHit = (tile, other, manifold) => {
+            console.log("IS THIS GONNA HIT???")
+        }
     
         // this.registerEntity(cottage1, server);
         // this.registerEntity(cottage2, server);
         this.registerEntity(magicCircle, server);
+        this.registerEntity(fish, server);
 
         this.worldLevelData = this.registerWorldLevelData(kenneyFantasy2, "./data/textures/colored_packed.png");
     }

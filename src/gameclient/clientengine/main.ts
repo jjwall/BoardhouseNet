@@ -36,7 +36,7 @@ const config: ClientConfig = {
     screenHeight: 720,
     // gameTicksPerSecond: 60,
     // displayFPS: true,
-    displayHitBoxes: true,
+    displayHitBoxes: false,
     // globalErrorHandling: true,
     fontUrls: [
         "./data/fonts/helvetiker_regular_typeface.json"
@@ -65,6 +65,16 @@ const config: ClientConfig = {
         "./data/textures/zelfin006.png",
         "./data/textures/zelfin007.png",
         "./data/textures/zelfin008.png",
+        "./data/textures/basic_sword_attack001.png",
+        "./data/textures/basic_sword_attack002.png",
+        "./data/textures/basic_sword_attack003.png",
+        "./data/textures/basic_sword_attack004.png",
+        "./data/textures/fish001.png",
+        "./data/textures/fish002.png",
+        "./data/textures/standardbullet.png",
+        "./data/textures/action_reticle001.png",
+        "./data/textures/action_reticle002.png",
+        "./data/textures/action_reticle003.png",
     ],
     audioUrls: [
         "./data/audio/Pale_Blue.mp3",
@@ -118,21 +128,24 @@ function main(canvasContainer: HTMLElement) {
         e.preventDefault();
     };
 
-    let fps: number = 0;
-    let totalTime: number = 0;
-    let currentTime: number = 0;
+    const fps = 144;
+    // let fps: number = 0;
+    // let totalTime: number = 0;
+    // let currentTime: number = 0;
 
     // set up event listeners
     setEventListeners(renderer.domElement, client);
 
     // render update loop
     function renderLoop(timeStamp: number) {
-        requestAnimationFrame(renderLoop);
-        currentTime = timeStamp - totalTime;
-        totalTime = timeStamp;
-        fps = 1 / (currentTime / 1000);
+        setTimeout(function() {
+            requestAnimationFrame(renderLoop);
+            // currentTime = timeStamp - totalTime;
+            // totalTime = timeStamp;
+            // fps = 1 / (currentTime / 1000);
 
-        client.render();
+            client.render();
+        }, 1000 / fps);
     }
 
     // start the render loop
