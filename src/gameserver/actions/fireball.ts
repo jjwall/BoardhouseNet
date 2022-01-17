@@ -47,17 +47,156 @@ export function fireballHold(attackingEnt: Entity, worldEngine: BaseWorldEngine)
             const reticleWorldPos = getWorldPosition(attackingEnt.actionReticle);
             const scalar = 150;
             let angle = Math.atan2(reticleWorldPos.y - attackingEnt.pos.loc.y, reticleWorldPos.x - attackingEnt.pos.loc.x);
-            if (attackingEnt.movement.right) {
+            console.log(angle);
+
+            // Change attacking char's direction when angle crosses above or below vertical axis.
+            if (Math.abs(angle) > Math.PI / 2 || Math.abs(angle) > -Math.PI / 2) {
+                attackingEnt.pos.flipX = true;
+            }
+
+            if (Math.abs(angle) < Math.PI / 2 || Math.abs(angle) < -Math.PI / 2) {
                 attackingEnt.pos.flipX = false;
-                angle -= Math.PI / 16;
-                attackingEnt.actionReticle.pos.loc = new Vector3(Math.cos(angle) * scalar, Math.sin(angle) * scalar, 5);
+            }
+
+            // Note: moves in wrong direction when in bottom left quandrant.
+            if (attackingEnt.movement.right && attackingEnt.movement.up) {
+                if (angle === Math.PI / 4) {
+                    angle += 0;
+                }
+                else if (angle >= Math.PI / 4) {
+                    angle -= Math.PI / 16;
+                }
+                else if (angle < Math.PI / 4) {
+                    angle += Math.PI / 16;
+                }
+            }
+
+            else if (attackingEnt.movement.right && attackingEnt.movement.down) {
+                if (angle === -Math.PI / 4) {
+                    angle += 0;
+                }
+                else if (angle >= -Math.PI / 4) {
+                    angle -= Math.PI / 16;
+                }
+                else if (angle < -Math.PI / 4) {
+                    angle += Math.PI / 16;
+                }
+            }
+
+            else if (attackingEnt.movement.left && attackingEnt.movement.up) {
+                // if (angle === -3 * Math.PI / 4) {
+                //     angle += 0;
+                // }
+                if (angle >= 0) {
+                    if (angle >= 3 * Math.PI / 4) {
+                        angle -= Math.PI / 16;
+                    }
+                    else if (angle < 3 * Math.PI / 4) {
+                        angle += Math.PI / 16;
+                    }
+                }
+                else if (angle < 0) {
+                    if (angle < -Math.PI / 4) {
+                        angle -= Math.PI / 16;
+                    }
+                    else if (Math.abs(angle) < 3 * Math.PI / 4) {
+                        angle += Math.PI / 16;
+                    }
+                }
+            }
+
+            // NOTE: Moves in wrong direction when in top left quandrant.
+            else if (attackingEnt.movement.left && attackingEnt.movement.down) {
+                if (angle === -3 * Math.PI / 4) {
+                    angle += 0;
+                }
+                else if (angle < -3 * Math.PI / 4) {
+                    angle += Math.PI / 16;
+                }
+                else if (angle >= -3 * Math.PI / 4) {
+                    angle -= Math.PI / 16;
+                }
+                // if (angle >= 0) {
+                //     if (angle >= Math.PI / 4) {
+                //         angle += Math.PI / 16;
+                //     }
+                //     else if (angle < Math.PI / 4) {
+                //         angle -= Math.PI / 16;
+                //     }
+                // }
+                // else if (angle < 0) {
+                //     if (angle < -3 * Math.PI / 4) {
+                //         angle -= Math.PI / 16;
+                //     }
+                //     else if (Math.abs(angle) > Math.PI / 4) {
+                //         angle += Math.PI / 16;
+                //     }
+                // }
+            }
+
+            else if (attackingEnt.movement.right) {
+                if (angle === 0) {
+                    angle += 0;
+                }
+                else if (angle >= 0) {
+                    angle -= Math.PI / 16;
+                }
+                else if (angle < 0) {
+                    angle += Math.PI / 16;
+                }
             }
     
-            if (attackingEnt.movement.left) {
-                attackingEnt.pos.flipX = true;
-                angle += Math.PI / 16;
-                attackingEnt.actionReticle.pos.loc = new Vector3(Math.cos(angle) * scalar, Math.sin(angle) * scalar, 5);
+            else if (attackingEnt.movement.left) {
+                if (Math.abs(angle) === Math.PI) {
+                    angle += 0;
+                }
+                else if (angle >= 0) {
+                    angle += Math.PI / 16;
+                }
+                else if (angle < 0) {
+                    angle -= Math.PI / 16;
+                }
             }
+
+            else if (attackingEnt.movement.up) {
+                if (angle >= 0) {
+                    if (angle >= Math.PI / 2) {
+                        angle -= Math.PI / 16;
+                    }
+                    else if (angle < Math.PI / 2) {
+                        angle += Math.PI / 16;
+                    }
+                }
+                else if (angle < 0) {
+                    if (angle >= -Math.PI / 2) {
+                        angle += Math.PI / 16;
+                    }
+                    else if (angle < -Math.PI / 2) {
+                        angle -= Math.PI / 16;
+                    }
+                }
+            }
+
+            else if (attackingEnt.movement.down) {
+                if (angle >= 0) {
+                    if (angle >= Math.PI / 2) {
+                        angle += Math.PI / 16;
+                    }
+                    else if (angle < Math.PI / 2) {
+                        angle -= Math.PI / 16;
+                    }
+                }
+                else if (angle < 0) {
+                    if (angle >= -Math.PI / 2) {
+                        angle -= Math.PI / 16;
+                    }
+                    else if (angle < -Math.PI / 2) {
+                        angle += Math.PI / 16;
+                    }
+                }
+            }
+
+            attackingEnt.actionReticle.pos.loc = new Vector3(Math.cos(angle) * scalar, Math.sin(angle) * scalar, 5);
     
             // Update attacking ent. -> bug when anims stop -> just need to reset to idle?
             worldEngine.server.entityChangeList.push(attackingEnt);
