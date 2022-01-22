@@ -264,7 +264,8 @@ export function fireballRelease(attackingEnt: Entity, worldEngine: BaseWorldEngi
         fireball.vel.positional.add(fireballDirection.multiplyScalar(fireball.vel.acceleration));
         fireball.hitbox = setHitbox(HitboxTypes.PLAYER_FIREBALL, [HitboxTypes.TILE_OBSTACLE, HitboxTypes.ENEMY, HitboxTypes.HOSTILE_PLAYER], 25, 25);
         fireball.hitbox.onHit = (fireball, other, manifold) => {
-            if (other.hitbox.collideType === HitboxTypes.TILE_OBSTACLE) {
+            if (other.hitbox.collideType === HitboxTypes.TILE_OBSTACLE
+                || other.hitbox.collideType === HitboxTypes.ENEMY) {
                 broadcastDestroyEntitiesMessage([fireball], worldEngine.server, worldEngine);
             }
         }

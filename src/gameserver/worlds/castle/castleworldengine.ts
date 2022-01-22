@@ -133,9 +133,10 @@ export class CastleWorldEngine extends BaseWorldEngine {
                     case 778: // wooden wall with window (left)
                     case 780: // wooden wall with window (right)
                     case 827: // stone wall with square window
-                        tileEnt.hitbox = setHitbox(HitboxTypes.TILE_OBSTACLE, [HitboxTypes.PLAYER], 128, 128);
+                        tileEnt.hitbox = setHitbox(HitboxTypes.TILE_OBSTACLE, [HitboxTypes.PLAYER, HitboxTypes.ENEMY], 128, 128);
                         tileEnt.hitbox.onHit = function(tile, other, manifold) {
-                            if (other.hitbox.collideType === HitboxTypes.PLAYER) {
+                            if (other.hitbox.collideType === HitboxTypes.PLAYER
+                                || other.hitbox.collideType === HitboxTypes.ENEMY) {
                                 const tileHitbox = getHitbox(tile);
                                 const playerHitbox = getHitbox(other);
 
