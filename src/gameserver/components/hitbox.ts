@@ -76,6 +76,7 @@ export const enum HitboxTypes {
     HOSTILE_PLAYER,
     PEACEFUL_PLAYER,
     ENEMY,
+    ENEMY_VISION,
     TILE_OBSTACLE,
     RED_FLOOR_TILE_EXIT_ITEM_SHOP, // castle loading zone
     INN_DOOR, // item shop loading zone

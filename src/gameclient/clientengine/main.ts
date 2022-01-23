@@ -79,6 +79,7 @@ const config: ClientConfig = {
         "./data/textures/kenney_goblin002.png",
         "./data/textures/kenney_goblin003.png",
         "./data/textures/kenney_goblin004.png",
+        "./data/textures/empty_texture.png",
     ],
     audioUrls: [
         "./data/audio/Pale_Blue.mp3",
