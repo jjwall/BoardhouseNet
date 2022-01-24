@@ -1,3 +1,4 @@
+import { createEntitySpawnArea, SpawnAreaParams } from "../../archetypes/entityspawnarea";
 import { kenneyFantasy2 } from "../../../modules/tilemapping/tilemaps/kenneyfantasy2";
 import { TileData, WorldLevelData } from "../../../packets/data/worldleveldata";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
@@ -68,9 +69,17 @@ export class CastleWorldEngine extends BaseWorldEngine {
             console.log("IS THIS GONNA HIT???")
         }
 
-        const goblinPosition = setPosition(-300, 100, 4);
-        createGoblin(this, goblinPosition);
-    
+        const goblinSpawnArea1: SpawnAreaParams = {
+            pos: setPosition(-500, 100, 4),
+            areaHeight: 500,
+            areaWidth: 500,
+            maxNumberOfEntities: 5,
+            createEntityArchetypes: [createGoblin],
+            worldEngine: this,
+        }
+
+        createEntitySpawnArea(goblinSpawnArea1);
+
         // this.registerEntity(cottage1, server);
         // this.registerEntity(cottage2, server);
         this.registerEntity(magicCircle, server);

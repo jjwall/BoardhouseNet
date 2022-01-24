@@ -11,15 +11,20 @@ import { Vector3 } from "three";
 
 // goblin state to pass around (store target, hp, strength, pushPower etc. here)
 // behaviors (random movements / follow target, change targets, idle, etc.)
+// beheviors - check for max distance from target, return home if distance is exceeded.
+// have individual homes or shared?
+// (done) spawn areas keep track of enemies?
+// -> could be generic, takes x number of createEnemy archetype methods, and uses a random bag to "spawn"
+// a given assortment of enemies.
 
-export function createGoblin(worldEngine: BaseWorldEngine, pos: PositionComponent) {
+export function createGoblin(worldEngine: BaseWorldEngine, pos: PositionComponent): Entity {
     let goblin = new Entity();
     let hp = 10;
     goblin.pos = pos;
     goblin.vel = setVelocity(15, 0.5);
     goblin.sprite = { url: "./data/textures/kenney_goblin001.png", pixelRatio: 4 };
     goblin.anim = { sequence: SequenceTypes.WALK, blob: kenneyGoblinAnim };
-    goblin.hitbox = setHitbox(HitboxTypes.ENEMY, [HitboxTypes.PLAYER_SWORD_ATTACK, HitboxTypes.PLAYER_FIREBALL, HitboxTypes.PLAYER], 50, 50, 0, 0);
+    goblin.hitbox = setHitbox(HitboxTypes.ENEMY, [HitboxTypes.PLAYER_SWORD_ATTACK, HitboxTypes.PLAYER_FIREBALL, HitboxTypes.PLAYER, HitboxTypes.ENEMY], 50, 50, 0, 0);
     goblin.hitbox.onHit = (goblin, other, manifold) => {
         if (other.hitbox.collideType === HitboxTypes.PLAYER_FIREBALL) {
             // Reduce HP
@@ -62,13 +67,21 @@ export function createGoblin(worldEngine: BaseWorldEngine, pos: PositionComponen
 
         // Goblin comes in contact with player, push player and reduce HP.
         if (other.hitbox.collideType === HitboxTypes.PLAYER) {
-            const pushAccel = 55;
+            const pushAccel = 20;
             const playerWorldPos = getWorldPosition(other);
             const goblinCenterPointX = goblin.pos.loc.x// + goblin.hitbox.offsetX;
             const goblinCenterPointY = goblin.pos.loc.y// + goblin.hitbox.offsetY;
             const playerCenterPointX = playerWorldPos.x// + other.hitbox.offsetX;
             const playerCenterPointY = playerWorldPos.y + other.hitbox.offsetY;
             const pushDirection = new Vector3(playerCenterPointX - goblinCenterPointX, playerCenterPointY - goblinCenterPointY).normalize();
+            other.vel.positional.add(pushDirection.multiplyScalar(pushAccel));
+        }
+
+        // Goblin bumps into another enemy... maybe specify goblin hitbox here?
+        if (other.hitbox.collideType === HitboxTypes.ENEMY) {
+            const pushAccel = 25;
+            const otherGoblinWorldPos = getWorldPosition(other);
+            const pushDirection = new Vector3(otherGoblinWorldPos.x - goblin.pos.loc.x, otherGoblinWorldPos.y - goblin.pos.loc.y).normalize();
             other.vel.positional.add(pushDirection.multiplyScalar(pushAccel));
         }
 
@@ -82,6 +95,8 @@ export function createGoblin(worldEngine: BaseWorldEngine, pos: PositionComponen
     worldEngine.registerEntity(goblin, worldEngine.server);
     worldEngine.registerEntity(goblinVision, worldEngine.server);
     broadcastCreateEntitiesMessage([goblin, goblinVision], worldEngine.server, worldEngine.worldType);
+
+    return goblin;
 }
 
 function createGoblinVision(goblinEnt: Entity): Entity {
