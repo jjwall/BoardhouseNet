@@ -82,6 +82,7 @@ export const enum HitboxTypes {
     INN_DOOR, // item shop loading zone
     PLAYER_SWORD_ATTACK,
     PLAYER_FIREBALL,
+    PLAYER_PROJECTILE,
     FISH_MOUTH,
 }
 

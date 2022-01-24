@@ -248,7 +248,6 @@ export function fireballHold(attackingEnt: Entity, worldEngine: BaseWorldEngine)
     }
 }
 
-// Can spam - fix with cooldown.
 export function fireballRelease(attackingEnt: Entity, worldEngine: BaseWorldEngine) {
     if (attackingEnt?.actionReticle) {
         // Get angle of reticle to player char.

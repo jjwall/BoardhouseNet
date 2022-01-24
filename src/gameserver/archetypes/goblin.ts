@@ -29,8 +29,8 @@ interface GoblinState {
 
 export function createGoblin(worldEngine: BaseWorldEngine, pos: PositionComponent): Entity {
     const state: GoblinState = {
-        hp: 10,
-        movementAccel: 12,
+        hp: 10, // randomize max hp 10 - 15?
+        movementAccel: 12, // randomize movement 10 - 15?
         pushPlayerAccel: 20,
         pushEnemyAccel: 25,
         pushedMeleeAccel: 20,

@@ -8,6 +8,7 @@ export interface SpawnAreaParams {
     areaHeight: number,
     areaWidth: number,
     maxNumberOfEntities: number,
+    // respawnTicks: number,
     /** Can have multiple types of createEntity methods passed in. */
     createEntityArchetypes: ((worldEngine: BaseWorldEngine, pos: PositionComponent) => Entity)[]
     worldEngine: BaseWorldEngine
@@ -17,6 +18,8 @@ interface SpawnAreaState {
     enemies: Entity[];
 }
 
+// TODO: Track and respawn ents over time.
+// -> use a behavior for this?
 export function createEntitySpawnArea(params: SpawnAreaParams) {
     const state: SpawnAreaState = {
         enemies: []

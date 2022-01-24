@@ -42,6 +42,7 @@ const config: ClientConfig = {
         "./data/fonts/helvetiker_regular_typeface.json"
     ],
     textureUrls: [
+        "./data/textures/empty_texture.png",
         "./data/textures/cottage.png",
         "./data/textures/msknight.png",
         "./data/textures/snow.png",
@@ -79,7 +80,9 @@ const config: ClientConfig = {
         "./data/textures/kenney_goblin002.png",
         "./data/textures/kenney_goblin003.png",
         "./data/textures/kenney_goblin004.png",
-        "./data/textures/empty_texture.png",
+        "./data/textures/bow_and_arrow001.png",
+        "./data/textures/bow_and_arrow002.png",
+        "./data/textures/arrow.png",
     ],
     audioUrls: [
         "./data/audio/Pale_Blue.mp3",
