@@ -15,6 +15,8 @@ export function fireballPress(attackingEnt: Entity, worldEngine: BaseWorldEngine
     }
 }
 
+// TODO: Rewrite using lessons learned from bow and arrow action.
+// Modularize unitCircleCoords, reticle should rotation in direction to unit circle coords.
 export function fireballHold(attackingEnt: Entity, worldEngine: BaseWorldEngine) {
     if (attackingEnt.anim) {
         attackingEnt.anim.sequence = SequenceTypes.ACTION_HOLD;

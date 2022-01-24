@@ -1,4 +1,4 @@
-import { broadcastCreateEntitiesMessage, broadcastDestroyEntitiesMessage, broadcastUpdateEntitiesMessage } from "../messaging/sendnetentitymessages";
+import { broadcastCreateEntitiesMessage, broadcastDestroyEntitiesMessage } from "../messaging/sendnetentitymessages";
 import { bowAndArrowAnim } from "../../modules/animations/animationdata/bowandarrow";
 import { SequenceTypes } from "../../modules/animations/sequencetypes";
 import { getWorldPosition, setPosition } from "../components/position";
@@ -23,7 +23,9 @@ export function bowAndArrowHold(attackingEnt: Entity, worldEngine: BaseWorldEngi
         attackingEnt.anim.sequence = SequenceTypes.ACTION_HOLD;
     }
 
+    // If reference to bow doesn't exist, then create it.
     if (!attackingEnt.actionReticle) {
+        // TODO: Should have lastDirection field on movement component and can set starting direction from it.
         let { unitCircleCoordinateX, unitCircleCoordinateY } = getUnitCircleCoordsFromInputs(attackingEnt);
         if (unitCircleCoordinateX === 0 && unitCircleCoordinateY === 0) {
             if (attackingEnt.pos.flipX) {
@@ -73,7 +75,6 @@ export function bowAndArrowHold(attackingEnt: Entity, worldEngine: BaseWorldEngi
                 attackingEnt.actionReticle.pos.dir = new Vector3(unitCircleCoordinateX, unitCircleCoordinateY);
             }
 
-            // Update attacking ent. -> bug when anims stop -> just need to reset to idle?
             worldEngine.server.entityChangeList.push(attackingEnt);
             worldEngine.server.entityChangeList.push(attackingEnt?.actionReticle);
         }
@@ -81,8 +82,8 @@ export function bowAndArrowHold(attackingEnt: Entity, worldEngine: BaseWorldEngi
 }
 
 export function bowAndArrowRelease(attackingEnt: Entity, worldEngine: BaseWorldEngine) {
-    if (attackingEnt?.actionReticle) {
-        // Get angle of reticle to player char.
+    if (attackingEnt?.actionReticle && attackingEnt?.actionReticle?.parent) {
+        // Get angle of bow to player char.
         const bowWorldPos = getWorldPosition(attackingEnt.actionReticle);
         const angle = Math.atan2(bowWorldPos.y - attackingEnt.pos.loc.y, bowWorldPos.x - attackingEnt.pos.loc.x);
         const arrowDirection = new Vector3(Math.cos(angle), Math.sin(angle), 5);
@@ -94,6 +95,8 @@ export function bowAndArrowRelease(attackingEnt: Entity, worldEngine: BaseWorldE
         arrow.vel = setVelocity(30, 0);
         arrow.vel.positional.add(arrowDirection.multiplyScalar(arrow.vel.acceleration));
         arrow.hitbox = setHitbox(HitboxTypes.PLAYER_PROJECTILE, [HitboxTypes.TILE_OBSTACLE, HitboxTypes.ENEMY, HitboxTypes.HOSTILE_PLAYER], 25, 25);
+
+        // TODO: Arrow "sticks" to wall or enemy on contact, but hitbox doesn't hurt overtime.
         arrow.hitbox.onHit = (arrow, other, manifold) => {
             if (other.hitbox.collideType === HitboxTypes.TILE_OBSTACLE
                 || other.hitbox.collideType === HitboxTypes.ENEMY) {
@@ -111,18 +114,17 @@ export function bowAndArrowRelease(attackingEnt: Entity, worldEngine: BaseWorldE
         worldEngine.registerEntity(arrow, worldEngine.server);
         broadcastCreateEntitiesMessage([arrow], worldEngine.server, worldEngine.worldType);
 
-        // Destroy bow and free up reference.
-        attackingEnt.actionReticle.anim.sequence = SequenceTypes.ATTACK;
-
-        // Set timer to destroy bow in X amount of ticks to allow attack anim to play.
-
+        // Setting parent undefined here will make sure we don't pass the above check
+        // so we can play the "post entity destroy" animation for bow.
+        attackingEnt.actionReticle.parent = undefined;
         attackingEnt.actionReticle.timer = setTimer(10, () => {
             broadcastDestroyEntitiesMessage([attackingEnt.actionReticle], worldEngine.server, worldEngine);
-            attackingEnt.actionReticle.parent = undefined;
             attackingEnt.actionReticle = undefined;
         })
 
-        broadcastUpdateEntitiesMessage([attackingEnt.actionReticle, attackingEnt], worldEngine.server, worldEngine.worldType);
+        // Update bow position & animation.
+        attackingEnt.actionReticle.anim.sequence = SequenceTypes.ATTACK;
+        worldEngine.server.entityChangeList.push(attackingEnt.actionReticle);
     }
 
     // Set character animation back to idle once arrow has been shot.
@@ -134,6 +136,9 @@ export function bowAndArrowRelease(attackingEnt: Entity, worldEngine: BaseWorldE
     if (attackingEnt?.movement?.actionOverride) {
         attackingEnt.movement.actionOverride = undefined;
     }
+
+    // Update attacking ent.
+    worldEngine.server.entityChangeList.push(attackingEnt);
 }
 
 // helper method

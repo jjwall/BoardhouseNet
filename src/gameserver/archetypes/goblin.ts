@@ -35,16 +35,23 @@ export function createGoblin(worldEngine: BaseWorldEngine, pos: PositionComponen
         pushEnemyAccel: 25,
         pushedMeleeAccel: 20,
         pushedRangedAccel: 85,
-    }
-
+    };
+    const collidesWith = [
+        HitboxTypes.PLAYER_SWORD_ATTACK,
+        HitboxTypes.PLAYER_FIREBALL,
+        HitboxTypes.PLAYER_PROJECTILE,
+        HitboxTypes.PLAYER,
+        HitboxTypes.ENEMY
+    ];
     let goblin = new Entity();
     goblin.pos = pos;
     goblin.vel = setVelocity(15, 0.5);
     goblin.sprite = { url: "./data/textures/kenney_goblin001.png", pixelRatio: 4 };
     goblin.anim = { sequence: SequenceTypes.WALK, blob: kenneyGoblinAnim };
-    goblin.hitbox = setHitbox(HitboxTypes.ENEMY, [HitboxTypes.PLAYER_SWORD_ATTACK, HitboxTypes.PLAYER_FIREBALL, HitboxTypes.PLAYER, HitboxTypes.ENEMY], 50, 50, 0, 0);
+    goblin.hitbox = setHitbox(HitboxTypes.ENEMY, collidesWith, 50, 50, 0, 0);
     goblin.hitbox.onHit = (goblin, other, manifold) => {
-        if (other.hitbox.collideType === HitboxTypes.PLAYER_FIREBALL) {
+        if (other.hitbox.collideType === HitboxTypes.PLAYER_FIREBALL
+            || other.hitbox.collideType === HitboxTypes.PLAYER_PROJECTILE) {
             // Reduce HP
             // Todo: Build stats component that tracks damage multiplayers for magic and physical attack.
             // Also will track defense. Should make a process damage module that takes all factors into account.
