@@ -16,6 +16,7 @@ import { velocitySystem } from "../../systems/velocity";
 import { PlayerStates } from "../../components/player";
 import { setMovement } from "../../components/movement";
 import { movementSystem } from "../../systems/movement";
+import { behaviorSystem } from "../../systems/behavior";
 import { createGoblin } from "../../archetypes/goblin";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
@@ -41,6 +42,7 @@ export class CastleWorldEngine extends BaseWorldEngine {
         this.registerSystem(collisionSystem);
         this.registerSystem(worldEdgeSystem);
         this.registerSystem(skillSlotsSystem);
+        this.registerSystem(behaviorSystem);
         this.registerSystem(timerSystem);
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
