@@ -15,6 +15,8 @@ export function bowAndArrowPress(attackingEnt: Entity, worldEngine: BaseWorldEng
     }
 }
 
+// Note: Bow sometimes lerps from far away, I believe this is due to the resetting of
+// the bow's position. I think a position update should work better.
 export function bowAndArrowHold(attackingEnt: Entity, worldEngine: BaseWorldEngine) {
     const offsetPosX = 100;
     const offsetPosY = 100;
