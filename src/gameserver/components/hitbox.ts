@@ -84,6 +84,7 @@ export const enum HitboxTypes {
     PLAYER_FIREBALL,
     PLAYER_PROJECTILE,
     FISH_MOUTH,
+    SPAWN_AREA,
 }
 
 export type Rect = {
