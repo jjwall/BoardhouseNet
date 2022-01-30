@@ -6,6 +6,7 @@ import { Entity } from "../serverengine/entity";
 import { swordAnim } from "../../modules/animations/animationdata/sword";
 import { setTimer } from "../components/timer";
 import { HitboxTypes, setHitbox } from "../components/hitbox";
+import { kenneySwordAnim } from "../../modules/animations/animationdata/kenneysword";
 
 // Note: weird performance issues when updating position after setting within this method
 export function basicSwordAttack(attackingEnt: Entity, worldEngine: BaseWorldEngine) {
@@ -17,18 +18,18 @@ export function basicSwordAttack(attackingEnt: Entity, worldEngine: BaseWorldEng
         offsetPosX = -150;
         offsetPosY = 0;
         swordAttack.hitbox = setHitbox(HitboxTypes.PLAYER_SWORD_ATTACK, [HitboxTypes.ENEMY], 200, 200, offsetPosX, offsetPosY);
-        swordAttack.pos = setPosition(0, 0, 1);
+        swordAttack.pos = setPosition(0, 0, 6);
         swordAttack.pos.flipX = true
     }
     else {
         offsetPosX = 150;
         offsetPosY = 0;
         swordAttack.hitbox = setHitbox(HitboxTypes.PLAYER_SWORD_ATTACK, [HitboxTypes.ENEMY], 200, 200, offsetPosX, offsetPosY);
-        swordAttack.pos = setPosition(0, 0, 1);
+        swordAttack.pos = setPosition(0, 0, 6);
     }
 
-    swordAttack.sprite = { url: "./data/textures/basic_sword_attack001.png", pixelRatio: 8 };
-    swordAttack.anim = { sequence: SequenceTypes.ATTACK, blob: swordAnim };
+    swordAttack.sprite = { url: "./data/textures/kenney_sword001.png", pixelRatio: 1 };
+    swordAttack.anim = { sequence: SequenceTypes.ATTACK, blob: kenneySwordAnim };
 
     // Set parent Since we're setting position relative to attacking ent.
     swordAttack.parent = attackingEnt;

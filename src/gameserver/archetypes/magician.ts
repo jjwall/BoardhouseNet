@@ -15,14 +15,15 @@ import { basicSwordAttack } from "../actions/sword";
 import { fireballPress, fireballRelease } from "../actions/fireball";
 import { bowAndArrowPress, bowAndArrowRelease } from "../actions/bowandarrow";
 import { gizmoloAnim } from "../../modules/animations/animationdata/gizmolo";
+import { kenneyPlayerAnim } from "../../modules/animations/animationdata/kenneyplayer";
 
 export function createMagician(server: Server, worldEngine: BaseWorldEngine, clientId: string, pos: PositionComponent): Entity {
     let magician = new Entity();
     magician.player = { id: clientId, state: PlayerStates.UNLOADED, class: PlayerClassTypes.MAGICIAN };
     magician.pos = pos;
     magician.vel = setVelocity(15, 0.5);
-    magician.sprite = { url: "./data/textures/gizmolo001.png", pixelRatio: 4 };
-    magician.anim = { sequence: SequenceTypes.IDLE, blob: gizmoloAnim };
+    magician.sprite = { url: "./data/textures/player_stand.png", pixelRatio: 1 };
+    magician.anim = { sequence: SequenceTypes.IDLE, blob: kenneyPlayerAnim };
     magician.movement = setMovement();
     magician.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 50, 50, 0, -50);
     magician.skillSlots = new SkillSlotsComponent();

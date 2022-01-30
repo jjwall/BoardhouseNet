@@ -36,7 +36,7 @@ const config: ClientConfig = {
     screenHeight: 720,
     // gameTicksPerSecond: 60,
     // displayFPS: true,
-    displayHitBoxes: false,
+    displayHitBoxes: true,
     // globalErrorHandling: true,
     fontUrls: [
         "./data/fonts/helvetiker_regular_typeface.json"
@@ -93,6 +93,17 @@ const config: ClientConfig = {
         "./data/textures/gizmolo008.png",
         "./data/textures/gizmolo009.png",
         "./data/textures/gizmolo010.png",
+        "./data/textures/player_stand.png",
+        "./data/textures/player_action1.png",
+        "./data/textures/player_action2.png",
+        "./data/textures/player_walk1.png",
+        "./data/textures/player_walk2.png",
+        "./data/textures/kenney_sword001.png",
+        "./data/textures/kenney_sword002.png",
+        "./data/textures/kenney_sword003.png",
+        "./data/textures/kenney_bow001.png",
+        "./data/textures/kenney_bow002.png",
+        "./data/textures/kenney_arrow.png",
     ],
     audioUrls: [
         "./data/audio/Pale_Blue.mp3",
