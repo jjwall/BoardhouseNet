@@ -216,23 +216,63 @@ export const armatureAnim: AnimationSchema = {
             nextFrame: 0
         },
     ],
-    // [SequenceTypes.ATTACK]: [
-    //     {
-    //         ticks: 10,
-    //         texture: "./data/textures/zelfin007.png",
-    //         nextFrame: 1
-    //     },
-    //     {
-    //         ticks: 10,
-    //         texture: "./data/textures/zelfin008.png",
-    //         nextFrame: 1
-    //     }
-    // ],
-    // [SequenceTypes.ACTION_HOLD]: [
-    //     {
-    //         ticks: 50,
-    //         texture: "./data/textures/zelfin007.png",
-    //         nextFrame: 0
-    //     },
-    // ],
+    [SequenceTypes.ATTACK]: [
+        {
+            ticks: 2,
+            texture: "./data/textures/Armature_bow_action_09.png",
+            nextFrame: 1
+        },
+        {
+            ticks: 50,
+            texture: "./data/textures/Armature_bow_action_10.png",
+            nextFrame: 1
+        },
+    ],
+    [SequenceTypes.ACTION_HOLD]: [
+        {
+            ticks: 6,
+            texture: "./data/textures/Armature_bow_action_00.png",
+            nextFrame: 1
+        },
+        {
+            ticks: 6,
+            texture: "./data/textures/Armature_bow_action_01.png",
+            nextFrame: 2
+        },
+        {
+            ticks: 6,
+            texture: "./data/textures/Armature_bow_action_02.png",
+            nextFrame: 3
+        },
+        {
+            ticks: 6,
+            texture: "./data/textures/Armature_bow_action_03.png",
+            nextFrame: 4
+        },
+        {
+            ticks: 6,
+            texture: "./data/textures/Armature_bow_action_04.png",
+            nextFrame: 5
+        },
+        {
+            ticks: 6,
+            texture: "./data/textures/Armature_bow_action_05.png",
+            nextFrame: 6
+        },
+        {
+            ticks: 6,
+            texture: "./data/textures/Armature_bow_action_06.png",
+            nextFrame: 7
+        },
+        {
+            ticks: 6,
+            texture: "./data/textures/Armature_bow_action_07.png",
+            nextFrame: 8
+        },
+        {
+            ticks: 50,
+            texture: "./data/textures/Armature_bow_action_08.png",
+            nextFrame: 8
+        },
+    ],
 }
