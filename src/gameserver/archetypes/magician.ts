@@ -28,8 +28,7 @@ export function createMagician(server: Server, worldEngine: BaseWorldEngine, cli
     magician.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 50, 50, 0, -50);
     magician.skillSlots = new SkillSlotsComponent();
     magician.skillSlots.setSkillOne(initializeSkill(6, 20, basicSwordAttack, undefined));
-    magician.skillSlots.setSkillTwo(initializeSkill(0, 10, bowAndArrowPress, bowAndArrowRelease, false));
-    //magician.skillSlots.setSkillTwo(initializeSkill(0, 10, fireballPress, fireballRelease, false)); // cooldown starts after release
+    magician.skillSlots.setSkillTwo(initializeSkill(0, 10, fireballPress, fireballRelease, false)); // cooldown starts after release
     // magician.skillSlots.setSkillTwo(initializeSkill(0, 10, fireballPress, fireballRelease)); // cooldown starts after press
 
     worldEngine.registerEntity(magician, server);
