@@ -1,4 +1,4 @@
-import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh } from "three";
+import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh, Group } from "three";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
 import { loadFonts, loadTextures, loadAudioBuffers, loadFairyGUIAssets } from "./loaders";
@@ -410,8 +410,16 @@ export class Client {
             this.uiView = fgui.UIPackage.createObject("MainMenu", "Main");
             // this.uiView = fgui.UIPackage.createObject("Package1", "Component1");
             // this.uiView.makeFullScreen();
-            fgui.UIContentScaler.scaleWithScreenSize(this.screenWidth, this.screenHeight, fgui.ScreenMatchMode.MatchWidth);
-            fgui.GRoot.inst.addChild(this.uiView);
+            // fgui.UIContentScaler.scaleWithScreenSize(this.screenWidth, this.screenHeight, fgui.ScreenMatchMode.MatchWidth);
+            // fgui.GRoot.inst.addChild(this.uiView);
+            this.uiView.displayObject.camera = this.uiCamera;
+            this.uiView.displayObject.setLayer(0);
+    
+            let container = new Group();
+            // fgui.UIContentScaler.scaleWithScreenSize(this.screenWidth, this.screenHeight, fgui.ScreenMatchMode.MatchWidthOrHeight);
+            container.scale.set(0.5, 0.5, 0.5);
+            container.add(this.uiView.obj3D);
+            this.uiScene.add(container);
         // });
     }
 
@@ -424,10 +432,10 @@ export class Client {
         // animationSystem(this.renderList, this);
 
         this.renderer.clear();
-        fgui.Stage.update();
-        this.renderer.render(this.uiScene, fgui.Stage.camera);
+        this.renderer.render(this.gameScene, this.gameCamera);
         this.renderer.clearDepth();
-        // this.renderer.render(this.gameScene, this.gameCamera);
+        fgui.Stage.update();
+        this.renderer.render(this.uiScene, this.uiCamera);
         // this.renderer.render(this.uiScene, this.uiCamera);
 
         // Render UI updates. // -> set up later
