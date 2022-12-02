@@ -4,7 +4,7 @@ import { getWorldPosition, PositionComponent, setPosition } from "../components/
 import { SequenceTypes } from "../../modules/animations/sequencetypes";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { HitboxTypes, setHitbox } from "../components/hitbox";
-import { goblinBehavior } from "./../behaviors/goblin";
+import { goblinBehavior, GoblinState } from "./../behaviors/goblin";
 import { setVelocity } from "../components/velocity";
 import { setBehavior } from "../components/behavior";
 import { Entity } from "../serverengine/entity";
@@ -19,31 +19,25 @@ import { Vector3 } from "three";
 // -> could be generic, takes x number of createEnemy archetype methods, and uses a random bag to "spawn"
 // a given assortment of enemies.
 
-interface GoblinState {
-    hp: number;
-    // strength: number;
-    movementAccel: number;
-    pushPlayerAccel: number;
-    pushEnemyAccel: number;
-    pushedMeleeAccel: number;
-    pushedRangedAccel: number;
-    // stunlocked: boolean;
-    // stunlockTicks: number;
-    // target: Entity | undefined;
+export function createGoblin(worldEngine: BaseWorldEngine, pos: PositionComponent): Entity {
+    let goblin = new Entity();
+    goblin.pos = pos;
+    goblin.vel = setVelocity(15, 0.5);
+    goblin.sprite = { url: "./data/textures/kenney_goblin001.png", pixelRatio: 4 };
+    goblin.anim = { sequence: SequenceTypes.WALK, blob: kenneyGoblinAnim };
+    goblin.behavior = setBehavior(goblinBehavior);
+
+    // const goblinVision = createGoblinVision(goblin, state);
+
+    worldEngine.registerEntity(goblin, worldEngine.server);
+
+    broadcastCreateEntitiesMessage([goblin], worldEngine.server, worldEngine.worldType);
+
+    return goblin;
 }
 
-export function createGoblin(worldEngine: BaseWorldEngine, pos: PositionComponent): Entity {
-    const state: GoblinState = {
-        hp: 10, // randomize max hp 10 - 15?
-        movementAccel: 12, // randomize movement 10 - 15?
-        pushPlayerAccel: 20,
-        pushEnemyAccel: 25,
-        pushedMeleeAccel: 20,
-        pushedRangedAccel: 85,
-        // stunlocked: false,
-        // stunlockTicks: 0,
-        // target: undefined,
-    };
+export function setGoblinHitbox(goblin: Entity, state: GoblinState, worldEngine: BaseWorldEngine) {
+    // if (!goblin.hitbox)
     const collidesWith = [
         HitboxTypes.PLAYER_SWORD_ATTACK,
         HitboxTypes.PLAYER_FIREBALL,
@@ -51,12 +45,6 @@ export function createGoblin(worldEngine: BaseWorldEngine, pos: PositionComponen
         HitboxTypes.PLAYER,
         HitboxTypes.ENEMY
     ];
-    let goblin = new Entity();
-    goblin.pos = pos;
-    goblin.vel = setVelocity(15, 0.5);
-    goblin.sprite = { url: "./data/textures/kenney_goblin001.png", pixelRatio: 4 };
-    goblin.anim = { sequence: SequenceTypes.WALK, blob: kenneyGoblinAnim };
-    goblin.behavior = setBehavior(goblinBehavior);
     goblin.hitbox = setHitbox(HitboxTypes.ENEMY, collidesWith, 50, 50, 0, 0);
     goblin.hitbox.onHit = (goblin, other, manifold) => {
         const goblinWorldPos = getWorldPosition(goblin);
@@ -68,12 +56,6 @@ export function createGoblin(worldEngine: BaseWorldEngine, pos: PositionComponen
             state.hp--;
 
             // Push goblin in direction of collision with fireball.
-            // const fireballWorldPos = getWorldPosition(other);
-            // const goblinCenterPointX = goblin.pos.loc.x + goblin.hitbox.offsetX;
-            // const goblinCenterPointY = goblin.pos.loc.y + goblin.hitbox.offsetY;
-            // const fireballCenterPointX = fireballWorldPos.x + other.hitbox.offsetX;
-            // const fireballCenterPointY = fireballWorldPos.y + other.hitbox.offsetY;
-            // const pushDirection = new Vector3(goblinCenterPointX - fireballCenterPointX, goblinCenterPointY - fireballCenterPointY).normalize();
             const pushDirection = other.pos.dir.clone().normalize();
             goblin.vel.positional.add(pushDirection.multiplyScalar(state.pushedRangedAccel));
         }
@@ -121,40 +103,30 @@ export function createGoblin(worldEngine: BaseWorldEngine, pos: PositionComponen
             broadcastDestroyEntitiesMessage([goblin], worldEngine.server, worldEngine);
         }
     }
-
-    // const goblinVision = createGoblinVision(goblin, state);
-
-    worldEngine.registerEntity(goblin, worldEngine.server);
-
-
-    // vvvv move this stuff to behavior vvvv
-    // worldEngine.registerEntity(goblinVision, worldEngine.server);
-    // broadcastCreateEntitiesMessage([goblin, goblinVision], worldEngine.server, worldEngine.worldType);
-
-    broadcastCreateEntitiesMessage([goblin], worldEngine.server, worldEngine.worldType);
-
-    return goblin;
 }
 
-/** @deprecated moved to behavior */
-function createGoblinVision(goblinEnt: Entity, state: GoblinState): Entity {
+// TODO: Figure out how to delete the vision...
+export function createGoblinVision(goblinEnt: Entity, state: GoblinState): Entity {
     let goblinVision = new Entity();
-    goblinVision.pos = setPosition(0, 0, 1);
-    //goblinVision.sprite = { url: "./data/textures/empty_texture.png", pixelRatio: 1 };
+    goblinVision.pos = setPosition (0, 0, 1);
+    goblinVision.sprite = { url: "./data/textures/empty_texture.png", pixelRatio: 1 };
     goblinVision.parent = goblinEnt;
     goblinVision.hitbox = setHitbox(HitboxTypes.ENEMY_VISION, [HitboxTypes.PLAYER], 500, 500);//, 180);
     goblinVision.hitbox.onHit = (vision, other, manifold) => {
         // if (!state.stunlocked) {
-            // if (other.hitbox.collideType === HitboxTypes.PLAYER) {
-            //     const followDirection = new Vector3(other.pos.loc.x - goblinEnt.pos.loc.x, other.pos.loc.y - goblinEnt.pos.loc.y).normalize();
-            //     goblinEnt.vel.positional.add(followDirection.multiplyScalar(state.movementAccel));
-            //     if (other.pos.loc.x < goblinEnt.pos.loc.x) {
-            //         goblinEnt.pos.flipX = true;
-            //     }
-            //     else if (other.pos.loc.x >= goblinEnt.pos.loc.x) {
-            //         goblinEnt.pos.flipX = false;
-            //     }
-            // }
+            if (other.hitbox.collideType === HitboxTypes.PLAYER && !state.target) {
+                state.target = other;
+                // const playerWorldPos = getWorldPosition(other);
+                // const selfWorldPos ...
+                // const followDirection = new Vector3(playerWorldPos.x - selfWorldPos.x, playerWorldPos.y - selfWorldPos.y).normalize();
+                // goblinEnt.vel.positional.add(followDirection.multiplyScalar(state.movementAccel));
+                // if (other.pos.loc.x < goblinEnt.pos.loc.x) {
+                //     goblinEnt.pos.flipX = true;
+                // }
+                // else if (other.pos.loc.x >= goblinEnt.pos.loc.x) {
+                //     goblinEnt.pos.flipX = false;
+                // }
+            }
         // }
     }
     return goblinVision;

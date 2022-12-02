@@ -72,8 +72,8 @@ export class CastleWorldEngine extends BaseWorldEngine {
         }
 
         const goblinSpawnArea1: SpawnAreaParams = {
-            pos: setPosition(-350, 125, 4),
-            areaHeight: 350,
+            pos: setPosition(-350, 625, 4),
+            areaHeight: 850,
             areaWidth: 250,
             maxNumberOfEntities: 5,
             createEntityArchetypes: [createGoblin],
