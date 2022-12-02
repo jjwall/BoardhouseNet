@@ -1,3 +1,4 @@
+import { createEntitySpawnArea, SpawnAreaParams } from "../../archetypes/entityspawnarea";
 import { kenneyFantasy2 } from "../../../modules/tilemapping/tilemaps/kenneyfantasy2";
 import { TileData, WorldLevelData } from "../../../packets/data/worldleveldata";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
@@ -15,6 +16,8 @@ import { velocitySystem } from "../../systems/velocity";
 import { PlayerStates } from "../../components/player";
 import { setMovement } from "../../components/movement";
 import { movementSystem } from "../../systems/movement";
+import { behaviorSystem } from "../../systems/behavior";
+import { createGoblin } from "../../archetypes/goblin";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
@@ -39,6 +42,7 @@ export class CastleWorldEngine extends BaseWorldEngine {
         this.registerSystem(collisionSystem);
         this.registerSystem(worldEdgeSystem);
         this.registerSystem(skillSlotsSystem);
+        this.registerSystem(behaviorSystem);
         this.registerSystem(timerSystem);
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
@@ -66,7 +70,18 @@ export class CastleWorldEngine extends BaseWorldEngine {
         fish.hitbox.onHit = (tile, other, manifold) => {
             console.log("IS THIS GONNA HIT???")
         }
-    
+
+        const goblinSpawnArea1: SpawnAreaParams = {
+            pos: setPosition(-350, 625, 4),
+            areaHeight: 850,
+            areaWidth: 250,
+            maxNumberOfEntities: 5,
+            createEntityArchetypes: [createGoblin],
+            worldEngine: this,
+        }
+
+        createEntitySpawnArea(goblinSpawnArea1);
+
         // this.registerEntity(cottage1, server);
         // this.registerEntity(cottage2, server);
         this.registerEntity(magicCircle, server);
@@ -129,9 +144,10 @@ export class CastleWorldEngine extends BaseWorldEngine {
                     case 778: // wooden wall with window (left)
                     case 780: // wooden wall with window (right)
                     case 827: // stone wall with square window
-                        tileEnt.hitbox = setHitbox(HitboxTypes.TILE_OBSTACLE, [HitboxTypes.PLAYER], 128, 128);
+                        tileEnt.hitbox = setHitbox(HitboxTypes.TILE_OBSTACLE, [HitboxTypes.PLAYER, HitboxTypes.ENEMY], 128, 128);
                         tileEnt.hitbox.onHit = function(tile, other, manifold) {
-                            if (other.hitbox.collideType === HitboxTypes.PLAYER) {
+                            if (other.hitbox.collideType === HitboxTypes.PLAYER
+                                || other.hitbox.collideType === HitboxTypes.ENEMY) {
                                 const tileHitbox = getHitbox(tile);
                                 const playerHitbox = getHitbox(other);
 

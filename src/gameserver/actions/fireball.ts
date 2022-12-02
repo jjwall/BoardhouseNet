@@ -3,6 +3,7 @@ import { actionReticleAnim } from "../../modules/animations/animationdata/action
 import { SequenceTypes } from "../../modules/animations/sequencetypes";
 import { getWorldPosition, setPosition } from "../components/position";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
+import { HitboxTypes, setHitbox } from "../components/hitbox";
 import { setVelocity } from "../components/velocity";
 import { Entity } from "../serverengine/entity";
 import { setTimer } from "../components/timer";
@@ -14,6 +15,8 @@ export function fireballPress(attackingEnt: Entity, worldEngine: BaseWorldEngine
     }
 }
 
+// TODO: Rewrite using lessons learned from bow and arrow action.
+// Modularize unitCircleCoords, reticle should rotation in direction to unit circle coords.
 export function fireballHold(attackingEnt: Entity, worldEngine: BaseWorldEngine) {
     if (attackingEnt.anim) {
         attackingEnt.anim.sequence = SequenceTypes.ACTION_HOLD;
@@ -69,6 +72,7 @@ export function fireballHold(attackingEnt: Entity, worldEngine: BaseWorldEngine)
                 }
             }
         }
+        
         let magicReticle = new Entity();
         magicReticle.pos = setPosition(offsetPosX * unitCircleCoordinateX, offsetPosY * unitCircleCoordinateY, 5);
         magicReticle.sprite = { url: "./data/textures/action_reticle001.png", pixelRatio: 8 };
@@ -88,7 +92,7 @@ export function fireballHold(attackingEnt: Entity, worldEngine: BaseWorldEngine)
             const reticleWorldPos = getWorldPosition(attackingEnt.actionReticle);
             const scalar = 150;
             let angle = Math.atan2(reticleWorldPos.y - attackingEnt.pos.loc.y, reticleWorldPos.x - attackingEnt.pos.loc.x);
-            console.log(angle);
+            // console.log(angle);
 
             // Change attacking char's direction when angle crosses above or below vertical axis.
             if (Math.abs(angle) > Math.PI / 2 || Math.abs(angle) > -Math.PI / 2) {
@@ -246,7 +250,6 @@ export function fireballHold(attackingEnt: Entity, worldEngine: BaseWorldEngine)
     }
 }
 
-// Can spam - fix with cooldown.
 export function fireballRelease(attackingEnt: Entity, worldEngine: BaseWorldEngine) {
     if (attackingEnt?.actionReticle) {
         // Get angle of reticle to player char.
@@ -260,6 +263,13 @@ export function fireballRelease(attackingEnt: Entity, worldEngine: BaseWorldEngi
         fireball.sprite = { url: "./data/textures/standardbullet.png", pixelRatio: 4 };
         fireball.vel = setVelocity(15, 0);
         fireball.vel.positional.add(fireballDirection.multiplyScalar(fireball.vel.acceleration));
+        fireball.hitbox = setHitbox(HitboxTypes.PLAYER_FIREBALL, [HitboxTypes.TILE_OBSTACLE, HitboxTypes.ENEMY, HitboxTypes.HOSTILE_PLAYER], 25, 25);
+        fireball.hitbox.onHit = (fireball, other, manifold) => {
+            if (other.hitbox.collideType === HitboxTypes.TILE_OBSTACLE
+                || other.hitbox.collideType === HitboxTypes.ENEMY) {
+                broadcastDestroyEntitiesMessage([fireball], worldEngine.server, worldEngine);
+            }
+        }
         fireball.timer = setTimer(100, () => {
             broadcastDestroyEntitiesMessage([fireball], worldEngine.server, worldEngine);
         });

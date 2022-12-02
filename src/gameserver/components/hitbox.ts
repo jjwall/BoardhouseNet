@@ -73,12 +73,18 @@ export const getManifold = (a: Rect, b: Rect): Manifold => {
  */
 export const enum HitboxTypes {
     PLAYER,
+    HOSTILE_PLAYER,
+    PEACEFUL_PLAYER,
     ENEMY,
+    ENEMY_VISION,
     TILE_OBSTACLE,
     RED_FLOOR_TILE_EXIT_ITEM_SHOP, // castle loading zone
     INN_DOOR, // item shop loading zone
     PLAYER_SWORD_ATTACK,
+    PLAYER_FIREBALL,
+    PLAYER_PROJECTILE,
     FISH_MOUTH,
+    SPAWN_AREA,
 }
 
 export type Rect = {

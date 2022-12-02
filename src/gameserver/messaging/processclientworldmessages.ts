@@ -36,7 +36,7 @@ import { createPage } from "../archetypes/page";
             playerEnt = createPage(server, clientWorld, message.data.clientId, pagePos);
             break;
         case PlayerClassTypes.MAGICIAN:
-            const magicianPos: PositionComponent = setPosition(150, 150, 5);
+            const magicianPos: PositionComponent = setPosition(150, 150, 6);
             playerEnt = createMagician(server, clientWorld, message.data.clientId, magicianPos);
             break;
         case PlayerClassTypes.ARCHER:
@@ -73,7 +73,7 @@ export function processPlayerWorldTransitionMessage(message: ClientMessagePlayer
             playerEnt = createPage(server, clientWorld, message.data.clientId, pagePos);
             break;
         case PlayerClassTypes.MAGICIAN:
-            const magicianPos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 5);
+            const magicianPos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 6);
             playerEnt = createMagician(server, clientWorld, message.data.clientId, magicianPos);
             break;
         case PlayerClassTypes.ARCHER:

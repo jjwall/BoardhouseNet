@@ -1,5 +1,6 @@
 import { SkillSlotsComponent } from "../components/skillslots";
 import { AnimationComponent } from "../components/animation";
+import { BehaviorComponent } from "../components/behavior";
 import { PositionComponent } from "../components/position";
 import { VelocityComponent } from "../components/velocity";
 import { MovementComponent} from "../components/movement";
@@ -18,6 +19,7 @@ export class Entity {
     anim: AnimationComponent;
     hitbox: HitboxComponent;
     movement: MovementComponent;
+    behavior: BehaviorComponent;
     timer: TimerComponent;
     skillSlots: SkillSlotsComponent;
     actionReticle: Entity;

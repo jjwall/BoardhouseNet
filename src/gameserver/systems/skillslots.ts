@@ -25,17 +25,17 @@ export function skillSlotsSystem(ents: readonly Entity[], worldEngine: BaseWorld
  */
 function checkAndTriggerPressAction(skill: Skill, entDoingAction: Entity, worldEngine: BaseWorldEngine) {
     if (skill?.triggerPressAction) {
-        // TODO: Make cooldown more cohesive with new press and release actions
-        
         if (skill.cooldownRemainingTicks <= 0) {
             if (skill.pressAction) {
+                skill.pressActionPerformed = true;
                 skill.pressAction(entDoingAction, worldEngine)
             }
 
             skill.triggerPressAction = false
             
             // Start skill cooldown.
-            skill.cooldownRemainingTicks = skill.cooldownSetTicks
+            if (skill.cooldownBeginsOnPress)
+                skill.cooldownRemainingTicks = skill.cooldownSetTicks
 
             // Set stutter ticks.
             if (entDoingAction.movement) {
@@ -56,18 +56,23 @@ function checkAndTriggerPressAction(skill: Skill, entDoingAction: Entity, worldE
  */
 function checkAndTriggerReleaseAction(skill: Skill, entDoingAction: Entity, worldEngine: BaseWorldEngine) {
     if (skill?.triggerReleaseAction) {
-        // TODO: Make cooldown more cohesive with new press and release actions
-        // if (skill.cooldownRemainingTicks <= 0) { 
-            if (skill.releaseAction) {
+        if (skill.releaseAction) {
+            if (!skill.cooldownBeginsOnPress) {
+                if (skill.pressActionPerformed) {
+                    skill.cooldownRemainingTicks = skill.cooldownSetTicks
+                    skill.pressActionPerformed = false
+                }
+
+                // Action tied to skill is triggered.
+                skill.releaseAction(entDoingAction, worldEngine)
+            }
+            else {
                 // Action tied to skill is triggered.
                 skill.releaseAction(entDoingAction, worldEngine)
             }
 
             skill.triggerReleaseAction = false
-        // }
-        // else {
-        //     skill.triggerReleaseAction = false
-        // }
+        }
     }
 }
 
