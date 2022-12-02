@@ -29,7 +29,7 @@
   "devDependencies": {
     "@types/express": "^4.17.1",
     "@types/node": "^12.7.12",
-    "@types/three": "^0.127.1",
+    "@types/three": "^0.146.0",
     "@types/ws": "^6.0.3",
     "child_process": "^1.0.2",
     "copy-webpack-plugin": "^6.0.3",
@@ -42,7 +42,8 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "three": "^0.127.0",
+    "fairygui-three": "^0.9.2",
+    "three": "0.146.0",
     "ws": "^7.5.0"
   }
 }

@@ -1,4 +1,4 @@
-import { BufferGeometry, ShapeBufferGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh } from "three";
+import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh } from "three";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
@@ -13,6 +13,7 @@ import { WorldTypes } from "../../packets/enums/worldtypes";
 import { SceneTransition } from "../renders/scenetransitions";
 import { animationSystem } from "../systems/animation";
 import { centerCameraOnPlayer } from "./camera";
+import * as fgui from "fairygui-three";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -195,7 +196,7 @@ export class Client {
         } else {
             const font = this.getFont(fontUrl);
             const shapes = font.generateShapes(contents, font_size);
-            const geometry = new ShapeBufferGeometry(shapes);
+            const geometry = new ShapeGeometry(shapes);
 
             // Ensure font is centered on (parent) widget.
             geometry.computeBoundingBox();
@@ -396,6 +397,17 @@ export class Client {
             }
         }
     }
+
+    // public initUI() {
+    //     fgui.Stage.init(this.renderer, { screenMode:'horizontal' });  //screenMode is optional if you dont want to rotate the screen 
+    //     fgui.Stage.scene = this.gameScene;
+    
+    //     fgui.UIPackage.loadPackage('path/to/UI').then(()=> {
+    //         view = fgui.UIPackage.CreateObject('Basics', 'Main');
+    //         view.makeFullScreen();
+    //         fgui.GRoot.inst.addChild(view);
+    //     });
+    // }
 
     public render() : void {
         this.updateClientEntPositions(this.entityList);

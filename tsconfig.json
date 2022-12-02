@@ -10,7 +10,8 @@
         "baseUrl": ".",
         "paths": {
             "three": ["node_modules/three/src/Three"],
-            "THREE": ["node_modules/three/src/Three"]
+            "THREE": ["node_modules/three/src/Three"],
+            "fairygui-three": ["node_modules/fairygui-three/build/FairyGUI"]
         }
     }
 }
