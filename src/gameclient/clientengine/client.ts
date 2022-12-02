@@ -1,7 +1,7 @@
 import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh } from "three";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
-import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
+import { loadFonts, loadTextures, loadAudioBuffers, loadFairyGUIAssets } from "./loaders";
 import { GameServerStateTypes } from "../../packets/enums/gameserverstatetypes";
 import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
 import { EventTypes } from "../events/eventtypes";
@@ -79,6 +79,7 @@ export class Client {
     public playerClass: PlayerClassTypes;
     public gameScene: Scene;
     public gameCamera: Camera;
+    public uiView: fgui.GObject
     public uiScene: Scene;
     public uiCamera: Camera;
     public entityList: ClientEntity[] = [];
@@ -156,7 +157,8 @@ export class Client {
         await Promise.all([
             loadFonts(this.fontUrls),
             loadTextures(this.textureUrls),
-            loadAudioBuffers(this.audioUrls)
+            loadAudioBuffers(this.audioUrls),
+            loadFairyGUIAssets('./ui/MainMenu')
         ]).then((assets) => {
             this.setFonts(assets[0]);
             this.setTextures(assets[1]);
@@ -398,16 +400,20 @@ export class Client {
         }
     }
 
-    // public initUI() {
-    //     fgui.Stage.init(this.renderer, { screenMode:'horizontal' });  //screenMode is optional if you dont want to rotate the screen 
-    //     fgui.Stage.scene = this.gameScene;
+    public initUI() {
+        console.log(this.renderer.domElement)
+        fgui.Stage.init(this.renderer, { screenMode:'horizontal' });  //screenMode is optional if you dont want to rotate the screen 
+        fgui.Stage.scene = this.uiScene
+        // fgui.Stage.camera = this.uiCamera
     
-    //     fgui.UIPackage.loadPackage('path/to/UI').then(()=> {
-    //         view = fgui.UIPackage.CreateObject('Basics', 'Main');
-    //         view.makeFullScreen();
-    //         fgui.GRoot.inst.addChild(view);
-    //     });
-    // }
+        // fgui.UIPackage.loadPackage('./ui/ui').then(()=> {
+            this.uiView = fgui.UIPackage.createObject("MainMenu", "Main");
+            // this.uiView = fgui.UIPackage.createObject("Package1", "Component1");
+            // this.uiView.makeFullScreen();
+            fgui.UIContentScaler.scaleWithScreenSize(this.screenWidth, this.screenHeight, fgui.ScreenMatchMode.MatchWidth);
+            fgui.GRoot.inst.addChild(this.uiView);
+        // });
+    }
 
     public render() : void {
         this.updateClientEntPositions(this.entityList);
@@ -418,9 +424,11 @@ export class Client {
         // animationSystem(this.renderList, this);
 
         this.renderer.clear();
-        this.renderer.render(this.gameScene, this.gameCamera);
+        fgui.Stage.update();
+        this.renderer.render(this.uiScene, fgui.Stage.camera);
         this.renderer.clearDepth();
-        this.renderer.render(this.uiScene, this.uiCamera);
+        // this.renderer.render(this.gameScene, this.gameCamera);
+        // this.renderer.render(this.uiScene, this.uiCamera);
 
         // Render UI updates. // -> set up later
         // layoutWidget(this.rootWidget, this.engine);

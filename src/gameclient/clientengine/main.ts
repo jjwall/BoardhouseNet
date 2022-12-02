@@ -202,6 +202,9 @@ function main(canvasContainer: HTMLElement) {
     renderer.autoClear = false;
     client.renderer = renderer;
 
+    // initialize client UI
+    client.initUI()
+
     // append canvas element to canvas container
     canvasContainer.append(renderer.domElement);
 
