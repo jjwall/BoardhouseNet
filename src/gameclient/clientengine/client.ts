@@ -1,4 +1,4 @@
-import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh, Group } from "three";
+import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh, Group, Vector2, PerspectiveCamera } from "three";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
 import { loadFonts, loadTextures, loadAudioBuffers, loadFairyGUIAssets } from "./loaders";
@@ -14,6 +14,26 @@ import { SceneTransition } from "../renders/scenetransitions";
 import { animationSystem } from "../systems/animation";
 import { centerCameraOnPlayer } from "./camera";
 import * as fgui from "fairygui-three";
+
+var pointerX = 0;
+var pointerY = 0;
+    
+document.addEventListener('mousemove', onMouseUpdate, false);
+document.addEventListener('mouseenter', onMouseUpdate, false);
+    
+function onMouseUpdate(e: any) {
+  pointerX = e.pageX //e.offsetX;
+  pointerY = e.pageY //e.offsetY;
+//   console.log(x, y);
+}
+
+function getMouseX() {
+  return pointerX;
+}
+
+function getMouseY() {
+  return pointerY;
+}
 
 export interface ClientConfig {
     /// state stuff ///
@@ -79,7 +99,7 @@ export class Client {
     public playerClass: PlayerClassTypes;
     public gameScene: Scene;
     public gameCamera: Camera;
-    public uiView: fgui.GObject
+    public uiView: fgui.GComponent
     public uiScene: Scene;
     public uiCamera: Camera;
     public entityList: ClientEntity[] = [];
@@ -258,6 +278,7 @@ export class Client {
 
                 // Set up ui camera.
                 this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
+                // this.uiCamera = new PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
                 break;
         }
     }
@@ -400,6 +421,27 @@ export class Client {
         }
     }
 
+    public scaleUI(scale: number) {
+        // console.log(scaleX)
+        // console.log(scaleY)
+        // console.log(window.innerHeight)
+        // console.log(window.innerWidth)
+        // fgui.UIContentScaler.scaleWithScreenSize(this.screenWidth * scaleX, this.screenHeight, fgui.ScreenMatchMode.MatchWidthOrHeight);
+        // fgui.Stage.height *= scaleX
+        // fgui.GRoot.inst.setContentScaleFactor()//setScale(scaleX, scaleY)
+        // console.log(this.uiView.height)
+        // fgui.ScaleMode.ConstantPixelSize
+        // this.uiView.viewWidth = fgui.Stage.width / scale;
+        // this.uiView.viewHeight = fgui.Stage.height / scale;
+        const rect = this.renderer.domElement.getBoundingClientRect()
+        this.uiView.setBounds(pointerX / scale, pointerY / scale, rect.width / 2, rect.height / 2)
+        console.log(pointerX)
+        // console.log(this.renderer.domElement.offsetHeight)
+        // console.log(fgui.Stage.devicePixelRatio)
+        // this.renderer.setPixelRatio(scale)
+        // fgui.UIContentScaler.scaleWithScreenSize(this.screenWidth * scaleX, this.screenHeight * scaleY, fgui.ScreenMatchMode.MatchWidthOrHeight);
+    }
+
     public initUI() {
         console.log(this.renderer.domElement)
         fgui.Stage.init(this.renderer, { screenMode:'horizontal' });  //screenMode is optional if you dont want to rotate the screen 
@@ -407,7 +449,7 @@ export class Client {
         // fgui.Stage.camera = this.uiCamera
     
         // fgui.UIPackage.loadPackage('./ui/ui').then(()=> {
-            this.uiView = fgui.UIPackage.createObject("MainMenu", "Main");
+            this.uiView = fgui.UIPackage.createObject("MainMenu", "Main").asCom;
             // this.uiView = fgui.UIPackage.createObject("Package1", "Component1");
             // this.uiView.makeFullScreen();
             // fgui.UIContentScaler.scaleWithScreenSize(this.screenWidth, this.screenHeight, fgui.ScreenMatchMode.MatchWidth);
@@ -416,11 +458,19 @@ export class Client {
             this.uiView.displayObject.setLayer(0);
     
             let container = new Group();
-            // fgui.UIContentScaler.scaleWithScreenSize(this.screenWidth, this.screenHeight, fgui.ScreenMatchMode.MatchWidthOrHeight);
-            container.scale.set(0.5, 0.5, 0.5);
+            console.log(this.uiView.height)
+            console.log(this.uiView.width)
+            // this.uiView.setScale()
+            // container.scale.set(0.5, 0.5, 0.5);
             container.add(this.uiView.obj3D);
             this.uiScene.add(container);
+            fgui.UIContentScaler.scaleWithScreenSize(this.screenWidth, this.screenHeight, fgui.ScreenMatchMode.MatchWidthOrHeight);
+            // fgui.inst
         // });
+
+        this.uiView.getChild("n1").onClick(() => {
+            console.log("hello");
+        })
     }
 
     public render() : void {
