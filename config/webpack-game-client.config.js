@@ -29,7 +29,6 @@ module.exports = {
                 { from: './public/game.html', to: './../'},
                 { from: './public/style.css', to: './../'},
                 { from: './data', to: './../data' },
-                { from: './ui', to: './../ui' },
                 { from: './node_modules/three/build/three.min.js' }
             ]
         }),

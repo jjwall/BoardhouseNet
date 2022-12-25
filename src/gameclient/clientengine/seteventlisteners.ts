@@ -6,8 +6,7 @@ export function setEventListeners(canvas: HTMLCanvasElement, client: Client) {
     scaleToWindow(canvas);
 
     window.addEventListener("resize", function () {
-        const scaleValue = scaleToWindow(canvas);
-        client.scaleUI(scaleValue)
+        scaleToWindow(canvas);
     });
 
     window.onkeydown = function(e: KeyboardEvent) {
