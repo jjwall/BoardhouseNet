@@ -181,6 +181,7 @@ const config: ClientConfig = {
         "./data/textures/pyra/walk/Armature_walk3_5.png",
         "./data/textures/pyra/walk/Armature_walk3_6.png",
         "./data/textures/pyra/walk/Armature_walk3_7.png",
+        "./data/textures/tilesets/raven_fantasy_green_forest_16x16.png",
     ],
     audioUrls: [
         "./data/audio/Pale_Blue.mp3",

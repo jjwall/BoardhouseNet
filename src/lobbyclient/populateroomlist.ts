@@ -93,6 +93,9 @@ function worldSelectRadioValue (globalLobby: IGlobalLobby) : WorldTypes {
                 case "item_shop":
                     worldSelection = WorldTypes.ITEM_SHOP;
                     break;
+                case "forest_1_1":
+                    worldSelection = WorldTypes.FOREST_1_1;
+                    break;
             }
           break;
         }
