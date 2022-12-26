@@ -89,9 +89,57 @@ export class Forest_1_1 extends BaseWorldEngine {
                     let tileEnt = new Entity();
                     tileEnt.pos = setPosition(xPos, yPos, 1);// layer.number);
                     
-                    // switch (tile.tile) {
-                        
-                    // }
+                    switch (tile.tile) {
+                        case 130: // part of tree
+                        case 131: // part of tree
+                        case 132: // part of tree
+                        case 156: // part of tree
+                        case 157: // part of tree
+                        case 158: // part of tree
+                        case 182: // part of tree
+                        case 183: // part of tree
+                        case 184: // part of tree
+                        case 208: // part of tree
+                        case 209: // part of tree
+                        case 210: // part of tree
+                        case 23: // part of river
+                        case 24: // part of river
+                        case 25: // part of river
+                        case 40: // part of river
+                        case 49: // part of river
+                        case 179: // part of river
+                        case 180: // part of river
+                        case 181: // part of river
+                        case 205: // part of river
+                        case 206: // part of river
+                        case 207: // part of river
+                            tileEnt.hitbox = setHitbox(HitboxTypes.TILE_OBSTACLE, [HitboxTypes.PLAYER, HitboxTypes.ENEMY], 64, 64);
+                            tileEnt.hitbox.onHit = function(tile, other, manifold) {
+                                if (other.hitbox.collideType === HitboxTypes.PLAYER
+                                    || other.hitbox.collideType === HitboxTypes.ENEMY) {
+                                    const tileHitbox = getHitbox(tile);
+                                    const playerHitbox = getHitbox(other);
+    
+                                    if (playerHitbox.left > tileHitbox.left) {
+                                        if (manifold.width <= manifold.height)
+                                            other.pos.loc.x += manifold.width;
+                                    }
+                                    if (playerHitbox.right < tileHitbox.right) {
+                                        if (manifold.width <= manifold.height)
+                                            other.pos.loc.x -= manifold.width;
+                                    }
+                                    if (playerHitbox.bottom > tileHitbox.bottom) {
+                                        if (manifold.width >= manifold.height)
+                                            other.pos.loc.y += manifold.height;
+                                    }
+                                    if (playerHitbox.top < tileHitbox.top) {
+                                        if (manifold.width >= manifold.height)
+                                            other.pos.loc.y -= manifold.height;
+                                    }
+                                }
+                            }
+                            break;
+                    }
 
                     const tileData: TileData = {
                         tileNumber: tile.tile,
