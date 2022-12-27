@@ -1,4 +1,5 @@
 import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh, Group, Vector2, PerspectiveCamera } from "three";
+import { handlePointerDownEvent, handlePointerUpEvent } from "../events/pointerevents";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
@@ -13,6 +14,9 @@ import { WorldTypes } from "../../packets/enums/worldtypes";
 import { SceneTransition } from "../renders/scenetransitions";
 import { animationSystem } from "../systems/animation";
 import { centerCameraOnPlayer } from "./camera";
+import { renderGamePlayUi, Root } from "../ui/apps/gameplay/rootui";
+import { createWidget, Widget } from "../ui/widget";
+import { layoutWidget } from "../ui/layoutwidget";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -105,6 +109,8 @@ export class Client {
     keyXIsDown: boolean;
 
     /// ^^^ old configs ^^^
+    public rootComponent: Root;
+    public rootWidget: Widget;
 
     public screenWidth: number;
 
@@ -256,12 +262,39 @@ export class Client {
                 // Set up ui camera.
                 this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
                 // this.uiCamera = new PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
+
+                // Set up ui widget and instance.
+                this.rootWidget = createWidget("root");
+
+                this.uiScene.add(this.rootWidget);
+                this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, 
+                    { 
+                        addClicks: this.addClicks,
+                        // displayFPS: engine.displayFPS,
+                        // rightPress: this.rightPress,
+                        // rightUnpress: this.rightUnpress,
+                        // leftPress: this.leftPress,
+                        // leftUnpress: this.leftUnpress,
+                        // upPress: this.upPress,
+                        // upUnpress: this.upUnpress,
+                        // downPress: this.downPress,
+                        // downUnpress: this.downUnpress,
+                    }
+                );
                 break;
         }
     }
 
     public handleEvent(e: Event) : void {
         switch(e.type) {
+            case EventTypes.POINTER_DOWN:
+                if (this.role === ClientRoleTypes.PLAYER) // spectator will have pointer access eventually
+                    handlePointerDownEvent(this.rootWidget, e as PointerEvent);
+                break;
+            case EventTypes.POINTER_UP:
+                if (this.role === ClientRoleTypes.PLAYER) // spectator will have pointer access eventually
+                    handlePointerUpEvent(e as PointerEvent);
+                break;
             case EventTypes.KEY_DOWN:
                 if (this.role === ClientRoleTypes.PLAYER)
                     handleKeyDownEvent(this, e as KeyboardEvent);
@@ -398,6 +431,15 @@ export class Client {
         }
     }
 
+    public clicks: number = 0
+
+    public addClicks: Function = () => { 
+        this.clicks++;
+        this.rootComponent.setClicks(this.clicks);
+        // this.screenShake(false);
+        // this.playAudio("./data/audio/SFX_Bonk2.wav", this.gameScene, this.gameCamera, .2);
+    }
+
     public render() : void {
         this.updateClientEntPositions(this.entityList);
         // this.updateClientRenders(this.renderList);
@@ -409,9 +451,9 @@ export class Client {
         this.renderer.clear();
         this.renderer.render(this.gameScene, this.gameCamera);
         this.renderer.clearDepth();
-        // this.renderer.render(this.uiScene, this.uiCamera);
+        this.renderer.render(this.uiScene, this.uiCamera);
 
         // Render UI updates. // -> set up later
-        // layoutWidget(this.rootWidget, this.engine);
+        layoutWidget(this.rootWidget, this);
     }
 }

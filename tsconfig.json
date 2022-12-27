@@ -6,6 +6,7 @@
         "module": "es6",
         "target": "es2015",
         "jsx": "react",
+        "jsxFactory": "createJSXElement",
         "allowJs": true,
         "baseUrl": ".",
         "paths": {
