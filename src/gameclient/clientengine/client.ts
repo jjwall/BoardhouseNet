@@ -1,5 +1,5 @@
 import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh, Group, Vector2, PerspectiveCamera } from "three";
-import { handlePointerDownEvent, handlePointerUpEvent } from "../events/pointerevents";
+import { handlePointerDownEvent, handlePointerMoveEvent, handlePointerUpEvent } from "../events/pointerevents";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
@@ -288,12 +288,16 @@ export class Client {
     public handleEvent(e: Event) : void {
         switch(e.type) {
             case EventTypes.POINTER_DOWN:
-                if (this.role === ClientRoleTypes.PLAYER) // spectator will have pointer access eventually
+                if (this.role === ClientRoleTypes.PLAYER) // spectator will have POINTER_DOWN access eventually
                     handlePointerDownEvent(this.rootWidget, e as PointerEvent);
                 break;
             case EventTypes.POINTER_UP:
-                if (this.role === ClientRoleTypes.PLAYER) // spectator will have pointer access eventually
+                if (this.role === ClientRoleTypes.PLAYER) // spectator will have POINTER_UP access eventually
                     handlePointerUpEvent(e as PointerEvent);
+                break;
+            case EventTypes.POINTER_MOVE:
+                if (this.role === ClientRoleTypes.PLAYER)
+                    handlePointerMoveEvent(e as PointerEvent);
                 break;
             case EventTypes.KEY_DOWN:
                 if (this.role === ClientRoleTypes.PLAYER)

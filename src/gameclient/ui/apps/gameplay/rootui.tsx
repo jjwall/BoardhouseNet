@@ -7,6 +7,7 @@ import { JSXElement } from "./../../interfaces";
 import { Component } from "./../../component";
 import { Widget } from "./../../widget";
 import { Scene } from "three";
+import { DraggableWidget } from "../../corecomponents/draggablewidget";
 
 export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props): Root {
     let rootInstance = renderWidget(<Root { ...props }/>, rootWidget, scene);
@@ -92,7 +93,7 @@ export class Root extends Component<Props, State> {
     render(): JSXElement {
         return(
             <panel>
-                <TouchControls
+                {/* <TouchControls
                     top="250"
                     left="50"
                     upPress={() => undefined}
@@ -103,8 +104,18 @@ export class Root extends Component<Props, State> {
                     rightUnpress={() => undefined}
                     downPress={() => undefined}
                     downUnpress={() => undefined}
-                />
-                <Button
+                /> */}
+                {/* <Button
+                    pressedLayout="./data/textures/icons/d17.png"
+                    unpressedLayout="./data/textures/icons/d17.png"
+                    // backgroundColor="#C9CFFF"
+                    height="64"
+                    width="64"
+                    top="650"
+                    left="1000"
+                    submit={() => console.log('hello button')}
+                /> */}
+                <DraggableWidget
                     pressedLayout="./data/textures/icons/d17.png"
                     unpressedLayout="./data/textures/icons/d17.png"
                     // backgroundColor="#C9CFFF"

@@ -85,3 +85,11 @@ export function handlePointerUpEvent(e: PointerEvent) {
     // Clear pressedWidgets.
     pressedWidgets = [];
 }
+
+export function handlePointerMoveEvent(e: PointerEvent) {
+    for (let i = 0; i < pressedWidgets.length; i++) {
+        if (pressedWidgets[i].event("drag")) {
+            pressedWidgets[i].trigger("drag", e)
+        }
+    }
+}
