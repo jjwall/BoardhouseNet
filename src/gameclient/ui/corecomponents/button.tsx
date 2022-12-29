@@ -78,7 +78,9 @@ export class Button extends Component<Props, State> {
                 <panel
                     img={this.state.pressed ? this.props.pressedLayout : this.props.unpressedLayout}
                     width={this.props.width}
-                    height={() => this.props.height}
+                    height={this.props.height}
+                    top={this.props.top}
+                    left={this.props.left}
                     onPress={this.press()}
                     onUnpress={this.unpress()}
                     onSubmit={() => this.props.submit()}
@@ -88,3 +90,5 @@ export class Button extends Component<Props, State> {
         }
     }
 }
+
+// Make separate ImgButton class? So weird
