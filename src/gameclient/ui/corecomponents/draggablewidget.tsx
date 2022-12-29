@@ -1,8 +1,7 @@
-// /** @jsx createJSXElement */
-import { createJSXElement } from "./../../ui/createjsxelement";
-import { JSXElement } from "./../../ui/interfaces";
+import { createJSXElement } from "./../createjsxelement";
+import { JSXElement } from "./../interfaces";
+import { Component } from "./../component";
 import { Scene, Vector3 } from "three";
-import { Component } from "./../../ui/component";
 
 interface Props {
     pressedLayout: string;
@@ -11,8 +10,8 @@ interface Props {
     height: string | number,
     top: string | number,
     left: string | number,
+    center?: boolean
     backgroundColor?: string;
-    submit: () => void,
 }
 
 interface State {
@@ -22,6 +21,7 @@ interface State {
     initialWorldPositionX: number
     initialWorldPositionY: number
     initialWorldPositionSet: boolean
+    z_index: number
 }
 
 export class DraggableWidget extends Component<Props, State> {
@@ -34,6 +34,7 @@ export class DraggableWidget extends Component<Props, State> {
             initialWorldPositionX: 0,
             initialWorldPositionY: 0,
             initialWorldPositionSet: false,
+            z_index: 0
         }
     }
 
@@ -62,21 +63,30 @@ export class DraggableWidget extends Component<Props, State> {
     }
 
     public drag = (e: PointerEvent): void => {
+        let halfHeight = Number(this.props.height)/2
+        let halfWidth = Number(this.props.width)/2
+        if (this.props.center) {
+            halfHeight = 0
+            halfWidth = 0
+        }
         this.setState({
-            top: e.offsetY + this.state.initialWorldPositionY,
-            left: e.offsetX - this.state.initialWorldPositionX,
+            top: e.offsetY + this.state.initialWorldPositionY - halfWidth,
+            left: e.offsetX - this.state.initialWorldPositionX - halfHeight,
+            z_index: 5
         })
     }
 
     public unpress = (): void => {
         this.setState({
-            pressed: false
+            pressed: false,
+            z_index: 0
         });
     }
 
     render(): JSXElement {
         return (
             <panel
+                center={this.props.center ?? false}
                 color={this.props.backgroundColor ?? undefined}
                 height={this.props.height}
                 width={this.props.width}
@@ -85,8 +95,8 @@ export class DraggableWidget extends Component<Props, State> {
                 img={this.state.pressed ? this.props.pressedLayout : this.props.unpressedLayout}
                 onPress={() => this.press()}
                 onUnpress={() => this.unpress()}
-                onSubmit={() => this.props.submit()}
                 onDrag={(e: PointerEvent) => this.drag(e)}
+                z_index={this.state.z_index}
             >
             </panel>
         )

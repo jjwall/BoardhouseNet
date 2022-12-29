@@ -6,16 +6,25 @@ let focusedWidget: Widget;
 
 export function handlePointerDownEvent(widget: Widget, e: PointerEvent) {
     if ((widget.event("press") || widget.event("unpress") || widget.event("submit")) && widget.attr("height") && widget.attr("width")) {
-        const halfWidth = Number(widget.attr("width"))/2;
-        const halfHeight = Number(widget.attr("height"))/2;
+        let halfWidth = Number(widget.attr("width"))/2;
+        let halfHeight = Number(widget.attr("height"))/2;
         const widgetIndex: number = pressedWidgets.indexOf(widget);
         const position = new Vector3();
         widget.getWorldPosition(position);
+        let notCenteredOffsetX = 0
+        let notCenteredOffsetY = 0
+
+        if(!widget.attr('center')) {
+            notCenteredOffsetX = halfWidth * 2
+            notCenteredOffsetY = halfHeight * 2
+            halfWidth *= 2
+            halfHeight *= 2
+        }
 
         // TODO: use sweep & prune alg instead of AABB
-        if (e.offsetY > -position.y - halfHeight
+        if (e.offsetY - notCenteredOffsetY > -position.y - halfHeight
             && e.offsetY - halfHeight < -position.y
-            && e.offsetX > position.x - halfWidth
+            && e.offsetX - notCenteredOffsetX > position.x - halfWidth
             && e.offsetX - halfWidth < position.x)
         {
             // WidgetIndex necessary?

@@ -261,11 +261,9 @@ export class Client {
 
                 // Set up ui camera.
                 this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
-                // this.uiCamera = new PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
 
                 // Set up ui widget and instance.
                 this.rootWidget = createWidget("root");
-
                 this.uiScene.add(this.rootWidget);
                 this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, 
                     { 

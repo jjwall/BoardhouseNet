@@ -47,10 +47,17 @@ function layoutPanelAttributes(widget: Widget, client: Client) {
         const { width: prevWidth, height: prevHeight } = (widget.geometry as PlaneGeometry).parameters;
 
         if (width !== prevWidth || height !== prevHeight) {
+            // TODO: use scale (new width / width... new height / height) instead of newing up new instance of PlaneGeometry
             widget.geometry = new PlaneGeometry(width, height);
+
+            if (!widget.attr("center"))
+                widget.geometry.translate(width/2, -height/2, 0);
         }
     } else {
         widget.geometry = new PlaneGeometry(width, height);
+
+        if (!widget.attr("center"))
+            widget.geometry.translate(width/2, -height/2, 0);
     }
 
     // Update mesh's material with color attribute.
@@ -90,6 +97,8 @@ function layoutPanelAttributes(widget: Widget, client: Client) {
             const geometry = new PlaneGeometry(width, height);
             const material = new MeshBasicMaterial({ map: imgMap, transparent: true });
             const img = new Mesh(geometry, material);
+            if (!widget.attr("center"))
+                geometry.translate(width/2, -height/2, 0);
 
             widget.setImage(img);
         } else {

@@ -8,6 +8,7 @@ import { Component } from "./../../component";
 import { Widget } from "./../../widget";
 import { Scene } from "three";
 import { DraggableWidget } from "../../corecomponents/draggablewidget";
+import { Inventory } from "./inventory";
 
 export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props): Root {
     let rootInstance = renderWidget(<Root { ...props }/>, rootWidget, scene);
@@ -93,42 +94,10 @@ export class Root extends Component<Props, State> {
     render(): JSXElement {
         return(
             <panel>
-                {/* <TouchControls
-                    top="250"
-                    left="50"
-                    upPress={() => undefined}
-                    upUnpress={() => undefined}
-                    leftPress={() => undefined}
-                    leftUnpress={() => undefined}
-                    rightPress={() => undefined}
-                    rightUnpress={() => undefined}
-                    downPress={() => undefined}
-                    downUnpress={() => undefined}
-                /> */}
-                {/* <Button
-                    pressedLayout="./data/textures/icons/d17.png"
-                    unpressedLayout="./data/textures/icons/d17.png"
-                    // backgroundColor="#C9CFFF"
-                    height="64"
-                    width="64"
-                    top="650"
-                    left="1000"
-                    submit={() => console.log('hello button')}
-                /> */}
-                <panel height="70" width="200" color="#228B22" top="250" left="450" >
-                    <DraggableWidget
-                        pressedLayout="./data/textures/icons/d17.png"
-                        unpressedLayout="./data/textures/icons/d17.png"
-                        // backgroundColor="#C9CFFF"
-                        height="64"
-                        width="64"
-                        top="3"
-                        left="3"
-                        // top="650"
-                        // left="1000"
-                        submit={() => console.log('hello button')}
-                    />
-                </panel>
+                <Inventory
+                    top="550"
+                    left="975"
+                />
             </panel>
         )
     }
