@@ -115,16 +115,20 @@ export class Root extends Component<Props, State> {
                     left="1000"
                     submit={() => console.log('hello button')}
                 /> */}
-                <DraggableWidget
-                    pressedLayout="./data/textures/icons/d17.png"
-                    unpressedLayout="./data/textures/icons/d17.png"
-                    // backgroundColor="#C9CFFF"
-                    height="64"
-                    width="64"
-                    top="650"
-                    left="1000"
-                    submit={() => console.log('hello button')}
-                />
+                <panel height="70" width="200" color="#228B22" top="250" left="450" >
+                    <DraggableWidget
+                        pressedLayout="./data/textures/icons/d17.png"
+                        unpressedLayout="./data/textures/icons/d17.png"
+                        // backgroundColor="#C9CFFF"
+                        height="64"
+                        width="64"
+                        top="3"
+                        left="3"
+                        // top="650"
+                        // left="1000"
+                        submit={() => console.log('hello button')}
+                    />
+                </panel>
             </panel>
         )
     }

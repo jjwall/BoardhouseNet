@@ -19,6 +19,9 @@ interface State {
     pressed: boolean;
     top: string | number
     left: string | number
+    initialWorldPositionX: number
+    initialWorldPositionY: number
+    initialWorldPositionSet: boolean
 }
 
 export class DraggableWidget extends Component<Props, State> {
@@ -27,28 +30,41 @@ export class DraggableWidget extends Component<Props, State> {
         this.state = {
             pressed: false,
             top: this.props.top,
-            left: this.props.left
+            left: this.props.left,
+            initialWorldPositionX: 0,
+            initialWorldPositionY: 0,
+            initialWorldPositionSet: false,
         }
     }
 
     public press = (): void => {
+        if (!this.state.initialWorldPositionSet) {
+            const position = new Vector3();
+            this._internalInstance.widget.getWorldPosition(position);
+
+            // If widget pos isn't offset by parent widget then keep initial world pos x and y at 0.
+            if (Number(this.props.top) === -position.y && Number(this.props.left) === position.x) {
+                this.setState({
+                    initialWorldPositionSet: true
+                })
+            } else {
+                this.setState({
+                    initialWorldPositionX: position.x,
+                    initialWorldPositionY: position.y,
+                    initialWorldPositionSet: true
+                })
+            }
+        }
+
         this.setState({
             pressed: true
         });
     }
 
     public drag = (e: PointerEvent): void => {
-        const position = new Vector3();
-        this._internalInstance.widget.getWorldPosition(position);
-        // console.log(position.x)
-        // console.log(position.y)
-        // console.log(e.offsetX)
-        // console.log(e.offsetY)
-
-        // This does not account for offset top / left yet.
         this.setState({
-            top: e.offsetY,
-            left: e.offsetX
+            top: e.offsetY + this.state.initialWorldPositionY,
+            left: e.offsetX - this.state.initialWorldPositionX,
         })
     }
 
@@ -59,20 +75,20 @@ export class DraggableWidget extends Component<Props, State> {
     }
 
     render(): JSXElement {
-            return (
-                <panel
-                    color={this.props.backgroundColor ?? undefined}
-                    height={this.props.height}
-                    width={this.props.width}
-                    left={this.state.left}
-                    top={this.state.top}
-                    img={this.state.pressed ? this.props.pressedLayout : this.props.unpressedLayout}
-                    onPress={() => this.press()}
-                    onUnpress={() => this.unpress()}
-                    onSubmit={() => this.props.submit()}
-                    onDrag={(e: PointerEvent) => this.drag(e)}
-                >
-                </panel>
-            )
+        return (
+            <panel
+                color={this.props.backgroundColor ?? undefined}
+                height={this.props.height}
+                width={this.props.width}
+                left={this.state.left}
+                top={this.state.top}
+                img={this.state.pressed ? this.props.pressedLayout : this.props.unpressedLayout}
+                onPress={() => this.press()}
+                onUnpress={() => this.unpress()}
+                onSubmit={() => this.props.submit()}
+                onDrag={(e: PointerEvent) => this.drag(e)}
+            >
+            </panel>
+        )
     }
 }
