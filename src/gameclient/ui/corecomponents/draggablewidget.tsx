@@ -3,6 +3,9 @@ import { JSXElement } from "./../interfaces";
 import { Component } from "./../component";
 import { Scene, Vector3 } from "three";
 
+// TODO: Props pass down that handle possible item?
+// TODO: Drag = false if no equipment exists?
+// TODO: Turn DraggableWidget into EquipmentSlot UI?
 interface Props {
     pressedLayout: string;
     unpressedLayout: string;
