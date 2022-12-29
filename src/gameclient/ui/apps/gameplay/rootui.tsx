@@ -1,14 +1,12 @@
-// /** @jsx createJSXElement */
-import { createJSXElement } from "./../../../ui/createjsxelement";
-import { JSXElement, ComponentInstance } from "./../../../ui/interfaces";
+import { TouchControls } from "../../corecomponents/touchcontrols";
+import { createJSXElement } from "./../../createjsxelement";
 import { renderWidget } from "./../../../ui/renderwidget";
-import { Scene } from "THREE";
-import { Widget } from "./../../../ui/widget";
-import { Component } from "./../../../ui/component";
-import { TouchControlButton } from "./../../../ui/corecomponents/touchcontrolbutton";
-import { TouchControls } from "./touchcontrols";
-import { InputBox } from "../../../ui/corecomponents/inputbox";
+import { InputBox } from "../../corecomponents/inputbox";
 import { Button } from "../../corecomponents/button";
+import { JSXElement } from "./../../interfaces";
+import { Component } from "./../../component";
+import { Widget } from "./../../widget";
+import { Scene } from "three";
 
 export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props): Root {
     let rootInstance = renderWidget(<Root { ...props }/>, rootWidget, scene);

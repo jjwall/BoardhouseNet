@@ -91,5 +91,3 @@ export class Button extends Component<Props, State> {
         }
     }
 }
-
-// Make separate ImgButton class? So weird
