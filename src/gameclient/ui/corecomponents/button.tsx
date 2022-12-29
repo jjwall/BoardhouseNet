@@ -20,6 +20,7 @@ interface Props {
     fontTop?: string | number;
     fontLeft?: string | number;
     font?: string;
+    backgroundColor?: string;
     submit: () => void,
 }
 
@@ -72,17 +73,17 @@ export class Button extends Component<Props, State> {
                 </panel>
             )
         }
-        // case: img button
-        else {
+        else { // case: img button
             return (
                 <panel
-                    img={this.state.pressed ? this.props.pressedLayout : this.props.unpressedLayout}
-                    width={this.props.width}
+                    color={this.props.backgroundColor ?? undefined}
                     height={this.props.height}
-                    top={this.props.top}
+                    width={this.props.width}
                     left={this.props.left}
-                    onPress={this.press()}
-                    onUnpress={this.unpress()}
+                    top={this.props.top}
+                    img={this.state.pressed ? this.props.pressedLayout : this.props.unpressedLayout}
+                    onPress={() => this.press()}
+                    onUnpress={() => this.unpress()}
                     onSubmit={() => this.props.submit()}
                 >
                 </panel>

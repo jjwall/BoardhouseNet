@@ -7,7 +7,6 @@ import { Widget } from "./../../../ui/widget";
 import { Component } from "./../../../ui/component";
 import { TouchControlButton } from "./../../../ui/corecomponents/touchcontrolbutton";
 import { TouchControls } from "./touchcontrols";
-import { FPS } from "../../../ui/corecomponents/fps";
 import { InputBox } from "../../../ui/corecomponents/inputbox";
 import { Button } from "../../corecomponents/button";
 
@@ -94,20 +93,7 @@ export class Root extends Component<Props, State> {
 
     render(): JSXElement {
         return(
-            // <Test ticks = {this.state.ticks}
-            //     clicks = {this.state.clicks}
-            //     color = {this.state.color}
-            //     hidden = {this.state.hidden}
-            //     press = {this.press}
-            //     unpress = {this.unpress}
-            //     addClick = {this.addClick}
-            //     toggle = {this.toggle}>
-            // </Test>
             <panel>
-                {/* <FPS 
-                    displayFPS={this.props.displayFPS}
-                    currentFPS={this.state.currentFPS}
-                ></FPS> */}
                 <TouchControls
                     top="250"
                     left="50"
@@ -120,43 +106,16 @@ export class Root extends Component<Props, State> {
                     downPress={() => undefined}
                     downUnpress={() => undefined}
                 />
-                <InputBox
-                    focusColor="#FFFFFF"
-                    blurColor="#C9CFFF"
-                    borderColor="#000000"
-                    top="200"
-                    left="200"
-                    width={100}
-                    height={50}
-                    submit={()=>{}}
-                />
                 <Button
-                    // pressedLayout="./data/textures/icons/d17.png"
-                    // unpressedLayout="./data/textures/icons/d17.png"
-                    pressedLayout="#FFFFFF"
-                    unpressedLayout="#C9CFFF"
-                    height={64}
-                    width={64}
+                    pressedLayout="./data/textures/icons/d17.png"
+                    unpressedLayout="./data/textures/icons/d17.png"
+                    // backgroundColor="#C9CFFF"
+                    height="64"
+                    width="64"
                     top="650"
                     left="1000"
                     submit={() => console.log('hello button')}
-                ></Button>
-                <panel height="64" width="64" left="1000" top="650" color="#00FFFF" img="./data/textures/icons/d17.png" onClick={()=> console.log('hello button 2')}>
-                    {/* <label z_index="2" top="10" color="#FF0000" contents={this.props.clicks.toString()}></label> */}
-                </panel>
-                {/* <panel height="70" width="300" color="#228B22" top="250" left="500" >
-                    <panel z_index="1" height="50" width="50" color="#0077FF" img="./data/textures/cottage.png">
-                        <label z_index="2" top="10" color="#0000FF" contents={this.props.ticks.toString()}></label>
-                    </panel>
-                    <panel left="-100" height="50" width="50" img="./data/textures/cottage.png">
-                        onPress={() => this.props.press()}
-                        onUnpress={() => this.props.unpress()}
-                        onSubmit={() => this.props.toggle()}>
-                    </panel>
-                    <panel left="100" height="50" width="50" color="#00FFFF" img="./data/textures/cottage.png" onClick={()=> console.log('hello button 2')}>
-                        <label z_index="2" top="10" color="#FF0000" contents={this.props.clicks.toString()}></label>
-                    </panel>
-                </panel> */}
+                />
             </panel>
         )
     }
