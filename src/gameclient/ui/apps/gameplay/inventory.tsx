@@ -25,19 +25,6 @@ interface InventorySlotRelativePos {
     left: number
 }
 
-/** Hard coded relative positons metadata for reconciling inventory usage. */
-const inventorySlotsWorldPos: Array<InventorySlotRelativePos> = [
-    {
-        top: 5,
-        left: 5
-    },
-    {
-        top: 5,
-        left: 74
-    },
-    // ...
-]
-
 interface Props {
     top: string | number
     left: string | number
@@ -68,7 +55,30 @@ export class Inventory extends Component<Props, State> {
                     top: 5,
                     left: 74
                 },
-                // ...
+                {
+                    top: 5,
+                    left: 143
+                },
+                {
+                    top: 5,
+                    left: 212
+                },
+                {
+                    top: 74,
+                    left: 5
+                },
+                {
+                    top: 74,
+                    left: 74
+                },
+                {
+                    top: 74,
+                    left: 143
+                },
+                {
+                    top: 74,
+                    left: 212
+                }
             ]
         }
     }
@@ -100,95 +110,15 @@ export class Inventory extends Component<Props, State> {
     render(): JSXElement {
         return (
             <panel left={this.props.left} top={this.props.top} height="143" width="281" color="#282828">
-                <InventorySlot
-                    top={this.state.slotsRelativePos[0].top}
-                    left={this.state.slotsRelativePos[0].left}
-                    inventorySlotIndex={0}
-                    reconcileInventory={this.reconcileInventory}
-                    item={this.props.clientInventory[0]}
-                />
-                <InventorySlot
-                    top={this.state.slotsRelativePos[1].top}
-                    left={this.state.slotsRelativePos[1].left}
-                    inventorySlotIndex={1}
-                    reconcileInventory={this.reconcileInventory}
-                    item={this.props.clientInventory[1]}
-                />
-                {/* <panel left="74" top ="5" height="64" width="64" color="#A9A9A9">
-                    <DraggableWidget
-                        onDragEnd={this.onItemDrop}
-                        pressedLayout="./data/textures/icons/d49.png"
-                        unpressedLayout="./data/textures/icons/d17.png"
-                        height="64"
-                        width="64"
-                        top="0"
-                        left="0"
+                {this.state.slotsRelativePos.map((slot, index) =>
+                    <InventorySlot
+                        top={slot.top}
+                        left={slot.left}
+                        inventorySlotIndex={index}
+                        reconcileInventory={this.reconcileInventory}
+                        item={this.props.clientInventory[index]}
                     />
-                </panel>
-                <panel left="143" top ="5" height="64" width="64" color="#A9A9A9">
-                    <DraggableWidget
-                        onDragEnd={this.onItemDrop}
-                        pressedLayout="./data/textures/icons/d49.png"
-                        unpressedLayout="./data/textures/icons/d17.png"
-                        height="64"
-                        width="64"
-                        top="0"
-                        left="0"
-                    />
-                </panel>
-                <panel left="212" top ="5" height="64" width="64" color="#A9A9A9">
-                    <DraggableWidget
-                        onDragEnd={this.onItemDrop}
-                        pressedLayout="./data/textures/icons/d49.png"
-                        unpressedLayout="./data/textures/icons/d17.png"
-                        height="64"
-                        width="64"
-                        top="0"
-                        left="0"
-                    />
-                </panel>
-                <panel left="5" top ="74" height="64" width="64" color="#A9A9A9">
-                    <DraggableWidget
-                        onDragEnd={this.onItemDrop}
-                        pressedLayout="./data/textures/icons/d49.png"
-                        unpressedLayout="./data/textures/icons/d17.png"
-                        height="64"
-                        width="64"
-                        top="0"
-                        left="0"
-                    />
-                </panel>
-                <panel left="74" top ="74" height="64" width="64" color="#A9A9A9">
-                    <DraggableWidget
-                        onDragEnd={this.onItemDrop}
-                        pressedLayout="./data/textures/icons/d49.png"
-                        unpressedLayout="./data/textures/icons/d17.png"
-                        height="64"
-                        width="64"
-                        top="0"
-                        left="0"
-                    />
-                </panel> */}
-                <panel left="143" top ="74" height="64" width="64" color="#A9A9A9">
-                    {/* <DraggableWidget
-                        pressedLayout="./data/textures/icons/d17.png"
-                        unpressedLayout="./data/textures/icons/d17.png"
-                        height="64"
-                        width="64"
-                        top="0"
-                        left="0"
-                    /> */}
-                </panel>
-                <panel left="212" top ="74" height="64" width="64" color="#A9A9A9">
-                    {/* <DraggableWidget
-                        pressedLayout="./data/textures/icons/d17.png"
-                        unpressedLayout="./data/textures/icons/d17.png"
-                        height="64"
-                        width="64"
-                        top="0"
-                        left="0"
-                    /> */}
-                </panel>
+                )}
             </panel>
         )
     }
