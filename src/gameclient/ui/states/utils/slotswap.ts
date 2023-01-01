@@ -60,7 +60,7 @@ export function checkSlotSwap(item: DropItemData, slotsMetaData: InventorySlotMe
             height: item.height,
             width: item.width,
             worldPosX: slot.left,
-            worldPosY: -slot.top,
+            worldPosY: slot.top,
             offsetX: offsetX,
             offsetY: offsetY,
             onHit: () => {
