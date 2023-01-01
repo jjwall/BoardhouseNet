@@ -1,5 +1,5 @@
-import { createJSXElement } from "./../../core/createjsxelement";
-import { JSXElement } from "./../../core/interfaces";
+import { createJSXElement } from "../../core/createjsxelement";
+import { JSXElement } from "../../core/interfaces";
 import { Scene, Vector3 } from "three";
 import { Component } from "../../core/component";
 import { DraggableWidget } from "../../basecomponents/draggablewidget";

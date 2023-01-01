@@ -1,6 +1,6 @@
 import { DraggableWidget } from "../../basecomponents/draggablewidget";
-import { createJSXElement } from "./../../core/createjsxelement";
-import { JSXElement } from "./../../core/interfaces";
+import { createJSXElement } from "../../core/createjsxelement";
+import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
 import { Item } from "./rootui";
 import { Scene } from "three";
@@ -29,6 +29,7 @@ interface State {
     item: Item | undefined
 }
 
+// Note: ItemSlot might be a better name.
 export class InventorySlot extends Component<Props, State> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
