@@ -5,6 +5,7 @@ import { Component } from "../../core/component";
 import { DraggableWidget } from "../../basecomponents/draggablewidget";
 import { InventorySlot, DropItemData } from "./inventoryslot";
 import { ClientInventory, Item } from "./rootui";
+import { checkSlotSwap } from "../utils/slotswap";
 // import { ClientInventory } from "./rootui";
 
 // TODO: Have items "snap" to empty inventory space if moving items around via drag and drop
@@ -20,7 +21,7 @@ import { ClientInventory, Item } from "./rootui";
 // picks up the item and stores it in your inventory. Red warning message displays at top if inventory is full.
 // -> Test cases can include current coded actions: sword, bow, magic fireball spell
 
-interface InventorySlotMetaData {
+export interface InventorySlotMetaData {
     top: number
     left: number
     height: number
@@ -108,12 +109,12 @@ export class Inventory extends Component<Props, State> {
     // Todo: fix white background "bug"
     // Todo: build EquipmentSlots... could double up inventory and equipment here for simplicity's sake.
     reconcileInventory = (dropItemData: DropItemData) => {
-        const itemWorldPosX = Number(this.props.left) + this.state.slotsMetadata[0].left
-        const itemWorldPosY = Number(this.props.top) + this.state.slotsMetadata[0].top
-        console.log("Reconciling Inventory...")
-        console.log(dropItemData)
-        console.log(Number(this.props.top) + this.state.slotsMetadata[0].top)
-        console.log(Number(this.props.left) + this.state.slotsMetadata[0].left)
+        // const itemWorldPosX = Number(this.props.left) + this.state.slotsMetadata[0].left
+        // const itemWorldPosY = Number(this.props.top) + this.state.slotsMetadata[0].top
+        // console.log("Reconciling Inventory...")
+        // console.log(dropItemData)
+        // console.log(Number(this.props.top) + this.state.slotsMetadata[0].top)
+        // console.log(Number(this.props.left) + this.state.slotsMetadata[0].left)
         this.props.setClientInventory(
             [   undefined,
                 {
@@ -127,6 +128,8 @@ export class Inventory extends Component<Props, State> {
                 undefined,
                 undefined
             ])
+
+        checkSlotSwap(dropItemData, this.state.slotsMetadata, Number(this.props.left), Number(this.props.top))
     }
 
     render(): JSXElement {
