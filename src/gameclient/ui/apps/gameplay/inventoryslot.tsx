@@ -1,7 +1,7 @@
-import { createJSXElement } from "./../../createjsxelement";
-import { JSXElement } from "./../../interfaces";
+import { createJSXElement } from "./../../core/createjsxelement";
+import { JSXElement } from "./../../core/interfaces";
 import { Scene, Vector3 } from "three";
-import { Component } from "./../../component";
+import { Component } from "../../core/component";
 import { DraggableWidget } from "../../corecomponents/draggablewidget";
 import { ClientInventory, Item } from "./rootui";
 

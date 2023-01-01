@@ -1,6 +1,6 @@
-import { createJSXElement } from "./../createjsxelement";
-import { JSXElement } from "./../interfaces";
-import { Component } from "./../component";
+import { createJSXElement } from "./../core/createjsxelement";
+import { JSXElement } from "./../core/interfaces";
+import { Component } from "../core/component";
 import { Scene, Vector3 } from "three";
 
 // TODO: Props pass down that handle possible item?

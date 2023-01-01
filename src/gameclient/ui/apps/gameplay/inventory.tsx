@@ -1,7 +1,7 @@
-import { createJSXElement } from "./../../createjsxelement";
-import { JSXElement } from "./../../interfaces";
+import { createJSXElement } from "./../../core/createjsxelement";
+import { JSXElement } from "./../../core/interfaces";
 import { Scene, Vector3 } from "three";
-import { Component } from "./../../component";
+import { Component } from "../../core/component";
 import { DraggableWidget } from "../../corecomponents/draggablewidget";
 import { InventorySlot, InventorySlotData } from "./inventoryslot";
 import { ClientInventory, Item } from "./rootui";
@@ -41,6 +41,10 @@ export class Inventory extends Component<Props, State> {
         }
     }
 
+    // Here we could have hard coded world positions for each inventory slot to check against.
+    // Consider dynamic solution too.
+    // Todo: fix white background "bug"
+    // Todo: build EquipmentSlots... could double up inventory and equipment here for simplicity's sake.
     reconcileInventory = (slotData: InventorySlotData) => {
         console.log("Reconciling Inventory...")
         console.log(slotData)
@@ -57,7 +61,6 @@ export class Inventory extends Component<Props, State> {
                 undefined,
                 undefined
             ])
-        // this.setState({index: 1})
     }
 
     render(): JSXElement {

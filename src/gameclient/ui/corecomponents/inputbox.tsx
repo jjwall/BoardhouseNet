@@ -1,8 +1,8 @@
 // /** @jsx createJSXElement */
-import { createJSXElement } from "./../../ui/createjsxelement";
-import { JSXElement } from "./../../ui/interfaces";
+import { createJSXElement } from "./../../ui/core/createjsxelement";
+import { JSXElement } from "./../../ui/core/interfaces";
 import { Scene } from "THREE";
-import { Component } from "./../../ui/component";
+import { Component } from "../core/component";
 
 interface Props {
     focusColor: string,

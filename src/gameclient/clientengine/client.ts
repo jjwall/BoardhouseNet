@@ -15,8 +15,8 @@ import { SceneTransition } from "../renders/scenetransitions";
 import { animationSystem } from "../systems/animation";
 import { centerCameraOnPlayer } from "./camera";
 import { renderGamePlayUi, Root } from "../ui/apps/gameplay/rootui";
-import { createWidget, Widget } from "../ui/widget";
-import { layoutWidget } from "../ui/layoutwidget";
+import { createWidget, Widget } from "../ui/core/widget";
+import { layoutWidget } from "../ui/core/layoutwidget";
 
 export interface ClientConfig {
     /// state stuff ///

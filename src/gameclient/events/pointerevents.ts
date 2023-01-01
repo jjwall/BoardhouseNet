@@ -1,4 +1,4 @@
-import { Widget } from "../ui/widget";
+import { Widget } from "../ui/core/widget";
 import { Vector3 } from "three";
 
 let pressedWidgets: Widget[] = [];

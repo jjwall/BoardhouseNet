@@ -1,11 +1,11 @@
 import { TouchControls } from "../../corecomponents/touchcontrols";
-import { createJSXElement } from "./../../createjsxelement";
-import { renderWidget } from "./../../../ui/renderwidget";
+import { createJSXElement } from "./../../core/createjsxelement";
+import { renderWidget } from "./../../core/renderwidget";
 import { InputBox } from "../../corecomponents/inputbox";
 import { Button } from "../../corecomponents/button";
-import { JSXElement } from "./../../interfaces";
-import { Component } from "./../../component";
-import { Widget } from "./../../widget";
+import { JSXElement } from "./../../core/interfaces";
+import { Component } from "../../core/component";
+import { Widget } from "./../../core/widget";
 import { Scene } from "three";
 import { DraggableWidget } from "../../corecomponents/draggablewidget";
 import { Inventory } from "./inventory";

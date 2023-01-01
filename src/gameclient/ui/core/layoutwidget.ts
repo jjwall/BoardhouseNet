@@ -1,5 +1,5 @@
 import { Mesh, MeshBasicMaterial, PlaneGeometry, NearestFilter } from "three";
-import { Client } from "./../clientengine/client"
+import { Client } from "./../../clientengine/client"
 import { Widget } from "./widget";
 
 /**
