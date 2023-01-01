@@ -3,7 +3,7 @@ import { JSXElement } from "./../../core/interfaces";
 import { Scene, Vector3 } from "three";
 import { Component } from "../../core/component";
 import { DraggableWidget } from "../../basecomponents/draggablewidget";
-import { InventorySlot, InventorySlotData } from "./inventoryslot";
+import { InventorySlot, DropItemData } from "./inventoryslot";
 import { ClientInventory, Item } from "./rootui";
 // import { ClientInventory } from "./rootui";
 
@@ -20,9 +20,11 @@ import { ClientInventory, Item } from "./rootui";
 // picks up the item and stores it in your inventory. Red warning message displays at top if inventory is full.
 // -> Test cases can include current coded actions: sword, bow, magic fireball spell
 
-interface InventorySlotRelativePos {
+interface InventorySlotMetaData {
     top: number
     left: number
+    height: number
+    width: number
 }
 
 interface Props {
@@ -38,7 +40,7 @@ interface Props {
 interface State {
     // top: number
     // left: number
-    slotsRelativePos: Array<InventorySlotRelativePos>
+    slotsMetadata: Array<InventorySlotMetaData>
 }
 
 /** Note: Should be top level component. Dependent on top and left attributes being absolute. */
@@ -46,38 +48,56 @@ export class Inventory extends Component<Props, State> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
-            slotsRelativePos: [
+            // Note: This could be dynamically rendered from a bag size.
+            // Currently hard-coded for 8 inventory slots.
+            slotsMetadata: [
                 {
                     top: 5,
-                    left: 5
-                },
-                {
-                    top: 5,
-                    left: 74
-                },
-                {
-                    top: 5,
-                    left: 143
+                    left: 5,
+                    height: 64,
+                    width: 64
                 },
                 {
                     top: 5,
-                    left: 212
+                    left: 74,
+                    height: 64,
+                    width: 64
+                },
+                {
+                    top: 5,
+                    left: 143,
+                    height: 64,
+                    width: 64
+                },
+                {
+                    top: 5,
+                    left: 212,
+                    height: 64,
+                    width: 64
                 },
                 {
                     top: 74,
-                    left: 5
+                    left: 5,
+                    height: 64,
+                    width: 64
                 },
                 {
                     top: 74,
-                    left: 74
+                    left: 74,
+                    height: 64,
+                    width: 64
                 },
                 {
                     top: 74,
-                    left: 143
+                    left: 143,
+                    height: 64,
+                    width: 64
                 },
                 {
                     top: 74,
-                    left: 212
+                    left: 212,
+                    height: 64,
+                    width: 64
                 }
             ]
         }
@@ -87,11 +107,13 @@ export class Inventory extends Component<Props, State> {
     // Consider dynamic solution too.
     // Todo: fix white background "bug"
     // Todo: build EquipmentSlots... could double up inventory and equipment here for simplicity's sake.
-    reconcileInventory = (slotData: InventorySlotData) => {
+    reconcileInventory = (dropItemData: DropItemData) => {
+        const itemWorldPosX = Number(this.props.left) + this.state.slotsMetadata[0].left
+        const itemWorldPosY = Number(this.props.top) + this.state.slotsMetadata[0].top
         console.log("Reconciling Inventory...")
-        console.log(slotData)
-        console.log(Number(this.props.top) + this.state.slotsRelativePos[0].top)
-        console.log(Number(this.props.left) + this.state.slotsRelativePos[0].left)
+        console.log(dropItemData)
+        console.log(Number(this.props.top) + this.state.slotsMetadata[0].top)
+        console.log(Number(this.props.left) + this.state.slotsMetadata[0].left)
         this.props.setClientInventory(
             [   undefined,
                 {
@@ -110,10 +132,13 @@ export class Inventory extends Component<Props, State> {
     render(): JSXElement {
         return (
             <panel left={this.props.left} top={this.props.top} height="143" width="281" color="#282828">
-                {this.state.slotsRelativePos.map((slot, index) =>
+                {this.state.slotsMetadata.map((slot, index) =>
                     <InventorySlot
                         top={slot.top}
                         left={slot.left}
+                        height={slot.height}
+                        width={slot.width}
+                        slotColor="#A9A9A9"
                         inventorySlotIndex={index}
                         reconcileInventory={this.reconcileInventory}
                         item={this.props.clientInventory[index]}

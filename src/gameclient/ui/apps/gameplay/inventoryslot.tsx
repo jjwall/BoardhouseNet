@@ -1,25 +1,28 @@
+import { DraggableWidget } from "../../basecomponents/draggablewidget";
 import { createJSXElement } from "./../../core/createjsxelement";
 import { JSXElement } from "./../../core/interfaces";
-import { Scene, Vector3 } from "three";
 import { Component } from "../../core/component";
-import { DraggableWidget } from "../../basecomponents/draggablewidget";
-import { ClientInventory, Item } from "./rootui";
+import { Item } from "./rootui";
+import { Scene } from "three";
 
-export interface InventorySlotData {
+export interface DropItemData {
     index: number
     worldPosX: number
     worldPosY: number
+    height: number
+    width: number
     // item
 }
 
 interface Props {
     top: string | number
     left: string | number
+    height: string | number
+    width: string | number
+    slotColor: string
     item: Item | undefined
     inventorySlotIndex: number
-    reconcileInventory: (slotData: InventorySlotData) => void
-    // clientInventory: ClientInventory
-    // onItemDrop: (itemSlotSetState: () => void) => void
+    reconcileInventory: (slotData: DropItemData) => void
 }
 
 interface State {
@@ -38,26 +41,28 @@ export class InventorySlot extends Component<Props, State> {
         this.props.reconcileInventory({
             index: this.props.inventorySlotIndex,
             worldPosX: worldPosX,
-            worldPosY: worldPosY
+            worldPosY: worldPosY,
+            height: Number(this.props.height),
+            width: Number(this.props.width)
         })
     }
 
     render(): JSXElement {
         if (!this.props.item) {
             return (
-                <panel left={this.props.left} top={this.props.top} height="64" width="64" color="#A9A9A9"></panel>
+                <panel left={this.props.left} top={this.props.top} height={this.props.height} width={this.props.width} color={this.props.slotColor}></panel>
             )
         } else {
             return (
-                <panel left={this.props.left} top={this.props.top} height="64" width="64" color="#A9A9A9">
+                <panel left={this.props.left} top={this.props.top} height={this.props.height} width={this.props.width} color={this.props.slotColor}>
                     <DraggableWidget
                         onDragEnd={this.onItemDrop}
                         pressedLayout={this.props.item.onDragLayout}
                         unpressedLayout={this.props.item.layout}
-                        height="64"
-                        width="64"
-                        top="0"
-                        left="0"
+                        height={this.props.height}
+                        width={this.props.width}
+                        top={0}
+                        left={0}
                     />
                 </panel>
             )
