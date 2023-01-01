@@ -26,8 +26,7 @@ export interface Item {
 }
 
 export interface GlobalState {
-    clientInventory: Array<Item | undefined>
-    //ClientInventory
+    clientInventory: ClientInventory
 }
 
 export const mockGlobalState: GlobalState = {
@@ -90,7 +89,6 @@ export class Root extends Component<Props, State> {
         this.setState({
             clientInventory: newClientInventory
         })
-        console.log(this.state.clientInventory)
     }
 
     public setClicks = (clicks: number) => {

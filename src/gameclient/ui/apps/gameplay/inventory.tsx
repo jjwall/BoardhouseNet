@@ -19,6 +19,25 @@ import { ClientInventory, Item } from "./rootui";
 // TODO: Create item "drops" akin to MapleStory where you have to be near it and then press "Z" or something and it 
 // picks up the item and stores it in your inventory. Red warning message displays at top if inventory is full.
 // -> Test cases can include current coded actions: sword, bow, magic fireball spell
+
+interface InventorySlotRelativePos {
+    top: number
+    left: number
+}
+
+/** Hard coded relative positons metadata for reconciling inventory usage. */
+const inventorySlotsWorldPos: Array<InventorySlotRelativePos> = [
+    {
+        top: 5,
+        left: 5
+    },
+    {
+        top: 5,
+        left: 74
+    },
+    // ...
+]
+
 interface Props {
     top: string | number
     left: string | number
@@ -32,12 +51,25 @@ interface Props {
 interface State {
     // top: number
     // left: number
+    slotsRelativePos: Array<InventorySlotRelativePos>
 }
 
+/** Note: Should be top level component. Dependent on top and left attributes being absolute. */
 export class Inventory extends Component<Props, State> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
+            slotsRelativePos: [
+                {
+                    top: 5,
+                    left: 5
+                },
+                {
+                    top: 5,
+                    left: 74
+                },
+                // ...
+            ]
         }
     }
 
@@ -48,6 +80,8 @@ export class Inventory extends Component<Props, State> {
     reconcileInventory = (slotData: InventorySlotData) => {
         console.log("Reconciling Inventory...")
         console.log(slotData)
+        console.log(Number(this.props.top) + this.state.slotsRelativePos[0].top)
+        console.log(Number(this.props.left) + this.state.slotsRelativePos[0].left)
         this.props.setClientInventory(
             [   undefined,
                 {
@@ -67,20 +101,16 @@ export class Inventory extends Component<Props, State> {
         return (
             <panel left={this.props.left} top={this.props.top} height="143" width="281" color="#282828">
                 <InventorySlot
-                    // onItemDrop={this.onItemDrop}
-                    top="5"
-                    left="5"
+                    top={this.state.slotsRelativePos[0].top}
+                    left={this.state.slotsRelativePos[0].left}
                     inventorySlotIndex={0}
-                    // clientInventory={this.props.clientInventory}
                     reconcileInventory={this.reconcileInventory}
                     item={this.props.clientInventory[0]}
                 />
                 <InventorySlot
-                    // onItemDrop={this.onItemDrop}
-                    top="5"
-                    left="74"
+                    top={this.state.slotsRelativePos[1].top}
+                    left={this.state.slotsRelativePos[1].left}
                     inventorySlotIndex={1}
-                    // clientInventory={this.props.clientInventory}
                     reconcileInventory={this.reconcileInventory}
                     item={this.props.clientInventory[1]}
                 />
