@@ -9,15 +9,17 @@ import { Scene, Vector3 } from "three";
 interface Props {
     pressedLayout: string;
     unpressedLayout: string;
-    width: string | number,
-    height: string | number,
-    top: string | number,
-    left: string | number,
-    center?: boolean
+    width: string | number;
+    height: string | number;
+    top: string | number;
+    left: string | number;
+    onDragEnd: () => void;
+    center?: boolean;
     backgroundColor?: string;
 }
 
 interface State {
+    dragging: boolean;
     pressed: boolean;
     top: string | number
     left: string | number
@@ -31,6 +33,7 @@ export class DraggableWidget extends Component<Props, State> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
+            dragging: false,
             pressed: false,
             top: this.props.top,
             left: this.props.left,
@@ -75,7 +78,8 @@ export class DraggableWidget extends Component<Props, State> {
         this.setState({
             top: e.offsetY + this.state.initialWorldPositionY - halfWidth,
             left: e.offsetX - this.state.initialWorldPositionX - halfHeight,
-            z_index: 5
+            z_index: 5,
+            dragging: true
         })
     }
 
@@ -84,6 +88,13 @@ export class DraggableWidget extends Component<Props, State> {
             pressed: false,
             z_index: 0
         });
+
+        if (this.state.dragging) {
+            this.props.onDragEnd()
+            this.setState({
+                dragging: false
+            });
+        }
     }
 
     render(): JSXElement {

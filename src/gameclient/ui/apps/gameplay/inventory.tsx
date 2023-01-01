@@ -3,6 +3,9 @@ import { JSXElement } from "./../../interfaces";
 import { Scene, Vector3 } from "three";
 import { Component } from "./../../component";
 import { DraggableWidget } from "../../corecomponents/draggablewidget";
+import { InventorySlot } from "./inventoryslot";
+import { ClientInventory, Item } from "./rootui";
+// import { ClientInventory } from "./rootui";
 
 // TODO: Have items "snap" to empty inventory space if moving items around via drag and drop
 // TODO: Implement Equipment Screen that enables armor and skill / weapon equips via drag and drop from inventory
@@ -19,6 +22,8 @@ import { DraggableWidget } from "../../corecomponents/draggablewidget";
 interface Props {
     top: string | number
     left: string | number
+    clientInventory: ClientInventory
+    setClientInventory: (newClientInventory: ClientInventory) => void
 }
 
 /**
@@ -36,21 +41,48 @@ export class Inventory extends Component<Props, State> {
         }
     }
 
+    reconcileInventory = () => {
+        console.log("Reconciling Inventory...")
+        this.props.setClientInventory(
+            [   undefined,
+                {
+                    layout: "./data/textures/icons/d17.png",
+                    onDragLayout: "./data/textures/icons/d49.png"
+                },
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined
+            ])
+        // this.setState({index: 1})
+    }
+
     render(): JSXElement {
         return (
             <panel left={this.props.left} top={this.props.top} height="143" width="281" color="#282828">
-                <panel left="5" top ="5" height="64" width="64" color="#A9A9A9">
+                <InventorySlot
+                    // onItemDrop={this.onItemDrop}
+                    top="5"
+                    left="5"
+                    inventorySlotIndex={0}
+                    // clientInventory={this.props.clientInventory}
+                    reconcileInventory={this.reconcileInventory}
+                    item={this.props.clientInventory[0]}
+                />
+                <InventorySlot
+                    // onItemDrop={this.onItemDrop}
+                    top="5"
+                    left="74"
+                    inventorySlotIndex={1}
+                    // clientInventory={this.props.clientInventory}
+                    reconcileInventory={this.reconcileInventory}
+                    item={this.props.clientInventory[1]}
+                />
+                {/* <panel left="74" top ="5" height="64" width="64" color="#A9A9A9">
                     <DraggableWidget
-                        pressedLayout="./data/textures/icons/d49.png"
-                        unpressedLayout="./data/textures/icons/d17.png"
-                        height="64"
-                        width="64"
-                        top="0"
-                        left="0"
-                    />
-                </panel>
-                <panel left="74" top ="5" height="64" width="64" color="#A9A9A9">
-                    <DraggableWidget
+                        onDragEnd={this.onItemDrop}
                         pressedLayout="./data/textures/icons/d49.png"
                         unpressedLayout="./data/textures/icons/d17.png"
                         height="64"
@@ -61,6 +93,7 @@ export class Inventory extends Component<Props, State> {
                 </panel>
                 <panel left="143" top ="5" height="64" width="64" color="#A9A9A9">
                     <DraggableWidget
+                        onDragEnd={this.onItemDrop}
                         pressedLayout="./data/textures/icons/d49.png"
                         unpressedLayout="./data/textures/icons/d17.png"
                         height="64"
@@ -71,6 +104,7 @@ export class Inventory extends Component<Props, State> {
                 </panel>
                 <panel left="212" top ="5" height="64" width="64" color="#A9A9A9">
                     <DraggableWidget
+                        onDragEnd={this.onItemDrop}
                         pressedLayout="./data/textures/icons/d49.png"
                         unpressedLayout="./data/textures/icons/d17.png"
                         height="64"
@@ -81,6 +115,7 @@ export class Inventory extends Component<Props, State> {
                 </panel>
                 <panel left="5" top ="74" height="64" width="64" color="#A9A9A9">
                     <DraggableWidget
+                        onDragEnd={this.onItemDrop}
                         pressedLayout="./data/textures/icons/d49.png"
                         unpressedLayout="./data/textures/icons/d17.png"
                         height="64"
@@ -91,6 +126,7 @@ export class Inventory extends Component<Props, State> {
                 </panel>
                 <panel left="74" top ="74" height="64" width="64" color="#A9A9A9">
                     <DraggableWidget
+                        onDragEnd={this.onItemDrop}
                         pressedLayout="./data/textures/icons/d49.png"
                         unpressedLayout="./data/textures/icons/d17.png"
                         height="64"
@@ -98,7 +134,7 @@ export class Inventory extends Component<Props, State> {
                         top="0"
                         left="0"
                     />
-                </panel>
+                </panel> */}
                 <panel left="143" top ="74" height="64" width="64" color="#A9A9A9">
                     {/* <DraggableWidget
                         pressedLayout="./data/textures/icons/d17.png"

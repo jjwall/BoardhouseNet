@@ -10,10 +10,40 @@ import { Scene } from "three";
 import { DraggableWidget } from "../../corecomponents/draggablewidget";
 import { Inventory } from "./inventory";
 
+export type ClientInventory = Array<Item | undefined>
+
 export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props): Root {
     let rootInstance = renderWidget(<Root { ...props }/>, rootWidget, scene);
 
     return rootInstance.component as Root;
+}
+
+export interface Item {
+    // type: string
+    // stats: number
+    layout: string
+    onDragLayout: string
+}
+
+export interface GlobalState {
+    clientInventory: Array<Item | undefined>
+    //ClientInventory
+}
+
+export const mockGlobalState: GlobalState = {
+    clientInventory: [
+        {
+            layout: "./data/textures/icons/d17.png",
+            onDragLayout: "./data/textures/icons/d49.png"
+        },
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined
+    ]
 }
 
 
@@ -38,6 +68,7 @@ interface State {
     color: string;
     hidden: boolean;
     currentFPS: number;
+    clientInventory: ClientInventory
 }
 
 export class Root extends Component<Props, State> {
@@ -49,15 +80,17 @@ export class Root extends Component<Props, State> {
             clicks: 0,
             color: "#00FFFF",
             hidden: false,
+            clientInventory: mockGlobalState.clientInventory
         };
 
         setInterval(() => this.tick(), 1000);
     }
 
-    public addClick = (): void => {
-        if (!!this.props.addClicks) {
-            this.props.addClicks();
-        }
+    setClientInventory = (newClientInventory: ClientInventory) => {
+        this.setState({
+            clientInventory: newClientInventory
+        })
+        console.log(this.state.clientInventory)
     }
 
     public setClicks = (clicks: number) => {
@@ -97,6 +130,8 @@ export class Root extends Component<Props, State> {
                 <Inventory
                     top="550"
                     left="975"
+                    clientInventory={this.state.clientInventory}
+                    setClientInventory={this.setClientInventory}
                 />
             </panel>
         )
