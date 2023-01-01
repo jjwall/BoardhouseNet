@@ -1,9 +1,9 @@
 // /** @jsx createJSXElement */
-import { createJSXElement } from "./../core/createjsxelement";
-import { JSXElement } from "./../core/interfaces";
+import { createJSXElement } from "../core/createjsxelement";
+import { JSXElement } from "../core/interfaces";
 import { Scene } from "THREE";
 import { Component } from "../core/component";
-import { TouchControlButton } from "./../corecomponents/touchcontrolbutton";
+import { TouchControlButton } from "./touchcontrolbutton";
 
 interface Props {
     top?: string | number;

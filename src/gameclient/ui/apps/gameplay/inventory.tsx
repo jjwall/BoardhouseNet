@@ -2,7 +2,7 @@ import { createJSXElement } from "./../../core/createjsxelement";
 import { JSXElement } from "./../../core/interfaces";
 import { Scene, Vector3 } from "three";
 import { Component } from "../../core/component";
-import { DraggableWidget } from "../../corecomponents/draggablewidget";
+import { DraggableWidget } from "../../basecomponents/draggablewidget";
 import { InventorySlot, InventorySlotData } from "./inventoryslot";
 import { ClientInventory, Item } from "./rootui";
 // import { ClientInventory } from "./rootui";

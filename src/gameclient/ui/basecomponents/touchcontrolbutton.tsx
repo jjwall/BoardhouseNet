@@ -1,6 +1,6 @@
 // /** @jsx createJSXElement */
-import { createJSXElement } from "./../../ui/core/createjsxelement";
-import { JSXElement } from "./../../ui/core/interfaces";
+import { createJSXElement } from "../core/createjsxelement";
+import { JSXElement } from "../core/interfaces";
 import { Scene } from "THREE";
 import { Component } from "../core/component";
 
