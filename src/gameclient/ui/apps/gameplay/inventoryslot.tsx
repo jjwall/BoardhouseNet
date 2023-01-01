@@ -5,8 +5,11 @@ import { Component } from "./../../component";
 import { DraggableWidget } from "../../corecomponents/draggablewidget";
 import { ClientInventory, Item } from "./rootui";
 
-interface InventorySlotData {
-
+export interface InventorySlotData {
+    index: number
+    worldPosX: number
+    worldPosY: number
+    // item
 }
 
 interface Props {
@@ -14,7 +17,7 @@ interface Props {
     left: string | number
     item: Item | undefined
     inventorySlotIndex: number
-    reconcileInventory: () => void
+    reconcileInventory: (slotData: InventorySlotData) => void
     // clientInventory: ClientInventory
     // onItemDrop: (itemSlotSetState: () => void) => void
 }
@@ -31,8 +34,12 @@ export class InventorySlot extends Component<Props, State> {
         }
     }
 
-    onItemDrop = () => {
-        this.props.reconcileInventory()
+    onItemDrop = (worldPosX: number, worldPosY: number) => {
+        this.props.reconcileInventory({
+            index: this.props.inventorySlotIndex,
+            worldPosX: worldPosX,
+            worldPosY: worldPosY
+        })
     }
 
     render(): JSXElement {

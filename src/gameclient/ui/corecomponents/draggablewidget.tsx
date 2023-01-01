@@ -13,7 +13,7 @@ interface Props {
     height: string | number;
     top: string | number;
     left: string | number;
-    onDragEnd: () => void;
+    onDragEnd: (worldPosX: number, worldPosY: number) => void;
     center?: boolean;
     backgroundColor?: string;
 }
@@ -90,7 +90,9 @@ export class DraggableWidget extends Component<Props, State> {
         });
 
         if (this.state.dragging) {
-            this.props.onDragEnd()
+            const position = new Vector3();
+            this._internalInstance.widget.getWorldPosition(position);
+            this.props.onDragEnd(position.x, position.y)
             this.setState({
                 dragging: false
             });

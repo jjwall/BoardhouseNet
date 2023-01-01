@@ -3,7 +3,7 @@ import { JSXElement } from "./../../interfaces";
 import { Scene, Vector3 } from "three";
 import { Component } from "./../../component";
 import { DraggableWidget } from "../../corecomponents/draggablewidget";
-import { InventorySlot } from "./inventoryslot";
+import { InventorySlot, InventorySlotData } from "./inventoryslot";
 import { ClientInventory, Item } from "./rootui";
 // import { ClientInventory } from "./rootui";
 
@@ -41,8 +41,9 @@ export class Inventory extends Component<Props, State> {
         }
     }
 
-    reconcileInventory = () => {
+    reconcileInventory = (slotData: InventorySlotData) => {
         console.log("Reconciling Inventory...")
+        console.log(slotData)
         this.props.setClientInventory(
             [   undefined,
                 {
