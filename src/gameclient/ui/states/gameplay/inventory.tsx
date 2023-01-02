@@ -20,6 +20,7 @@ import { processItemSlotSwap } from "../utils/slotswap";
 // TODO: Create item "drops" akin to MapleStory where you have to be near it and then press "Z" or something and it 
 // picks up the item and stores it in your inventory. Red warning message displays at top if inventory is full.
 // -> Test cases can include current coded actions: sword, bow, magic fireball spell
+// TODO: Add in goblin spawn points in forest 1-1 and have them drop items on kill. Consider drop percentages.
 
 export interface InventorySlotMetaData {
     top: number

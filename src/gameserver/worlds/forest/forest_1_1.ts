@@ -26,10 +26,8 @@ import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
 import { timerSystem } from "../../systems/timer";
 import { Vector3 } from "three";
+import { createItemDrop } from "../../archetypes/itemdrop";
 
-/**
- * World engine that handles updating of all world-related systems.
- */
 export class Forest_1_1 extends BaseWorldEngine {
     // public rootWidget: Widget;
     constructor(server: Server, worldType: WorldTypes) {
@@ -48,11 +46,8 @@ export class Forest_1_1 extends BaseWorldEngine {
         this.registerSystem(behaviorSystem);
         this.registerSystem(timerSystem);
 
-        let itemPickupArrow = new Entity();
-        itemPickupArrow.pos = setPosition(450, 250, 3);
-        itemPickupArrow.sprite = setSprite("./data/textures/vfx/item_pickup_arrow001.png", 4)
-        itemPickupArrow.anim = setAnim(itemPickupArrowAnim)
-        this.registerEntity(itemPickupArrow, server)
+        const itemDropPos = setPosition(450, 250, 3);
+        createItemDrop(this, itemDropPos, "./data/textures/icons/d20.png")
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 
