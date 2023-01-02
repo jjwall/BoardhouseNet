@@ -13,9 +13,12 @@ type Manifold = Rect & {
     height: number;
 };
 
-// type CollidableEntity = {
-//     hitbox: Hitbox
-// }
+interface ManifoldData {
+    manifoldArea: number
+    manifold: Manifold
+    body: CollidableEntity
+    otherBody: CollidableEntity
+}
 
 interface CollidableEntity {
     height: number;
@@ -55,6 +58,7 @@ const getManifold = (a: Rect, b: Rect): Manifold => {
 
 export function checkSlotSwap(item: DropItemData, slotsMetaData: InventorySlotMetaData[], offsetX: number, offsetY: number) {
     let slots: CollidableEntity[] = []
+
     slotsMetaData.forEach((slot, index) => {
         slots.push({
             height: item.height,
@@ -68,6 +72,7 @@ export function checkSlotSwap(item: DropItemData, slotsMetaData: InventorySlotMe
             }
         })
     })
+
     const collidableItem: CollidableEntity = {
         height: item.height,
         width: item.width,
@@ -91,9 +96,7 @@ export function checkSlotSwap(item: DropItemData, slotsMetaData: InventorySlotMe
         }
     };
 
-    const allBodies = slots
-        // .filter(e => e.hitbox)
-        .map((e): Body => ({ ent: e, rect: getHitbox(e) }));
+    const allBodies = slots.map((e): Body => ({ ent: e, rect: getHitbox(e) }));
 
     allBodies.push({ent: collidableItem, rect: getHitbox(collidableItem)})
 
@@ -101,23 +104,33 @@ export function checkSlotSwap(item: DropItemData, slotsMetaData: InventorySlotMe
 
     let bodyWindow = [] as Body[];
 
+    const manifoldData: ManifoldData[] = []
+
     for (const body of allBodies) {
         bodyWindow = bodyWindow.filter(otherBody => body.rect.left <= otherBody.rect.right);
 
         for (const otherBody of bodyWindow) {
             const manifold = getManifold(body.rect, otherBody.rect);
-            // const manifold = getManifold(collidableItem., body.rect);
-            // console.log(manifold)
 
             if (manifold.width > 0 && manifold.height > 0) {
-                // console.log('hit');
-                tryOnHit(body.ent, otherBody.ent, manifold);
-                tryOnHit(otherBody.ent, body.ent, manifold);
-                // tryOnHit(collidableItem, body.ent, manifold)
-                // tryOnHit(otherBody.ent, collidableItem, manifold)
+                manifoldData.push({
+                    manifoldArea: manifold.height * manifold.width,
+                    manifold: manifold,
+                    body: body.ent,
+                    otherBody: otherBody.ent,
+                })
             }
         }
 
         bodyWindow.push(body);
     }
+
+    if (manifoldData.length > 0) {
+        const largestManifold = manifoldData.reduce((a, b) => a.manifoldArea > b.manifoldArea ? a:b)
+        tryOnHit(largestManifold.body, largestManifold.otherBody, largestManifold.manifold);
+        tryOnHit(largestManifold.otherBody, largestManifold.body, largestManifold.manifold);
+    }
+    // else {
+    //     // put item back where it came from
+    // }
 }
