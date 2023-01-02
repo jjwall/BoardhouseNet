@@ -6,11 +6,10 @@ import { DraggableWidget } from "../../basecomponents/draggablewidget";
 import { InventorySlot, DropItemData } from "./inventoryslot";
 import { ClientInventory, Item } from "./rootui";
 import { checkSlotSwap } from "../utils/slotswap";
-// import { ClientInventory } from "./rootui";
 
-// TODO: Have items "snap" to empty inventory space if moving items around via drag and drop
+// TODO: (Done) Have items "snap" to empty inventory space if moving items around via drag and drop
 // TODO: Implement Equipment Screen that enables armor and skill / weapon equips via drag and drop from inventory
-// TODO: Create data or "conext" or "global state" layer that carries client item data
+// TODO: (Done) Create data or "conext" or "global state" layer that carries client item data
 // -> Example: We have 8 inventory slots, client should be aware of what item is occupying which spot so
 // we know what to render in the inventory on scene load. (consider on enter game and scene transition ramifications)
 // -> Consider refactoring "data" directory at root to be named "assets". This would be a big refactor!
@@ -104,31 +103,30 @@ export class Inventory extends Component<Props, State> {
         }
     }
 
-    // Here we could have hard coded world positions for each inventory slot to check against.
-    // Consider dynamic solution too.
+    // Todo: Handle Item Swapping locations.
     // Todo: fix white background "bug"
     // Todo: build EquipmentSlots... could double up inventory and equipment here for simplicity's sake.
     reconcileInventory = (dropItemData: DropItemData) => {
         const slotIndex = checkSlotSwap(dropItemData, this.state.slotsMetadata, Number(this.props.left), Number(this.props.top))
 
-        if (slotIndex) {
+        if (slotIndex !== undefined) {
             if (slotIndex !== dropItemData.index) {
-            // this.props.clientInventory[slotIndex] = dropItemData.item
-            // const prevItem = this.props.clientInventory[dropItemData.index]
-            this.props.clientInventory[dropItemData.index] = undefined
-            console.log("dropItemData.index")
-            console.log(dropItemData)
-            this.props.clientInventory[slotIndex] = dropItemData.item
-            this.props.setClientInventory(this.props.clientInventory)
+                // Item has been dragged to new slot. Render new slot state.
+                this.props.clientInventory[dropItemData.index] = undefined // To-do: consider swap spot not just hard coding undefined here.
+                this.props.clientInventory[slotIndex] = dropItemData.item
+                this.props.setClientInventory(this.props.clientInventory)
             } else {
-                // reset state?
-                console.log('reset original slot state')
+                // Item has been dragged to original slot. Re-render original slot state.
                 this.props.clientInventory[slotIndex] = undefined
                 this.props.setClientInventory(this.props.clientInventory)
                 this.props.clientInventory[slotIndex] = dropItemData.item
                 this.props.setClientInventory(this.props.clientInventory)
             }
         } else {
+            // Item has been dragged to no man's land. Re-render to original slot state.
+            this.props.clientInventory[dropItemData.index] = undefined
+            this.props.setClientInventory(this.props.clientInventory)
+            this.props.clientInventory[dropItemData.index] = dropItemData.item
             this.props.setClientInventory(this.props.clientInventory)
         }
     }
