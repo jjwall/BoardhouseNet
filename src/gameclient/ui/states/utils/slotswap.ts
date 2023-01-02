@@ -31,8 +31,6 @@ interface CollidableEntity {
 }
 
 const getHitbox = (e: CollidableEntity): Rect => {
-    // const globalPos = getWorldPosition(e);
-
     return {
         left: e.worldPosX + e.offsetX - e.width / 2,
         right: e.worldPosX + e.offsetX + e.width / 2,
@@ -56,9 +54,17 @@ const getManifold = (a: Rect, b: Rect): Manifold => {
     };
 };
 
-export function checkSlotSwap(item: DropItemData, slotsMetaData: InventorySlotMetaData[], offsetX: number, offsetY: number): number {
+/**
+ * Detects which item slot the current drag and dropped item is colliding with.
+ * @param item Current dropped item.
+ * @param slotsMetaData 
+ * @param offsetX 
+ * @param offsetY 
+ * @returns The slot index based on the item collision detection. Can be undefined. 
+ */
+export function processItemSlotSwap(item: DropItemData, slotsMetaData: InventorySlotMetaData[], offsetX: number, offsetY: number): number {
+    let newSlotIndex: number = undefined
     let slots: CollidableEntity[] = []
-    let slotIndex: number = undefined
 
     slotsMetaData.forEach((slot, index) => {
         slots.push({
@@ -69,8 +75,7 @@ export function checkSlotSwap(item: DropItemData, slotsMetaData: InventorySlotMe
             offsetX: offsetX,
             offsetY: offsetY,
             onHit: () => {
-                slotIndex = index
-                console.log('collided with slot index: ' + index)
+                newSlotIndex = index
             }
         })
     })
@@ -82,9 +87,6 @@ export function checkSlotSwap(item: DropItemData, slotsMetaData: InventorySlotMe
         worldPosY: -item.worldPosY,
         offsetX: 0,
         offsetY: 0,
-        onHit: () => {
-            console.log('collided w item?')
-        }
     }
 
     type Body = {
@@ -132,9 +134,6 @@ export function checkSlotSwap(item: DropItemData, slotsMetaData: InventorySlotMe
         tryOnHit(largestManifold.body, largestManifold.otherBody, largestManifold.manifold);
         tryOnHit(largestManifold.otherBody, largestManifold.body, largestManifold.manifold);
     }
-    // else {
-    //     // put item back where it came from
-    // }
 
-    return slotIndex
+    return newSlotIndex
 }

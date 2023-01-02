@@ -5,14 +5,15 @@ import { Component } from "../../core/component";
 import { DraggableWidget } from "../../basecomponents/draggablewidget";
 import { InventorySlot, DropItemData } from "./inventoryslot";
 import { ClientInventory, Item } from "./rootui";
-import { checkSlotSwap } from "../utils/slotswap";
+import { processItemSlotSwap } from "../utils/slotswap";
 
 // TODO: (Done) Have items "snap" to empty inventory space if moving items around via drag and drop
 // TODO: Implement Equipment Screen that enables armor and skill / weapon equips via drag and drop from inventory
 // TODO: (Done) Create data or "conext" or "global state" layer that carries client item data
 // -> Example: We have 8 inventory slots, client should be aware of what item is occupying which spot so
 // we know what to render in the inventory on scene load. (consider on enter game and scene transition ramifications)
-// -> Consider refactoring "data" directory at root to be named "assets". This would be a big refactor!
+// TODO: Consider refactoring "data" directory at root to be named "assets". This would be a big refactor!
+// TODO: Build out EquipmentSlots... could double up inventory and equipment here for simplicity's sake.
 // TODO: Enable ability to hide / show Inventory via hotkey or clickable UI button on screen
 // -> Vision for this was a little bag that would animate a moving animation of bag coming from off screen on bottom
 // -> If we take this route, investigate UI animations (shouldn't be too hard with a little for loop async method on component)
@@ -103,11 +104,9 @@ export class Inventory extends Component<Props, State> {
         }
     }
 
-    // Todo: (Done) Handle Item Swapping locations.
     // Todo: fix white background "bug"
-    // Todo: build EquipmentSlots... could double up inventory and equipment here for simplicity's sake.
     reconcileInventory = (dropItemData: DropItemData) => {
-        const newSlotIndex = checkSlotSwap(dropItemData, this.state.slotsMetadata, Number(this.props.left), Number(this.props.top))
+        const newSlotIndex = processItemSlotSwap(dropItemData, this.state.slotsMetadata, Number(this.props.left), Number(this.props.top))
 
         if (newSlotIndex !== undefined) {
             if (newSlotIndex !== dropItemData.index) {
