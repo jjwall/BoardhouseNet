@@ -1,4 +1,4 @@
-import { NetMessageLoadWorld, NetMessagePlayerWorldTransition } from "../../packets/messages/networldmessage";
+import { NetMessageLoadWorld, NetMessagePlayerItemPickup, NetMessagePlayerWorldTransition } from "../../packets/messages/networldmessage";
 import { sendPlayerWorldTransitionMessage } from "./sendclientworldmessages";
 import { renderWorldMap } from "../clientengine/renderworldmap";
 import { Client } from "../clientengine/client";
@@ -68,4 +68,10 @@ export function transitionPlayerClientToNewWorld(message: NetMessagePlayerWorldT
 
     // Send client world message that tells server to have player join new world.
     sendPlayerWorldTransitionMessage(client, message.data);
+}
+
+export function playerPickupItem(message: NetMessagePlayerItemPickup, client: Client) {
+    if (client.currentClientId === message.data.pickupClientId) {
+        console.log("put item in inventory")
+    }
 }
