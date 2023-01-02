@@ -1,5 +1,6 @@
 import { createEntitySpawnArea, SpawnAreaParams } from "../../archetypes/entityspawnarea";
 import { ravenFantasyForest_1_1 } from "../../../modules/tilemapping/tilemaps/ravenfantasyforest_1_1";
+import { itemPickupArrowAnim } from "../../../modules/animations/animationdata/itempickuparrow";
 import { TileData, WorldLevelData } from "../../../packets/data/worldleveldata";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
@@ -18,6 +19,8 @@ import { setMovement } from "../../components/movement";
 import { movementSystem } from "../../systems/movement";
 import { behaviorSystem } from "../../systems/behavior";
 import { createGoblin } from "../../archetypes/goblin";
+import { setAnim } from "../../components/animation";
+import { setSprite } from "../../components/sprite";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
@@ -44,6 +47,12 @@ export class Forest_1_1 extends BaseWorldEngine {
         this.registerSystem(skillSlotsSystem);
         this.registerSystem(behaviorSystem);
         this.registerSystem(timerSystem);
+
+        let itemPickupArrow = new Entity();
+        itemPickupArrow.pos = setPosition(450, 250, 3);
+        itemPickupArrow.sprite = setSprite("./data/textures/vfx/item_pickup_arrow001.png", 4)
+        itemPickupArrow.anim = setAnim(itemPickupArrowAnim)
+        this.registerEntity(itemPickupArrow, server)
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 

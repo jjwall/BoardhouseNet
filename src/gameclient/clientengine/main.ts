@@ -188,6 +188,11 @@ const config: ClientConfig = {
         "./data/textures/icons/d20.png",
         "./data/textures/icons/d52.png",
         "./data/textures/icons/d3403.png",
+        "./data/textures/icons/d3940.png",
+        "./data/textures/vfx/item_pickup_arrow001.png",
+        "./data/textures/vfx/item_pickup_arrow002.png",
+        "./data/textures/vfx/item_pickup_arrow003.png",
+        "./data/textures/vfx/item_pickup_arrow004.png",
     ],
     audioUrls: [
         "./data/audio/Pale_Blue.mp3",
