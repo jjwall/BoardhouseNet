@@ -11,7 +11,7 @@ export interface DropItemData {
     worldPosY: number
     height: number
     width: number
-    // item
+    item: Item | undefined
 }
 
 interface Props {
@@ -39,12 +39,14 @@ export class InventorySlot extends Component<Props, State> {
     }
 
     onItemDrop = (worldPosX: number, worldPosY: number) => {
+        console.log('hi')
         this.props.reconcileInventory({
             index: this.props.inventorySlotIndex,
             worldPosX: worldPosX,
             worldPosY: worldPosY,
             height: Number(this.props.height),
-            width: Number(this.props.width)
+            width: Number(this.props.width),
+            item: this.props.item
         })
     }
 

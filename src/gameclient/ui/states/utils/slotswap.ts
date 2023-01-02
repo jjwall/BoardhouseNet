@@ -56,8 +56,9 @@ const getManifold = (a: Rect, b: Rect): Manifold => {
     };
 };
 
-export function checkSlotSwap(item: DropItemData, slotsMetaData: InventorySlotMetaData[], offsetX: number, offsetY: number) {
+export function checkSlotSwap(item: DropItemData, slotsMetaData: InventorySlotMetaData[], offsetX: number, offsetY: number): number {
     let slots: CollidableEntity[] = []
+    let slotIndex: number = undefined
 
     slotsMetaData.forEach((slot, index) => {
         slots.push({
@@ -68,6 +69,7 @@ export function checkSlotSwap(item: DropItemData, slotsMetaData: InventorySlotMe
             offsetX: offsetX,
             offsetY: offsetY,
             onHit: () => {
+                slotIndex = index
                 console.log('collided with slot index: ' + index)
             }
         })
@@ -133,4 +135,6 @@ export function checkSlotSwap(item: DropItemData, slotsMetaData: InventorySlotMe
     // else {
     //     // put item back where it came from
     // }
+
+    return slotIndex
 }

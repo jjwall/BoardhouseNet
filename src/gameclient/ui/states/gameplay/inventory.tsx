@@ -109,27 +109,28 @@ export class Inventory extends Component<Props, State> {
     // Todo: fix white background "bug"
     // Todo: build EquipmentSlots... could double up inventory and equipment here for simplicity's sake.
     reconcileInventory = (dropItemData: DropItemData) => {
-        // const itemWorldPosX = Number(this.props.left) + this.state.slotsMetadata[0].left
-        // const itemWorldPosY = Number(this.props.top) + this.state.slotsMetadata[0].top
-        // console.log("Reconciling Inventory...")
-        // console.log(dropItemData)
-        // console.log(Number(this.props.top) + this.state.slotsMetadata[0].top)
-        // console.log(Number(this.props.left) + this.state.slotsMetadata[0].left)
-        this.props.setClientInventory(
-            [   undefined,
-                {
-                    layout: "./data/textures/icons/d17.png",
-                    onDragLayout: "./data/textures/icons/d49.png"
-                },
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined
-            ])
+        const slotIndex = checkSlotSwap(dropItemData, this.state.slotsMetadata, Number(this.props.left), Number(this.props.top))
 
-        checkSlotSwap(dropItemData, this.state.slotsMetadata, Number(this.props.left), Number(this.props.top))
+        if (slotIndex) {
+            if (slotIndex !== dropItemData.index) {
+            // this.props.clientInventory[slotIndex] = dropItemData.item
+            // const prevItem = this.props.clientInventory[dropItemData.index]
+            this.props.clientInventory[dropItemData.index] = undefined
+            console.log("dropItemData.index")
+            console.log(dropItemData)
+            this.props.clientInventory[slotIndex] = dropItemData.item
+            this.props.setClientInventory(this.props.clientInventory)
+            } else {
+                // reset state?
+                console.log('reset original slot state')
+                this.props.clientInventory[slotIndex] = undefined
+                this.props.setClientInventory(this.props.clientInventory)
+                this.props.clientInventory[slotIndex] = dropItemData.item
+                this.props.setClientInventory(this.props.clientInventory)
+            }
+        } else {
+            this.props.setClientInventory(this.props.clientInventory)
+        }
     }
 
     render(): JSXElement {
