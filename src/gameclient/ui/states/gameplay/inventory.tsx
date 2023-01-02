@@ -103,23 +103,32 @@ export class Inventory extends Component<Props, State> {
         }
     }
 
-    // Todo: Handle Item Swapping locations.
+    // Todo: (Done) Handle Item Swapping locations.
     // Todo: fix white background "bug"
     // Todo: build EquipmentSlots... could double up inventory and equipment here for simplicity's sake.
     reconcileInventory = (dropItemData: DropItemData) => {
-        const slotIndex = checkSlotSwap(dropItemData, this.state.slotsMetadata, Number(this.props.left), Number(this.props.top))
+        const newSlotIndex = checkSlotSwap(dropItemData, this.state.slotsMetadata, Number(this.props.left), Number(this.props.top))
 
-        if (slotIndex !== undefined) {
-            if (slotIndex !== dropItemData.index) {
+        if (newSlotIndex !== undefined) {
+            if (newSlotIndex !== dropItemData.index) {
+                if (this.props.clientInventory[newSlotIndex]) {
+                    // If item exists in new slot, swap item slots. Re-render old slot index with new item.
+                    this.props.clientInventory[dropItemData.index] = undefined
+                    this.props.setClientInventory(this.props.clientInventory)
+                    this.props.clientInventory[dropItemData.index] = this.props.clientInventory[newSlotIndex]
+                } else {
+                    // Else remove item from old slot index.
+                    this.props.clientInventory[dropItemData.index] = undefined
+                }
+
                 // Item has been dragged to new slot. Render new slot state.
-                this.props.clientInventory[dropItemData.index] = undefined // To-do: consider swap spot not just hard coding undefined here.
-                this.props.clientInventory[slotIndex] = dropItemData.item
+                this.props.clientInventory[newSlotIndex] = dropItemData.item
                 this.props.setClientInventory(this.props.clientInventory)
             } else {
                 // Item has been dragged to original slot. Re-render original slot state.
-                this.props.clientInventory[slotIndex] = undefined
+                this.props.clientInventory[newSlotIndex] = undefined
                 this.props.setClientInventory(this.props.clientInventory)
-                this.props.clientInventory[slotIndex] = dropItemData.item
+                this.props.clientInventory[newSlotIndex] = dropItemData.item
                 this.props.setClientInventory(this.props.clientInventory)
             }
         } else {

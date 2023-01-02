@@ -41,6 +41,7 @@ const config: ClientConfig = {
     fontUrls: [
         "./data/fonts/helvetiker_regular_typeface.json"
     ],
+    // TODO: Pick up files dynamically via fs operation.
     textureUrls: [
         "./data/textures/empty_texture.png",
         "./data/textures/cottage.png",
@@ -183,7 +184,9 @@ const config: ClientConfig = {
         "./data/textures/pyra/walk/Armature_walk3_7.png",
         "./data/textures/tilesets/raven_fantasy_green_forest_16x16.png",
         "./data/textures/icons/d17.png",
-        "./data/textures/icons/d49.png"
+        "./data/textures/icons/d49.png",
+        "./data/textures/icons/d20.png",
+        "./data/textures/icons/d52.png",
     ],
     audioUrls: [
         "./data/audio/Pale_Blue.mp3",
