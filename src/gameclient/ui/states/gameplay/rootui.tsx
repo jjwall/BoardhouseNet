@@ -39,7 +39,10 @@ export const mockGlobalState: GlobalState = {
             layout: "./data/textures/icons/d20.png",
             onDragLayout: "./data/textures/icons/d52.png"
         },
-        undefined,
+        {
+            layout: "./data/textures/icons/d3404.png",
+            onDragLayout: "./data/textures/icons/d3404.png"
+        },
         undefined,
         undefined,
         undefined,

@@ -39,7 +39,6 @@ export class InventorySlot extends Component<Props, State> {
     }
 
     onItemDrop = (worldPosX: number, worldPosY: number) => {
-        console.log('hi')
         this.props.reconcileInventory({
             index: this.props.inventorySlotIndex,
             worldPosX: worldPosX,

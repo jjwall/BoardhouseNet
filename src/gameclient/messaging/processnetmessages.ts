@@ -7,10 +7,11 @@ import { renderPlayerAttackAnim } from "./processnetactionmessages";
 import { Message, MessageTypes } from "../../packets/messages/message";
 import { Client } from "../clientengine/client";
 
+// Todo: This should be happening less frequently. Only when needed.
 export function processNetMessages(client: Client) {
     client.connection.onmessage = function(messageEvent: MessageEvent) {
         const message: Message = JSON.parse(messageEvent.data);
-        console.log("boardhouse: back to front message");
+        // console.log("boardhouse: back to front message");
 
         switch (message.messageType) {
             case MessageTypes.NET_ENTITY_MESSAGE:
