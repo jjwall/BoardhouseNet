@@ -187,7 +187,7 @@ const config: ClientConfig = {
         "./data/textures/icons/d49.png",
         "./data/textures/icons/d20.png",
         "./data/textures/icons/d52.png",
-        "./data/textures/icons/d3404.png",
+        "./data/textures/icons/d3403.png",
     ],
     audioUrls: [
         "./data/audio/Pale_Blue.mp3",
