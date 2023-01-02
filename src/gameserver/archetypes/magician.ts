@@ -25,7 +25,7 @@ export function createMagician(server: Server, worldEngine: BaseWorldEngine, cli
     magician.sprite = { url: "./data/textures/player_stand.png", pixelRatio: 1 };
     magician.anim = { sequence: SequenceTypes.IDLE, blob: kenneyPlayerAnim };
     magician.movement = setMovement();
-    magician.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 50, 50, 0, -50);
+    magician.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY, HitboxTypes.ITEM_DROP], 50, 50, 0, -50);
     magician.skillSlots = new SkillSlotsComponent();
     magician.skillSlots.setSkillOne(initializeSkill(6, 20, basicSwordAttack, undefined));
     magician.skillSlots.setSkillTwo(initializeSkill(0, 10, fireballPress, fireballRelease, false)); // cooldown starts after release

@@ -10,7 +10,13 @@ export function createItemDrop(worldEngine: BaseWorldEngine, pos: PositionCompon
     let itemDrop = new Entity();
     itemDrop.pos = pos;
     itemDrop.sprite = setSprite(itemUrl)
-    // itemDrop.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 50, 50, 0, -50);
+    itemDrop.hitbox = setHitbox(HitboxTypes.ITEM_DROP, [HitboxTypes.PLAYER], 50, 50);
+    itemDrop.hitbox.onHit = (self, other, manifold) => {
+        console.log('Made contact with player: ')
+        if (other.player) {
+            console.log(other.player.id)
+        }
+    }
 
     let itemPickupArrow = new Entity();
     itemPickupArrow.pos = setPosition(0, 64, 3);

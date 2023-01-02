@@ -46,8 +46,11 @@ export class Forest_1_1 extends BaseWorldEngine {
         this.registerSystem(behaviorSystem);
         this.registerSystem(timerSystem);
 
-        const itemDropPos = setPosition(450, 250, 3);
-        createItemDrop(this, itemDropPos, "./data/textures/icons/d20.png")
+        const swordItemDropPos = setPosition(450, 250, 3);
+        createItemDrop(this, swordItemDropPos, "./data/textures/icons/d20.png");
+
+        const bowItemDropPos = setPosition(650, 250, 3);
+        createItemDrop(this, bowItemDropPos, "./data/textures/icons/d3403.png");
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 

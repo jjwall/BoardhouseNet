@@ -21,7 +21,7 @@ export function createArcher(server: Server, worldEngine: BaseWorldEngine, clien
     archer.sprite = { url: "./data/textures/Armature_idle_00.png", pixelRatio: 1 };
     archer.anim = { sequence: SequenceTypes.IDLE, blob: armatureAnim };
     archer.movement = setMovement();
-    archer.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY], 50, 50, 0, -50);
+    archer.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY, HitboxTypes.ITEM_DROP], 50, 50, 0, -50);
     archer.skillSlots = new SkillSlotsComponent()
     archer.skillSlots.setSkillOne(initializeSkill(0, 10, bowAndArrowPress, bowAndArrowRelease, false));
     // archer.skillSlots.setSkillOne(initializeSkill(20, 20, () => { console.log("skilllling")}))
