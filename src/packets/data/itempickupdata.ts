@@ -1,4 +1,7 @@
+import { ItemData } from "./itemdata"
+
 export interface ItemPickupData {
     pickupClientId: string
-    url: string
+    // playerInventory
+    item: ItemData
 }

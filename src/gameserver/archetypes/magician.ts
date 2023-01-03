@@ -5,7 +5,7 @@ import { setMovement } from "../components/movement";
 import { Entity } from "../serverengine/entity";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { Server } from "../serverengine/server";
-import { PlayerStates } from "../components/player";
+import { PlayerStates, setPlayer } from "../components/player";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { SequenceTypes } from "../../modules/animations/sequencetypes";
 import { necroAnim } from "../../modules/animations/animationdata/necro";
@@ -16,10 +16,11 @@ import { fireballPress, fireballRelease } from "../actions/fireball";
 import { bowAndArrowPress, bowAndArrowRelease } from "../actions/bowandarrow";
 import { gizmoloAnim } from "../../modules/animations/animationdata/gizmolo";
 import { kenneyPlayerAnim } from "../../modules/animations/animationdata/kenneyplayer";
+import { presetInventory } from "../../../database/preset_inventory";
 
 export function createMagician(server: Server, worldEngine: BaseWorldEngine, clientId: string, pos: PositionComponent): Entity {
     let magician = new Entity();
-    magician.player = { id: clientId, state: PlayerStates.UNLOADED, class: PlayerClassTypes.MAGICIAN };
+    magician.player = setPlayer(clientId, PlayerStates.UNLOADED, PlayerClassTypes.MAGICIAN, presetInventory);
     magician.pos = pos;
     magician.vel = setVelocity(15, 0.5);
     magician.sprite = { url: "./data/textures/player_stand.png", pixelRatio: 1 };

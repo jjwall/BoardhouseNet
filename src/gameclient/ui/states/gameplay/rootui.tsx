@@ -9,20 +9,14 @@ import { Widget } from "../../core/widget";
 import { Scene } from "three";
 import { DraggableWidget } from "../../basecomponents/draggablewidget";
 import { Inventory } from "./inventory";
+import { ItemData } from "../../../../packets/data/itemdata";
 
-export type ClientInventory = Array<Item | undefined>
+export type ClientInventory = Array<ItemData | undefined>
 
 export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props): Root {
     let rootInstance = renderWidget(<Root { ...props }/>, rootWidget, scene);
 
     return rootInstance.component as Root;
-}
-
-export interface Item {
-    // type: string
-    // stats: number
-    layout: string
-    onDragLayout: string
 }
 
 

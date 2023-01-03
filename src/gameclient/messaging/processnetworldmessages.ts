@@ -81,8 +81,8 @@ export function playerPickupItem(message: NetMessagePlayerItemPickup, client: Cl
         if (firstAvailableSlotIndex > -1) {
             // There's available space for item, place in first available slot.
             clientState.clientInventory[firstAvailableSlotIndex] = {
-                layout: message.data.url,
-                onDragLayout: message.data.url
+                spriteUrl: message.data.item.spriteUrl,
+                onDragSpriteUrl: message.data.item.onDragSpriteUrl
             }
 
             client.rootComponent.setClientInventory(clientState.clientInventory)

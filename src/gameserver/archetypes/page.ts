@@ -5,16 +5,17 @@ import { setMovement } from "../components/movement";
 import { Entity } from "../serverengine/entity";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { Server } from "../serverengine/server";
-import { PlayerStates } from "../components/player";
+import { PlayerStates, setPlayer } from "../components/player";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { SequenceTypes } from "../../modules/animations/sequencetypes";
 import { pyraAnim } from "../../modules/animations/animationdata/pyra";
 import { initializeSkill, SkillSlotsComponent } from "../components/skillslots";
 import { basicSwordAttack } from "../actions/sword";
+import { presetInventory } from "../../../database/preset_inventory";
 
 export function createPage(server: Server, worldEngine: BaseWorldEngine, clientId: string, pos: PositionComponent): Entity {
     let page = new Entity();
-    page.player = { id: clientId, state: PlayerStates.UNLOADED, class: PlayerClassTypes.PAGE };
+    page.player = setPlayer(clientId, PlayerStates.UNLOADED, PlayerClassTypes.PAGE, presetInventory);
     page.pos = pos;
     page.vel = setVelocity(15, 0.5);
     page.sprite = { url: "./data/textures/pyra/idle/Armature_idle_00.png", pixelRatio: 1 };

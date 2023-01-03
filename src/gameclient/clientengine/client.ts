@@ -17,6 +17,7 @@ import { centerCameraOnPlayer } from "./camera";
 import { renderGamePlayUi, Root } from "../ui/states/gameplay/rootui";
 import { createWidget, Widget } from "../ui/core/widget";
 import { layoutWidget } from "../ui/core/layoutwidget";
+import { presetInventory } from "../../../database/preset_inventory";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -266,34 +267,12 @@ export class Client {
                 this.rootWidget = createWidget("root");
                 this.uiScene.add(this.rootWidget);
 
-                // Mock initialized client inventory now.
-                // In future pull from database or pre-set data set.
-                const mockInitialClientInventory = [
-                    {
-                        layout: "./data/textures/icons/d17.png",
-                        onDragLayout: "./data/textures/icons/d49.png"
-                    },
-                    {
-                        layout: "./data/textures/icons/d20.png",
-                        onDragLayout: "./data/textures/icons/d52.png"
-                    },
-                    {
-                        layout: "./data/textures/icons/d3403.png",
-                        onDragLayout: "./data/textures/icons/d3403.png"
-                    },
-                    {
-                        layout: "./data/textures/icons/d3940.png",
-                        onDragLayout: "./data/textures/icons/d3940.png"
-                    },
-                    undefined,
-                    undefined,
-                    undefined,
-                    undefined
-                ]
-
                 this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, {
                     initialState: {
-                        clientInventory: mockInitialClientInventory
+                        // Using preset client inventory for now.
+                        // In future pull from database or pre-set data set.
+                        // Todo: Load from playerJoinData ? - yes
+                        clientInventory: presetInventory
                     }
                 });
                 break;

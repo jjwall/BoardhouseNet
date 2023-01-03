@@ -27,6 +27,7 @@ import { Entity } from "../../serverengine/entity";
 import { timerSystem } from "../../systems/timer";
 import { Vector3 } from "three";
 import { createItemDrop } from "../../archetypes/itemdrop";
+import { ItemData } from "../../../packets/data/itemdata";
 
 export class Forest_1_1 extends BaseWorldEngine {
     // public rootWidget: Widget;
@@ -47,10 +48,18 @@ export class Forest_1_1 extends BaseWorldEngine {
         this.registerSystem(timerSystem);
 
         const swordItemDropPos = setPosition(450, 250, 3);
-        createItemDrop(this, swordItemDropPos, "./data/textures/icons/d20.png");
+        const swordItemData: ItemData = {
+            spriteUrl: "./data/textures/icons/d20.png",
+            onDragSpriteUrl: "./data/textures/icons/d20.png"
+        }
+        createItemDrop(this, swordItemDropPos, swordItemData);
 
         const bowItemDropPos = setPosition(650, 250, 3);
-        createItemDrop(this, bowItemDropPos, "./data/textures/icons/d3403.png");
+        const bowItemData: ItemData = {
+            spriteUrl: "./data/textures/icons/d3403.png",
+            onDragSpriteUrl: "./data/textures/icons/d3403.png"
+        }
+        createItemDrop(this, bowItemDropPos, bowItemData);
 
         // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
 

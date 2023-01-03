@@ -4,7 +4,7 @@ import { Scene, Vector3 } from "three";
 import { Component } from "../../core/component";
 import { DraggableWidget } from "../../basecomponents/draggablewidget";
 import { InventorySlot, DropItemData } from "./inventoryslot";
-import { ClientInventory, Item } from "./rootui";
+import { ClientInventory } from "./rootui";
 import { processItemSlotSwap } from "../utils/slotswap";
 
 // TODO: (Done) Have items "snap" to empty inventory space if moving items around via drag and drop

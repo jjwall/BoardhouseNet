@@ -8,16 +8,20 @@ import { setSprite } from "../components/sprite";
 import { Entity } from "../serverengine/entity";
 import { broadcastPlayerItemPickupMessage } from "../messaging/sendnetworldmessages";
 import { ItemPickupData } from "../../packets/data/itempickupdata";
+import { ItemData } from "../../packets/data/itemdata";
 
 // Todo: Establish a server side "inventory" component on player component
 // -> This can be passed up on item pick up (net message) or item drop (client message)
-// Todo: Implement player pick up item on client side.
+// Todo: (Done) Implement player pick up item on client side.
 // Todo: Create more granular pickup mechanics, not just running into the item.
 // -> Require client to hit ctrl key or something when hitbox is near item.
-export function createItemDrop(worldEngine: BaseWorldEngine, pos: PositionComponent, itemUrl: string): Entity {
+// Todo: Sync client inventory w/ server inventory. "Order" events don't need to be
+// sent for every increment. But item "events" should check client set with server set
+// to negate hacking tactics. In this case order could be assessed for server side.
+export function createItemDrop(worldEngine: BaseWorldEngine, pos: PositionComponent, item: ItemData): Entity {
     let itemDrop = new Entity();
     itemDrop.pos = pos;
-    itemDrop.sprite = setSprite(itemUrl)
+    itemDrop.sprite = setSprite(item.spriteUrl)
     itemDrop.hitbox = setHitbox(HitboxTypes.ITEM_DROP, [HitboxTypes.PLAYER], 50, 50);
 
     let itemPickupArrow = new Entity();
@@ -43,9 +47,9 @@ export function createItemDrop(worldEngine: BaseWorldEngine, pos: PositionCompon
             // if bag size not full then...
             const itemPickupData: ItemPickupData = {
                 pickupClientId: other.player.id,
-                url: itemUrl,
+                item: item,
             }
-            broadcastPlayerItemPickupMessage(worldEngine.server, itemPickupData,)
+            broadcastPlayerItemPickupMessage(worldEngine.server, itemPickupData)
 
             // else ... sendPlayerInventoryFullMessage
         }

@@ -1,8 +1,8 @@
 import { DraggableWidget } from "../../basecomponents/draggablewidget";
 import { createJSXElement } from "../../core/createjsxelement";
+import { ItemData } from "../../../../packets/data/itemdata";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
-import { Item } from "./rootui";
 import { Scene } from "three";
 
 export interface DropItemData {
@@ -11,7 +11,7 @@ export interface DropItemData {
     worldPosY: number
     height: number
     width: number
-    item: Item | undefined
+    item: ItemData | undefined
 }
 
 interface Props {
@@ -20,13 +20,13 @@ interface Props {
     height: string | number
     width: string | number
     slotColor: string
-    item: Item | undefined
+    item: ItemData | undefined
     inventorySlotIndex: number
     reconcileInventory: (slotData: DropItemData) => void
 }
 
 interface State {
-    item: Item | undefined
+    item: ItemData | undefined
 }
 
 // Note: ItemSlot might be a better name.
@@ -59,8 +59,8 @@ export class InventorySlot extends Component<Props, State> {
                 <panel left={this.props.left} top={this.props.top} height={this.props.height} width={this.props.width} color={this.props.slotColor}>
                     <DraggableWidget
                         onDragEnd={this.onItemDrop}
-                        pressedLayout={this.props.item.onDragLayout}
-                        unpressedLayout={this.props.item.layout}
+                        pressedLayout={this.props.item.onDragSpriteUrl}
+                        unpressedLayout={this.props.item.spriteUrl}
                         height={this.props.height}
                         width={this.props.width}
                         top={0}
