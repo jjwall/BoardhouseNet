@@ -265,20 +265,37 @@ export class Client {
                 // Set up ui widget and instance.
                 this.rootWidget = createWidget("root");
                 this.uiScene.add(this.rootWidget);
-                this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, 
-                    { 
-                        addClicks: this.addClicks,
-                        // displayFPS: engine.displayFPS,
-                        // rightPress: this.rightPress,
-                        // rightUnpress: this.rightUnpress,
-                        // leftPress: this.leftPress,
-                        // leftUnpress: this.leftUnpress,
-                        // upPress: this.upPress,
-                        // upUnpress: this.upUnpress,
-                        // downPress: this.downPress,
-                        // downUnpress: this.downUnpress,
+
+                // Mock initialized client inventory now.
+                // In future pull from database or pre-set data set.
+                const mockInitialClientInventory = [
+                    {
+                        layout: "./data/textures/icons/d17.png",
+                        onDragLayout: "./data/textures/icons/d49.png"
+                    },
+                    {
+                        layout: "./data/textures/icons/d20.png",
+                        onDragLayout: "./data/textures/icons/d52.png"
+                    },
+                    {
+                        layout: "./data/textures/icons/d3403.png",
+                        onDragLayout: "./data/textures/icons/d3403.png"
+                    },
+                    {
+                        layout: "./data/textures/icons/d3940.png",
+                        onDragLayout: "./data/textures/icons/d3940.png"
+                    },
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined
+                ]
+
+                this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, {
+                    initialState: {
+                        clientInventory: mockInitialClientInventory
                     }
-                );
+                });
                 break;
         }
     }
@@ -431,15 +448,6 @@ export class Client {
                 transition = undefined;
             }
         }
-    }
-
-    public clicks: number = 0
-
-    public addClicks: Function = () => { 
-        this.clicks++;
-        this.rootComponent.setClicks(this.clicks);
-        // this.screenShake(false);
-        // this.playAudio("./data/audio/SFX_Bonk2.wav", this.gameScene, this.gameCamera, .2);
     }
 
     public render() : void {

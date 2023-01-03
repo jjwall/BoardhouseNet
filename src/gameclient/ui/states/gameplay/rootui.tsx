@@ -25,110 +25,31 @@ export interface Item {
     onDragLayout: string
 }
 
-export interface GlobalState {
-    clientInventory: ClientInventory
-}
-
-export const mockGlobalState: GlobalState = {
-    clientInventory: [
-        {
-            layout: "./data/textures/icons/d17.png",
-            onDragLayout: "./data/textures/icons/d49.png"
-        },
-        {
-            layout: "./data/textures/icons/d20.png",
-            onDragLayout: "./data/textures/icons/d52.png"
-        },
-        {
-            layout: "./data/textures/icons/d3403.png",
-            onDragLayout: "./data/textures/icons/d3403.png"
-        },
-        {
-            layout: "./data/textures/icons/d3940.png",
-            onDragLayout: "./data/textures/icons/d3940.png"
-        },
-        undefined,
-        undefined,
-        undefined,
-        undefined
-    ]
-}
-
 
 interface Props {
-    // name: string;
-    // initial_state: object
-    addClicks: Function,
-    // displayFPS: boolean;
-    // leftPress: () => void;
-    // leftUnpress: () => void;
-    // rightPress: () => void;
-    // rightUnpress: () => void;
-    // upPress: () => void;
-    // upUnpress: () => void;
-    // downPress: () => void;
-    // downUnpress: () => void;
+    initialState: GlobalState
 }
 
-interface State {
-    ticks: number;
-    clicks: number;
-    color: string;
-    hidden: boolean;
-    currentFPS: number;
+interface GlobalState {
     clientInventory: ClientInventory
 }
 
-export class Root extends Component<Props, State> {
+export class Root extends Component<Props, GlobalState> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
-            currentFPS: 0,
-            ticks: 50,
-            clicks: 0,
-            color: "#00FFFF",
-            hidden: false,
-            clientInventory: mockGlobalState.clientInventory
+            clientInventory: props.initialState.clientInventory
         };
+    }
 
-        setInterval(() => this.tick(), 1000);
+    getState() {
+        return this.state
     }
 
     setClientInventory = (newClientInventory: ClientInventory) => {
         this.setState({
             clientInventory: newClientInventory
         })
-    }
-
-    public setClicks = (clicks: number) => {
-        this.setState({
-            clicks: clicks
-        });
-    }
-
-    public tick = (): void => {
-        this.setState({
-            ticks: this.state.ticks + 1
-        });
-    }
-
-    public updateFPS = (currentFPS: number): void => {
-        this.setState({
-            currentFPS: currentFPS
-        });
-    }
-
-    public toggle = (): void => {
-        if (this.state.hidden) {
-            this.setState({
-                hidden: false
-            });
-        }
-        else {
-            this.setState({
-                hidden: true
-            });
-        }
     }
 
     render(): JSXElement {

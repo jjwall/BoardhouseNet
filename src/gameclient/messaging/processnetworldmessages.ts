@@ -70,10 +70,24 @@ export function transitionPlayerClientToNewWorld(message: NetMessagePlayerWorldT
     sendPlayerWorldTransitionMessage(client, message.data);
 }
 
+// Todo: Handle inventory space check logic on server.
 export function playerPickupItem(message: NetMessagePlayerItemPickup, client: Client) {
     if (client.currentClientId === message.data.pickupClientId) {
-        // Todo: implement
-        console.log("put item in inventory")
-        console.log(message.data)
+        const clientState = client.rootComponent.getState()
+        const firstAvailableSlotIndex = clientState.clientInventory.findIndex(element => !element);
+
+        // Note: this check shouldn't be necessary since this logic should be run on server.
+        // Message data could include things like, slot index to render item at.
+        if (firstAvailableSlotIndex > -1) {
+            // There's available space for item, place in first available slot.
+            clientState.clientInventory[firstAvailableSlotIndex] = {
+                layout: message.data.url,
+                onDragLayout: message.data.url
+            }
+
+            client.rootComponent.setClientInventory(clientState.clientInventory)
+        } else {
+            console.log("Render: not enough space")
+        }
     }
 }
