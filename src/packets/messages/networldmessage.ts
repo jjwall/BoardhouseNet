@@ -1,6 +1,6 @@
 import { WorldTransitionData } from "../data/worldtransitiondata";
 import { WorldLevelData } from "../data/worldleveldata";
-import { ItemPickupData } from "../data/itemdata";
+import { ItemPickupData } from "../data/itempickupdata";
 import { Message } from "./message";
 
 export type NetWorldMessage = 

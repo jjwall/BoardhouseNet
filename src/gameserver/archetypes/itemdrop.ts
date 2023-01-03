@@ -7,8 +7,13 @@ import { setAnim } from "../components/animation";
 import { setSprite } from "../components/sprite";
 import { Entity } from "../serverengine/entity";
 import { broadcastPlayerItemPickupMessage } from "../messaging/sendnetworldmessages";
-import { ItemPickupData } from "../../packets/data/itemdata";
+import { ItemPickupData } from "../../packets/data/itempickupdata";
 
+// Todo: Establish a server side "inventory" component on player component
+// -> This can be passed up on item pick up (net message) or item drop (client message)
+// Todo: Implement player pick up item on client side.
+// Todo: Create more granular pickup mechanics, not just running into the item.
+// -> Require client to hit ctrl key or something when hitbox is near item.
 export function createItemDrop(worldEngine: BaseWorldEngine, pos: PositionComponent, itemUrl: string): Entity {
     let itemDrop = new Entity();
     itemDrop.pos = pos;

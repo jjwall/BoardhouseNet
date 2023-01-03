@@ -5,7 +5,7 @@ import { MyWebSocket } from "../serverengine/setupgameserver";
 import { WorldTypes } from "../../packets/enums/worldtypes";
 import { MessageTypes } from "../../packets/messages/message";
 import { Server } from "../serverengine/server";
-import { ItemPickupData } from "../../packets/data/itemdata";
+import { ItemPickupData } from "../../packets/data/itempickupdata";
 
 export function sendLoadWorldMessage(server: Server, worldLevelData: WorldLevelData, clientId: string) {
     const message: NetMessageLoadWorld = {

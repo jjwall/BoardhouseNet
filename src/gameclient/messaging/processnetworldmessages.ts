@@ -72,6 +72,8 @@ export function transitionPlayerClientToNewWorld(message: NetMessagePlayerWorldT
 
 export function playerPickupItem(message: NetMessagePlayerItemPickup, client: Client) {
     if (client.currentClientId === message.data.pickupClientId) {
+        // Todo: implement
         console.log("put item in inventory")
+        console.log(message.data)
     }
 }
