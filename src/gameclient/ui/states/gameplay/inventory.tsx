@@ -32,6 +32,8 @@ export interface InventorySlotMetaData {
 interface Props {
     top: string | number
     left: string | number
+    color: string
+    opacity: string | number
     clientInventory: ClientInventory
     setClientInventory: (newClientInventory: ClientInventory) => void
 }
@@ -138,7 +140,7 @@ export class Inventory extends Component<Props, State> {
 
     render(): JSXElement {
         return (
-            <panel left={this.props.left} top={this.props.top} height="143" width="281" color="#282828">
+            <panel left={this.props.left} top={this.props.top} height="143" width="281" color={this.props.color} opacity={this.props.opacity}>
                 {this.state.slotsMetadata.map((slot, index) =>
                     <InventorySlot
                         top={slot.top}
@@ -146,6 +148,7 @@ export class Inventory extends Component<Props, State> {
                         height={slot.height}
                         width={slot.width}
                         slotColor="#A9A9A9"
+                        opacity={this.props.opacity}
                         inventorySlotIndex={index}
                         reconcileInventory={this.reconcileInventory}
                         item={this.props.clientInventory[index]}

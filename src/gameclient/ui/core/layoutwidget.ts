@@ -62,10 +62,16 @@ function layoutPanelAttributes(widget: Widget, client: Client) {
 
     // Update mesh's material with color attribute.
     const color = widget.attr("color");
+    const opacity = Number(widget.attr("opacity"))
 
     if (color) {
         (widget.material as MeshBasicMaterial).transparent = false;
         (widget.material as MeshBasicMaterial).color.setStyle(color);
+        
+        if (opacity) {
+            (widget.material as MeshBasicMaterial).transparent = true;
+            (widget.material as MeshBasicMaterial).opacity = opacity;
+        }
     } else {
         (widget.material as MeshBasicMaterial).transparent = true;
         (widget.material as MeshBasicMaterial).opacity = 0;

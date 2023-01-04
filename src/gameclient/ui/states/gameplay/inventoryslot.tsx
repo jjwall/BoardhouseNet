@@ -20,6 +20,7 @@ interface Props {
     height: string | number
     width: string | number
     slotColor: string
+    opacity: string | number
     item: ItemData | undefined
     inventorySlotIndex: number
     reconcileInventory: (slotData: DropItemData) => void
@@ -81,13 +82,13 @@ export class InventorySlot extends Component<Props, State> {
     render(): JSXElement {
         if (!this.props.item)
             return (
-                <panel left={this.props.left} top={this.props.top} height={this.props.height} width={this.props.width} color={this.props.slotColor}>
+                <panel left={this.props.left} top={this.props.top} height={this.props.height} width={this.props.width} color={this.props.slotColor} opacity={this.props.opacity}>
                     {this.renderVacantItemSlot()}
                 </panel>
             )
         else
             return (
-                <panel left={this.props.left} top={this.props.top} height={this.props.height} width={this.props.width} color={this.props.slotColor}>
+                <panel left={this.props.left} top={this.props.top} height={this.props.height} width={this.props.width} color={this.props.slotColor} opacity={this.props.opacity}>
                     {this.renderOccupiedItemSlot()}
                 </panel>
             )

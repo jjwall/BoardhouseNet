@@ -15,13 +15,12 @@ export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props)
     return rootInstance.component as Root;
 }
 
+interface GlobalState {
+    clientInventory: ClientInventory
+}
 
 interface Props {
     initialState: GlobalState
-}
-
-interface GlobalState {
-    clientInventory: ClientInventory
 }
 
 export class Root extends Component<Props, GlobalState> {
@@ -48,6 +47,8 @@ export class Root extends Component<Props, GlobalState> {
                 <Inventory
                     top="550"
                     left="975"
+                    color="#282828"
+                    opacity="0.5"
                     clientInventory={this.state.clientInventory}
                     setClientInventory={this.setClientInventory}
                 />

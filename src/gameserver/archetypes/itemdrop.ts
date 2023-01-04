@@ -1,14 +1,14 @@
 import { itemPickupArrowAnim } from "../../modules/animations/animationdata/itempickuparrow";
 import { broadcastDestroyEntitiesMessage } from "../messaging/sendnetentitymessages";
+import { broadcastPlayerItemPickupMessage } from "../messaging/sendnetworldmessages";
 import { PositionComponent, setPosition } from "../components/position";
+import { ItemPickupData } from "../../packets/data/itempickupdata";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { setHitbox, HitboxTypes } from "../components/hitbox";
+import { ItemData } from "../../packets/data/itemdata";
 import { setAnim } from "../components/animation";
 import { setSprite } from "../components/sprite";
 import { Entity } from "../serverengine/entity";
-import { broadcastPlayerItemPickupMessage } from "../messaging/sendnetworldmessages";
-import { ItemPickupData } from "../../packets/data/itempickupdata";
-import { ItemData } from "../../packets/data/itemdata";
 
 // NEXT Todo: Create more granular pickup mechanics, not just running into the item.
 // -> Require client to hit ctrl key or something when hitbox is near item.
