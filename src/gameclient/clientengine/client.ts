@@ -271,7 +271,7 @@ export class Client {
                     initialState: {
                         // Using preset client inventory for now.
                         // In future pull from database or pre-set data set.
-                        // Todo: Load from playerJoinData ? - yes - yes
+                        // Todo: Load from playerJoinData ? - yes
                         clientInventory: presetInventory
                     }
                 });

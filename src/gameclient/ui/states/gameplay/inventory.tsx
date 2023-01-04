@@ -1,11 +1,10 @@
 import { createJSXElement } from "../../core/createjsxelement";
-import { JSXElement } from "../../core/interfaces";
-import { Scene, Vector3 } from "three";
-import { Component } from "../../core/component";
-import { DraggableWidget } from "../../basecomponents/draggablewidget";
 import { InventorySlot, DropItemData } from "./inventoryslot";
-import { ClientInventory } from "./rootui";
 import { processItemSlotSwap } from "../utils/slotswap";
+import { JSXElement } from "../../core/interfaces";
+import { Component } from "../../core/component";
+import { ClientInventory } from "./rootui";
+import { Scene } from "three";
 
 // TODO: (Done) Have items "snap" to empty inventory space if moving items around via drag and drop
 // TODO: Implement Equipment Screen that enables armor and skill / weapon equips via drag and drop from inventory
@@ -17,6 +16,7 @@ import { processItemSlotSwap } from "../utils/slotswap";
 // TODO: Enable ability to hide / show Inventory via hotkey or clickable UI button on screen
 // -> Vision for this was a little bag that would animate a moving animation of bag coming from off screen on bottom
 // -> If we take this route, investigate UI animations (shouldn't be too hard with a little for loop async method on component)
+// -> Can use new "undraggable" attr to pause draggability while animation is playing out.
 // TODO: Create item "drops" akin to MapleStory where you have to be near it and then press "Z" or something and it 
 // picks up the item and stores it in your inventory. Red warning message displays at top if inventory is full.
 // -> Test cases can include current coded actions: sword, bow, magic fireball spell
@@ -105,7 +105,6 @@ export class Inventory extends Component<Props, State> {
         }
     }
 
-    // Todo: fix white background "bug"
     reconcileInventory = (dropItemData: DropItemData) => {
         const newSlotIndex = processItemSlotSwap(dropItemData, this.state.slotsMetadata, Number(this.props.left), Number(this.props.top))
 

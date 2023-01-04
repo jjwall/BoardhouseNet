@@ -21,6 +21,9 @@ import { ItemData } from "../../packets/data/itemdata";
 // -> maybe just have a sort event send on every move?
 // sent for every increment. But item "events" should check client set with server set
 // to negate hacking tactics. In this case order could be assessed for server side.
+// ChatGPT Recommendations to sort client and server inventory lists to check against.
+// -> When adding an item, add to server list, send added item to client (as we currently do)
+// -> when dropping an item, send entire client inventory with dropping item back to server?
 export function createItemDrop(worldEngine: BaseWorldEngine, pos: PositionComponent, item: ItemData): Entity {
     let itemDrop = new Entity();
     itemDrop.pos = pos;

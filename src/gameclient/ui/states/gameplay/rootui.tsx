@@ -1,15 +1,11 @@
-import { TouchControls } from "../../basecomponents/touchcontrols";
 import { createJSXElement } from "../../core/createjsxelement";
+import { ItemData } from "../../../../packets/data/itemdata";
 import { renderWidget } from "../../core/renderwidget";
-import { InputBox } from "../../basecomponents/inputbox";
-import { Button } from "../../basecomponents/button";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
 import { Widget } from "../../core/widget";
-import { Scene } from "three";
-import { DraggableWidget } from "../../basecomponents/draggablewidget";
 import { Inventory } from "./inventory";
-import { ItemData } from "../../../../packets/data/itemdata";
+import { Scene } from "three";
 
 export type ClientInventory = Array<ItemData | undefined>
 
