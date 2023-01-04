@@ -114,7 +114,6 @@ export class Inventory extends Component<Props, State> {
                 if (this.props.clientInventory[newSlotIndex]) {
                     // If item exists in new slot, swap item slots. Re-render old slot index with new item.
                     this.props.clientInventory[dropItemData.index] = undefined
-                    this.props.setClientInventory(this.props.clientInventory)
                     this.props.clientInventory[dropItemData.index] = this.props.clientInventory[newSlotIndex]
                 } else {
                     // Else remove item from old slot index.
@@ -127,14 +126,12 @@ export class Inventory extends Component<Props, State> {
             } else {
                 // Item has been dragged to original slot. Re-render original slot state.
                 this.props.clientInventory[newSlotIndex] = undefined
-                this.props.setClientInventory(this.props.clientInventory)
                 this.props.clientInventory[newSlotIndex] = dropItemData.item
                 this.props.setClientInventory(this.props.clientInventory)
             }
         } else {
             // Item has been dragged to no man's land. Re-render to original slot state.
             this.props.clientInventory[dropItemData.index] = undefined
-            this.props.setClientInventory(this.props.clientInventory)
             this.props.clientInventory[dropItemData.index] = dropItemData.item
             this.props.setClientInventory(this.props.clientInventory)
         }

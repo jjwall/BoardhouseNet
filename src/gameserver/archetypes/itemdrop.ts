@@ -10,12 +10,15 @@ import { broadcastPlayerItemPickupMessage } from "../messaging/sendnetworldmessa
 import { ItemPickupData } from "../../packets/data/itempickupdata";
 import { ItemData } from "../../packets/data/itemdata";
 
-// Todo: Establish a server side "inventory" component on player component
+// NEXT Todo: Create more granular pickup mechanics, not just running into the item.
+// -> Require client to hit ctrl key or something when hitbox is near item.
+// --> This will cause a client -> server ping which can give us an opportunity to
+// -- pass the client inventory data to server which we can test / reconcile server inventory against.
+// Todo: (Done-ish) Establish a server side "inventory" component on player component
 // -> This can be passed up on item pick up (net message) or item drop (client message)
 // Todo: (Done) Implement player pick up item on client side.
-// Todo: Create more granular pickup mechanics, not just running into the item.
-// -> Require client to hit ctrl key or something when hitbox is near item.
-// Todo: Sync client inventory w/ server inventory. "Order" events don't need to be
+// Todo ?: Sync client inventory w/ server inventory. "Order" events don't need to be
+// -> maybe just have a sort event send on every move?
 // sent for every increment. But item "events" should check client set with server set
 // to negate hacking tactics. In this case order could be assessed for server side.
 export function createItemDrop(worldEngine: BaseWorldEngine, pos: PositionComponent, item: ItemData): Entity {

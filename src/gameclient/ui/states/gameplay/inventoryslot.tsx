@@ -49,25 +49,47 @@ export class InventorySlot extends Component<Props, State> {
         })
     }
 
+    /** 
+     * This workaround fixes the "white background" bug. Necessary since I believe
+     * layoutwidget doesn't disemble old components effectively.
+     */
+    renderVacantItemSlot = () => (
+        <DraggableWidget
+            onDragEnd={() => undefined}
+            pressedLayout={undefined}
+            unpressedLayout={undefined}
+            height={this.props.height}
+            width={this.props.width}
+            top={0}
+            left={0}
+            undraggable={true}
+        />
+    )
+
+    renderOccupiedItemSlot = () => (
+        <DraggableWidget
+            onDragEnd={this.onItemDrop}
+            pressedLayout={this.props.item.onDragSpriteUrl}
+            unpressedLayout={this.props.item.spriteUrl}
+            height={this.props.height}
+            width={this.props.width}
+            top={0}
+            left={0}
+        />
+    )
+
     render(): JSXElement {
-        if (!this.props.item) {
-            return (
-                <panel left={this.props.left} top={this.props.top} height={this.props.height} width={this.props.width} color={this.props.slotColor}></panel>
-            )
-        } else {
+        if (!this.props.item)
             return (
                 <panel left={this.props.left} top={this.props.top} height={this.props.height} width={this.props.width} color={this.props.slotColor}>
-                    <DraggableWidget
-                        onDragEnd={this.onItemDrop}
-                        pressedLayout={this.props.item.onDragSpriteUrl}
-                        unpressedLayout={this.props.item.spriteUrl}
-                        height={this.props.height}
-                        width={this.props.width}
-                        top={0}
-                        left={0}
-                    />
+                    {this.renderVacantItemSlot()}
                 </panel>
             )
-        }
+        else
+            return (
+                <panel left={this.props.left} top={this.props.top} height={this.props.height} width={this.props.width} color={this.props.slotColor}>
+                    {this.renderOccupiedItemSlot()}
+                </panel>
+            )
     }
 }

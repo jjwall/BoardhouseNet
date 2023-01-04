@@ -13,6 +13,7 @@ interface Props {
     onDragEnd: (worldPosX: number, worldPosY: number) => void;
     center?: boolean;
     backgroundColor?: string;
+    undraggable?: boolean
 }
 
 interface State {
@@ -91,7 +92,9 @@ export class DraggableWidget extends Component<Props, State> {
             this._internalInstance.widget.getWorldPosition(position);
             this.props.onDragEnd(position.x, position.y)
             this.setState({
-                dragging: false
+                dragging: false,
+                left: 0,
+                top: 0
             });
         }
     }
@@ -106,9 +109,9 @@ export class DraggableWidget extends Component<Props, State> {
                 left={this.state.left}
                 top={this.state.top}
                 img={this.state.pressed ? this.props.pressedLayout : this.props.unpressedLayout}
-                onPress={() => this.press()}
-                onUnpress={() => this.unpress()}
-                onDrag={(e: PointerEvent) => this.drag(e)}
+                onPress={() => { if (!this.props.undraggable) this.press() }}
+                onUnpress={() => { if (!this.props.undraggable) this.unpress() }}
+                onDrag={(e: PointerEvent) => { if (!this.props.undraggable) this.drag(e) }}
                 z_index={this.state.z_index}
             >
             </panel>
