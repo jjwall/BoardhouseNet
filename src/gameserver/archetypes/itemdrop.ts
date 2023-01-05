@@ -10,7 +10,7 @@ import { setAnim } from "../components/animation";
 import { setSprite } from "../components/sprite";
 import { Entity } from "../serverengine/entity";
 
-// NEXT Todo: Create more granular pickup mechanics, not just running into the item.
+// Todo: Create more granular pickup mechanics, not just running into the item.
 // -> Require client to hit ctrl key or something when hitbox is near item.
 // --> This will cause a client -> server ping which can give us an opportunity to
 // -- pass the client inventory data to server which we can test / reconcile server inventory against.
@@ -38,25 +38,26 @@ export function createItemDrop(worldEngine: BaseWorldEngine, pos: PositionCompon
 
     itemDrop.hitbox.onHit = (self, other, manifold) => {
         if (other.player) {
-            console.log('Made contact with player: ')
-            console.log(other.player.id)
+            // If there's space in the inventory, add the item to it.
+            if (other.player.inventory.includes(undefined)) {
+                // Find first available item slot index and add item to server side inventory.
+                const emptyItemSlotIndex = other.player.inventory.indexOf(undefined)
+                other.player.inventory[emptyItemSlotIndex] = item
 
-            // if (other.player.inventory.length + 1 < other.player.inventory.bagsize...)
+                // Remove item drop from world.
+                broadcastDestroyEntitiesMessage(
+                    [itemDrop, itemPickupArrow], 
+                    worldEngine.server, 
+                    worldEngine
+                );
 
-            // Todo: Account for player having full inventory before removing item drop from world.
-            broadcastDestroyEntitiesMessage(
-                [itemDrop, itemPickupArrow], 
-                worldEngine.server, 
-                worldEngine
-            );
-
-            // if bag size not full then...
-            const itemPickupData: ItemPickupData = {
-                pickupClientId: other.player.id,
-                item: item,
+                // Broadcast to all client that a player successfully picked up an item.
+                const itemPickupData: ItemPickupData = {
+                    pickupClientId: other.player.id,
+                    item: item,
+                }
+                broadcastPlayerItemPickupMessage(worldEngine.server, itemPickupData)
             }
-            broadcastPlayerItemPickupMessage(worldEngine.server, itemPickupData)
-
             // else ... sendPlayerInventoryFullMessage
         }
     }

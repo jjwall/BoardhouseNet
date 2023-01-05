@@ -21,6 +21,9 @@ import { Scene } from "three";
 // picks up the item and stores it in your inventory. Red warning message displays at top if inventory is full.
 // -> Test cases can include current coded actions: sword, bow, magic fireball spell
 // TODO: Add in goblin spawn points in forest 1-1 and have them drop items on kill. Consider drop percentages.
+// Consolidated Todo's: account for client / server side inventory sync. Set up equipment slots and enable skill equips.
+// TODO: Context / hover menu for viewing item stats. More elaborate itemData fields.
+// TODO: Build out item presets for random pull bag drops.
 
 export interface InventorySlotMetaData {
     top: number
