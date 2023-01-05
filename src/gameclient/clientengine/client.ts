@@ -272,7 +272,13 @@ export class Client {
                         // Using preset client inventory for now.
                         // In future pull from database or pre-set data set.
                         // Todo: Load from playerJoinData ? - yes - yes
-                        clientInventory: presetInventory
+                        clientInventory: presetInventory,
+                        notificationMessage: {
+                            milliseconds: 0,
+                            color: "",
+                            clientId: "", // unnecessary
+                            notification: ""
+                        }
                     }
                 });
                 break;

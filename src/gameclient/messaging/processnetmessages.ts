@@ -1,7 +1,7 @@
 import { NetEntityMessage, NetEntityEventTypes, NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEntities } from "../../packets/messages/netentitymessage";
-import { NetMessageLoadWorld, NetMessagePlayerWorldTransition, NetWorldMessage, NetWorldEventTypes, NetMessagePlayerItemPickup } from "../../packets/messages/networldmessage";
+import { NetMessageLoadWorld, NetMessagePlayerWorldTransition, NetWorldMessage, NetWorldEventTypes, NetMessagePlayerItemPickup, NetMessagePlayerNotification } from "../../packets/messages/networldmessage";
 import { NetActionEventTypes, NetActionMessage, NetMessagePlayerAttackDisplay } from "../../packets/messages/netactionmessage";
-import { loadWorld, playerPickupItem, transitionPlayerClientToNewWorld, unloadWorld } from "./processnetworldmessages";
+import { loadWorld, notifyPlayer, playerPickupItem, transitionPlayerClientToNewWorld, unloadWorld } from "./processnetworldmessages";
 import { createEntities, destroyEntities, updateEntities } from "./processnetentitymessages";
 import { renderPlayerAttackAnim } from "./processnetactionmessages";
 import { Message, MessageTypes } from "../../packets/messages/message";
@@ -66,6 +66,9 @@ function processNetWorldMessage(message: NetWorldMessage, client: Client) {
             break;
         case NetWorldEventTypes.PLAYER_ITEM_PICKUP:
             playerPickupItem(message as NetMessagePlayerItemPickup, client)
+            break;
+        case NetWorldEventTypes.PLAYER_NOTIFICATION:
+            notifyPlayer(message as NetMessagePlayerNotification, client)
             break;
     }
 }

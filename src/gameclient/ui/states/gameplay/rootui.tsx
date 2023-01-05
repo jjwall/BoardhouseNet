@@ -1,5 +1,7 @@
+import { NotificationData } from "../../../../packets/data/notificationdata";
 import { createJSXElement } from "../../core/createjsxelement";
 import { ItemData } from "../../../../packets/data/itemdata";
+import { NotificationWidget } from "./notificationwidget";
 import { renderWidget } from "../../core/renderwidget";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
@@ -17,6 +19,7 @@ export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props)
 
 interface GlobalState {
     clientInventory: ClientInventory
+    notificationMessage: NotificationData
 }
 
 interface Props {
@@ -27,7 +30,8 @@ export class Root extends Component<Props, GlobalState> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
-            clientInventory: props.initialState.clientInventory
+            clientInventory: props.initialState.clientInventory,
+            notificationMessage: props.initialState.notificationMessage,
         };
     }
 
@@ -41,9 +45,32 @@ export class Root extends Component<Props, GlobalState> {
         })
     }
 
+    // Todo: Shouldn't have "clientId" field from the data interface.
+    // Todo: Don't like setTimeout implementation - use a message box eventually.
+    setNotificationMessage = (newNotificationMessage: NotificationData) => {
+        this.setState({
+            notificationMessage: newNotificationMessage
+        })
+
+        setTimeout(() => {
+            this.setState({
+                notificationMessage: {
+                    milliseconds: 0,
+                    color: "",
+                    clientId: "", // unnecessary
+                    notification: " " // needs space to clear
+                }
+            })
+        }, newNotificationMessage.milliseconds)
+    }
+
     render(): JSXElement {
         return(
             <panel>
+                <NotificationWidget
+                    message={this.state.notificationMessage.notification}
+                    color={this.state.notificationMessage.color}
+                />
                 <Inventory
                     top="550"
                     left="975"

@@ -1,4 +1,4 @@
-import { NetMessageLoadWorld, NetMessagePlayerItemPickup, NetMessagePlayerWorldTransition, NetMessageUnloadWorld, NetWorldEventTypes } from "../../packets/messages/networldmessage";
+import { NetMessageLoadWorld, NetMessagePlayerItemPickup, NetMessagePlayerNotification, NetMessagePlayerWorldTransition, NetMessageUnloadWorld, NetWorldEventTypes } from "../../packets/messages/networldmessage";
 import { WorldTransitionData } from "../../packets/data/worldtransitiondata";
 import { WorldLevelData } from "../../packets/data/worldleveldata";
 import { MyWebSocket } from "../serverengine/setupgameserver";
@@ -6,6 +6,7 @@ import { WorldTypes } from "../../packets/enums/worldtypes";
 import { MessageTypes } from "../../packets/messages/message";
 import { Server } from "../serverengine/server";
 import { ItemPickupData } from "../../packets/data/itempickupdata";
+import { NotificationData } from "src/packets/data/notificationdata";
 
 export function sendLoadWorldMessage(server: Server, worldLevelData: WorldLevelData, clientId: string) {
     const message: NetMessageLoadWorld = {
@@ -67,6 +68,23 @@ export function broadcastPlayerItemPickupMessage(server: Server, itemPickupData:
     server.boardhouseServer.clients.forEach(client => {
         console.log(`(port: ${server.gameServerPort}): broadcasting player item pickup message. Pickup clientId = "${itemPickupData.pickupClientId}"`)
         client.send(JSON.stringify(message));
+    });
+}
+
+export function sendPlayerNotificationMessage(server: Server, notificationData: NotificationData) {
+    const message: NetMessagePlayerNotification = {
+        messageType: MessageTypes.NET_WORLD_MESSAGE,
+        eventType: NetWorldEventTypes.PLAYER_NOTIFICATION,
+        data: notificationData,
+    }
+
+    server.boardhouseServer.clients.forEach(client => {
+        const myClient = client as MyWebSocket;
+
+        if (myClient.clientId === notificationData.clientId) {
+            console.log(`(port: ${server.gameServerPort}): sending notification message to client with clientId = "${notificationData.clientId}"`)
+            client.send(JSON.stringify(message));
+        }
     });
 }
 

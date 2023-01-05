@@ -1,7 +1,8 @@
+import { broadcastPlayerItemPickupMessage, sendPlayerNotificationMessage } from "../messaging/sendnetworldmessages";
 import { itemPickupArrowAnim } from "../../modules/animations/animationdata/itempickuparrow";
 import { broadcastDestroyEntitiesMessage } from "../messaging/sendnetentitymessages";
-import { broadcastPlayerItemPickupMessage } from "../messaging/sendnetworldmessages";
 import { PositionComponent, setPosition } from "../components/position";
+import { NotificationData } from "../../packets/data/notificationdata";
 import { ItemPickupData } from "../../packets/data/itempickupdata";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { setHitbox, HitboxTypes } from "../components/hitbox";
@@ -57,8 +58,16 @@ export function createItemDrop(worldEngine: BaseWorldEngine, pos: PositionCompon
                     item: item,
                 }
                 broadcastPlayerItemPickupMessage(worldEngine.server, itemPickupData)
+            } else {
+                // Send player inventory is full notification.
+                const notificationData: NotificationData = {
+                    clientId: other.player.id,
+                    notification: "Inventory Is Full...",
+                    color: "#FF0000",
+                    milliseconds: 3500
+                }
+                sendPlayerNotificationMessage(worldEngine.server, notificationData)
             }
-            // else ... sendPlayerInventoryFullMessage
         }
     }
 

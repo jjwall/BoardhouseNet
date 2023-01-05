@@ -1,4 +1,4 @@
-import { NetMessageLoadWorld, NetMessagePlayerItemPickup, NetMessagePlayerWorldTransition } from "../../packets/messages/networldmessage";
+import { NetMessageLoadWorld, NetMessagePlayerItemPickup, NetMessagePlayerNotification, NetMessagePlayerWorldTransition } from "../../packets/messages/networldmessage";
 import { sendPlayerWorldTransitionMessage } from "./sendclientworldmessages";
 import { renderWorldMap } from "../clientengine/renderworldmap";
 import { Client } from "../clientengine/client";
@@ -70,7 +70,6 @@ export function transitionPlayerClientToNewWorld(message: NetMessagePlayerWorldT
     sendPlayerWorldTransitionMessage(client, message.data);
 }
 
-// Todo: Handle inventory space check logic on server.
 export function playerPickupItem(message: NetMessagePlayerItemPickup, client: Client) {
     if (client.currentClientId === message.data.pickupClientId) {
         const clientState = client.rootComponent.getState()
@@ -89,5 +88,12 @@ export function playerPickupItem(message: NetMessagePlayerItemPickup, client: Cl
         } else {
             console.log("Render: not enough space")
         }
+    }
+}
+
+// This is a client specific notification, perhaps we have a broadcast one too?
+export function notifyPlayer(message: NetMessagePlayerNotification, client: Client) {
+    if (client.currentClientId === message.data.clientId) {
+        client.rootComponent.setNotificationMessage(message.data)
     }
 }
