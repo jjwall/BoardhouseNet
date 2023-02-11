@@ -109,7 +109,7 @@ export function setGoblinHitbox(goblin: Entity, state: GoblinState, worldEngine:
 export function createGoblinVision(goblinEnt: Entity, state: GoblinState): Entity {
     let goblinVision = new Entity();
     goblinVision.pos = setPosition (0, 0, 1);
-    goblinVision.sprite = { url: "./data/textures/empty_texture.png", pixelRatio: 1 };
+    goblinVision.sprite = { url: "./data/textures/misc/empty_texture.png", pixelRatio: 1 };
     goblinVision.parent = goblinEnt;
     goblinVision.hitbox = setHitbox(HitboxTypes.ENEMY_VISION, [HitboxTypes.PLAYER], 500, 500);//, 180);
     goblinVision.hitbox.onHit = (vision, other, manifold) => {

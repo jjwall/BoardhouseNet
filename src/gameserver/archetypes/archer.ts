@@ -1,5 +1,4 @@
 import { initializeSkill, SkillSlotsComponent } from "../components/skillslots";
-import { armatureAnim } from "../../modules/animations/animationdata/armature";
 import { bowAndArrowPress, bowAndArrowRelease } from "../actions/bowandarrow";
 import { rangerAnim } from "../../modules/animations/animationdata/ranger";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";

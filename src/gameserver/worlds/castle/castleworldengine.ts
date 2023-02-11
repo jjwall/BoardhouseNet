@@ -53,15 +53,9 @@ export class CastleWorldEngine extends BaseWorldEngine {
         ent.movement = setMovement();
         this.registerEntity(ent, server);
 
-        let cottage1 = new Entity();
-        cottage1.pos = setPosition(150, 450, 3);
-        cottage1.sprite = { url: "./data/textures/cottage.png", pixelRatio: 4 };
-        let cottage2 = new Entity();
-        cottage2.pos = setPosition(450, 450, 3);
-        cottage2.sprite = { url: "./data/textures/cottage.png", pixelRatio: 4 };
         let magicCircle = new Entity();
         magicCircle.pos = setPosition(450, 250, 3, new Vector3(1, -1, 0));
-        magicCircle.sprite = { url: "./data/textures/magic_circle.png", pixelRatio: 1 };
+        magicCircle.sprite = { url: "./data/textures/vfx/magic_circle.png", pixelRatio: 1 };
         let fish = new Entity();
         fish.pos = setPosition(1400, 250, 3);
         fish.sprite = { url: "./data/textures/fish001.png", pixelRatio: 4 };
