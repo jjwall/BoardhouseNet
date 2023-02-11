@@ -23,7 +23,7 @@ export function createGoblin(worldEngine: BaseWorldEngine, pos: PositionComponen
     let goblin = new Entity();
     goblin.pos = pos;
     goblin.vel = setVelocity(15, 0.5);
-    goblin.sprite = { url: "./data/textures/kenney_goblin001.png", pixelRatio: 4 };
+    goblin.sprite = { url: "./data/textures/npcs/kenney_goblin/kenney_goblin001.png", pixelRatio: 4 };
     goblin.anim = { sequence: SequenceTypes.WALK, blob: kenneyGoblinAnim };
     goblin.behavior = setBehavior(goblinBehavior);
 

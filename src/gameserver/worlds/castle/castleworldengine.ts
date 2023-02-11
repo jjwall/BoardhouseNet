@@ -58,7 +58,7 @@ export class CastleWorldEngine extends BaseWorldEngine {
         magicCircle.sprite = { url: "./data/textures/vfx/magic_circle.png", pixelRatio: 1 };
         let fish = new Entity();
         fish.pos = setPosition(1400, 250, 3);
-        fish.sprite = { url: "./data/textures/fish001.png", pixelRatio: 4 };
+        fish.sprite = { url: "./data/textures/npcs/fish/fish001.png", pixelRatio: 4 };
         fish.anim = { sequence: SequenceTypes.IDLE, blob: fishAnim };
         fish.hitbox = setHitbox(HitboxTypes.FISH_MOUTH, [HitboxTypes.PLAYER_SWORD_ATTACK], 10, 10, 15, -2);
         fish.hitbox.onHit = (tile, other, manifold) => {
@@ -81,7 +81,7 @@ export class CastleWorldEngine extends BaseWorldEngine {
         this.registerEntity(magicCircle, server);
         this.registerEntity(fish, server);
 
-        this.worldLevelData = this.registerWorldLevelData(kenneyFantasy2, "./data/textures/colored_packed.png");
+        this.worldLevelData = this.registerWorldLevelData(kenneyFantasy2, "./data/textures/tilesets/colored_packed.png");
     }
 
     public registerWorldLevelData(tileMapData: TileMapSchema, tileSetTextureUrl: string): WorldLevelData {
