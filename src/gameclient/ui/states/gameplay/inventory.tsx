@@ -24,6 +24,11 @@ import { Scene } from "three";
 // Consolidated Todo's: account for client / server side inventory sync. Set up equipment slots and enable skill equips.
 // TODO: Context / hover menu for viewing item stats. More elaborate itemData fields.
 // TODO: Build out item presets for random pull bag drops.
+// TODO: Implement item dropping mechanic
+// -> Since dragging an item off the inventory may be too common an action with equips, we might implement a "trashcan" icon
+// near the inventory widget that would trigger a "drop" -> item should be randomly popped out in an area field near the dropping player.
+// This way if a player was to drop a bunch of items all at once they likely wouldn't stack on each other. OR
+// --> Better idea: When items hitboxes touch each other they push each other out - like how goblins do with one another.
 
 export interface InventorySlotMetaData {
     top: number
@@ -45,7 +50,7 @@ interface Props {
  * Todo: Test Inventory coming on / off screen.
  */
 interface State {
-    // top: number
+    top: string | number
     // left: number
     slotsMetadata: Array<InventorySlotMetaData>
 }
@@ -55,6 +60,7 @@ export class Inventory extends Component<Props, State> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
+            top: this.props.top,
             // Note: This could be dynamically rendered from a bag size.
             // Currently hard-coded for 8 inventory slots.
             slotsMetadata: [
@@ -108,6 +114,15 @@ export class Inventory extends Component<Props, State> {
                 }
             ]
         }
+
+        // setInterval(() => this.animate(), 50);
+    }
+
+    // TODO: Work on animating open / close inventory.
+    animate = () => {
+        this.setState({
+            top: Number(this.state.top) - 5
+        })
     }
 
     reconcileInventory = (dropItemData: DropItemData) => {
@@ -143,7 +158,7 @@ export class Inventory extends Component<Props, State> {
 
     render(): JSXElement {
         return (
-            <panel left={this.props.left} top={this.props.top} height="143" width="281" color={this.props.color} opacity={this.props.opacity}>
+            <panel left={this.props.left} top={this.state.top} height="143" width="281" color={this.props.color} opacity={this.props.opacity}>
                 {this.state.slotsMetadata.map((slot, index) =>
                     <InventorySlot
                         top={slot.top}
