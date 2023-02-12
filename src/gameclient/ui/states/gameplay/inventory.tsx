@@ -51,7 +51,7 @@ interface Props {
  */
 interface State {
     top: string | number
-    // left: number
+    draggingDisabled: boolean
     slotsMetadata: Array<InventorySlotMetaData>
 }
 
@@ -61,6 +61,7 @@ export class Inventory extends Component<Props, State> {
         super(props, scene);
         this.state = {
             top: this.props.top,
+            draggingDisabled: false,
             // Note: This could be dynamically rendered from a bag size.
             // Currently hard-coded for 8 inventory slots.
             slotsMetadata: [
@@ -170,6 +171,7 @@ export class Inventory extends Component<Props, State> {
                         inventorySlotIndex={index}
                         reconcileInventory={this.reconcileInventory}
                         item={this.props.clientInventory[index]}
+                        draggingDisabled={this.state.draggingDisabled}
                     />
                 )}
             </panel>

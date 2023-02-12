@@ -20,6 +20,14 @@ import { WorldTypes } from "../../packets/enums/worldtypes";
 // -> have a new "packets" dir in there as well as a "enums" dir in there
 // -> consider putting modules like setUpClientToLobbyConnection.ts in there
 
+// NEW TODO (02/11/2023):
+// Lots to do...
+// Next work on item equipping
+// primary slot displays "weapon" or item on character's back kinda like genshin
+// -> thinking is kinda "follows" you for a cool little effect
+// secondary slot still shows weapon rendering when using action
+// once we have this working will, bring in other characters
+
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
 
 const config: ClientConfig = {

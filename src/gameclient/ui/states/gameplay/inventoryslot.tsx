@@ -23,6 +23,7 @@ interface Props {
     opacity: string | number
     item: ItemData | undefined
     inventorySlotIndex: number
+    draggingDisabled: boolean
     reconcileInventory: (slotData: DropItemData) => void
 }
 
@@ -63,7 +64,7 @@ export class InventorySlot extends Component<Props, State> {
             width={this.props.width}
             top={0}
             left={0}
-            undraggable={true}
+            disabled={true}
         />
     )
 
@@ -76,6 +77,7 @@ export class InventorySlot extends Component<Props, State> {
             width={this.props.width}
             top={0}
             left={0}
+            disabled={this.props.draggingDisabled}
         />
     )
 
