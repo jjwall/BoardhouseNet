@@ -63,6 +63,7 @@ export class Client {
         this.keyDownIsDown = false;
         this.keyZIsDown = false;
         this.keyXIsDown = false;
+        this.dodgeKeyPressed = false;
 
         // ...
         // vvv regular engine stuff vvv
@@ -108,6 +109,7 @@ export class Client {
     keyDownIsDown: boolean;
     keyZIsDown: boolean;
     keyXIsDown: boolean;
+    dodgeKeyPressed: boolean;
 
     /// ^^^ old configs ^^^
     public rootComponent: Root;
@@ -180,7 +182,7 @@ export class Client {
 
     public getTexture(url: string) {
         if (!this._textures[url]) {
-            throw new Error("Texture not found. Check url and ensure texture url is being passed in to loadTextures().");
+            throw new Error(`Texture not found for url: "${url}". Check url and ensure texture url is being passed in to loadTextures().`);
         }
 
         return this._textures[url];

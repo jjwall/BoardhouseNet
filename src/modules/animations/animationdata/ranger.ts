@@ -206,6 +206,103 @@ export const rangerAnim: AnimationSchema = {
             nextFrame: 0
         },
     ],
+    [SequenceTypes.DODGE_ROLL]: [
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_00.png",
+            nextFrame: 1
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_01.png",
+            nextFrame: 2
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_02.png",
+            nextFrame: 3
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_03.png",
+            nextFrame: 4
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_04.png",
+            nextFrame: 5
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_05.png",
+            nextFrame: 6
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_06.png",
+            nextFrame: 7
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_07.png",
+            nextFrame: 8
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_08.png",
+            nextFrame: 9
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_09.png",
+            nextFrame: 10
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_10.png",
+            nextFrame: 11
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_11.png",
+            nextFrame: 12
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_12.png",
+            nextFrame: 13
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_13.png",
+            nextFrame: 14
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_14.png",
+            nextFrame: 15
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_15.png",
+            nextFrame: 16
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_16.png",
+            nextFrame: 17
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_17.png",
+            nextFrame: 18
+        },
+        {
+            ticks: 3,
+            texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_18.png",
+            nextFrame: 18
+        },
+    ],
     [SequenceTypes.ATTACK]: [
         {
             ticks: 2,

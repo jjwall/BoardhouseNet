@@ -9,6 +9,7 @@ import { Entity } from "../serverengine/entity";
     right: boolean;
     up: boolean;
     down: boolean;
+    dodgeRolling: boolean;
     stutterTicks: number;
     actionOverride: ((entPerformingAction: Entity, worldEngine: BaseWorldEngine) => any) | undefined;
     /** @deprecated I think? */
@@ -24,6 +25,7 @@ export function setMovement(): MovementComponent {
         right: false,
         up: false,
         down: false,
+        dodgeRolling: false,
         stutterTicks: 0,
         actionOverride: undefined,
         attackCooldownTicks: 0,

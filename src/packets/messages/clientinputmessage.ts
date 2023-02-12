@@ -13,7 +13,8 @@ export type ClientInputMessage =
     ClientMessageSkillOnePress |
     ClientMessageSkillOneRelease |
     ClientMessageSkillTwoPress |
-    ClientMessageSkillTwoRelease
+    ClientMessageSkillTwoRelease |
+    ClientMessageDodgeKeyPress
 ;
 
 // Left movement key:
@@ -81,6 +82,11 @@ export interface ClientMessageSkillTwoRelease extends Message {
     data: InputData;
 }
 
+export interface ClientMessageDodgeKeyPress extends Message {
+    inputType: ClientInputTypes.DODGE_KEY_PRESS;
+    data: InputData;
+}
+
 // Client Input Types:
 export enum ClientInputTypes {
     // Queried inputs:
@@ -88,6 +94,7 @@ export enum ClientInputTypes {
     SKILL_TWO_PRESS = "SKILL_TWO_PRESS",
     SKILL_ONE_RELEASE = "SKILL_ONE_RELEASE",
     SKILL_TWO_RELEASE = "SKILL_TWO_RELEASE",
+    DODGE_KEY_PRESS = "DODGE_KEY_PRESS",
     // Immediate inputs:
     LEFT_KEY_DOWN = "LEFT_KEY_DOWN",
     LEFT_KEY_UP = "LEFT_KEY_UP",
