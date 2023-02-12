@@ -60,10 +60,10 @@ const getManifold = (a: Rect, b: Rect): Manifold => {
  * @param slotsMetaData 
  * @param offsetX 
  * @param offsetY 
- * @returns The slot index based on the item collision detection. Can be undefined. 
+ * @returns The slot index based on the item collision detection. Can be null. 
  */
 export function processItemSlotSwap(item: DropItemData, slotsMetaData: InventorySlotMetaData[], offsetX: number, offsetY: number): number {
-    let newSlotIndex: number = undefined
+    let newSlotIndex: number = null
     let slots: CollidableEntity[] = []
 
     slotsMetaData.forEach((slot, index) => {

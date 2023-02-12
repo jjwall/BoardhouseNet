@@ -49,3 +49,18 @@ export function transitionPlayerToAnotherWorld(playerEnt: Entity, currentWorld: 
 
     sendPlayerWorldTransitionMessage(currentWorld.server, data, playerEnt.player.id, newWorldType);
 };
+
+export function findPlayerEntityByClientId(worldEngine: BaseWorldEngine, clientId: string): Entity | undefined {
+    const playerEnts = worldEngine.getEntitiesByKey<Entity>("player");
+    let playerEnt: Entity = undefined;
+
+    playerEnts.forEach(ent => {
+        if (ent.player) {
+            if (ent.player.id === clientId) {
+                playerEnt = ent;
+            }
+        }
+    });
+
+    return playerEnt
+}

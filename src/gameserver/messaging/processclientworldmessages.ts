@@ -1,4 +1,4 @@
-import { ClientMessagePlayerWorldTransition, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin } from "../../packets/messages/clientworldmessage";
+import { ClientMessagePlayerWorldTransition, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin, ClientMessagePlayerInventoryEvent } from "../../packets/messages/clientworldmessage";
 import { broadcastCreateEntitiesMessage } from "./sendnetentitymessages";
 import { PositionComponent, setPosition } from "../components/position";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
@@ -10,6 +10,7 @@ import { createArcher } from "../archetypes/archer";
 import { Entity } from "../serverengine/entity";
 import { Server } from "../serverengine/server";
 import { createPage } from "../archetypes/page";
+import { findPlayerEntityByClientId } from "./helpers";
 
 /**
  * Just because player joins, doesn't mean an ent necessarily needs to be created for them.
@@ -107,4 +108,21 @@ export function processSpectatorWorldJoinMessage(message: ClientMessageSpectator
         sendLoadWorldMessage(server, clientWorld.worldLevelData, message.data.clientId);
         broadcastCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.data.worldType);
     }, 5000);
+}
+
+export function processPlayerInventoryEventMessage(message: ClientMessagePlayerInventoryEvent, server: Server) {
+    console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.data.clientId}" sent an inventory event.`)
+
+    let clientWorld: BaseWorldEngine;
+
+    try {
+        clientWorld = server.worldEngines.find(worldEngine => worldEngine.worldType === message.data.worldType);
+    } catch {
+        throw Error("unable to find world");
+    }
+
+    const playerEnt = findPlayerEntityByClientId(clientWorld, message.data.clientId)
+
+    // TODO: Some sort of back end validation here, easy hack to spoof an inventory and overwrite current back end list.
+    playerEnt.player.inventory = message.data.inventory
 }

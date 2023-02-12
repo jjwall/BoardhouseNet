@@ -1,10 +1,11 @@
 import { NotificationData } from "../../../../packets/data/notificationdata";
+import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
 import { InventorySlot, DropItemData } from "./inventoryslot";
 import { processItemSlotSwap } from "../utils/slotswap";
+import { ClientInventory, UIEvents } from "./rootui";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
-import { ClientInventory } from "./rootui";
 import { Scene } from "three";
 
 // TODO: (Done) Have items "snap" to empty inventory space if moving items around via drag and drop
@@ -46,6 +47,7 @@ interface Props {
     color: string
     opacity: string | number
     clientInventory: ClientInventory
+    setUIEvents: (newUIEvents: UIEvents) => void
     setClientInventory: (newClientInventory: ClientInventory) => void
     setNotificationMessage: (newNotificationMessage: NotificationData) => void
 }
@@ -172,21 +174,25 @@ export class Inventory extends Component<Props, State> {
         // equipmentSlot 13 -> accessory
         // TODO: Notify server of new equip (will need to do back end work of swapping skill slot etc. etc.)
         let validEquip = true
+
+        if (validEquip) {
+            this.props.setUIEvents([UIEventTypes.ITEM_EQUIPPED])
+        }
         return validEquip
     }
 
     reconcileInventory = (dropItemData: DropItemData) => {
         const newSlotIndex = processItemSlotSwap(dropItemData, this.state.slotsMetadata, Number(this.props.left), Number(this.props.top))
 
-        if (newSlotIndex !== undefined) {
+        if (newSlotIndex !== null) {
             if (newSlotIndex !== dropItemData.index) {
                 if (this.props.clientInventory[newSlotIndex]) {
                     // If item exists in new slot, swap item slots. Re-render old slot index with new item.
-                    this.props.clientInventory[dropItemData.index] = undefined
+                    this.props.clientInventory[dropItemData.index] = null
                     this.props.clientInventory[dropItemData.index] = this.props.clientInventory[newSlotIndex]
                 } else {
                     // Else remove item from old slot index.
-                    this.props.clientInventory[dropItemData.index] = undefined
+                    this.props.clientInventory[dropItemData.index] = null
                 }
 
                 if (newSlotIndex >= this.maxInventorySlots) {
@@ -206,7 +212,7 @@ export class Inventory extends Component<Props, State> {
                         this.props.setNotificationMessage(notificationData)
 
                         // Re-render item to original slot state.
-                        this.props.clientInventory[dropItemData.index] = undefined
+                        this.props.clientInventory[dropItemData.index] = null
                         this.props.clientInventory[dropItemData.index] = dropItemData.item
                         this.props.setClientInventory(this.props.clientInventory)
                     }
@@ -218,13 +224,13 @@ export class Inventory extends Component<Props, State> {
                 }
             } else {
                 // Item has been dragged to original slot. Re-render original slot state.
-                this.props.clientInventory[newSlotIndex] = undefined
+                this.props.clientInventory[newSlotIndex] = null
                 this.props.clientInventory[newSlotIndex] = dropItemData.item
                 this.props.setClientInventory(this.props.clientInventory)
             }
         } else {
             // Item has been dragged to no man's land. Re-render to original slot state.
-            this.props.clientInventory[dropItemData.index] = undefined
+            this.props.clientInventory[dropItemData.index] = null
             this.props.clientInventory[dropItemData.index] = dropItemData.item
             this.props.setClientInventory(this.props.clientInventory)
         }

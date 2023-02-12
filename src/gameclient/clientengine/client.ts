@@ -1,23 +1,25 @@
-import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh, Group, Vector2, PerspectiveCamera } from "three";
+import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh } from "three";
 import { handlePointerDownEvent, handlePointerMoveEvent, handlePointerUpEvent } from "../events/pointerevents";
+import { sendPlayerInventoryEventMessage } from "../messaging/sendclientworldmessages";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
-import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
-import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { GameServerStateTypes } from "../../packets/enums/gameserverstatetypes";
-import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
-import { EventTypes } from "../events/eventtypes";
-import { ClientEntity } from "./cliententity";
-import { NetIdToEntityMap } from "./interfaces";
-import { ClientRender } from "../renders/clientrender";
+import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
-import { WorldTypes } from "../../packets/enums/worldtypes";
-import { SceneTransition } from "../renders/scenetransitions";
-import { animationSystem } from "../systems/animation";
-import { centerCameraOnPlayer } from "./camera";
+import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { renderGamePlayUi, Root } from "../ui/states/gameplay/rootui";
-import { createWidget, Widget } from "../ui/core/widget";
-import { layoutWidget } from "../ui/core/layoutwidget";
+import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
 import { presetInventory } from "../../../database/preset_inventory";
+import { UIEventTypes } from "../../packets/enums/uieventtypes";
+import { SceneTransition } from "../renders/scenetransitions";
+import { WorldTypes } from "../../packets/enums/worldtypes";
+import { createWidget, Widget } from "../ui/core/widget";
+import { ClientRender } from "../renders/clientrender";
+import { animationSystem } from "../systems/animation";
+import { layoutWidget } from "../ui/core/layoutwidget";
+import { EventTypes } from "../events/eventtypes";
+import { NetIdToEntityMap } from "./interfaces";
+import { centerCameraOnPlayer } from "./camera";
+import { ClientEntity } from "./cliententity";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -274,6 +276,7 @@ export class Client {
                         // Using preset client inventory for now.
                         // In future pull from database or pre-set data set.
                         // Todo: Load from playerJoinData ? - yes - yes
+                        uiEvents: [],
                         clientInventory: presetInventory,
                         notificationMessage: {
                             milliseconds: 0,
@@ -437,6 +440,22 @@ export class Client {
         }
     }
 
+    private processUIEvents() {
+        if (this.rootComponent.state.uiEvents.length > 0) {
+            this.rootComponent.state.uiEvents.forEach(uiEvent => {
+                switch(uiEvent) {
+                    case UIEventTypes.ITEM_EQUIPPED:
+                        sendPlayerInventoryEventMessage(this)
+                        break;
+                    // case ...
+                }
+            })
+
+            // UI events have been processed, reset the state.
+            this.rootComponent.setUIEvents([])
+        }
+    }
+
     public render() : void {
         this.updateClientEntPositions(this.entityList);
         // this.updateClientRenders(this.renderList);
@@ -452,5 +471,8 @@ export class Client {
 
         // Render UI updates. // -> set up later
         layoutWidget(this.rootWidget, this);
+
+        // Process UI Events.
+        this.processUIEvents()
     }
 }

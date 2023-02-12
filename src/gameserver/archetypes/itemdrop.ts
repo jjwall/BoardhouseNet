@@ -41,9 +41,9 @@ export function createItemDrop(worldEngine: BaseWorldEngine, pos: PositionCompon
     itemDrop.hitbox.onHit = (self, other, manifold) => {
         if (other.player) {
             // If there's space in the inventory, add the item to it.
-            if (other.player.inventory.includes(undefined)) {
+            if (other.player.inventory.includes(null)) {
                 // Find first available item slot index and add item to server side inventory.
-                const emptyItemSlotIndex = other.player.inventory.indexOf(undefined)
+                const emptyItemSlotIndex = other.player.inventory.indexOf(null)
 
                 // Make sure item slot index is less than max inventory size, otherwise we'll be looking at equipment slots.
                 if (emptyItemSlotIndex < 8) {

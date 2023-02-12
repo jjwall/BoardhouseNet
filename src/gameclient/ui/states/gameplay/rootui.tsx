@@ -1,4 +1,5 @@
 import { NotificationData } from "../../../../packets/data/notificationdata";
+import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
 import { ItemData } from "../../../../packets/data/itemdata";
 import { NotificationWidget } from "./notificationwidget";
@@ -9,6 +10,7 @@ import { Widget } from "../../core/widget";
 import { Inventory } from "./inventory";
 import { Scene } from "three";
 
+export type UIEvents = Array<UIEventTypes>
 export type ClientInventory = Array<ItemData | undefined>
 
 export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props): Root {
@@ -18,6 +20,7 @@ export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props)
 }
 
 interface GlobalState {
+    uiEvents: UIEvents
     clientInventory: ClientInventory
     notificationMessage: NotificationData
 }
@@ -30,6 +33,7 @@ export class Root extends Component<Props, GlobalState> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
+            uiEvents: props.initialState.uiEvents,
             clientInventory: props.initialState.clientInventory,
             notificationMessage: props.initialState.notificationMessage,
         };
@@ -37,6 +41,12 @@ export class Root extends Component<Props, GlobalState> {
 
     getState() {
         return this.state
+    }
+
+    setUIEvents = (newUIEvents: UIEvents) => {
+        this.setState({
+            uiEvents: newUIEvents
+        })
     }
 
     setClientInventory = (newClientInventory: ClientInventory) => {
@@ -77,6 +87,7 @@ export class Root extends Component<Props, GlobalState> {
                     color="#282828"
                     opacity="0.5"
                     clientInventory={this.state.clientInventory}
+                    setUIEvents={this.setUIEvents}
                     setClientInventory={this.setClientInventory}
                     setNotificationMessage={this.setNotificationMessage}
                 />

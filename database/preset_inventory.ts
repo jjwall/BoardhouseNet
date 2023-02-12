@@ -18,10 +18,6 @@ export const presetInventory: Array<ItemData> = [
         spriteUrl: "./data/textures/icons/d3940.png",
         onDragSpriteUrl: "./data/textures/icons/d3940.png"
     },
-    // undefined,
-    // undefined,
-    // undefined,
-    // undefined,
     {
         spriteUrl: "./data/textures/icons/d17.png",
         onDragSpriteUrl: "./data/textures/icons/d49.png"
@@ -34,10 +30,10 @@ export const presetInventory: Array<ItemData> = [
         spriteUrl: "./data/textures/icons/d3403.png",
         onDragSpriteUrl: "./data/textures/icons/d3403.png"
     },
-    undefined,
+    null,
     // Equipment slots.
-    undefined,
-    undefined,
-    undefined,
-    undefined
+    null,
+    null,
+    null,
+    null
 ]
