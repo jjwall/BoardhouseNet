@@ -6,11 +6,13 @@
         "module": "es6",
         "target": "es2015",
         "jsx": "react",
+        "jsxFactory": "createJSXElement",
         "allowJs": true,
         "baseUrl": ".",
         "paths": {
             "three": ["node_modules/three/src/Three"],
-            "THREE": ["node_modules/three/src/Three"]
+            "THREE": ["node_modules/three/src/Three"],
+            "fairygui-three": ["node_modules/fairygui-three/build/FairyGUI"]
         }
     }
 }

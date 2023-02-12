@@ -2,6 +2,7 @@ import { MessageTypes } from "../../packets/messages/message";
 import { Client } from "../clientengine/client";
 import {
     ClientInputTypes, 
+    ClientMessageDodgeKeyPress, 
     ClientMessageDownKeyDown, 
     ClientMessageDownKeyUp, 
     ClientMessageLeftKeyDown, 
@@ -18,7 +19,7 @@ from "../../packets/messages/clientinputmessage";
 
 // Left movement key:
 export function sendLeftKeyDownMessage(client: Client) {
-    const message: ClientMessageLeftKeyDown  = {
+    const message: ClientMessageLeftKeyDown = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.LEFT_KEY_DOWN,
         data: {
@@ -31,7 +32,7 @@ export function sendLeftKeyDownMessage(client: Client) {
 }
 
 export function sendLeftKeyUpMessage(client: Client) {
-    const message: ClientMessageLeftKeyUp  = {
+    const message: ClientMessageLeftKeyUp = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.LEFT_KEY_UP,
         data: {
@@ -45,7 +46,7 @@ export function sendLeftKeyUpMessage(client: Client) {
 
 // Right movement key:
 export function sendRightKeyDownMessage(client: Client) {
-    const message: ClientMessageRightKeyDown  = {
+    const message: ClientMessageRightKeyDown = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.RIGHT_KEY_DOWN,
         data: {
@@ -58,7 +59,7 @@ export function sendRightKeyDownMessage(client: Client) {
 }
 
 export function sendRightKeyUpMessage(client: Client) {
-    const message: ClientMessageRightKeyUp  = {
+    const message: ClientMessageRightKeyUp = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.RIGHT_KEY_UP,
         data: {
@@ -72,7 +73,7 @@ export function sendRightKeyUpMessage(client: Client) {
 
 // Up movement key:
 export function sendUpKeyDownMessage(client: Client) {
-    const message: ClientMessageUpKeyDown  = {
+    const message: ClientMessageUpKeyDown = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.UP_KEY_DOWN,
         data: {
@@ -85,7 +86,7 @@ export function sendUpKeyDownMessage(client: Client) {
 }
 
 export function sendUpKeyUpMessage(client: Client) {
-    const message: ClientMessageUpKeyUp  = {
+    const message: ClientMessageUpKeyUp = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.UP_KEY_UP,
         data: {
@@ -99,7 +100,7 @@ export function sendUpKeyUpMessage(client: Client) {
 
 // Down movement key:
 export function sendDownKeyDownMessage(client: Client) {
-    const message: ClientMessageDownKeyDown  = {
+    const message: ClientMessageDownKeyDown = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.DOWN_KEY_DOWN,
         data: {
@@ -112,7 +113,7 @@ export function sendDownKeyDownMessage(client: Client) {
 }
 
 export function sendDownKeyUpMessage(client: Client) {
-    const message: ClientMessageDownKeyUp  = {
+    const message: ClientMessageDownKeyUp = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.DOWN_KEY_UP,
         data: {
@@ -126,7 +127,7 @@ export function sendDownKeyUpMessage(client: Client) {
 
 // Skill inputs:
 export function sendSkillOnePressMessage(client: Client) {
-    const message: ClientMessageSkillOnePress  = {
+    const message: ClientMessageSkillOnePress = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.SKILL_ONE_PRESS,
         data: {
@@ -139,7 +140,7 @@ export function sendSkillOnePressMessage(client: Client) {
 }
 
 export function sendSkillOneReleaseMessage(client: Client) {
-    const message: ClientMessageSkillOneRelease  = {
+    const message: ClientMessageSkillOneRelease = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.SKILL_ONE_RELEASE,
         data: {
@@ -152,7 +153,7 @@ export function sendSkillOneReleaseMessage(client: Client) {
 }
 
 export function sendSkillTwoPressMessage(client: Client) {
-    const message: ClientMessageSkillTwoPress  = {
+    const message: ClientMessageSkillTwoPress = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.SKILL_TWO_PRESS,
         data: {
@@ -165,9 +166,22 @@ export function sendSkillTwoPressMessage(client: Client) {
 }
 
 export function sendSkillTwoReleaseMessage(client: Client) {
-    const message: ClientMessageSkillTwoRelease  = {
+    const message: ClientMessageSkillTwoRelease = {
         messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
         inputType: ClientInputTypes.SKILL_TWO_RELEASE,
+        data: {
+            clientId: client.currentClientId,
+            worldType: client.worldType,
+        }
+    }   
+    
+    client.connection.send(JSON.stringify(message));
+}
+
+export function sendDodgeKeyPressMessage(client: Client) {
+    const message: ClientMessageDodgeKeyPress = {
+        messageType: MessageTypes.CLIENT_INPUT_MESSAGE,
+        inputType: ClientInputTypes.DODGE_KEY_PRESS,
         data: {
             clientId: client.currentClientId,
             worldType: client.worldType,

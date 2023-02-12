@@ -22,11 +22,15 @@ export function movementSystem(ents: ReadonlyArray<Entity>, worldEngine: BaseWor
     });
 }
 
+// TODO: Overhaul movement processing...
 function processMovementInputs(ent: Readonly<Entity>, movementDirection: Vector3) {
     // Set animation sequences.
-    if (ent.movement.stutterTicks > 0)
-        ent.anim.sequence = SequenceTypes.ATTACK
-    else if (ent.movement.up || ent.movement.down || ent.movement.left || ent.movement.right)
+    if (ent.movement.stutterTicks > 0) {
+        if (ent.movement.dodgeRolling)
+            ent.anim.sequence = SequenceTypes.DODGE_ROLL
+        else
+            ent.anim.sequence = SequenceTypes.ATTACK
+    } else if (ent.movement.up || ent.movement.down || ent.movement.left || ent.movement.right)
         ent.anim.sequence = SequenceTypes.WALK;
     else
         ent.anim.sequence = SequenceTypes.IDLE;
@@ -34,6 +38,21 @@ function processMovementInputs(ent: Readonly<Entity>, movementDirection: Vector3
     // Process stutter.
     if (ent.movement.stutterTicks > 0) {
         ent.movement.stutterTicks--;
+
+        if (ent.movement.dodgeRolling) {
+            if (ent.movement.stutterTicks === 0)
+                ent.movement.dodgeRolling = false
+
+            if (ent.pos.flipX) {
+                movementDirection.setX(-1);
+                movementDirection.setY(0);
+                ent.vel.positional.add(movementDirection.multiplyScalar(ent.vel.acceleration * 1.5));
+            } else {
+                movementDirection.setX(1);
+                movementDirection.setY(0);
+                ent.vel.positional.add(movementDirection.multiplyScalar(ent.vel.acceleration * 1.5));
+            }
+        }
     }
     else {
         // Left

@@ -60,15 +60,15 @@ wss.on('connection', function(connection) {
 app.use(bodyParser.json());
 app.use(express.static('./public'));
 
-app.get('/', function(req, res) {
+app.get('/', function(req: any, res: any) {
     res.sendFile('/public/lobby.html', { root: './'});
 });
 
-app.get('/playgame', function(req: Request, res: Response) {
+app.get('/playgame', function(req: Request, res: any) {
     res.sendFile('/public/game.html', { root: './'});
 });
 
-app.get("/getportconnections", function(req, res) {
+app.get("/getportconnections", function(req: any, res: any) {
     // ping all servers so our request can be resolved
 
     requestConnections(wss);
@@ -84,7 +84,7 @@ app.get("/getportconnections", function(req, res) {
 	}
 });
 
-app.post('/creategameroom', function(req, res: Response) {
+app.post('/creategameroom', function(req: any, res: Response) {
     findOpenPort(req.body.name,
                 globalServer.portToConnectionsMap, 
                 globalServer.portToPendingRequestsMap,

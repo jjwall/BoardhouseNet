@@ -1,4 +1,5 @@
-import { Texture, Font, Scene, Camera } from "three";
+import { Font } from "three/examples/jsm/loaders/FontLoader"
+import { Texture, Scene, Camera } from "three";
 import { ClientEntity } from "./cliententity";
 
 export interface NetIdToEntityMap {

@@ -15,6 +15,8 @@ export function scaleToWindow(canvas: HTMLCanvasElement): number {
     scaleX = window.innerWidth / canvas.offsetWidth;
     scaleY = window.innerHeight / canvas.offsetHeight;
 
+    console.log(canvas.offsetWidth)
+
     //Scale the canvas based on whichever value is less: `scaleX` or `scaleY`
     scale = Math.min(scaleX, scaleY);
     canvas.style.transformOrigin = "0 0";

@@ -1,4 +1,5 @@
-import { BufferGeometry, ShapeBufferGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh } from "three";
+import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh, Group, Vector2, PerspectiveCamera } from "three";
+import { handlePointerDownEvent, handlePointerMoveEvent, handlePointerUpEvent } from "../events/pointerevents";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
@@ -13,6 +14,10 @@ import { WorldTypes } from "../../packets/enums/worldtypes";
 import { SceneTransition } from "../renders/scenetransitions";
 import { animationSystem } from "../systems/animation";
 import { centerCameraOnPlayer } from "./camera";
+import { renderGamePlayUi, Root } from "../ui/states/gameplay/rootui";
+import { createWidget, Widget } from "../ui/core/widget";
+import { layoutWidget } from "../ui/core/layoutwidget";
+import { presetInventory } from "../../../database/preset_inventory";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -58,6 +63,7 @@ export class Client {
         this.keyDownIsDown = false;
         this.keyZIsDown = false;
         this.keyXIsDown = false;
+        this.dodgeKeyPressed = false;
 
         // ...
         // vvv regular engine stuff vvv
@@ -103,8 +109,11 @@ export class Client {
     keyDownIsDown: boolean;
     keyZIsDown: boolean;
     keyXIsDown: boolean;
+    dodgeKeyPressed: boolean;
 
     /// ^^^ old configs ^^^
+    public rootComponent: Root;
+    public rootWidget: Widget;
 
     public screenWidth: number;
 
@@ -165,7 +174,7 @@ export class Client {
 
     public getFont(url: string) {
         if (!this._fonts[url]) {
-            throw new Error("Font not found. Check url and ensure font url is being passed in to loadFonts().");
+            throw new Error(`Font not found at url: "${url}". Check url and ensure font url is being passed in to loadFonts().`);
         }
 
         return this._fonts[url];
@@ -173,7 +182,7 @@ export class Client {
 
     public getTexture(url: string) {
         if (!this._textures[url]) {
-            throw new Error("Texture not found. Check url and ensure texture url is being passed in to loadTextures().");
+            throw new Error(`Texture not found at url: "${url}". Check url and ensure texture url is being passed in to loadTextures().`);
         }
 
         return this._textures[url];
@@ -181,7 +190,7 @@ export class Client {
 
     public getAudioBuffer(url: string) {
         if (!this._audioBuffers[url]) {
-            throw new Error("Audio element not found. Check url and ensure audio element url is being passed in to loadAudioElements().");
+            throw new Error(`Audio element not found at url: "${url}". Check url and ensure audio element url is being passed in to loadAudioElements().`);
         }
 
         return this._audioBuffers[url];
@@ -195,7 +204,7 @@ export class Client {
         } else {
             const font = this.getFont(fontUrl);
             const shapes = font.generateShapes(contents, font_size);
-            const geometry = new ShapeBufferGeometry(shapes);
+            const geometry = new ShapeGeometry(shapes);
 
             // Ensure font is centered on (parent) widget.
             geometry.computeBoundingBox();
@@ -255,12 +264,43 @@ export class Client {
 
                 // Set up ui camera.
                 this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
+
+                // Set up ui widget and instance.
+                this.rootWidget = createWidget("root");
+                this.uiScene.add(this.rootWidget);
+
+                this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, {
+                    initialState: {
+                        // Using preset client inventory for now.
+                        // In future pull from database or pre-set data set.
+                        // Todo: Load from playerJoinData ? - yes - yes
+                        clientInventory: presetInventory,
+                        notificationMessage: {
+                            milliseconds: 0,
+                            color: "",
+                            clientId: "", // unnecessary
+                            notification: ""
+                        }
+                    }
+                });
                 break;
         }
     }
 
     public handleEvent(e: Event) : void {
         switch(e.type) {
+            case EventTypes.POINTER_DOWN:
+                if (this.role === ClientRoleTypes.PLAYER) // spectator will have POINTER_DOWN access eventually
+                    handlePointerDownEvent(this.rootWidget, e as PointerEvent);
+                break;
+            case EventTypes.POINTER_UP:
+                if (this.role === ClientRoleTypes.PLAYER) // spectator will have POINTER_UP access eventually
+                    handlePointerUpEvent(e as PointerEvent);
+                break;
+            case EventTypes.POINTER_MOVE:
+                if (this.role === ClientRoleTypes.PLAYER)
+                    handlePointerMoveEvent(e as PointerEvent);
+                break;
             case EventTypes.KEY_DOWN:
                 if (this.role === ClientRoleTypes.PLAYER)
                     handleKeyDownEvent(this, e as KeyboardEvent);
@@ -411,6 +451,6 @@ export class Client {
         this.renderer.render(this.uiScene, this.uiCamera);
 
         // Render UI updates. // -> set up later
-        // layoutWidget(this.rootWidget, this.engine);
+        layoutWidget(this.rootWidget, this);
     }
 }

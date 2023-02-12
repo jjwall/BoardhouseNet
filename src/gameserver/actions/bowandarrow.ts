@@ -42,7 +42,7 @@ export function bowAndArrowHold(attackingEnt: Entity, worldEngine: BaseWorldEngi
         let bow = new Entity();
         const bowDirection = new Vector3(unitCircleCoordinateX, unitCircleCoordinateY);
         bow.pos = setPosition(offsetPosX * unitCircleCoordinateX, offsetPosY * unitCircleCoordinateY, 5, bowDirection);
-        bow.sprite = { url: "./data/textures/kenney_bow001.png", pixelRatio: 1 };
+        bow.sprite = { url: "./data/textures/items/kenney_bow001.png", pixelRatio: 1 };
         bow.anim = { sequence: SequenceTypes.IDLE, blob: kenneyBowAnim };
 
         // Set parent Since we're setting position relative to attacking ent.
@@ -93,7 +93,7 @@ export function bowAndArrowRelease(attackingEnt: Entity, worldEngine: BaseWorldE
         // Create arrow and launch in direction of desired angle.
         let arrow = new Entity();
         arrow.pos = setPosition(attackingEnt.pos.loc.x, attackingEnt.pos.loc.y, 5, arrowDirection);
-        arrow.sprite = { url: "./data/textures/kenney_arrow.png", pixelRatio: 0.5 };
+        arrow.sprite = { url: "./data/textures/items/kenney_arrow.png", pixelRatio: 0.5 };
         arrow.vel = setVelocity(30, 0);
         arrow.vel.positional.add(arrowDirection.multiplyScalar(arrow.vel.acceleration));
         arrow.hitbox = setHitbox(HitboxTypes.PLAYER_PROJECTILE, [HitboxTypes.TILE_OBSTACLE, HitboxTypes.ENEMY, HitboxTypes.HOSTILE_PLAYER], 25, 25);

@@ -52,6 +52,13 @@ export function processSkillTwoReleaseInputMessage(playerEnt: Entity) {
         skillTwo.triggerReleaseAction = true
 }
 
+export function processDodgeKeyPressMessage(playerEnt: Entity) {
+    if (!playerEnt?.movement?.dodgeRolling) {
+        playerEnt.movement.stutterTicks = 10
+        playerEnt.movement.dodgeRolling = true
+    }
+}
+
 export function processLeftKeyDownMessage(ents: ReadonlyArray<Entity>, message: ClientMessageLeftKeyDown) {
     ents.forEach(ent => {
         if (ent.player && ent.movement) {
@@ -155,7 +162,9 @@ export function processQueriedInputs(server: Server) {
                         case ClientInputTypes.SKILL_TWO_RELEASE:
                             processSkillTwoReleaseInputMessage(ent);
                             break;
-                        // case ...
+                        case ClientInputTypes.DODGE_KEY_PRESS:
+                            processDodgeKeyPressMessage(ent)
+                            break;
                     }
                 }
             }

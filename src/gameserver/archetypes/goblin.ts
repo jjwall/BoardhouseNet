@@ -23,7 +23,7 @@ export function createGoblin(worldEngine: BaseWorldEngine, pos: PositionComponen
     let goblin = new Entity();
     goblin.pos = pos;
     goblin.vel = setVelocity(15, 0.5);
-    goblin.sprite = { url: "./data/textures/kenney_goblin001.png", pixelRatio: 4 };
+    goblin.sprite = { url: "./data/textures/npcs/kenney_goblin/kenney_goblin001.png", pixelRatio: 4 };
     goblin.anim = { sequence: SequenceTypes.WALK, blob: kenneyGoblinAnim };
     goblin.behavior = setBehavior(goblinBehavior);
 
@@ -109,7 +109,7 @@ export function setGoblinHitbox(goblin: Entity, state: GoblinState, worldEngine:
 export function createGoblinVision(goblinEnt: Entity, state: GoblinState): Entity {
     let goblinVision = new Entity();
     goblinVision.pos = setPosition (0, 0, 1);
-    goblinVision.sprite = { url: "./data/textures/empty_texture.png", pixelRatio: 1 };
+    goblinVision.sprite = { url: "./data/textures/misc/empty_texture.png", pixelRatio: 1 };
     goblinVision.parent = goblinEnt;
     goblinVision.hitbox = setHitbox(HitboxTypes.ENEMY_VISION, [HitboxTypes.PLAYER], 500, 500);//, 180);
     goblinVision.hitbox.onHit = (vision, other, manifold) => {

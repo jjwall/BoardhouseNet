@@ -75,7 +75,7 @@ export function fireballHold(attackingEnt: Entity, worldEngine: BaseWorldEngine)
         
         let magicReticle = new Entity();
         magicReticle.pos = setPosition(offsetPosX * unitCircleCoordinateX, offsetPosY * unitCircleCoordinateY, 5);
-        magicReticle.sprite = { url: "./data/textures/action_reticle001.png", pixelRatio: 8 };
+        magicReticle.sprite = { url: "./data/textures/vfx/action_reticle001.png", pixelRatio: 8 };
         magicReticle.anim = { sequence: SequenceTypes.IDLE, blob: actionReticleAnim };
 
         // Set parent Since we're setting position relative to attacking ent.
@@ -260,7 +260,7 @@ export function fireballRelease(attackingEnt: Entity, worldEngine: BaseWorldEngi
         // Create fireball and launch in direction of desired angle.
         let fireball = new Entity();
         fireball.pos = setPosition(attackingEnt.pos.loc.x, attackingEnt.pos.loc.y, 5);
-        fireball.sprite = { url: "./data/textures/standardbullet.png", pixelRatio: 4 };
+        fireball.sprite = { url: "./data/textures/vfx/standardbullet.png", pixelRatio: 4 };
         fireball.vel = setVelocity(15, 0);
         fireball.vel.positional.add(fireballDirection.multiplyScalar(fireball.vel.acceleration));
         fireball.hitbox = setHitbox(HitboxTypes.PLAYER_FIREBALL, [HitboxTypes.TILE_OBSTACLE, HitboxTypes.ENEMY, HitboxTypes.HOSTILE_PLAYER], 25, 25);

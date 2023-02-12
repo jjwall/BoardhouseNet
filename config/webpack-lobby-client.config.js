@@ -26,7 +26,8 @@ module.exports = {
     plugins: [
         new CopyWebpackPlugin({
             patterns:[
-                { from: './public/lobby.html', to: './../'}
+                { from: './public/lobby.html', to: './../'},
+                { from: './public/favicon.ico', to: './../../'},
             ]
         }),
         new ForkTsCheckerWebpackPlugin()

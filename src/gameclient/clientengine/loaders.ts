@@ -1,5 +1,6 @@
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
-import { Texture, TextureLoader, Font, FontLoader, AudioLoader } from "three";
+import { Font, FontLoader } from "three/examples/jsm/loaders/FontLoader"
+import { Texture, TextureLoader, AudioLoader } from "three";
 
 export async function loadTextures(urls: string[]) : Promise<UrlToTextureMap> {
     const loader = new TextureLoader();

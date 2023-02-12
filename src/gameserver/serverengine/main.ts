@@ -5,6 +5,7 @@ import { WorldTypes } from "../../packets/enums/worldtypes";
 import { setUpGameServer } from "./setupgameserver";
 import { Server, ServerConfig } from "./server";
 import * as WebSocket from "ws";
+import { Forest_1_1 } from "../worlds/forest/forest_1_1";
 
 // Server to-do:
 // 1. (done) Fix BaseState ecs registration - only global and control registering.. others throwing errors - need to debug
@@ -37,6 +38,7 @@ function main() {
     // initialize state stack
     server.worldEngines.push(new CastleWorldEngine(server, WorldTypes.CASTLE));
     server.worldEngines.push(new ItemShopWorldEngine(server, WorldTypes.ITEM_SHOP));
+    server.worldEngines.push(new Forest_1_1(server, WorldTypes.FOREST_1_1));
 
     // logic update loop
     setInterval(function (): void {

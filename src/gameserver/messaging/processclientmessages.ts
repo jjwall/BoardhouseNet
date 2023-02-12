@@ -78,6 +78,7 @@ function processClientInputMessage(message: ClientInputMessage, server: Server) 
         case ClientInputTypes.SKILL_ONE_RELEASE:
         case ClientInputTypes.SKILL_TWO_PRESS:
         case ClientInputTypes.SKILL_TWO_RELEASE:
+        case ClientInputTypes.DODGE_KEY_PRESS:
             queryInputMessage(message, server);
             break;
         case ClientInputTypes.LEFT_KEY_DOWN:

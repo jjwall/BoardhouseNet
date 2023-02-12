@@ -1,7 +1,6 @@
 import { kenneyItemShop2 } from "../../../modules/tilemapping/tilemaps/kenneyitemshop2";
 import { TileData, WorldLevelData } from "../../../packets/data/worldleveldata";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
-import { necroAnim } from "../../../modules/animations/animationdata/necro";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { PositionComponent, setPosition } from "../../components/position";
 import { SequenceTypes } from "../../../modules/animations/sequencetypes";
@@ -48,14 +47,7 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
         ent.movement = setMovement();
         this.registerEntity(ent, server);
 
-        // let necro = new Entity();
-        // necro.pos = setPosition(0, 0, 5);
-        // necro.sprite = { url: "./data/textures/necroattack1.png", pixelRatio: 8 };
-        // necro.anim = { sequence: SequenceTypes.WALK, blob: necroAnim };
-
-        // this.registerEntity(necro, server);
-
-        this.worldLevelData = this.registerWorldLevelData(kenneyItemShop2, "./data/textures/colored_packed.png");
+        this.worldLevelData = this.registerWorldLevelData(kenneyItemShop2, "./data/textures/tilesets/colored_packed.png");
     }
 
     public registerWorldLevelData(tileMapData: TileMapSchema, tileSetTextureUrl: string): WorldLevelData {

@@ -1,4 +1,4 @@
-import { sendDownKeyUpMessage, sendDownKeyDownMessage, sendLeftKeyDownMessage, sendLeftKeyUpMessage, sendRightKeyDownMessage, sendRightKeyUpMessage, sendUpKeyDownMessage, sendUpKeyUpMessage, sendSkillOneReleaseMessage, sendSkillTwoReleaseMessage, sendSkillOnePressMessage, sendSkillTwoPressMessage } from "../messaging/sendclientinputmessages";
+import { sendDownKeyUpMessage, sendDownKeyDownMessage, sendLeftKeyDownMessage, sendLeftKeyUpMessage, sendRightKeyDownMessage, sendRightKeyUpMessage, sendUpKeyDownMessage, sendUpKeyUpMessage, sendSkillOneReleaseMessage, sendSkillTwoReleaseMessage, sendSkillOnePressMessage, sendSkillTwoPressMessage, sendDodgeKeyPressMessage } from "../messaging/sendclientinputmessages";
 import { Client } from "../clientengine/client";
 
 // keyboard controls
@@ -51,6 +51,13 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
                 sendSkillTwoPressMessage(client);
             }
             break;
+
+        case 67: // c
+            if (!client.dodgeKeyPressed) {
+                client.dodgeKeyPressed = true;
+                sendDodgeKeyPressMessage(client);
+            }
+            break;
     }
 }
 
@@ -100,6 +107,13 @@ export function handleKeyUpEvent(client: Client, e: KeyboardEvent) {
             if (client.keyXIsDown) {
                 client.keyXIsDown = false;
                 sendSkillTwoReleaseMessage(client);
+            }
+            break;
+
+        case 67: // c
+            if (client.dodgeKeyPressed) {
+                // No event to send, set boolean to false.
+                client.dodgeKeyPressed = false;
             }
             break;
     }

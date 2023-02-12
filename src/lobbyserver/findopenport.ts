@@ -10,7 +10,7 @@ import { PortToConnectionsMap } from "../packets/misc/porttoconnectionsmap";
  * @param portToPendingRequestsMap Mapping table that registers pending requests based on port number.
  * @param response 
  */
-export function findOpenPort(gameRoomName: string, portToConnectionsMap: PortToConnectionsMap, portToPendingRequestsMap: IPortToPendingRequestsMap, response: Response) {
+export function findOpenPort(gameRoomName: string, portToConnectionsMap: PortToConnectionsMap, portToPendingRequestsMap: IPortToPendingRequestsMap, response: any) {
 	let openPort = "9001";
 	let iterator = 0;
 

@@ -1,4 +1,4 @@
-import { NetMessageLoadWorld, NetMessagePlayerWorldTransition } from "../../packets/messages/networldmessage";
+import { NetMessageLoadWorld, NetMessagePlayerItemPickup, NetMessagePlayerNotification, NetMessagePlayerWorldTransition } from "../../packets/messages/networldmessage";
 import { sendPlayerWorldTransitionMessage } from "./sendclientworldmessages";
 import { renderWorldMap } from "../clientengine/renderworldmap";
 import { Client } from "../clientengine/client";
@@ -68,4 +68,32 @@ export function transitionPlayerClientToNewWorld(message: NetMessagePlayerWorldT
 
     // Send client world message that tells server to have player join new world.
     sendPlayerWorldTransitionMessage(client, message.data);
+}
+
+export function playerPickupItem(message: NetMessagePlayerItemPickup, client: Client) {
+    if (client.currentClientId === message.data.pickupClientId) {
+        const clientState = client.rootComponent.getState()
+        const firstAvailableSlotIndex = clientState.clientInventory.findIndex(element => !element);
+
+        // Note: this check shouldn't be necessary since this logic should be run on server.
+        // Message data could include things like, slot index to render item at.
+        if (firstAvailableSlotIndex > -1) {
+            // There's available space for item, place in first available slot.
+            clientState.clientInventory[firstAvailableSlotIndex] = {
+                spriteUrl: message.data.item.spriteUrl,
+                onDragSpriteUrl: message.data.item.onDragSpriteUrl
+            }
+
+            client.rootComponent.setClientInventory(clientState.clientInventory)
+        } else {
+            console.log("Render: not enough space")
+        }
+    }
+}
+
+// This is a client specific notification, perhaps we have a broadcast one too?
+export function notifyPlayer(message: NetMessagePlayerNotification, client: Client) {
+    if (client.currentClientId === message.data.clientId) {
+        client.rootComponent.setNotificationMessage(message.data)
+    }
 }
