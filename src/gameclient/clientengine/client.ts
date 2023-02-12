@@ -174,7 +174,7 @@ export class Client {
 
     public getFont(url: string) {
         if (!this._fonts[url]) {
-            throw new Error("Font not found. Check url and ensure font url is being passed in to loadFonts().");
+            throw new Error(`Font not found at url: "${url}". Check url and ensure font url is being passed in to loadFonts().`);
         }
 
         return this._fonts[url];
@@ -182,7 +182,7 @@ export class Client {
 
     public getTexture(url: string) {
         if (!this._textures[url]) {
-            throw new Error(`Texture not found for url: "${url}". Check url and ensure texture url is being passed in to loadTextures().`);
+            throw new Error(`Texture not found at url: "${url}". Check url and ensure texture url is being passed in to loadTextures().`);
         }
 
         return this._textures[url];
@@ -190,7 +190,7 @@ export class Client {
 
     public getAudioBuffer(url: string) {
         if (!this._audioBuffers[url]) {
-            throw new Error("Audio element not found. Check url and ensure audio element url is being passed in to loadAudioElements().");
+            throw new Error(`Audio element not found at url: "${url}". Check url and ensure audio element url is being passed in to loadAudioElements().`);
         }
 
         return this._audioBuffers[url];

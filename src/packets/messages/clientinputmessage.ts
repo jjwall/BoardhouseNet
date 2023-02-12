@@ -94,7 +94,7 @@ export enum ClientInputTypes {
     SKILL_TWO_PRESS = "SKILL_TWO_PRESS",
     SKILL_ONE_RELEASE = "SKILL_ONE_RELEASE",
     SKILL_TWO_RELEASE = "SKILL_TWO_RELEASE",
-    DODGE_KEY_PRESS = "DODGE_KEY_PRESS",
+    DODGE_KEY_PRESS = "DODGE_KEY_PRESS", // Does this need to be an immediate input?
     // Immediate inputs:
     LEFT_KEY_DOWN = "LEFT_KEY_DOWN",
     LEFT_KEY_UP = "LEFT_KEY_UP",
