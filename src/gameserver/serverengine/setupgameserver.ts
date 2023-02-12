@@ -44,7 +44,7 @@ export function setUpGameServer(server: Server) {
                         console.log(`(port: ${server.gameServerPort}): player with clientId = "${ws.clientId}" disconnected`);
 
                         server.worldEngines.forEach(worldEngine => {
-                            findAndDestroyPlayerEntity(worldEngine, ws.clientId, server);
+                            findAndDestroyPlayerEntity(worldEngine, ws.clientId);
                         });
                     }
                     break;

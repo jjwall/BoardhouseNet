@@ -6,22 +6,12 @@ import { PositionComponent } from "../components/position";
 import { WorldTypes } from "../../packets/enums/worldtypes";
 import { PlayerStates } from "../components/player";
 import { Entity } from "../serverengine/entity";
-import { Server } from "../serverengine/server";
 
-export function findAndDestroyPlayerEntity(worldEngine: BaseWorldEngine, clientId: string, server: Server) {
-    const ents = worldEngine.getEntitiesByKey<Entity>("player");
-    let entsToDestroy: Entity[] = [];
+export function findAndDestroyPlayerEntity(worldEngine: BaseWorldEngine, clientId: string) {
+    const playerEntToDestroy = findPlayerEntityByClientId(worldEngine, clientId)
 
-    ents.forEach(ent => {
-        if (ent.player) {
-            if (ent.player.id === clientId) {
-                entsToDestroy.push(ent);
-            }
-        }
-    });
-
-    if (entsToDestroy.length > 0)
-        broadcastDestroyEntitiesMessage(entsToDestroy, server, worldEngine);
+    if (playerEntToDestroy)
+        broadcastDestroyEntitiesMessage([playerEntToDestroy], worldEngine.server, worldEngine)
 }
 
 export function transitionPlayerToAnotherWorld(playerEnt: Entity, currentWorld: BaseWorldEngine, newWorldType: WorldTypes, newPos: PositionComponent) {
@@ -29,7 +19,7 @@ export function transitionPlayerToAnotherWorld(playerEnt: Entity, currentWorld: 
     playerEnt.pos = newPos; // unncessary
 
     // Remove player entity from current World.
-    findAndDestroyPlayerEntity(currentWorld, playerEnt.player.id, currentWorld.server);
+    findAndDestroyPlayerEntity(currentWorld, playerEnt.player.id);
 
     // Unncecssary, but do this to "satisfy" current NetWorldMessage conditions...
     const castleWorld = currentWorld.server.worldEngines.find(worldEngine => worldEngine.worldType === WorldTypes.CASTLE);
@@ -51,16 +41,7 @@ export function transitionPlayerToAnotherWorld(playerEnt: Entity, currentWorld: 
 };
 
 export function findPlayerEntityByClientId(worldEngine: BaseWorldEngine, clientId: string): Entity | undefined {
-    const playerEnts = worldEngine.getEntitiesByKey<Entity>("player");
-    let playerEnt: Entity = undefined;
-
-    playerEnts.forEach(ent => {
-        if (ent.player) {
-            if (ent.player.id === clientId) {
-                playerEnt = ent;
-            }
-        }
-    });
-
+    const playerEnts = worldEngine.getEntitiesByKey<Entity>("player")
+    const playerEnt = playerEnts.find(ent => ent.player.id === clientId)
     return playerEnt
 }
