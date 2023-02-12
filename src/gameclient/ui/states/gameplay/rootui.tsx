@@ -72,12 +72,13 @@ export class Root extends Component<Props, GlobalState> {
                     color={this.state.notificationMessage.color}
                 />
                 <Inventory
-                    top="550"
+                    top="456"
                     left="975"
                     color="#282828"
                     opacity="0.5"
                     clientInventory={this.state.clientInventory}
                     setClientInventory={this.setClientInventory}
+                    setNotificationMessage={this.setNotificationMessage}
                 />
             </panel>
         )

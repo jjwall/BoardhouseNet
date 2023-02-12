@@ -1,3 +1,4 @@
+import { NotificationData } from "../../../../packets/data/notificationdata";
 import { createJSXElement } from "../../core/createjsxelement";
 import { InventorySlot, DropItemData } from "./inventoryslot";
 import { processItemSlotSwap } from "../utils/slotswap";
@@ -30,6 +31,8 @@ import { Scene } from "three";
 // This way if a player was to drop a bunch of items all at once they likely wouldn't stack on each other. OR
 // --> Better idea: When items hitboxes touch each other they push each other out - like how goblins do with one another.
 
+// TODO: Fire UI Events to Client to send to server for ui related events
+
 export interface InventorySlotMetaData {
     top: number
     left: number
@@ -44,6 +47,7 @@ interface Props {
     opacity: string | number
     clientInventory: ClientInventory
     setClientInventory: (newClientInventory: ClientInventory) => void
+    setNotificationMessage: (newNotificationMessage: NotificationData) => void
 }
 
 /**
@@ -57,6 +61,9 @@ interface State {
 
 /** Note: Should be top level component. Dependent on top and left attributes being absolute. */
 export class Inventory extends Component<Props, State> {
+    maxEquipmentSlots = 4
+    maxInventorySlots = 8
+    equipmentTopOffset = 94
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
@@ -65,6 +72,56 @@ export class Inventory extends Component<Props, State> {
             // Note: This could be dynamically rendered from a bag size.
             // Currently hard-coded for 8 inventory slots.
             slotsMetadata: [
+                // Inventory slots.
+                {
+                    top: 5 + this.equipmentTopOffset,
+                    left: 5,
+                    height: 64,
+                    width: 64
+                },
+                {
+                    top: 5 + this.equipmentTopOffset,
+                    left: 74,
+                    height: 64,
+                    width: 64
+                },
+                {
+                    top: 5 + this.equipmentTopOffset,
+                    left: 143,
+                    height: 64,
+                    width: 64
+                },
+                {
+                    top: 5 + this.equipmentTopOffset,
+                    left: 212,
+                    height: 64,
+                    width: 64
+                },
+                {
+                    top: 74 + this.equipmentTopOffset,
+                    left: 5,
+                    height: 64,
+                    width: 64
+                },
+                {
+                    top: 74 + this.equipmentTopOffset,
+                    left: 74,
+                    height: 64,
+                    width: 64
+                },
+                {
+                    top: 74 + this.equipmentTopOffset,
+                    left: 143,
+                    height: 64,
+                    width: 64
+                },
+                {
+                    top: 74 + this.equipmentTopOffset,
+                    left: 212,
+                    height: 64,
+                    width: 64
+                },
+                // Equipment slots.
                 {
                     top: 5,
                     left: 5,
@@ -89,30 +146,6 @@ export class Inventory extends Component<Props, State> {
                     height: 64,
                     width: 64
                 },
-                {
-                    top: 74,
-                    left: 5,
-                    height: 64,
-                    width: 64
-                },
-                {
-                    top: 74,
-                    left: 74,
-                    height: 64,
-                    width: 64
-                },
-                {
-                    top: 74,
-                    left: 143,
-                    height: 64,
-                    width: 64
-                },
-                {
-                    top: 74,
-                    left: 212,
-                    height: 64,
-                    width: 64
-                }
             ]
         }
 
@@ -124,6 +157,22 @@ export class Inventory extends Component<Props, State> {
         this.setState({
             top: Number(this.state.top) - 5
         })
+    }
+
+    /**
+     * Checks if current item can be equipped in designated equipment slot.
+     * @param dropItemData 
+     * @returns true if item can be equipped, false if it cannot
+     */
+    validateItemEquip = (dropItemData: DropItemData, equipmentSlot: number): boolean => {
+        // TODO: Validation on item types here and equipment slot.
+        // equipmentSlot 10 -> primary weapon
+        // equipmentSlot 11 -> secondary weapon
+        // equipmentSlot 12 -> armor
+        // equipmentSlot 13 -> accessory
+        // TODO: Notify server of new equip (will need to do back end work of swapping skill slot etc. etc.)
+        let validEquip = true
+        return validEquip
     }
 
     reconcileInventory = (dropItemData: DropItemData) => {
@@ -140,9 +189,33 @@ export class Inventory extends Component<Props, State> {
                     this.props.clientInventory[dropItemData.index] = undefined
                 }
 
-                // Item has been dragged to new slot. Render new slot state.
-                this.props.clientInventory[newSlotIndex] = dropItemData.item
-                this.props.setClientInventory(this.props.clientInventory)
+                if (newSlotIndex >= this.maxInventorySlots) {
+                    // Item attempting to be equipped. Check if item can be equipped.
+                    if (this.validateItemEquip(dropItemData, newSlotIndex)) {
+                        // Item successfully equipped in designated slot.
+                        this.props.clientInventory[newSlotIndex] = dropItemData.item
+                        this.props.setClientInventory(this.props.clientInventory)
+                    } else {
+                        // Notify client that this item cannot be equipped here.
+                        const notificationData: NotificationData = {
+                            clientId: 'test', // get this from somewhere...
+                            notification: "This item cannot be equipped here...",
+                            color: "#FF0000",
+                            milliseconds: 3500
+                        }
+                        this.props.setNotificationMessage(notificationData)
+
+                        // Re-render item to original slot state.
+                        this.props.clientInventory[dropItemData.index] = undefined
+                        this.props.clientInventory[dropItemData.index] = dropItemData.item
+                        this.props.setClientInventory(this.props.clientInventory)
+                    }
+                } else {
+                    // Item has been dragged to new invetory slot. Render new slot state.
+                    // Client is just rearanging inventory here, no events need to be sent to server.
+                    this.props.clientInventory[newSlotIndex] = dropItemData.item
+                    this.props.setClientInventory(this.props.clientInventory)
+                }
             } else {
                 // Item has been dragged to original slot. Re-render original slot state.
                 this.props.clientInventory[newSlotIndex] = undefined
@@ -159,7 +232,7 @@ export class Inventory extends Component<Props, State> {
 
     render(): JSXElement {
         return (
-            <panel left={this.props.left} top={this.state.top} height="143" width="281" color={this.props.color} opacity={this.props.opacity}>
+            <panel left={this.props.left} top={this.state.top} height="237" width="281" color={this.props.color} opacity={this.props.opacity}>
                 {this.state.slotsMetadata.map((slot, index) =>
                     <InventorySlot
                         top={slot.top}
