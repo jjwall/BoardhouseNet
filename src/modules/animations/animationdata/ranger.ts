@@ -208,27 +208,27 @@ export const rangerAnim: AnimationSchema = {
     ],
     [SequenceTypes.DODGE_ROLL]: [
         {
-            ticks: 3,
+            ticks: 2,
             texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_00.png",
             nextFrame: 1
         },
         {
-            ticks: 3,
+            ticks: 2,
             texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_01.png",
             nextFrame: 2
         },
         {
-            ticks: 3,
+            ticks: 2,
             texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_02.png",
             nextFrame: 3
         },
         {
-            ticks: 3,
+            ticks: 2,
             texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_03.png",
             nextFrame: 4
         },
         {
-            ticks: 3,
+            ticks: 2,
             texture: "./data/textures/ranger/dodgeroll/Heroine_ranger_dodgeroll_04.png",
             nextFrame: 5
         },
