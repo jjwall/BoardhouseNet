@@ -1,12 +1,12 @@
 import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh } from "three";
 import { handlePointerDownEvent, handlePointerMoveEvent, handlePointerUpEvent } from "../events/pointerevents";
 import { sendPlayerInventoryEventMessage } from "../messaging/sendclientworldmessages";
+import { GlobalState, renderGamePlayUi, Root } from "../ui/states/gameplay/rootui";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { GameServerStateTypes } from "../../packets/enums/gameserverstatetypes";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
-import { renderGamePlayUi, Root } from "../ui/states/gameplay/rootui";
 import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
 import { presetInventory } from "../../../database/preset_inventory";
 import { UIEventTypes } from "../../packets/enums/uieventtypes";
@@ -296,6 +296,10 @@ export class Client {
         }
     }
 
+    public getUIState(): GlobalState {
+        return this.rootComponent.getState()
+    }
+
     public handleEvent(e: Event) : void {
         switch(e.type) {
             case EventTypes.POINTER_DOWN:
@@ -447,8 +451,8 @@ export class Client {
     }
 
     private processUIEvents() {
-        if (this.rootComponent.state.uiEvents.length > 0) {
-            this.rootComponent.state.uiEvents.forEach(uiEvent => {
+        if (this.getUIState().uiEvents.length > 0) {
+            this.getUIState().uiEvents.forEach(uiEvent => {
                 switch(uiEvent) {
                     case UIEventTypes.ITEM_EQUIPPED:
                         sendPlayerInventoryEventMessage(this)

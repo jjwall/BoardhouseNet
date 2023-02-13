@@ -51,7 +51,7 @@ export function sendPlayerInventoryEventMessage(client: Client) {
         data: {
             clientId: client.currentClientId,
             worldType: client.worldType,
-            inventory: client.rootComponent.state.clientInventory
+            inventory: client.getUIState().clientInventory
         }
     }
 

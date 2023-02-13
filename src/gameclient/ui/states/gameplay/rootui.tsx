@@ -19,7 +19,7 @@ export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props)
     return rootInstance.component as Root;
 }
 
-interface GlobalState {
+export interface GlobalState {
     uiEvents: UIEvents
     clientInventory: ClientInventory
     notificationMessage: NotificationData

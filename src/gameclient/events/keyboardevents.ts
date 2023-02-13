@@ -63,7 +63,7 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
             if (!client.inventoryKeyPressed) {
                 client.inventoryKeyPressed = true;
 
-                if (client.rootComponent.state.inventoryViewToggle)
+                if (client.getUIState().inventoryViewToggle)
                     client.rootComponent.setInventoryViewToggle(false)
                 else
                     client.rootComponent.setInventoryViewToggle(true)

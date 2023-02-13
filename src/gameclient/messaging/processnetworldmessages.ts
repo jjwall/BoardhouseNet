@@ -72,7 +72,7 @@ export function transitionPlayerClientToNewWorld(message: NetMessagePlayerWorldT
 
 export function playerPickupItem(message: NetMessagePlayerItemPickup, client: Client) {
     if (client.currentClientId === message.data.pickupClientId) {
-        const clientState = client.rootComponent.getState()
+        const clientState = client.getUIState()
         const firstAvailableSlotIndex = clientState.clientInventory.findIndex(element => !element);
 
         // Note: this check shouldn't be necessary since this logic should be run on server.
