@@ -23,6 +23,8 @@ interface GlobalState {
     uiEvents: UIEvents
     clientInventory: ClientInventory
     notificationMessage: NotificationData
+    inventoryViewToggle: boolean
+    inventoryTop: string | number
 }
 
 interface Props {
@@ -35,6 +37,8 @@ export class Root extends Component<Props, GlobalState> {
         this.state = {
             uiEvents: props.initialState.uiEvents,
             clientInventory: props.initialState.clientInventory,
+            inventoryViewToggle: props.initialState.inventoryViewToggle,
+            inventoryTop: props.initialState.inventoryTop,
             notificationMessage: props.initialState.notificationMessage,
         };
     }
@@ -53,6 +57,21 @@ export class Root extends Component<Props, GlobalState> {
         this.setState({
             clientInventory: newClientInventory
         })
+    }
+
+    setInventoryViewToggle = (toggle: boolean) => {
+        this.setState({
+            inventoryViewToggle: toggle
+        })
+
+        if (this.state.inventoryViewToggle)
+            this.setState({
+                inventoryTop: 456
+            })
+        else
+            this.setState({
+                inventoryTop: 639
+            })
     }
 
     // Todo: Shouldn't have "clientId" field from the data interface.
@@ -82,10 +101,11 @@ export class Root extends Component<Props, GlobalState> {
                     color={this.state.notificationMessage.color}
                 />
                 <Inventory
-                    top="456"
+                    top={this.state.inventoryTop}
                     left="975"
                     color="#282828"
                     opacity="0.5"
+                    draggingDisabled={!this.state.inventoryViewToggle}
                     clientInventory={this.state.clientInventory}
                     setUIEvents={this.setUIEvents}
                     setClientInventory={this.setClientInventory}

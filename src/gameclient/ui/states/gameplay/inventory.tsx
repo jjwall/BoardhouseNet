@@ -32,7 +32,8 @@ import { Scene } from "three";
 // This way if a player was to drop a bunch of items all at once they likely wouldn't stack on each other. OR
 // --> Better idea: When items hitboxes touch each other they push each other out - like how goblins do with one another.
 
-// TODO: Fire UI Events to Client to send to server for ui related events
+// TODO: (Done) Fire UI Events to Client to send to server for ui related events
+// TODO: Bug -> Swapping item with equip slot doesn't trigger inventory event...
 
 export interface InventorySlotMetaData {
     top: number
@@ -46,6 +47,7 @@ interface Props {
     left: string | number
     color: string
     opacity: string | number
+    draggingDisabled: boolean
     clientInventory: ClientInventory
     setUIEvents: (newUIEvents: UIEvents) => void
     setClientInventory: (newClientInventory: ClientInventory) => void
@@ -56,8 +58,7 @@ interface Props {
  * Todo: Test Inventory coming on / off screen.
  */
 interface State {
-    top: string | number
-    draggingDisabled: boolean
+    top: string | number // technically don't need anymore
     slotsMetadata: Array<InventorySlotMetaData>
 }
 
@@ -70,7 +71,6 @@ export class Inventory extends Component<Props, State> {
         super(props, scene);
         this.state = {
             top: this.props.top,
-            draggingDisabled: false,
             // Note: This could be dynamically rendered from a bag size.
             // Currently hard-coded for 8 inventory slots.
             slotsMetadata: [
@@ -238,7 +238,7 @@ export class Inventory extends Component<Props, State> {
 
     render(): JSXElement {
         return (
-            <panel left={this.props.left} top={this.state.top} height="237" width="281" color={this.props.color} opacity={this.props.opacity}>
+            <panel left={this.props.left} top={this.props.top} height="237" width="281" color={this.props.color} opacity={this.props.opacity}>
                 {this.state.slotsMetadata.map((slot, index) =>
                     <InventorySlot
                         top={slot.top}
@@ -250,7 +250,7 @@ export class Inventory extends Component<Props, State> {
                         inventorySlotIndex={index}
                         reconcileInventory={this.reconcileInventory}
                         item={this.props.clientInventory[index]}
-                        draggingDisabled={this.state.draggingDisabled}
+                        draggingDisabled={this.props.draggingDisabled}
                     />
                 )}
             </panel>

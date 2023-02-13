@@ -59,6 +59,8 @@ export class Client {
         this.currentPort = config.currentPort;
         this.currentClientId = config.currentClientId;
         this.hostName = config.hostName;
+
+        // Inputs
         this.keyLeftIsDown = false;
         this.keyRightIsDown = false;
         this.keyUpIsDown = false;
@@ -66,6 +68,7 @@ export class Client {
         this.keyZIsDown = false;
         this.keyXIsDown = false;
         this.dodgeKeyPressed = false;
+        this.inventoryKeyPressed = false;
 
         // ...
         // vvv regular engine stuff vvv
@@ -112,6 +115,7 @@ export class Client {
     keyZIsDown: boolean;
     keyXIsDown: boolean;
     dodgeKeyPressed: boolean;
+    inventoryKeyPressed: boolean;
 
     /// ^^^ old configs ^^^
     public rootComponent: Root;
@@ -278,6 +282,8 @@ export class Client {
                         // Todo: Load from playerJoinData ? - yes - yes
                         uiEvents: [],
                         clientInventory: presetInventory,
+                        inventoryViewToggle: true,
+                        inventoryTop: 456,
                         notificationMessage: {
                             milliseconds: 0,
                             color: "",

@@ -22,7 +22,8 @@ import { WorldTypes } from "../../packets/enums/worldtypes";
 
 // NEW TODO (02/11/2023):
 // Lots to do...
-// Next work on item equipping
+// Next work on item equipping - mostly done
+// validation on each slot, ui to show each equip slot thing: sword, shield, armor, ring
 // primary slot displays "weapon" or item on character's back kinda like genshin
 // -> thinking is kinda "follows" you for a cool little effect
 // secondary slot still shows weapon rendering when using action
