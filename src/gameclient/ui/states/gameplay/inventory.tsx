@@ -127,7 +127,7 @@ export class Inventory extends Component<Props, State> {
                 this.props.clientInventory[dropItemData.index] = null
             }
 
-            if (newSlotIndex >= this.maxInventorySlots) {
+            if (draggedItemIsBeingEquipped) {
                 dragItemToEquipSlot()
             } else {
                 // Item has been dragged to new invetory slot. Render new slot state.
@@ -136,16 +136,22 @@ export class Inventory extends Component<Props, State> {
                 this.props.setClientInventory(this.props.clientInventory)
             }
 
-            if (dropItemData.index >= this.maxInventorySlots && newSlotIndex < this.maxInventorySlots) {
-                console.log('unequip')
-                if (this.props.clientInventory[dropItemData.index])
+            // An item is being unequipped and possibly equipped at the same time.
+            if (oldSlotWasAnEquipmentSlot && draggedItemIsBeingMovedToInventorySlot) {
+                if (this.props.clientInventory[dropItemData.index]) {
+                    // Handle unequip and equip swap edge case.
                     dragEquippedItemToOccupiedInventorySlot()
+                } else {
+                    // A regular unequip event occurs.
+                    this.props.setUIEvents([UIEventTypes.ITEM_EQUIPPED])
+                    console.log("unequip")
+                }
             }
         }
 
         const dragEquippedItemToOccupiedInventorySlot = () => {
             // Client dragged an equipped item into occupied inventory slot.
-            // If this was a valid inventory event, send update to server, else undo inventory event.
+            // If this was a valid inventory event, trigger equip event, else undo inventory event.
             if (!this.validateItemEquip(dropItemData, newSlotIndex)) {
                 // Notify client that this item cannot be equipped here.
                 const notificationData: NotificationData = {

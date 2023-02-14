@@ -457,6 +457,9 @@ export class Client {
                     case UIEventTypes.ITEM_EQUIPPED:
                         sendPlayerInventoryEventMessage(this)
                         break;
+                    case UIEventTypes.ITEM_UNEQUIPPED:
+                        sendPlayerInventoryEventMessage(this)
+                        break;
                     // case ...
                 }
             })
