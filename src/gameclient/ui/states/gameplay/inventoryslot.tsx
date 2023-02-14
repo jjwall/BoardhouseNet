@@ -5,7 +5,7 @@ import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
 import { Scene } from "three";
 
-export interface DropItemData {
+export interface DraggedItemData {
     index: number
     worldPosX: number
     worldPosY: number
@@ -24,7 +24,7 @@ interface Props {
     item: ItemData | undefined
     inventorySlotIndex: number
     draggingDisabled: boolean
-    reconcileInventory: (slotData: DropItemData) => void
+    reconcileInventory: (slotData: DraggedItemData) => void
 }
 
 interface State {

@@ -1,26 +1,21 @@
-import { InventorySlotMetaData, inventorySlotsMetaData } from "../utils/inventoryutils";
+import { InventorySlotMetaData, inventorySlotsMetaData, processItemSlotSwap } from "../utils/inventoryutils";
 import { NotificationData } from "../../../../packets/data/notificationdata";
 import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
+import { InventorySlot, DraggedItemData } from "./inventoryslot";
 import { createJSXElement } from "../../core/createjsxelement";
-import { InventorySlot, DropItemData } from "./inventoryslot";
-import { processItemSlotSwap } from "../utils/slotswap";
 import { ClientInventory, UIEvents } from "./rootui";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
 import { Scene } from "three";
 
-// TODO: (Done) Have items "snap" to empty inventory space if moving items around via drag and drop
-// TODO: Implement Equipment Screen that enables armor and skill / weapon equips via drag and drop from inventory
+// TODO: (Done) Implement Equipment Screen that enables armor and skill / weapon equips via drag and drop from inventory
+// -> Implement skill equips / item types / equip validation / more detailed item data.
 // TODO: (Done) Create data or "conext" or "global state" layer that carries client item data
 // -> Example: We have 8 inventory slots, client should be aware of what item is occupying which spot so
 // we know what to render in the inventory on scene load. (consider on enter game and scene transition ramifications)
 // TODO: Consider refactoring "data" directory at root to be named "assets". This would be a big refactor!
-// TODO: Build out EquipmentSlots... could double up inventory and equipment here for simplicity's sake.
-// TODO: Enable ability to hide / show Inventory via hotkey or clickable UI button on screen
-// -> Vision for this was a little bag that would animate a moving animation of bag coming from off screen on bottom
-// -> If we take this route, investigate UI animations (shouldn't be too hard with a little for loop async method on component)
-// -> Can use new "undraggable" attr to pause draggability while animation is playing out.
-// TODO: Create item "drops" akin to MapleStory where you have to be near it and then press "Z" or something and it 
+// TODO: (Done) Build out EquipmentSlots... could double up inventory and equipment here for simplicity's sake.
+// TODO: Create item "drops" akin to MapleStory where you have to be near it and then press "V" or something and it 
 // picks up the item and stores it in your inventory. Red warning message displays at top if inventory is full.
 // -> Test cases can include current coded actions: sword, bow, magic fireball spell
 // TODO: Add in goblin spawn points in forest 1-1 and have them drop items on kill. Consider drop percentages.
@@ -70,10 +65,10 @@ export class Inventory extends Component<Props, State> {
 
     /**
      * Checks if current item can be equipped in designated equipment slot.
-     * @param dropItemData 
+     * @param pendingEquipItemData 
      * @returns true if item can be equipped, false if it cannot
      */
-    validateItemEquip = (dropItemData: DropItemData, equipmentSlot: number): boolean => {
+    validateItemEquip = (pendingEquipItemData: DraggedItemData, equipmentSlot: number): boolean => {
         // TODO: Validation on item types here and equipment slot.
         // equipmentSlot 10 -> primary weapon
         // equipmentSlot 11 -> secondary weapon
@@ -94,7 +89,7 @@ export class Inventory extends Component<Props, State> {
      * -> Since dragEquippedItemToOccupiedInventorySlot only handles equip <-> inventory.
      * @param draggedItemData 
      */
-    reconcileInventory = (draggedItemData: DropItemData) => {
+    reconcileInventory = (draggedItemData: DraggedItemData) => {
         const newSlotIndex = processItemSlotSwap(draggedItemData, this.state.slotsMetadata, Number(this.props.left), Number(this.props.top))
         const draggedItemIsBeingEquipped = newSlotIndex >= this.maxInventorySlots
         const oldSlotWasAnEquipmentSlot = draggedItemData.index >= this.maxInventorySlots
@@ -175,7 +170,7 @@ export class Inventory extends Component<Props, State> {
             dragItemToNewSlot()
         }
 
-        // Render inventory slot changes.
+        // Update client inventory state with slot changes.
         this.props.setClientInventory(this.props.clientInventory)
     }
 
