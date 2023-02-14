@@ -454,10 +454,7 @@ export class Client {
         if (this.getUIState().uiEvents.length > 0) {
             this.getUIState().uiEvents.forEach(uiEvent => {
                 switch(uiEvent) {
-                    case UIEventTypes.ITEM_EQUIPPED:
-                        sendPlayerInventoryEventMessage(this)
-                        break;
-                    case UIEventTypes.ITEM_UNEQUIPPED:
+                    case UIEventTypes.ITEM_EQUIP_EVENT:
                         sendPlayerInventoryEventMessage(this)
                         break;
                     // case ...

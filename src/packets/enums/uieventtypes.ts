@@ -1,4 +1,4 @@
 export enum UIEventTypes {
-    ITEM_EQUIPPED = "ITEM_EQUIPPED",
-    ITEM_UNEQUIPPED = "ITEM_UNEQUIPPED"
+    /** Could be an equip or unequip event. */
+    ITEM_EQUIP_EVENT = "ITEM_EQUIP_EVENT",
 }

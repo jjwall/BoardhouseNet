@@ -83,11 +83,17 @@ export class Inventory extends Component<Props, State> {
         let validEquip = true
 
         if (validEquip) {
-            this.props.setUIEvents([UIEventTypes.ITEM_EQUIPPED])
+            this.props.setUIEvents([UIEventTypes.ITEM_EQUIP_EVENT])
         }
         return validEquip
     }
 
+    /**
+     * Reconciles inventory and send equip events for any un/equips that happen.
+     * TODO: Think one more POSSIBLE edge case to be solved for... swapping equipment slots...
+     * -> Since dragEquippedItemToOccupiedInventorySlot only handles equip <-> inventory.
+     * @param dropItemData 
+     */
     reconcileInventory = (dropItemData: DropItemData) => {
         const newSlotIndex = processItemSlotSwap(dropItemData, this.state.slotsMetadata, Number(this.props.left), Number(this.props.top))
         const draggedItemIsBeingEquipped = newSlotIndex >= this.maxInventorySlots
@@ -143,8 +149,7 @@ export class Inventory extends Component<Props, State> {
                     dragEquippedItemToOccupiedInventorySlot()
                 } else {
                     // A regular unequip event occurs.
-                    this.props.setUIEvents([UIEventTypes.ITEM_EQUIPPED])
-                    console.log("unequip")
+                    this.props.setUIEvents([UIEventTypes.ITEM_EQUIP_EVENT])
                 }
             }
         }
