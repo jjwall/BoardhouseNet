@@ -1,4 +1,5 @@
 import { NotificationData } from "../../../../packets/data/notificationdata";
+import { inventorySlotsMetaData } from "../utils/inventoryslotmetadata";
 import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
 import { InventorySlot, DropItemData } from "./inventoryslot";
@@ -66,99 +67,12 @@ interface State {
 export class Inventory extends Component<Props, State> {
     maxEquipmentSlots = 4
     maxInventorySlots = 8
-    equipmentTopOffset = 94
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
             top: this.props.top,
-            // Note: This could be dynamically rendered from a bag size.
-            // Currently hard-coded for 8 inventory slots.
-            slotsMetadata: [
-                // Inventory slots.
-                {
-                    top: 5 + this.equipmentTopOffset,
-                    left: 5,
-                    height: 64,
-                    width: 64
-                },
-                {
-                    top: 5 + this.equipmentTopOffset,
-                    left: 74,
-                    height: 64,
-                    width: 64
-                },
-                {
-                    top: 5 + this.equipmentTopOffset,
-                    left: 143,
-                    height: 64,
-                    width: 64
-                },
-                {
-                    top: 5 + this.equipmentTopOffset,
-                    left: 212,
-                    height: 64,
-                    width: 64
-                },
-                {
-                    top: 74 + this.equipmentTopOffset,
-                    left: 5,
-                    height: 64,
-                    width: 64
-                },
-                {
-                    top: 74 + this.equipmentTopOffset,
-                    left: 74,
-                    height: 64,
-                    width: 64
-                },
-                {
-                    top: 74 + this.equipmentTopOffset,
-                    left: 143,
-                    height: 64,
-                    width: 64
-                },
-                {
-                    top: 74 + this.equipmentTopOffset,
-                    left: 212,
-                    height: 64,
-                    width: 64
-                },
-                // Equipment slots.
-                {
-                    top: 5,
-                    left: 5,
-                    height: 64,
-                    width: 64
-                },
-                {
-                    top: 5,
-                    left: 74,
-                    height: 64,
-                    width: 64
-                },
-                {
-                    top: 5,
-                    left: 143,
-                    height: 64,
-                    width: 64
-                },
-                {
-                    top: 5,
-                    left: 212,
-                    height: 64,
-                    width: 64
-                },
-            ]
+            slotsMetadata: inventorySlotsMetaData
         }
-
-        // setInterval(() => this.animate(), 50);
-    }
-
-    // TODO: Work on animating open / close inventory.
-    animate = () => {
-        this.setState({
-            top: Number(this.state.top) - 5
-        })
     }
 
     /**
