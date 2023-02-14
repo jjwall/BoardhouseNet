@@ -90,7 +90,7 @@ export class Inventory extends Component<Props, State> {
 
     /**
      * Reconciles inventory and send equip events for any un/equips that happen.
-     * TODO: Think one more POSSIBLE edge case to be solved for... swapping equipment slots...
+     * TODO (maybe): Think one more POSSIBLE edge case to be solved for... swapping equipment slots...
      * -> Since dragEquippedItemToOccupiedInventorySlot only handles equip <-> inventory.
      * @param dropItemData 
      */
@@ -117,7 +117,6 @@ export class Inventory extends Component<Props, State> {
                 this.props.setNotificationMessage(notificationData)
 
                 // Re-render item to original slot state.
-                this.props.clientInventory[dropItemData.index] = null
                 this.props.clientInventory[dropItemData.index] = dropItemData.item
                 this.props.setClientInventory(this.props.clientInventory)
             }
@@ -126,7 +125,6 @@ export class Inventory extends Component<Props, State> {
         const dragItemToNewSlot = () => {
             if (this.props.clientInventory[newSlotIndex]) {
                 // If item exists in new slot, swap item slots. Re-render old slot index with new item.
-                this.props.clientInventory[dropItemData.index] = null
                 this.props.clientInventory[dropItemData.index] = this.props.clientInventory[newSlotIndex]
             } else {
                 // Else remove item from old slot index.
@@ -168,29 +166,24 @@ export class Inventory extends Component<Props, State> {
                 this.props.setNotificationMessage(notificationData)
 
                 // Re-render items to their original slot states.
-                this.props.clientInventory[newSlotIndex] = null
                 this.props.clientInventory[newSlotIndex] = this.props.clientInventory[dropItemData.index]
-                this.props.clientInventory[dropItemData.index] = null
                 this.props.clientInventory[dropItemData.index] = dropItemData.item
                 this.props.setClientInventory(this.props.clientInventory)
             }
 
         }
 
-        if (newSlotIndex !== null) {
-            if (newSlotIndex !== dropItemData.index) {
-                dragItemToNewSlot()
-            } else {
-                // Item has been dragged to original slot. Re-render original slot state.
-                this.props.clientInventory[newSlotIndex] = null
-                this.props.clientInventory[newSlotIndex] = dropItemData.item
-                this.props.setClientInventory(this.props.clientInventory)
-            }
-        } else {
+        if (newSlotIndex === null) {
             // Item has been dragged to no man's land. Re-render to original slot state.
-            this.props.clientInventory[dropItemData.index] = null
+            // Todo: Render item drop prompt.
             this.props.clientInventory[dropItemData.index] = dropItemData.item
             this.props.setClientInventory(this.props.clientInventory)
+        } else if (newSlotIndex === dropItemData.index) {
+            // Item has been dragged to original slot. Re-render original slot state.
+            this.props.clientInventory[newSlotIndex] = dropItemData.item
+            this.props.setClientInventory(this.props.clientInventory)
+        } else {
+            dragItemToNewSlot()
         }
     }
 
