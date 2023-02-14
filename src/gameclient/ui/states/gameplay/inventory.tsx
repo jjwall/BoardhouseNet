@@ -1,5 +1,5 @@
+import { InventorySlotMetaData, inventorySlotsMetaData } from "../utils/inventoryutils";
 import { NotificationData } from "../../../../packets/data/notificationdata";
-import { inventorySlotsMetaData } from "../utils/inventoryslotmetadata";
 import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
 import { InventorySlot, DropItemData } from "./inventoryslot";
@@ -35,13 +35,6 @@ import { Scene } from "three";
 
 // TODO: (Done) Fire UI Events to Client to send to server for ui related events
 // TODO: Bug -> Swapping item with equip slot doesn't trigger inventory event...
-
-export interface InventorySlotMetaData {
-    top: number
-    left: number
-    height: number
-    width: number
-}
 
 interface Props {
     top: string | number

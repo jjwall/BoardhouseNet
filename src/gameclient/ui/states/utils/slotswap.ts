@@ -1,4 +1,4 @@
-import { InventorySlotMetaData } from "../gameplay/inventory";
+import { InventorySlotMetaData } from "./inventoryutils";
 import { DropItemData } from "../gameplay/inventoryslot";
 
 type Rect = {
