@@ -92,20 +92,19 @@ export class Inventory extends Component<Props, State> {
      * Reconciles inventory and send equip events for any un/equips that happen.
      * TODO (maybe): Think one more POSSIBLE edge case to be solved for... swapping equipment slots...
      * -> Since dragEquippedItemToOccupiedInventorySlot only handles equip <-> inventory.
-     * @param dropItemData 
+     * @param draggedItemData 
      */
-    reconcileInventory = (dropItemData: DropItemData) => {
-        const newSlotIndex = processItemSlotSwap(dropItemData, this.state.slotsMetadata, Number(this.props.left), Number(this.props.top))
+    reconcileInventory = (draggedItemData: DropItemData) => {
+        const newSlotIndex = processItemSlotSwap(draggedItemData, this.state.slotsMetadata, Number(this.props.left), Number(this.props.top))
         const draggedItemIsBeingEquipped = newSlotIndex >= this.maxInventorySlots
-        const oldSlotWasAnEquipmentSlot = dropItemData.index >= this.maxInventorySlots
+        const oldSlotWasAnEquipmentSlot = draggedItemData.index >= this.maxInventorySlots
         const draggedItemIsBeingMovedToInventorySlot = newSlotIndex < this.maxInventorySlots
 
         const dragItemToEquipSlot = () => {
             // Item attempting to be equipped. Check if item can be equipped.
-            if (this.validateItemEquip(dropItemData, newSlotIndex)) {
+            if (this.validateItemEquip(draggedItemData, newSlotIndex)) {
                 // Item successfully equipped in designated slot.
-                this.props.clientInventory[newSlotIndex] = dropItemData.item
-                this.props.setClientInventory(this.props.clientInventory)
+                this.props.clientInventory[newSlotIndex] = draggedItemData.item
             } else {
                 // Notify client that this item cannot be equipped here.
                 const notificationData: NotificationData = {
@@ -116,33 +115,26 @@ export class Inventory extends Component<Props, State> {
                 }
                 this.props.setNotificationMessage(notificationData)
 
-                // Re-render item to original slot state.
-                this.props.clientInventory[dropItemData.index] = dropItemData.item
-                this.props.setClientInventory(this.props.clientInventory)
+                // Set item in original slot state.
+                this.props.clientInventory[draggedItemData.index] = draggedItemData.item
             }
         }
 
         const dragItemToNewSlot = () => {
-            if (this.props.clientInventory[newSlotIndex]) {
-                // If item exists in new slot, swap item slots. Re-render old slot index with new item.
-                this.props.clientInventory[dropItemData.index] = this.props.clientInventory[newSlotIndex]
-            } else {
-                // Else remove item from old slot index.
-                this.props.clientInventory[dropItemData.index] = null
-            }
+            // If item exists in new slot, swap item slots. Otherwise, old slot will be set to null.
+            this.props.clientInventory[draggedItemData.index] = this.props.clientInventory[newSlotIndex]
 
             if (draggedItemIsBeingEquipped) {
                 dragItemToEquipSlot()
             } else {
                 // Item has been dragged to new invetory slot. Render new slot state.
                 // Client is just rearanging inventory here, no events need to be sent to server.
-                this.props.clientInventory[newSlotIndex] = dropItemData.item
-                this.props.setClientInventory(this.props.clientInventory)
+                this.props.clientInventory[newSlotIndex] = draggedItemData.item
             }
 
             // An item is being unequipped and possibly equipped at the same time.
             if (oldSlotWasAnEquipmentSlot && draggedItemIsBeingMovedToInventorySlot) {
-                if (this.props.clientInventory[dropItemData.index]) {
+                if (this.props.clientInventory[draggedItemData.index]) {
                     // Handle unequip and equip swap edge case.
                     dragEquippedItemToOccupiedInventorySlot()
                 } else {
@@ -155,7 +147,7 @@ export class Inventory extends Component<Props, State> {
         const dragEquippedItemToOccupiedInventorySlot = () => {
             // Client dragged an equipped item into occupied inventory slot.
             // If this was a valid inventory event, trigger equip event, else undo inventory event.
-            if (!this.validateItemEquip(dropItemData, newSlotIndex)) {
+            if (!this.validateItemEquip(draggedItemData, newSlotIndex)) {
                 // Notify client that this item cannot be equipped here.
                 const notificationData: NotificationData = {
                     clientId: 'test', // get this from somewhere...
@@ -165,10 +157,9 @@ export class Inventory extends Component<Props, State> {
                 }
                 this.props.setNotificationMessage(notificationData)
 
-                // Re-render items to their original slot states.
-                this.props.clientInventory[newSlotIndex] = this.props.clientInventory[dropItemData.index]
-                this.props.clientInventory[dropItemData.index] = dropItemData.item
-                this.props.setClientInventory(this.props.clientInventory)
+                // Set items in their original slot states.
+                this.props.clientInventory[newSlotIndex] = this.props.clientInventory[draggedItemData.index]
+                this.props.clientInventory[draggedItemData.index] = draggedItemData.item
             }
 
         }
@@ -176,15 +167,16 @@ export class Inventory extends Component<Props, State> {
         if (newSlotIndex === null) {
             // Item has been dragged to no man's land. Re-render to original slot state.
             // Todo: Render item drop prompt.
-            this.props.clientInventory[dropItemData.index] = dropItemData.item
-            this.props.setClientInventory(this.props.clientInventory)
-        } else if (newSlotIndex === dropItemData.index) {
+            this.props.clientInventory[draggedItemData.index] = draggedItemData.item
+        } else if (newSlotIndex === draggedItemData.index) {
             // Item has been dragged to original slot. Re-render original slot state.
-            this.props.clientInventory[newSlotIndex] = dropItemData.item
-            this.props.setClientInventory(this.props.clientInventory)
+            this.props.clientInventory[newSlotIndex] = draggedItemData.item
         } else {
             dragItemToNewSlot()
         }
+
+        // Render inventory slot changes.
+        this.props.setClientInventory(this.props.clientInventory)
     }
 
     render(): JSXElement {
