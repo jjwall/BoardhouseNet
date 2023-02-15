@@ -23,11 +23,13 @@ import { WorldTypes } from "../../packets/enums/worldtypes";
 // NEW TODO (02/11/2023):
 // Lots to do...
 // Next work on item equipping - mostly done
-// validation on each slot, ui to show each equip slot thing: sword, shield, armor, ring
+// ui to show each equip slot thing: sword, shield, armor, ring
+// Actual equips do something now... need equip slots / item data to interface with skill slots.
+// (done) validation on each slot
 // primary slot displays "weapon" or item on character's back kinda like genshin
 // -> thinking is kinda "follows" you for a cool little effect
 // secondary slot still shows weapon rendering when using action
-// once we have this working will, bring in other characters
+// once we have this working well, bring in other characters
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
 
@@ -64,6 +66,10 @@ const config: ClientConfig = {
         "./data/textures/icons/d52.png",
         "./data/textures/icons/d3403.png",
         "./data/textures/icons/d3940.png",
+        "./data/textures/icons/sword_inventory_icon.png",
+        "./data/textures/icons/shield_inventory_icon.png",
+        "./data/textures/icons/armor_inventory_icon.png",
+        "./data/textures/icons/accessory_inventory_icon.png",
         // VFX
         "./data/textures/vfx/magic_circle.png",
         "./data/textures/vfx/standardbullet.png",

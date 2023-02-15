@@ -81,16 +81,35 @@ export class InventorySlot extends Component<Props, State> {
         />
     )
 
+    renderEquipmentSlotIcon = (occupied: boolean) => {
+        const equipSlotImgUrl = (imgUrl: string) => occupied ? undefined : imgUrl
+
+        switch (this.props.inventorySlotIndex) {
+            case 8: // Sword Inventory Icon.
+                return (<panel img={equipSlotImgUrl("./data/textures/icons/sword_inventory_icon.png")} pixel-ratio={4}></panel>)
+            case 9: // Shield Inventory Icon.
+                return (<panel img={equipSlotImgUrl("./data/textures/icons/shield_inventory_icon.png")} pixel-ratio={4}></panel>)
+            case 10: // Armor Inventory Icon.
+                return (<panel img={equipSlotImgUrl("./data/textures/icons/armor_inventory_icon.png")} pixel-ratio={4}></panel>)
+            case 11: // Accessory Inventory Icon.
+                return (<panel img={equipSlotImgUrl("./data/textures/icons/accessory_inventory_icon.png")} pixel-ratio={4}></panel>)
+            default: // Render empty panel element.
+                return (<panel></panel>)
+        }
+    }
+
     render(): JSXElement {
         if (!this.props.item)
             return (
                 <panel left={this.props.left} top={this.props.top} height={this.props.height} width={this.props.width} color={this.props.slotColor} opacity={this.props.opacity}>
+                    {this.renderEquipmentSlotIcon(false)}
                     {this.renderVacantItemSlot()}
                 </panel>
             )
         else
             return (
                 <panel left={this.props.left} top={this.props.top} height={this.props.height} width={this.props.width} color={this.props.slotColor} opacity={this.props.opacity}>
+                    {this.renderEquipmentSlotIcon(true)}
                     {this.renderOccupiedItemSlot()}
                 </panel>
             )
