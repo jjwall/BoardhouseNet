@@ -31,6 +31,8 @@ import { WorldTypes } from "../../packets/enums/worldtypes";
 // secondary slot still shows weapon rendering when using action
 // once we have this working well, bring in other characters
 // HP / MP UI & Character portraits
+// STARTING inventories for each class, this can't sit in archetype code since that gets re-used for changing worlds
+// More advanced "cooldown" subsystem. Stutter ticks ain't working well for dodgeroll and askill.
 // (Eventually) chat window in bottom left of screen
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);

@@ -1,4 +1,5 @@
 import { ClientMessagePlayerWorldTransition, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin, ClientMessagePlayerInventoryEvent } from "../../packets/messages/clientworldmessage";
+import { findPlayerEntityByClientId, processPlayerEquipEvent } from "./helpers";
 import { broadcastCreateEntitiesMessage } from "./sendnetentitymessages";
 import { PositionComponent, setPosition } from "../components/position";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
@@ -10,7 +11,6 @@ import { createArcher } from "../archetypes/archer";
 import { Entity } from "../serverengine/entity";
 import { Server } from "../serverengine/server";
 import { createPage } from "../archetypes/page";
-import { findPlayerEntityByClientId } from "./helpers";
 
 /**
  * Just because player joins, doesn't mean an ent necessarily needs to be created for them.
@@ -123,6 +123,5 @@ export function processPlayerInventoryEventMessage(message: ClientMessagePlayerI
 
     const playerEnt = findPlayerEntityByClientId(clientWorld, message.data.clientId)
 
-    // TODO: Some sort of back end validation here, easy hack to spoof an inventory and overwrite current back end list.
-    playerEnt.player.inventory = message.data.inventory
+    processPlayerEquipEvent(playerEnt, message.data.inventory)
 }
