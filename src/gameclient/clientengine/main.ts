@@ -30,6 +30,8 @@ import { WorldTypes } from "../../packets/enums/worldtypes";
 // -> thinking is kinda "follows" you for a cool little effect
 // secondary slot still shows weapon rendering when using action
 // once we have this working well, bring in other characters
+// HP / MP UI & Character portraits
+// (Eventually) chat window in bottom left of screen
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
 

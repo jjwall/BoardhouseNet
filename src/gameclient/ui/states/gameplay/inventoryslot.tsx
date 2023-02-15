@@ -81,8 +81,8 @@ export class InventorySlot extends Component<Props, State> {
         />
     )
 
-    renderEquipmentSlotIcon = (occupied: boolean) => {
-        const equipSlotImgUrl = (imgUrl: string) => occupied ? undefined : imgUrl
+    renderEquipmentSlotIcon = (slotOccupied: boolean) => {
+        const equipSlotImgUrl = (imgUrl: string) => slotOccupied ? undefined : imgUrl
 
         switch (this.props.inventorySlotIndex) {
             case 8: // Sword Inventory Icon.
