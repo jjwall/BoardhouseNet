@@ -9,6 +9,7 @@ import { Component } from "../../core/component";
 import { Widget } from "../../core/widget";
 import { Inventory } from "./inventory";
 import { Scene } from "three";
+import { HUD } from "./hud";
 
 export type UIEvents = Array<UIEventTypes>
 export type ClientInventory = Array<ItemData | undefined>
@@ -96,6 +97,7 @@ export class Root extends Component<Props, GlobalState> {
     render(): JSXElement {
         return(
             <panel>
+                <HUD></HUD>
                 <NotificationWidget
                     message={this.state.notificationMessage.notification}
                     color={this.state.notificationMessage.color}

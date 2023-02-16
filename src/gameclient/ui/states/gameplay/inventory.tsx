@@ -15,7 +15,7 @@ import { Scene } from "three";
 // -> Example: We have 8 inventory slots, client should be aware of what item is occupying which spot so
 // we know what to render in the inventory on scene load. (consider on enter game and scene transition ramifications)
 // TODO: consider on enter game and scene transition ramifications w/ inventory. Might stay same as client, but prob gets reset on server
-// TODO: Consider refactoring "data" directory at root to be named "assets". This would be a big refactor!
+// TODO: (Done) Refactor "data" directory at root to be named "assets". This would be a big refactor!
 // TODO: (Done) Build out EquipmentSlots... could double up inventory and equipment here for simplicity's sake.
 // TODO: Create item "drops" akin to MapleStory where you have to be near it and then press "V" or something and it 
 // picks up the item and stores it in your inventory. Red warning message displays at top if inventory is full.
@@ -32,6 +32,9 @@ import { Scene } from "three";
 
 // TODO: (Done) Fire UI Events to Client to send to server for ui related events
 // TODO: (Done) Bug -> Swapping item with equip slot doesn't trigger inventory event...
+// TODO: Need to have inventory data transfer occur on scene transitions.
+// -> Archetypes should have a paramter for inventory so both game entered and scene transition can use it
+// -> Currently server inventory getting imporperly updated, but client remains the same.
 
 interface Props {
     top: string | number
