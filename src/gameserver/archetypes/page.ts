@@ -18,7 +18,7 @@ export function createPage(server: Server, worldEngine: BaseWorldEngine, clientI
     page.player = setPlayer(clientId, PlayerStates.UNLOADED, PlayerClassTypes.PAGE, presetInventory);
     page.pos = pos;
     page.vel = setVelocity(15, 0.5);
-    page.sprite = { url: "./data/textures/pyra/idle/Armature_idle_00.png", pixelRatio: 1 };
+    page.sprite = { url: "./assets/textures/pyra/idle/Armature_idle_00.png", pixelRatio: 1 };
     page.anim = { sequence: SequenceTypes.IDLE, blob: pyraAnim };
     page.movement = setMovement();
     page.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY, HitboxTypes.ITEM_DROP], 50, 50, 0, -50);

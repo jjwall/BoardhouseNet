@@ -86,13 +86,13 @@ export class InventorySlot extends Component<Props, State> {
 
         switch (this.props.inventorySlotIndex) {
             case 8: // Sword Inventory Icon.
-                return (<panel img={equipSlotImgUrl("./data/textures/icons/sword_inventory_icon.png")} pixel-ratio={4}></panel>)
+                return (<panel img={equipSlotImgUrl("./assets/textures/icons/sword_inventory_icon.png")} pixel-ratio={4}></panel>)
             case 9: // Shield Inventory Icon.
-                return (<panel img={equipSlotImgUrl("./data/textures/icons/shield_inventory_icon.png")} pixel-ratio={4}></panel>)
+                return (<panel img={equipSlotImgUrl("./assets/textures/icons/shield_inventory_icon.png")} pixel-ratio={4}></panel>)
             case 10: // Armor Inventory Icon.
-                return (<panel img={equipSlotImgUrl("./data/textures/icons/armor_inventory_icon.png")} pixel-ratio={4}></panel>)
+                return (<panel img={equipSlotImgUrl("./assets/textures/icons/armor_inventory_icon.png")} pixel-ratio={4}></panel>)
             case 11: // Accessory Inventory Icon.
-                return (<panel img={equipSlotImgUrl("./data/textures/icons/accessory_inventory_icon.png")} pixel-ratio={4}></panel>)
+                return (<panel img={equipSlotImgUrl("./assets/textures/icons/accessory_inventory_icon.png")} pixel-ratio={4}></panel>)
             default: // Render empty panel element.
                 return (<panel></panel>)
         }

@@ -39,7 +39,7 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
         this.registerSystem(skillSlotsSystem); // comment out to test no skills in item shop?
         this.registerSystem(timerSystem);
 
-        // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
+        // playAudio("./assets/audio/Pale_Blue.mp3", 0.3, true);
 
         // TODO: Make it where you don't have to do this, delay on entity creation breaks stuff
         // I guess just create other ents first
@@ -47,7 +47,7 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
         ent.movement = setMovement();
         this.registerEntity(ent, server);
 
-        this.worldLevelData = this.registerWorldLevelData(kenneyItemShop2, "./data/textures/tilesets/colored_packed.png");
+        this.worldLevelData = this.registerWorldLevelData(kenneyItemShop2, "./assets/textures/tilesets/colored_packed.png");
     }
 
     public registerWorldLevelData(tileMapData: TileMapSchema, tileSetTextureUrl: string): WorldLevelData {

@@ -19,7 +19,7 @@ export function createMagician(server: Server, worldEngine: BaseWorldEngine, cli
     magician.player = setPlayer(clientId, PlayerStates.UNLOADED, PlayerClassTypes.MAGICIAN, presetInventory);
     magician.pos = pos;
     magician.vel = setVelocity(15, 0.5);
-    // magician.sprite = { url: "./data/textures/player_stand.png", pixelRatio: 1 };
+    // magician.sprite = { url: "./assets/textures/player_stand.png", pixelRatio: 1 };
     // magician.anim = { sequence: SequenceTypes.IDLE, blob: kenneyPlayerAnim };
     magician.movement = setMovement();
     magician.hitbox = setHitbox(HitboxTypes.PLAYER, [HitboxTypes.ENEMY, HitboxTypes.ITEM_DROP], 50, 50, 0, -50);

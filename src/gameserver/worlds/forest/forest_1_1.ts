@@ -49,19 +49,19 @@ export class Forest_1_1 extends BaseWorldEngine {
 
         const swordItemDropPos = setPosition(450, 250, 3);
         const swordItemData: ItemData = {
-            spriteUrl: "./data/textures/icons/d20.png",
-            onDragSpriteUrl: "./data/textures/icons/d20.png"
+            spriteUrl: "./assets/textures/icons/d20.png",
+            onDragSpriteUrl: "./assets/textures/icons/d20.png"
         }
         createItemDrop(this, swordItemDropPos, swordItemData);
 
         const bowItemDropPos = setPosition(650, 250, 3);
         const bowItemData: ItemData = {
-            spriteUrl: "./data/textures/icons/d3403.png",
-            onDragSpriteUrl: "./data/textures/icons/d3403.png"
+            spriteUrl: "./assets/textures/icons/d3403.png",
+            onDragSpriteUrl: "./assets/textures/icons/d3403.png"
         }
         createItemDrop(this, bowItemDropPos, bowItemData);
 
-        // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
+        // playAudio("./assets/audio/Pale_Blue.mp3", 0.3, true);
 
         // TODO: Make it where you don't have to do this, delay on entity creation breaks stuff
         // I guess just create other ents first
@@ -69,7 +69,7 @@ export class Forest_1_1 extends BaseWorldEngine {
         ent.movement = setMovement();
         this.registerEntity(ent, server);
 
-        this.worldLevelData = this.registerWorldLevelData(ravenFantasyForest_1_1, "./data/textures/tilesets/raven_fantasy_green_forest_16x16.png");
+        this.worldLevelData = this.registerWorldLevelData(ravenFantasyForest_1_1, "./assets/textures/tilesets/raven_fantasy_green_forest_16x16.png");
     }
 
     public registerWorldLevelData(tileMapData: TileMapSchema, tileSetTextureUrl: string): WorldLevelData {

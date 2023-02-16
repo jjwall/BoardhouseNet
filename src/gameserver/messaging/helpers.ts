@@ -69,13 +69,13 @@ export function processPlayerEquipEvent(playerEnt: Entity, updatedInventory: Arr
         const setPlayerEquipSkill = skillOne ? playerEnt.skillSlots.setSkillOne : playerEnt.skillSlots.setSkillTwo
 
         switch (newItemData?.spriteUrl) {
-            case "./data/textures/icons/d20.png": // sword
+            case "./assets/textures/icons/d20.png": // sword
                 setPlayerEquipSkill(initializeSkill(6, 20, basicSwordAttack, undefined))
                 break
-            case "./data/textures/icons/d3403.png": // bow
+            case "./assets/textures/icons/d3403.png": // bow
                 setPlayerEquipSkill(initializeSkill(0, 10, bowAndArrowPress, bowAndArrowRelease, false));
                 break
-            case "./data/textures/icons/d3940.png": // magic staff
+            case "./assets/textures/icons/d3940.png": // magic staff
                 setPlayerEquipSkill(initializeSkill(0, 10, fireballPress, fireballRelease, false));
                 break
             default:

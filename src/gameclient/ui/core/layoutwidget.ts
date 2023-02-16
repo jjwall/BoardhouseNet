@@ -126,7 +126,7 @@ function layoutPanelAttributes(widget: Widget, client: Client) {
 
 function layoutLabelAttributes(widget: Widget, client: Client) {
     const color = widget.attr("color") || "#000000";
-    const fontUrl = widget.attr("font") || "./data/fonts/helvetiker_regular_typeface.json";
+    const fontUrl = widget.attr("font") || "./assets/fonts/helvetiker_regular_typeface.json";
     const font_size = Number(widget.attr("font_size") || 16);
     const contents = widget.attr("contents") || "";
 

@@ -33,7 +33,7 @@ export function createItemDrop(worldEngine: BaseWorldEngine, pos: PositionCompon
 
     let itemPickupArrow = new Entity();
     itemPickupArrow.pos = setPosition(0, 64, 3);
-    itemPickupArrow.sprite = setSprite("./data/textures/vfx/item_pickup_arrow001.png", 4)
+    itemPickupArrow.sprite = setSprite("./assets/textures/vfx/item_pickup_arrow001.png", 4)
     itemPickupArrow.anim = setAnim(itemPickupArrowAnim)
     itemPickupArrow.parent = itemDrop
 

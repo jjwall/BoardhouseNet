@@ -5,19 +5,19 @@ export const kenneyBowAnim: AnimationSchema = {
     [SequenceTypes.IDLE]: [
         {
             ticks: 50,
-            texture: "./data/textures/items/kenney_bow001.png",
+            texture: "./assets/textures/items/kenney_bow001.png",
             nextFrame: 0
         }
     ],
     [SequenceTypes.ATTACK]: [
         {
             ticks: 5,
-            texture: "./data/textures/items/kenney_bow002.png",
+            texture: "./assets/textures/items/kenney_bow002.png",
             nextFrame: 1
         },
         {
             ticks: 50,
-            texture: "./data/textures/items/kenney_bow001.png",
+            texture: "./assets/textures/items/kenney_bow001.png",
             nextFrame: 1
         }
     ]
