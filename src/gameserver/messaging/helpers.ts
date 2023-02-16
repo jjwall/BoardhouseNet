@@ -53,7 +53,7 @@ export function findPlayerEntityByClientId(worldEngine: BaseWorldEngine, clientI
 
 /**
  * Does this util method make sense to go here? Should it be in archetype utils?
- * Archetypes -> heroes -> page.ts, mage.ts, archer.ts, heroutils.ts ?
+ * Archetypes -> heroes -> page.ts, mage.ts, archer.ts, heroutils.ts ? -> Eventually we might need to pull inventory from a db.
  * @param playerEnt 
  * @param updatedInventory 
  */
@@ -64,6 +64,7 @@ export function processPlayerEquipEvent(playerEnt: Entity, updatedInventory: Arr
     // -> should be as easy as making sure the client inventory list matches with server inventory list...
     // -> ...since, no item could be "added" from client, that would happen as a server event only (item drop pick up)
     // TODO: Add type and data to items.
+    // TODO: Setting skill from item data should consider weapon's strength and effect data.
     const processSkillSwap = (newItemData: ItemData, skillOne: boolean) => {
         const setPlayerEquipSkill = skillOne ? playerEnt.skillSlots.setSkillOne : playerEnt.skillSlots.setSkillTwo
 

@@ -8,11 +8,13 @@ import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
 import { Scene } from "three";
 
+// TODO: Do I need to refactor and set equip slots to indexes 0-3? :thinking:
 // TODO: (Done) Implement Equipment Screen that enables armor and skill / weapon equips via drag and drop from inventory
 // -> Implement skill equips / item types / equip validation / more detailed item data.
 // TODO: (Done) Create data or "conext" or "global state" layer that carries client item data
 // -> Example: We have 8 inventory slots, client should be aware of what item is occupying which spot so
 // we know what to render in the inventory on scene load. (consider on enter game and scene transition ramifications)
+// TODO: consider on enter game and scene transition ramifications w/ inventory. Might stay same as client, but prob gets reset on server
 // TODO: Consider refactoring "data" directory at root to be named "assets". This would be a big refactor!
 // TODO: (Done) Build out EquipmentSlots... could double up inventory and equipment here for simplicity's sake.
 // TODO: Create item "drops" akin to MapleStory where you have to be near it and then press "V" or something and it 
@@ -29,7 +31,7 @@ import { Scene } from "three";
 // --> Better idea: When items hitboxes touch each other they push each other out - like how goblins do with one another.
 
 // TODO: (Done) Fire UI Events to Client to send to server for ui related events
-// TODO: Bug -> Swapping item with equip slot doesn't trigger inventory event...
+// TODO: (Done) Bug -> Swapping item with equip slot doesn't trigger inventory event...
 
 interface Props {
     top: string | number
@@ -69,6 +71,7 @@ export class Inventory extends Component<Props, State> {
      * @returns true if item can be equipped, false if it cannot
      */
     validateItemEquip = (pendingEquipItemData: DraggedItemData, equipmentSlot: number): boolean => {
+        // console.log("twice?")
         // TODO: Validation on item types here and equipment slot.
         // equipmentSlot 10 -> primary weapon
         // equipmentSlot 11 -> secondary weapon
@@ -87,6 +90,7 @@ export class Inventory extends Component<Props, State> {
      * Reconciles inventory and send equip events for any un/equips that happen.
      * TODO (maybe): Think one more POSSIBLE edge case to be solved for... swapping equipment slots...
      * -> Since dragEquippedItemToOccupiedInventorySlot only handles equip <-> inventory.
+     * --> This should be solved simply by running validateEquip again at end of reconcile, checking for equip swap.
      * @param draggedItemData 
      */
     reconcileInventory = (draggedItemData: DraggedItemData) => {

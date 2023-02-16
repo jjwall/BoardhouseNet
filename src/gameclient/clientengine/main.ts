@@ -8,30 +8,23 @@ import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { WorldTypes } from "../../packets/enums/worldtypes";
 
-// TODO:
+// TODO (06/01/2021):
 // > Clean up Client class fields and config fields
-// > (Done) Set up event handling so only player roles can trigger them
 // -> Player roles shouldn't have access to start sending packets until player's entity
 // has been created on back end.
 // Maybe make a client status? readyToSendMessages boolean?
-// > (Done) Start working on creating / destroying / and updating front end entities in messagehandlersystem
-// > Reconfigure "packets" directory
-// -> probably name it "middleware"
-// -> have a new "packets" dir in there as well as a "enums" dir in there
-// -> consider putting modules like setUpClientToLobbyConnection.ts in there
 
 // NEW TODO (02/11/2023):
-// Lots to do...
-// Next work on item equipping - mostly done
-// ui to show each equip slot thing: sword, shield, armor, ring
-// Actual equips do something now... need equip slots / item data to interface with skill slots.
+// (done) Next work on item equipping - mostly done
+// (done) ui to show each equip slot thing: sword, shield, armor, ring
+// (done) Actual equips do something now... need equip slots / item data to interface with skill slots.
 // (done) validation on each slot
 // primary slot displays "weapon" or item on character's back kinda like genshin
 // -> thinking is kinda "follows" you for a cool little effect
 // secondary slot still shows weapon rendering when using action
 // once we have this working well, bring in other characters
 // HP / MP UI & Character portraits
-// STARTING inventories for each class, this can't sit in archetype code since that gets re-used for changing worlds
+// STARTING preset inventories for each class, this can't sit in archetype code since that gets re-used for changing worlds
 // More advanced "cooldown" subsystem. Stutter ticks ain't working well for dodgeroll and askill.
 // (Eventually) chat window in bottom left of screen
 
