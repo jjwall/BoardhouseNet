@@ -21,11 +21,20 @@ export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props)
 }
 
 export interface GlobalState {
+    // Misc
     uiEvents: UIEvents
-    clientInventory: ClientInventory
     notificationMessage: NotificationData
+    // Inventory
+    clientInventory: ClientInventory
     inventoryViewToggle: boolean
     inventoryTop: string | number
+    // HUD
+    maxHP: number;
+    currentHP: number;
+    maxMP: number;
+    currentMP: number;
+    maxXP: number;
+    currentXP: number;
 }
 
 interface Props {
@@ -41,6 +50,12 @@ export class Root extends Component<Props, GlobalState> {
             inventoryViewToggle: props.initialState.inventoryViewToggle,
             inventoryTop: props.initialState.inventoryTop,
             notificationMessage: props.initialState.notificationMessage,
+            maxHP: props.initialState.maxHP,
+            currentHP: props.initialState.currentHP,
+            maxMP: props.initialState.maxMP,
+            currentMP: props.initialState.currentMP,
+            maxXP: props.initialState.maxXP,
+            currentXP: props.initialState.currentXP,
         };
     }
 
@@ -94,10 +109,19 @@ export class Root extends Component<Props, GlobalState> {
         }, newNotificationMessage.milliseconds)
     }
 
+    // setHUDState -> split into multiple parts?
+
     render(): JSXElement {
         return(
             <panel>
-                <HUD></HUD>
+                <HUD
+                    maxHP={this.state.maxHP}
+                    currentHP={this.state.currentHP}
+                    maxMP={this.state.maxMP}
+                    currentMP={this.state.currentMP}
+                    maxXP={this.state.maxXP}
+                    currentXP={this.state.currentXP}
+                />
                 <NotificationWidget
                     message={this.state.notificationMessage.notification}
                     color={this.state.notificationMessage.color}

@@ -276,20 +276,34 @@ export class Client {
                 this.uiScene.add(this.rootWidget);
 
                 this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, {
+                    // TODO: Thinking about this more... if we ever want to "unload" ui
+                    // in the midst of someone's gameplay, this initial state will be invalid
+                    // we would have to pass around a ui state object through
+                    // player world transition messages and what not
                     initialState: {
                         // Using preset client inventory for now.
                         // In future pull from database or pre-set data set.
                         // Todo: Load from playerJoinData ? - yes - yes
+
+                        // Misc
                         uiEvents: [],
-                        clientInventory: presetInventory,
-                        inventoryViewToggle: true,
-                        inventoryTop: 456,
                         notificationMessage: {
                             milliseconds: 0,
                             color: "",
                             clientId: "", // unnecessary
                             notification: ""
-                        }
+                        },
+                        // Inventory
+                        clientInventory: presetInventory,
+                        inventoryViewToggle: true,
+                        inventoryTop: 456,
+                        // HUD
+                        maxHP: 1000,
+                        currentHP: 1000,
+                        maxMP: 1000,
+                        currentMP: 500,
+                        maxXP: 1000,
+                        currentXP: 250,
                     }
                 });
                 break;

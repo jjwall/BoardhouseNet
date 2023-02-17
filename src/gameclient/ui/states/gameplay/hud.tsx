@@ -7,47 +7,50 @@ import { Scene } from "THREE";
 interface Props {
     top?: string | number;
     left?: string | number;
-    // setHUDState
+    maxHP: number;
+    currentHP: number;
+    maxMP: number;
+    currentMP: number;
+    maxXP: number;
+    currentXP: number;
 }
 
-interface State {
-}
-
-export class HUD extends Component<Props, State> {
+export class HUD extends Component<Props, {}> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
-        this.state = {
-        }
     }
 
     render(): JSXElement {
         return (
             <panel top={this.props.top} left={this.props.left} height={500} width={500}>
+                {/* HP Status Bar */}
                 <ProgressBar
                     top={15}
                     left={15}
                     baseWidth={200}
                     baseHeight={10}
-                    maxUnits={1000}
-                    currentUnits={1000}
+                    maxUnits={this.props.maxHP}
+                    currentUnits={this.props.currentHP}
                     barColor="#c9424a" //"#cf4e55"
                 />
+                {/* MP Status Bar */}
                 <ProgressBar
                     top={30}
                     left={15}
                     baseWidth={200}
                     baseHeight={10}
-                    maxUnits={1000}
-                    currentUnits={1000}
+                    maxUnits={this.props.maxMP}
+                    currentUnits={this.props.currentMP}
                     barColor="#1baac1"
                 />
+                {/* XP Status Bar */}
                 <ProgressBar
                     top={45}
                     left={15}
                     baseWidth={200}
                     baseHeight={10}
-                    maxUnits={1000}
-                    currentUnits={1000}
+                    maxUnits={this.props.maxXP}
+                    currentUnits={this.props.currentXP}
                     barColor="#23b14d"
                 />
                 <label top={75} left={34} font_size={12} contents="Lv: 1"></label>
