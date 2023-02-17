@@ -44,8 +44,8 @@ export class ProgressBar extends Component<Props, State> {
 
     render(): JSXElement {
         return (
-            <panel top={this.props.top} left={this.props.left} height={this.props.baseHeight} width={this.props.baseWidth} color={this.props.baseColor ?? "#282828"}>
-                <panel top={2} left={2} height={this.props.baseHeight - 4} width={this.getCurrentBarWidth()} color={this.props.barColor ?? "#A9A9A9"} ></panel>
+            <panel top={this.props.top} left={this.props.left} height={this.props.baseHeight} width={this.props.baseWidth} color={this.props.baseColor ?? "#282828"} opacity={0.5}>
+                <panel top={2} left={2} height={this.props.baseHeight - 4} width={this.getCurrentBarWidth()} color={this.props.barColor ?? "#A9A9A9"} opacity={1}></panel>
             </panel>
         );
     }
