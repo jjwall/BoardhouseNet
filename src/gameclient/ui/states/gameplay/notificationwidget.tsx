@@ -2,6 +2,7 @@ import { createJSXElement } from "../../core/createjsxelement";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
 import { Scene } from "three";
+import { Text } from "../../basecomponents/text";
 
 interface Props {
     color: string
@@ -18,7 +19,13 @@ export class NotificationWidget extends Component<Props, State> {
     render(): JSXElement {
         return (
             // May need "center" attribute in future.
-            <label font_size="24" top="150" left="640" color={this.props.color} contents={this.props.message}></label>
+            <Text
+                fontSize="24"
+                left="640"
+                top="150"
+                fontColor={this.props.color}
+                contents={this.props.message}
+            />
         )
     }
 }

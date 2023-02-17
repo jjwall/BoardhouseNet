@@ -260,7 +260,7 @@ export class Client {
                 // Set up game scene.
                 this.gameScene = new Scene();
                 // this.gameScene.background = new Color("#FFFFFF");
-                this.gameScene.background = new Color("#000000");
+                this.gameScene.background = new Color("#547e64");
 
                 // Set up game camera.
                 this.gameCamera = new OrthographicCamera(0, this.screenWidth, this.screenHeight, 0, -1000, 1000);

@@ -1,4 +1,4 @@
-import { BufferAttribute, BufferGeometry, Mesh, MeshBasicMaterial, NearestFilter, Vector3 } from "three";
+import { BufferAttribute, BufferGeometry, Mesh, MeshBasicMaterial, NearestFilter, ShaderMaterial, Vector3 } from "three";
 import { WorldLevelData } from "../../packets/data/worldleveldata";
 import { setHitboxGraphic } from "../components/hitbox";
 import { Client } from "./client";
@@ -35,6 +35,7 @@ export function renderWorldMap(client: Client, worldLevelData: WorldLevelData) {
         const v = canvasTileSetTilesHigh - Math.floor(tileNumber / canvasTileSetTilesWide) - 1;
         const u = tileNumber % canvasTileSetTilesWide;
         const material = new MeshBasicMaterial({ map: tileSetTexture, transparent: true });
+        // const material = new ShaderMaterial({ map: tileSetTexture, transparent: true });
         const geometry = new BufferGeometry();
         // "8" comes from tile width or height divided by 2.
         const positions = new Float32Array([
