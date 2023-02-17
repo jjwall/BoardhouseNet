@@ -28,35 +28,74 @@ export class HUD extends Component<Props, {}> {
                 <ProgressBar
                     top={15}
                     left={15}
-                    baseWidth={200}
-                    baseHeight={10}
+                    baseWidth={250}
+                    baseHeight={15}
                     maxUnits={this.props.maxHP}
                     currentUnits={this.props.currentHP}
                     barColor="#c9424a" //"#cf4e55"
                 />
+                <Text
+                    contents="HP"
+                    top={30}
+                    left={280}
+                    fontSize={12}
+                    fontColor="#c9424a"
+                />
+                <Text
+                    contents={this.props.currentHP.toString()}
+                    top={30}
+                    left={325}
+                    fontSize={12}
+                />
                 {/* MP Status Bar */}
                 <ProgressBar
-                    top={30}
+                    top={35}
                     left={15}
-                    baseWidth={200}
-                    baseHeight={10}
+                    baseWidth={250}
+                    baseHeight={15}
                     maxUnits={this.props.maxMP}
                     currentUnits={this.props.currentMP}
                     barColor="#1baac1"
                 />
+                <Text
+                    contents="MP"
+                    top={50}
+                    left={280}
+                    fontSize={12}
+                    fontColor="#1baac1"
+                />
+                <Text
+                    contents={this.props.currentMP.toString()}
+                    top={50}
+                    left={325}
+                    fontSize={12}
+                />
                 {/* XP Status Bar */}
                 <ProgressBar
-                    top={45}
+                    top={55}
                     left={15}
-                    baseWidth={200}
-                    baseHeight={10}
+                    baseWidth={250}
+                    baseHeight={15}
                     maxUnits={this.props.maxXP}
                     currentUnits={this.props.currentXP}
                     barColor="#23b14d"
                 />
                 <Text
+                    contents="XP"
+                    top={70}
+                    left={280}
+                    fontSize={12}
+                    fontColor="#23b14d"
+                />
+                <Text
+                    contents={`${Math.floor((this.props.currentXP / this.props.maxXP)*100)}%`}
+                    top={70}
+                    left={325}
+                    fontSize={12}
+                />
+                <Text
                     contents="Lv: 1" // TODO: Make leveling functionality.
-                    top="75"
+                    top="85"
                     left="35"
                     fontSize="12"
                 />

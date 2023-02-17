@@ -299,11 +299,11 @@ export class Client {
                         inventoryTop: 456,
                         // HUD
                         maxHP: 1000,
-                        currentHP: 1000,
+                        currentHP: 963,
                         maxMP: 1000,
-                        currentMP: 500,
+                        currentMP: 687,
                         maxXP: 1000,
-                        currentXP: 250,
+                        currentXP: 140,
                     }
                 });
                 break;

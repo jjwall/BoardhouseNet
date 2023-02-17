@@ -265,7 +265,7 @@ client.loadAssets().then(() => {
  */
 function main(canvasContainer: HTMLElement) {
     // set up renderer
-    const renderer = new WebGLRenderer();
+    const renderer = new WebGLRenderer({ antialias: true });;
     renderer.setSize(client.screenWidth, client.screenHeight);
     renderer.autoClear = false;
     client.renderer = renderer;
