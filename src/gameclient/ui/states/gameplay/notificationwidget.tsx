@@ -23,6 +23,7 @@ export class NotificationWidget extends Component<Props, State> {
                 fontSize="24"
                 left="640"
                 top="150"
+                shadowOffset={2}
                 fontColor={this.props.color}
                 contents={this.props.message}
             />
