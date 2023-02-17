@@ -43,9 +43,9 @@ export class HUD extends Component<Props, {}> {
                 />
                 <Text
                     contents={this.props.currentHP.toString()}
-                    top={30}
-                    left={325}
-                    fontSize={12}
+                    top={29}
+                    left={137}
+                    fontSize={11}
                 />
                 {/* MP Status Bar */}
                 <ProgressBar
@@ -66,9 +66,9 @@ export class HUD extends Component<Props, {}> {
                 />
                 <Text
                     contents={this.props.currentMP.toString()}
-                    top={50}
-                    left={325}
-                    fontSize={12}
+                    top={49}
+                    left={137}
+                    fontSize={11}
                 />
                 {/* XP Status Bar */}
                 <ProgressBar
@@ -89,9 +89,9 @@ export class HUD extends Component<Props, {}> {
                 />
                 <Text
                     contents={`${Math.floor((this.props.currentXP / this.props.maxXP)*100)}%`}
-                    top={70}
-                    left={325}
-                    fontSize={12}
+                    top={69}
+                    left={137}
+                    fontSize={11}
                 />
                 <Text
                     contents="Lv: 1" // TODO: Make leveling functionality.

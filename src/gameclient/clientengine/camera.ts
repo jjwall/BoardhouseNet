@@ -23,6 +23,7 @@ export function centerCameraOnPlayer(client: Client, playerEnt: ClientEntity) {
             0,
         );
 
+        //TODO: switch to framerate-independent damping to solve for tile seam clipping on camera pan.
         if (playerEnt.pos.teleport)
             client.gameCamera.position.copy(targetPos);
         else
