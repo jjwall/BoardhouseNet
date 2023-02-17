@@ -2,6 +2,7 @@ import { createJSXElement } from "../../core/createjsxelement";
 import { ProgressBar } from "../../basecomponents/progressbar";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
+import { Text } from "../../basecomponents/text";
 import { Scene } from "THREE";
 
 interface Props {
@@ -53,8 +54,12 @@ export class HUD extends Component<Props, {}> {
                     currentUnits={this.props.currentXP}
                     barColor="#23b14d"
                 />
-                <label top={75} left={34} font_size={12} contents="Lv: 1"></label>
-                <label top={74} left={35} font_size={12} color="#FFFFFF" contents="Lv: 1"></label>
+                <Text
+                    contents="Lv: 1" // TODO: Make leveling functionality.
+                    top="75"
+                    left="35"
+                    fontSize="12"
+                />
             </panel>
         );
     }
