@@ -53,7 +53,7 @@ export function findPlayerEntityByClientId(worldEngine: BaseWorldEngine, clientI
 
 /**
  * Does this util method make sense to go here? Should it be in archetype utils?
- * Archetypes -> heroes -> page.ts, mage.ts, archer.ts, heroutils.ts ? -> Eventually we might need to pull inventory from a db.
+ * Archetypes -> heroes -> page.ts, mage.ts, ranger.ts, heroutils.ts ? -> Eventually we might need to pull inventory from a db.
  * @param playerEnt 
  * @param updatedInventory 
  */

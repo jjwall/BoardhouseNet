@@ -7,7 +7,7 @@ import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { sendLoadWorldMessage } from "./sendnetworldmessages";
 import { createMagician } from "../archetypes/magician";
 import { PlayerStates } from "../components/player";
-import { createArcher } from "../archetypes/archer";
+import { createRanger } from "../archetypes/ranger";
 import { Entity } from "../serverengine/entity";
 import { Server } from "../serverengine/server";
 import { createPage } from "../archetypes/page";
@@ -40,9 +40,9 @@ import { createPage } from "../archetypes/page";
             const magicianPos: PositionComponent = setPosition(150, 150, 6);
             playerEnt = createMagician(server, clientWorld, message.data.clientId, magicianPos);
             break;
-        case PlayerClassTypes.ARCHER:
-            const archerPos: PositionComponent = setPosition(0, 0, 5);
-            playerEnt = createArcher(server, clientWorld, message.data.clientId, archerPos);
+        case PlayerClassTypes.RANGER:
+            const rangerPos: PositionComponent = setPosition(0, 0, 5);
+            playerEnt = createRanger(server, clientWorld, message.data.clientId, rangerPos);
             break;
     }
 
@@ -77,9 +77,9 @@ export function processPlayerWorldTransitionMessage(message: ClientMessagePlayer
             const magicianPos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 6);
             playerEnt = createMagician(server, clientWorld, message.data.clientId, magicianPos);
             break;
-        case PlayerClassTypes.ARCHER:
-            const archerPos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 5);
-            playerEnt = createArcher(server, clientWorld, message.data.clientId, archerPos);
+        case PlayerClassTypes.RANGER:
+            const rangerPos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 5);
+            playerEnt = createRanger(server, clientWorld, message.data.clientId, rangerPos);
             break;
     }
 

@@ -23,7 +23,8 @@ import { WorldTypes } from "../../packets/enums/worldtypes";
 // -> thinking is kinda "follows" you for a cool little effect
 // secondary slot still shows weapon rendering when using action
 // once we have this working well, bring in other characters
-// HP / MP UI & Character portraits
+// (Done) HP / MP UI 
+// -> (later...) Character portraits
 // STARTING preset inventories for each class, this can't sit in archetype code since that gets re-used for changing worlds
 // More advanced "cooldown" subsystem. Stutter ticks ain't working well for dodgeroll and askill.
 // (Eventually) chat window in bottom left of screen
@@ -44,7 +45,7 @@ const config: ClientConfig = {
     screenHeight: 720,
     // gameTicksPerSecond: 60,
     // displayFPS: true,
-    displayHitBoxes: true,
+    displayHitBoxes: false,
     // globalErrorHandling: true,
     fontUrls: [
         "./assets/fonts/helvetiker_regular_typeface.json"

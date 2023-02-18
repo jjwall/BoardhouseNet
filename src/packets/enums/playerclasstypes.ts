@@ -1,6 +1,6 @@
 export enum PlayerClassTypes {
     PAGE = "PAGE",
-    ARCHER = "ARCHER",
+    RANGER = "RANGER",
     MAGICIAN = "MAGICIAN",
     NULL = "NULL",
 }
