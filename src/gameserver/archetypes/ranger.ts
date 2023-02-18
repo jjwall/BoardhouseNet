@@ -10,7 +10,6 @@ import { setHitbox, HitboxTypes } from "../components/hitbox";
 import { PositionComponent } from "../components/position";
 import { setVelocity } from "../components/velocity";
 import { setMovement } from "../components/movement";
-import { basicSwordAttack } from "../actions/sword";
 import { Entity } from "../serverengine/entity";
 import { Server } from "../serverengine/server";
 

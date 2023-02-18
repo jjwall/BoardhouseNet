@@ -1,8 +1,10 @@
 import { ClientMessagePlayerWorldTransition, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin, ClientMessagePlayerInventoryEvent } from "../../packets/messages/clientworldmessage";
+import { createPlayerCharacter, PlayerCharacterParams } from "../archetypes/playercharacter";
 import { findPlayerEntityByClientId, processPlayerEquipEvent } from "./helpers";
 import { broadcastCreateEntitiesMessage } from "./sendnetentitymessages";
 import { PositionComponent, setPosition } from "../components/position";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
+import { presetInventory } from "../../../database/preset_inventory";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { sendLoadWorldMessage } from "./sendnetworldmessages";
 import { createMagician } from "../archetypes/magician";
@@ -31,6 +33,14 @@ import { createPage } from "../archetypes/page";
         throw Error("unable to find world");
     }
     
+    let playerEntParams: PlayerCharacterParams = {
+        worldEngine: clientWorld,
+        clientId: message.data.clientId,
+        spawnPos: undefined,
+        class: message.data.playerClass,
+        currentInventory: undefined,
+    }
+
     switch (message.data.playerClass) {
         case PlayerClassTypes.PAGE:
             const pagePos: PositionComponent = setPosition(150, 150, 5);
@@ -41,10 +51,12 @@ import { createPage } from "../archetypes/page";
             playerEnt = createMagician(server, clientWorld, message.data.clientId, magicianPos);
             break;
         case PlayerClassTypes.RANGER:
-            const rangerPos: PositionComponent = setPosition(0, 0, 5);
-            playerEnt = createRanger(server, clientWorld, message.data.clientId, rangerPos);
+            playerEntParams.spawnPos = setPosition(0, 0, 5);
+            playerEntParams.currentInventory = presetInventory // TODO: Change with preset "ranger" inventory
             break;
     }
+
+    playerEnt = createPlayerCharacter(playerEntParams)
 
     // // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
@@ -67,7 +79,8 @@ export function processPlayerWorldTransitionMessage(message: ClientMessagePlayer
     } catch {
         throw Error("unable to find world");
     }
-    
+
+    // TODO no switch necessary now.
     switch (message.data.playerClass) {
         case PlayerClassTypes.PAGE:
             const pagePos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 5);
@@ -78,8 +91,14 @@ export function processPlayerWorldTransitionMessage(message: ClientMessagePlayer
             playerEnt = createMagician(server, clientWorld, message.data.clientId, magicianPos);
             break;
         case PlayerClassTypes.RANGER:
-            const rangerPos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 5);
-            playerEnt = createRanger(server, clientWorld, message.data.clientId, rangerPos);
+            const params: PlayerCharacterParams = {
+                worldEngine: clientWorld,
+                clientId: message.data.clientId,
+                spawnPos: setPosition(message.data.newPos.x, message.data.newPos.y, 5),
+                class: message.data.playerClass,
+                currentInventory: presetInventory // change with transition data field.
+            }
+            playerEnt = createPlayerCharacter(params)
             break;
     }
 

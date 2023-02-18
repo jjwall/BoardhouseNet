@@ -65,34 +65,57 @@ export function processPlayerEquipEvent(playerEnt: Entity, updatedInventory: Arr
     // -> ...since, no item could be "added" from client, that would happen as a server event only (item drop pick up)
     // TODO: Add type and data to items.
     // TODO: Setting skill from item data should consider weapon's strength and effect data.
-    const processSkillSwap = (newItemData: ItemData, skillOne: boolean) => {
-        const setPlayerEquipSkill = skillOne ? playerEnt.skillSlots.setSkillOne : playerEnt.skillSlots.setSkillTwo
-
-        switch (newItemData?.spriteUrl) {
-            case "./assets/textures/icons/d20.png": // sword
-                setPlayerEquipSkill(initializeSkill(6, 20, basicSwordAttack, undefined))
-                break
-            case "./assets/textures/icons/d3403.png": // bow
-                setPlayerEquipSkill(initializeSkill(0, 10, bowAndArrowPress, bowAndArrowRelease, false));
-                break
-            case "./assets/textures/icons/d3940.png": // magic staff
-                setPlayerEquipSkill(initializeSkill(0, 10, fireballPress, fireballRelease, false));
-                break
-            default:
-                setPlayerEquipSkill(undefined)
+    if (playerEnt.skillSlots) {
+        // Skill slot 1 has new item equip.
+        if (JSON.stringify(playerEnt.player.inventory[primaryEquipSlotIndex]) !== JSON.stringify(updatedInventory[primaryEquipSlotIndex])) {
+            processSkillSwap(playerEnt, updatedInventory[primaryEquipSlotIndex], true)
         }
-    }
 
-    // Skill slot 1 has new item equip.
-    if (JSON.stringify(playerEnt.player.inventory[primaryEquipSlotIndex]) !== JSON.stringify(updatedInventory[primaryEquipSlotIndex])) {
-        processSkillSwap(updatedInventory[primaryEquipSlotIndex], true)
-    }
+        // Skill slot 2 has new item equip.
+        if (JSON.stringify(playerEnt.player.inventory[secondaryEquipSlotIndex]) !== JSON.stringify(updatedInventory[secondaryEquipSlotIndex])) {
+            processSkillSwap(playerEnt, updatedInventory[secondaryEquipSlotIndex], false)
+        }
 
-    // Skill slot 2 has new item equip.
-    if (JSON.stringify(playerEnt.player.inventory[secondaryEquipSlotIndex]) !== JSON.stringify(updatedInventory[secondaryEquipSlotIndex])) {
-        processSkillSwap(updatedInventory[secondaryEquipSlotIndex], false)
+        // Update server side inventory.
+        playerEnt.player.inventory = updatedInventory
+    } else {
+        throw new Error("Initialize player ent's skillSlots component.")
     }
+}
 
-    // Update server side inventory.
-    playerEnt.player.inventory = updatedInventory
+function processSkillSwap (playerEnt: Entity, newItemData: ItemData, skillOne: boolean) {
+    const setPlayerEquipSkill = skillOne ? playerEnt.skillSlots.setSkillOne : playerEnt.skillSlots.setSkillTwo
+
+    switch (newItemData?.spriteUrl) {
+        case "./assets/textures/icons/d20.png": // sword
+            setPlayerEquipSkill(initializeSkill(6, 20, basicSwordAttack, undefined))
+            break
+        case "./assets/textures/icons/d3403.png": // bow
+            setPlayerEquipSkill(initializeSkill(0, 10, bowAndArrowPress, bowAndArrowRelease, false));
+            break
+        case "./assets/textures/icons/d3940.png": // magic staff
+            setPlayerEquipSkill(initializeSkill(0, 10, fireballPress, fireballRelease, false));
+            break
+        default:
+            setPlayerEquipSkill(undefined)
+    }
+}
+
+export function processPlayerInitialInventory(playerEnt: Entity, initialInventory: Array<ItemData>) {
+    const primaryEquipSlotIndex = 8
+    const secondaryEquipSlotIndex = 9
+
+    if (playerEnt.skillSlots) {
+        // Skill slot 1 has new item equip.
+        if (initialInventory[primaryEquipSlotIndex]) {
+            processSkillSwap(playerEnt, initialInventory[primaryEquipSlotIndex], true)
+        }
+
+        // Skill slot 2 has new item equip.
+        if (initialInventory[secondaryEquipSlotIndex]) {
+            processSkillSwap(playerEnt, initialInventory[secondaryEquipSlotIndex], false)
+        }
+    } else {
+        throw new Error("Initialize player ent's skillSlots component.")
+    }
 }
