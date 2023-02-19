@@ -96,7 +96,7 @@ export function processPlayerWorldTransitionMessage(message: ClientMessagePlayer
                 clientId: message.data.clientId,
                 spawnPos: setPosition(message.data.newPos.x, message.data.newPos.y, 5),
                 class: message.data.playerClass,
-                currentInventory: presetInventory // change with transition data field.
+                currentInventory: message.data.playerInventory
             }
             playerEnt = createPlayerCharacter(params)
             break;

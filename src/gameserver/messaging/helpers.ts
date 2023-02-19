@@ -26,15 +26,10 @@ export function transitionPlayerToAnotherWorld(playerEnt: Entity, currentWorld: 
     // Remove player entity from current World.
     findAndDestroyPlayerEntity(currentWorld, playerEnt.player.id);
 
-    // Unncecssary, but do this to "satisfy" current NetWorldMessage conditions...
-    const castleWorld = currentWorld.server.worldEngines.find(worldEngine => worldEngine.worldType === WorldTypes.CASTLE);
-
-    // TODO: simplify "data"
-    // this method can probably be simplified, i.e. don't need to "find" castle world
-
     const data: WorldTransitionData = {
-        playerClass: playerEnt.player.class,
         clientId: playerEnt.player.id,
+        playerClass: playerEnt.player.class,
+        playerInventory: playerEnt.player.inventory,
         newWorldType: newWorldType,
         newPos: {
             x: newPos.loc.x,
