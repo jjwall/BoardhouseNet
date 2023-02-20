@@ -25,4 +25,5 @@ export class Entity {
     skillSlots: SkillSlotsComponent;
     actionReticle: Entity;
     follow: FollowComponent
+    follower: number
 }

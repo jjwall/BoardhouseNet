@@ -1,3 +1,5 @@
+import { broadcastDestroyEntitiesMessage } from "../messaging/sendnetentitymessages";
+import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { Entity } from "../serverengine/entity";
 
 /**
@@ -12,6 +14,15 @@ export interface FollowComponent {
     offsetX: number
 }
 
-export function setFollow(entToFollow: Entity, offsetX: number ): FollowComponent {
+export function setFollow(entToFollow: Entity, followerNetId: number, offsetX: number): FollowComponent {
+    entToFollow.follower = followerNetId
     return { entToFollow: entToFollow, offsetX: offsetX, positionsToFollow: []}
+}
+
+export function removeFollower(followedEnt: Entity, worldEngine: BaseWorldEngine) {
+    if (followedEnt.follower) {
+        const followingEnt = worldEngine.server.netIdToEntityMap[followedEnt.follower]
+        broadcastDestroyEntitiesMessage([followingEnt], worldEngine.server, worldEngine)
+        followingEnt.follower = undefined
+    }
 }

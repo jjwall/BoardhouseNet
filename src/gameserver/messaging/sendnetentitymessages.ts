@@ -117,6 +117,16 @@ export function broadcastDestroyEntitiesMessage(ents: Entity[], server: Server, 
     }
 
     ents.forEach(ent => {
+        // Remove follower entity if exists.
+        if (ent.follower) {
+            worldEngine.removeEntity(worldEngine.server.netIdToEntityMap[ent.follower]);
+            const entFollowerData: EntityData = {
+                netId: ent.follower
+            }
+
+            message.data.ents.push(entFollowerData);
+        }
+
         // Remove entity from backend entity list.
         worldEngine.removeEntity(ent);
         

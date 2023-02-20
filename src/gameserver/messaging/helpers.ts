@@ -1,19 +1,19 @@
+import { broadcastCreateEntitiesMessage, broadcastDestroyEntitiesMessage } from "./sendnetentitymessages";
 import { bowAndArrowPress, bowAndArrowRelease } from "../actions/bowandarrow";
 import { WorldTransitionData } from "../../packets/data/worldtransitiondata";
 import { sendPlayerWorldTransitionMessage } from "./sendnetworldmessages";
-import { broadcastDestroyEntitiesMessage } from "./sendnetentitymessages";
-import { fireballPress, fireballRelease } from "../actions/fireball";
-import { BaseWorldEngine } from "../serverengine/baseworldengine";
-import { WorldTypes } from "../../packets/enums/worldtypes";
 import { PositionComponent, setPosition } from "../components/position";
+import { fireballPress, fireballRelease } from "../actions/fireball";
 import { initializeSkill, Skill } from "../components/skillslots";
+import { BaseWorldEngine } from "../serverengine/baseworldengine";
+import { removeFollower, setFollow } from "../components/follow";
+import { WorldTypes } from "../../packets/enums/worldtypes";
 import { ItemData } from "../../packets/data/itemdata";
+import { setVelocity } from "../components/velocity";
 import { PlayerStates } from "../components/player";
 import { basicSwordAttack } from "../actions/sword";
-import { Entity } from "../serverengine/entity";
 import { setSprite } from "../components/sprite";
-import { setFollow } from "../components/follow";
-import { setVelocity } from "../components/velocity";
+import { Entity } from "../serverengine/entity";
 
 export function findAndDestroyPlayerEntity(worldEngine: BaseWorldEngine, clientId: string) {
     const playerEntToDestroy = findPlayerEntityByClientId(worldEngine, clientId)
@@ -87,16 +87,16 @@ function processSkillSwap(worldEngine: BaseWorldEngine, playerEnt: Entity, newIt
             playerEnt.skillSlots.setSkillOne(value)
             // Set Sheathed Equip.
             if (equipSpriteUrl) {
+                removeFollower(playerEnt, worldEngine)
                 const sheathedEquip = new Entity()
-                sheathedEquip.pos = setPosition(playerEnt.pos.loc.x, playerEnt.pos.loc.y, 5);
+                sheathedEquip.pos = setPosition(playerEnt.pos.loc.x, playerEnt.pos.loc.y, playerEnt.pos.loc.z);
                 sheathedEquip.vel = setVelocity(15, 0.5);
                 sheathedEquip.sprite = setSprite(equipSpriteUrl);
-                sheathedEquip.follow = setFollow(playerEnt, 50);
-                // sheathedEquip.parent = playerEnt
                 worldEngine.registerEntity(sheathedEquip, worldEngine.server)
+                sheathedEquip.follow = setFollow(playerEnt, sheathedEquip.netId, 50);
+                broadcastCreateEntitiesMessage([sheathedEquip], worldEngine.server, worldEngine.worldType);
             } else {
-                // if (playerEnt.parent)
-                //     broadcastDestroyEntitiesMessage([playerEnt.parent], worldEngine.server, worldEngine)
+                removeFollower(playerEnt, worldEngine)
             }
         } else {
             playerEnt.skillSlots.setSkillTwo(value)
