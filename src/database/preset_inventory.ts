@@ -1,4 +1,4 @@
-import { ItemData } from "../src/packets/data/itemdata";
+import { ItemData } from "../packets/data/itemdata";
 
 export const presetInventory: Array<ItemData> = [
     // Inventory slots.

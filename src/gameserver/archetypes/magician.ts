@@ -12,7 +12,7 @@ import { initializeSkill, SkillSlotsComponent } from "../components/skillslots";
 import { basicSwordAttack } from "../actions/sword";
 import { fireballPress, fireballRelease } from "../actions/fireball";
 import { bowAndArrowPress, bowAndArrowRelease } from "../actions/bowandarrow";
-import { presetInventory } from "../../../database/preset_inventory";
+import { presetInventory } from "../../database/preset_inventory";
 
 export function createMagician(server: Server, worldEngine: BaseWorldEngine, clientId: string, pos: PositionComponent): Entity {
     let magician = new Entity();

@@ -3,7 +3,7 @@ import { bowAndArrowPress, bowAndArrowRelease } from "../actions/bowandarrow";
 import { rangerAnim } from "../../modules/animations/animationdata/ranger";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { SequenceTypes } from "../../modules/animations/sequencetypes";
-import { presetInventory } from "../../../database/preset_inventory";
+import { presetInventory } from "../../database/preset_inventory";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { PlayerStates, setPlayer } from "../components/player";
 import { setHitbox, HitboxTypes } from "../components/hitbox";

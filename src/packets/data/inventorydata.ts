@@ -3,6 +3,6 @@ import { ItemData } from "./itemdata";
 
 export interface InventoryData {
     clientId: string;
-    worldType: WorldTypes
+    worldType?: WorldTypes
     inventory: ItemData[]
 }

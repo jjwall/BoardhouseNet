@@ -40,7 +40,7 @@ export function transitionPlayerToAnotherWorld(playerEnt: Entity, currentWorld: 
         }
     }
 
-    sendPlayerWorldTransitionMessage(currentWorld.server, data, playerEnt.player.id, newWorldType);
+    sendPlayerWorldTransitionMessage(currentWorld.server, data, playerEnt.player.id);
 };
 
 export function findPlayerEntityByClientId(worldEngine: BaseWorldEngine, clientId: string): Entity | undefined {

@@ -19,8 +19,8 @@ import { WorldTypes } from "../../packets/enums/worldtypes";
 // (done) ui to show each equip slot thing: sword, shield, armor, ring
 // (done) Actual equips do something now... need equip slots / item data to interface with skill slots.
 // (done) validation on each slot
-// primary slot displays "weapon" or item on character's back kinda like genshin
-// -> thinking is kinda "follows" you for a cool little effect
+// (done) primary slot displays "weapon" or item on character's back kinda like genshin
+// -> (done) thinking is kinda "follows" you for a cool little effect
 // secondary slot still shows weapon rendering when using action
 // once we have this working well, bring in other characters
 // (Done) HP / MP UI 

@@ -11,7 +11,7 @@ import { SequenceTypes } from "../../modules/animations/sequencetypes";
 import { pyraAnim } from "../../modules/animations/animationdata/pyra";
 import { initializeSkill, SkillSlotsComponent } from "../components/skillslots";
 import { basicSwordAttack } from "../actions/sword";
-import { presetInventory } from "../../../database/preset_inventory";
+import { presetInventory } from "../../database/preset_inventory";
 
 export function createPage(server: Server, worldEngine: BaseWorldEngine, clientId: string, pos: PositionComponent): Entity {
     let page = new Entity();

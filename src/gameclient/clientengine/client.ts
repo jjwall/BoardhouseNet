@@ -5,10 +5,10 @@ import { GlobalState, renderGamePlayUi, Root } from "../ui/states/gameplay/rootu
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { GameServerStateTypes } from "../../packets/enums/gameserverstatetypes";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
+import { presetEmptyInventory } from "../../database/presets/emptyinventory";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
-import { presetInventory } from "../../../database/preset_inventory";
 import { UIEventTypes } from "../../packets/enums/uieventtypes";
 import { SceneTransition } from "../renders/scenetransitions";
 import { WorldTypes } from "../../packets/enums/worldtypes";
@@ -294,7 +294,7 @@ export class Client {
                             notification: ""
                         },
                         // Inventory
-                        clientInventory: presetInventory,
+                        clientInventory: presetEmptyInventory,
                         inventoryViewToggle: true,
                         inventoryTop: 456,
                         // HUD

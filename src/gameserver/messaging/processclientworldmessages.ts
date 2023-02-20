@@ -1,15 +1,14 @@
 import { ClientMessagePlayerWorldTransition, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin, ClientMessagePlayerInventoryEvent } from "../../packets/messages/clientworldmessage";
+import { sendLoadWorldMessage, sendPlayerReconcileInventoryMessage } from "./sendnetworldmessages";
 import { createPlayerCharacter, PlayerCharacterParams } from "../archetypes/playercharacter";
 import { findPlayerEntityByClientId, processPlayerEquipEvent } from "./helpers";
+import { presetRangerInventory } from "../../database/presets/rangerinventory";
 import { broadcastCreateEntitiesMessage } from "./sendnetentitymessages";
 import { PositionComponent, setPosition } from "../components/position";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
-import { presetInventory } from "../../../database/preset_inventory";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
-import { sendLoadWorldMessage } from "./sendnetworldmessages";
 import { createMagician } from "../archetypes/magician";
 import { PlayerStates } from "../components/player";
-import { createRanger } from "../archetypes/ranger";
 import { Entity } from "../serverengine/entity";
 import { Server } from "../serverengine/server";
 import { createPage } from "../archetypes/page";
@@ -52,17 +51,18 @@ import { createPage } from "../archetypes/page";
             break;
         case PlayerClassTypes.RANGER:
             playerEntParams.spawnPos = setPosition(0, 0, 5);
-            playerEntParams.currentInventory = presetInventory // TODO: Change with preset "ranger" inventory
+            playerEntParams.currentInventory = presetRangerInventory; //presetInventory // TODO: Change with preset "ranger" inventory
             break;
     }
 
-    playerEnt = createPlayerCharacter(playerEntParams)
+    playerEnt = createPlayerCharacter(playerEntParams) // this is breaking other classes currently.
 
     // // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
         // Create all entities for connecting client.
         sendLoadWorldMessage(server, clientWorld.worldLevelData, message.data.clientId);
         broadcastCreateEntitiesMessage(clientWorld.getEntitiesByKey<Entity>("global"), server, message.data.worldType);
+        sendPlayerReconcileInventoryMessage(server, playerEnt.player.inventory, message.data.clientId);
         playerEnt.player.state = PlayerStates.LOADED;
     }, 5000);
 
@@ -80,7 +80,7 @@ export function processPlayerWorldTransitionMessage(message: ClientMessagePlayer
         throw Error("unable to find world");
     }
 
-    // TODO no switch necessary now.
+    // TODO no switch necessary now - resolve.
     switch (message.data.playerClass) {
         case PlayerClassTypes.PAGE:
             const pagePos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 5);
