@@ -118,10 +118,10 @@ export function broadcastDestroyEntitiesMessage(ents: Entity[], server: Server, 
 
     ents.forEach(ent => {
         // Remove follower entity if exists.
-        if (ent.follower) {
-            worldEngine.removeEntity(worldEngine.server.netIdToEntityMap[ent.follower]);
+        if (ent.followerNetId) {
+            worldEngine.removeEntity(worldEngine.server.netIdToEntityMap[ent.followerNetId]);
             const entFollowerData: EntityData = {
-                netId: ent.follower
+                netId: ent.followerNetId
             }
 
             message.data.ents.push(entFollowerData);

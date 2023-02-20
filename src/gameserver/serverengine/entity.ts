@@ -24,6 +24,6 @@ export class Entity {
     timer: TimerComponent;
     skillSlots: SkillSlotsComponent;
     actionReticle: Entity;
-    follow: FollowComponent
-    follower: number
+    follow: FollowComponent;
+    followerNetId: number;
 }

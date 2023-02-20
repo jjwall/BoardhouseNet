@@ -15,14 +15,14 @@ export interface FollowComponent {
 }
 
 export function setFollow(entToFollow: Entity, followerNetId: number, offsetX: number): FollowComponent {
-    entToFollow.follower = followerNetId
+    entToFollow.followerNetId = followerNetId
     return { entToFollow: entToFollow, offsetX: offsetX, positionsToFollow: []}
 }
 
 export function removeFollower(followedEnt: Entity, worldEngine: BaseWorldEngine) {
-    if (followedEnt.follower) {
-        const followingEnt = worldEngine.server.netIdToEntityMap[followedEnt.follower]
+    if (followedEnt.followerNetId) {
+        const followingEnt = worldEngine.server.netIdToEntityMap[followedEnt.followerNetId]
         broadcastDestroyEntitiesMessage([followingEnt], worldEngine.server, worldEngine)
-        followingEnt.follower = undefined
+        followingEnt.followerNetId = undefined
     }
 }
