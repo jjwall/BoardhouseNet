@@ -11,6 +11,8 @@ import { transitionPlayerToAnotherWorld } from "../../messaging/helpers";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
 import { WorldTypes } from "../../../packets/enums/worldtypes";
 import { skillSlotsSystem } from "../../systems/skillslots";
+import { createItemDrop } from "../../archetypes/itemdrop";
+import { ItemData } from "../../../packets/data/itemdata";
 import { worldEdgeSystem } from "../../systems/worldedge";
 import { collisionSystem } from "../../systems/collision";
 import { velocitySystem } from "../../systems/velocity";
@@ -21,13 +23,12 @@ import { behaviorSystem } from "../../systems/behavior";
 import { createGoblin } from "../../archetypes/goblin";
 import { setAnim } from "../../components/animation";
 import { setSprite } from "../../components/sprite";
+import { followSystem } from "../../systems/follow";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
 import { timerSystem } from "../../systems/timer";
 import { Vector3 } from "three";
-import { createItemDrop } from "../../archetypes/itemdrop";
-import { ItemData } from "../../../packets/data/itemdata";
 
 export class Forest_1_1 extends BaseWorldEngine {
     // public rootWidget: Widget;
@@ -46,6 +47,7 @@ export class Forest_1_1 extends BaseWorldEngine {
         this.registerSystem(skillSlotsSystem);
         this.registerSystem(behaviorSystem);
         this.registerSystem(timerSystem);
+        this.registerSystem(followSystem);
 
         const swordItemDropPos = setPosition(450, 250, 3);
         const swordItemData: ItemData = {

@@ -65,7 +65,7 @@ export function createPlayerCharacter(params: PlayerCharacterParams) {
     // Initialize Player Character skill slots component.
     playerChar.skillSlots = new SkillSlotsComponent();
     // Initialize Player skill slots based on inventory.
-    processPlayerInitialInventory(playerChar, params.currentInventory)
+    processPlayerInitialInventory(playerChar, params.currentInventory, params.worldEngine)
     // Register Player Character entity to world.
     params.worldEngine.registerEntity(playerChar, params.worldEngine.server);
 

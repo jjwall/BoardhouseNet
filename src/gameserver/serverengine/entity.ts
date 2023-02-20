@@ -7,6 +7,7 @@ import { MovementComponent} from "../components/movement";
 import { HitboxComponent } from "../components/hitbox";
 import { PlayerComponent } from "../components/player";
 import { SpriteComponent } from "../components/sprite";
+import { FollowComponent } from "../components/follow";
 import { TimerComponent } from "../components/timer";
 
 export class Entity {
@@ -23,4 +24,5 @@ export class Entity {
     timer: TimerComponent;
     skillSlots: SkillSlotsComponent;
     actionReticle: Entity;
+    follow: FollowComponent
 }

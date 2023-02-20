@@ -142,5 +142,5 @@ export function processPlayerInventoryEventMessage(message: ClientMessagePlayerI
 
     const playerEnt = findPlayerEntityByClientId(clientWorld, message.data.clientId)
 
-    processPlayerEquipEvent(playerEnt, message.data.inventory)
+    processPlayerEquipEvent(playerEnt, message.data.inventory, clientWorld)
 }

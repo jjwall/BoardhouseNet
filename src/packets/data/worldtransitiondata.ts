@@ -5,7 +5,7 @@ import { ItemData } from "./itemdata";
 export interface WorldTransitionData {
     clientId: string;
     playerClass: PlayerClassTypes;
-    playerInventory: ItemData[]
+    playerInventory: ItemData[];
     newWorldType: WorldTypes;
     newPos: {
         x: number;

@@ -105,6 +105,7 @@ export function broadcastUpdateEntitiesMessage(ents: Entity[], server: Server, w
     server.entityChangeList = [];
 }
 
+// TODO: Refactor out server from params here, can pull from worldEngine reference.
 export function broadcastDestroyEntitiesMessage(ents: Entity[], server: Server, worldEngine: BaseWorldEngine) {
     let message: NetMessageDestroyEntities = {
         messageType: MessageTypes.NET_ENTITY_MESSAGE,
