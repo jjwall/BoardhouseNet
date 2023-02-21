@@ -51,13 +51,13 @@ import { createPage } from "../archetypes/page";
             break;
         case PlayerClassTypes.RANGER:
             playerEntParams.spawnPos = setPosition(0, 0, 5);
-            playerEntParams.currentInventory = presetRangerInventory; //presetInventory // TODO: Change with preset "ranger" inventory
+            playerEntParams.currentInventory = presetRangerInventory;
             break;
     }
 
-    playerEnt = createPlayerCharacter(playerEntParams) // this is breaking other classes currently.
+    playerEnt = createPlayerCharacter(playerEntParams) // this is breaking other classes currently. -> resolve
 
-    // // Not exactly sure why we need this setTimeout here.
+    // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
         // Create all entities for connecting client.
         sendLoadWorldMessage(server, clientWorld.worldLevelData, message.data.clientId);
@@ -65,8 +65,6 @@ import { createPage } from "../archetypes/page";
         sendPlayerReconcileInventoryMessage(server, playerEnt.player.inventory, message.data.clientId);
         playerEnt.player.state = PlayerStates.LOADED;
     }, 5000);
-
-    // TODO: Loop through NetIdToEnt map and send a bunch of Create Entity messages
 }
 
 export function processPlayerWorldTransitionMessage(message: ClientMessagePlayerWorldTransition, server: Server) {
@@ -80,7 +78,7 @@ export function processPlayerWorldTransitionMessage(message: ClientMessagePlayer
         throw Error("unable to find world");
     }
 
-    // TODO no switch necessary now - resolve.
+    // TODO no switch necessary now -> resolve.
     switch (message.data.playerClass) {
         case PlayerClassTypes.PAGE:
             const pagePos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 5);
@@ -102,7 +100,7 @@ export function processPlayerWorldTransitionMessage(message: ClientMessagePlayer
             break;
     }
 
-    // // Not exactly sure why we need this setTimeout here.
+    // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
         // Create all entities for connecting client.
         sendLoadWorldMessage(server, clientWorld.worldLevelData, message.data.clientId);

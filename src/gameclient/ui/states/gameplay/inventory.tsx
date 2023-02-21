@@ -9,32 +9,17 @@ import { Component } from "../../core/component";
 import { Scene } from "three";
 
 // TODO: Do I need to refactor and set equip slots to indexes 0-3? :thinking:
-// TODO: (Done) Implement Equipment Screen that enables armor and skill / weapon equips via drag and drop from inventory
-// -> Implement skill equips / item types / equip validation / more detailed item data.
-// TODO: (Done) Create data or "conext" or "global state" layer that carries client item data
-// -> Example: We have 8 inventory slots, client should be aware of what item is occupying which spot so
-// we know what to render in the inventory on scene load. (consider on enter game and scene transition ramifications)
-// TODO: consider on enter game and scene transition ramifications w/ inventory. Might stay same as client, but prob gets reset on server
-// TODO: (Done) Refactor "data" directory at root to be named "assets". This would be a big refactor!
-// TODO: (Done) Build out EquipmentSlots... could double up inventory and equipment here for simplicity's sake.
 // TODO: Create item "drops" akin to MapleStory where you have to be near it and then press "V" or something and it 
-// picks up the item and stores it in your inventory. Red warning message displays at top if inventory is full.
-// -> Test cases can include current coded actions: sword, bow, magic fireball spell
+// picks up the item and stores it in your inventory. 
 // TODO: Add in goblin spawn points in forest 1-1 and have them drop items on kill. Consider drop percentages.
-// Consolidated Todo's: account for client / server side inventory sync. Set up equipment slots and enable skill equips.
+// TODO: Equip validation & more detailed item data.
 // TODO: Context / hover menu for viewing item stats. More elaborate itemData fields.
-// TODO: Build out item presets for random pull bag drops.
-// TODO: Implement item dropping mechanic
-// -> Since dragging an item off the inventory may be too common an action with equips, we might implement a "trashcan" icon
+// TODO: Implement item dropping mechanic - item presets for random pull bag drops.
+// IDEA: Modal pops up when dragging item off inventory: "Are you sure you want to drop this weapon?"
+// IDEA: Since dragging an item off the inventory may be too common an action with equips, we might implement a "trashcan" icon
 // near the inventory widget that would trigger a "drop" -> item should be randomly popped out in an area field near the dropping player.
 // This way if a player was to drop a bunch of items all at once they likely wouldn't stack on each other. OR
 // --> Better idea: When items hitboxes touch each other they push each other out - like how goblins do with one another.
-
-// TODO: (Done) Fire UI Events to Client to send to server for ui related events
-// TODO: (Done) Bug -> Swapping item with equip slot doesn't trigger inventory event...
-// TODO: Need to have inventory data transfer occur on scene transitions.
-// -> Archetypes should have a paramter for inventory so both game entered and scene transition can use it
-// -> Currently server inventory getting imporperly updated, but client remains the same.
 
 interface Props {
     top: string | number
