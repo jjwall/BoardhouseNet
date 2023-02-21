@@ -2,6 +2,7 @@ import { ClientMessagePlayerWorldTransition, ClientMessagePlayerWorldJoin, Clien
 import { sendLoadWorldMessage, sendPlayerReconcileInventoryMessage } from "./sendnetworldmessages";
 import { createPlayerCharacter, PlayerCharacterParams } from "../archetypes/playercharacter";
 import { findPlayerEntityByClientId, processPlayerEquipEvent } from "./helpers";
+import { presetKnightInventory } from "../../database/presets/knightinventory";
 import { presetRangerInventory } from "../../database/presets/rangerinventory";
 import { broadcastCreateEntitiesMessage } from "./sendnetentitymessages";
 import { PositionComponent, setPosition } from "../components/position";
@@ -53,6 +54,10 @@ import { createPage } from "../archetypes/page";
             playerEntParams.spawnPos = setPosition(0, 0, 5);
             playerEntParams.currentInventory = presetRangerInventory;
             break;
+        case PlayerClassTypes.KNIGHT:
+            playerEntParams.spawnPos = setPosition(0, 0, 5);
+            playerEntParams.currentInventory = presetKnightInventory;
+            break;
     }
 
     playerEnt = createPlayerCharacter(playerEntParams) // this is breaking other classes currently. -> resolve
@@ -79,16 +84,16 @@ export function processPlayerWorldTransitionMessage(message: ClientMessagePlayer
     }
 
     // TODO no switch necessary now -> resolve.
-    switch (message.data.playerClass) {
-        case PlayerClassTypes.PAGE:
-            const pagePos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 5);
-            playerEnt = createPage(server, clientWorld, message.data.clientId, pagePos);
-            break;
-        case PlayerClassTypes.MAGICIAN:
-            const magicianPos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 6);
-            playerEnt = createMagician(server, clientWorld, message.data.clientId, magicianPos);
-            break;
-        case PlayerClassTypes.RANGER:
+    // switch (message.data.playerClass) {
+        // case PlayerClassTypes.PAGE:
+        //     const pagePos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 5);
+        //     playerEnt = createPage(server, clientWorld, message.data.clientId, pagePos);
+        //     break;
+        // case PlayerClassTypes.MAGICIAN:
+        //     const magicianPos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 6);
+        //     playerEnt = createMagician(server, clientWorld, message.data.clientId, magicianPos);
+        //     break;
+        // case PlayerClassTypes.RANGER:
             const params: PlayerCharacterParams = {
                 worldEngine: clientWorld,
                 clientId: message.data.clientId,
@@ -97,8 +102,7 @@ export function processPlayerWorldTransitionMessage(message: ClientMessagePlayer
                 currentInventory: message.data.playerInventory
             }
             playerEnt = createPlayerCharacter(params)
-            break;
-    }
+    // }
 
     // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {

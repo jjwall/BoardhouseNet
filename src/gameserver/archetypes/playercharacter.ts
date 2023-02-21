@@ -1,3 +1,4 @@
+import { knightAnim } from "../../modules/animations/animationdata/knight";
 import { rangerAnim } from "../../modules/animations/animationdata/ranger";
 import { AnimationSchema } from "../../modules/animations/animationschema";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
@@ -27,6 +28,8 @@ const getInitialClassSprite = (playerClass: PlayerClassTypes): string => {
     switch (playerClass) {
         case PlayerClassTypes.RANGER:
             return "./assets/textures/ranger/idle/Heroine_ranger_idle_00.png"
+        case PlayerClassTypes.KNIGHT:
+            return "./assets/textures/knight/idle/Heroine_idle_00.png"
         // case PlayerClassTypes.PAGE:
         //     return "../.."
         // case PlayerClassTypes.MAGICIAN:
@@ -38,6 +41,8 @@ const getClassAnimBlob = (playerClass: PlayerClassTypes): AnimationSchema => {
     switch (playerClass) {
         case PlayerClassTypes.RANGER:
             return rangerAnim
+        case PlayerClassTypes.KNIGHT:
+            return knightAnim
         // case PlayerClassTypes.PAGE:
         //     return "../.."
         // case PlayerClassTypes.MAGICIAN:

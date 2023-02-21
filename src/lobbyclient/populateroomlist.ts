@@ -74,6 +74,9 @@ function classSelectRadioValue (globalLobby: IGlobalLobby) : PlayerClassTypes {
                 case "magician":
                     playerClassSelection = PlayerClassTypes.MAGICIAN;
                     break;
+                case "knight":
+                    playerClassSelection = PlayerClassTypes.KNIGHT;
+                    break;
             }
           break;
         }
