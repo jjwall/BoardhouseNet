@@ -89,7 +89,7 @@ function processSkillSwap(worldEngine: BaseWorldEngine, playerEnt: Entity, newIt
             if (equipSpriteUrl) {
                 removeFollower(playerEnt, worldEngine)
                 const sheathedEquip = new Entity()
-                sheathedEquip.pos = setPosition(playerEnt.pos.loc.x, playerEnt.pos.loc.y, playerEnt.pos.loc.z);
+                sheathedEquip.pos = setPosition(playerEnt.pos.loc.x, playerEnt.pos.loc.y, playerEnt.pos.loc.z - 1);
                 sheathedEquip.vel = setVelocity(15, 0.5);
                 sheathedEquip.sprite = setSprite(equipSpriteUrl);
                 worldEngine.registerEntity(sheathedEquip, worldEngine.server)
