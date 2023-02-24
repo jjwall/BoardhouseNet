@@ -306,235 +306,235 @@ export const wizardAnim: AnimationSchema = {
     [SequenceTypes.ATTACK]: [
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_00.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_00.png",
             nextFrame: 1
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_01.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_01.png",
             nextFrame: 2
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_02.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_02.png",
             nextFrame: 3
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_03.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_03.png",
             nextFrame: 4
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_04.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_04.png",
             nextFrame: 5
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_05.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_05.png",
             nextFrame: 6
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_06.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_06.png",
             nextFrame: 7
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_07.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_07.png",
             nextFrame: 8
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_08.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_08.png",
             nextFrame: 9
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_09.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_09.png",
             nextFrame: 10
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_10.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_10.png",
             nextFrame: 11
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_11.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_11.png",
             nextFrame: 12
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_12.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_12.png",
             nextFrame: 13
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_13.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_13.png",
             nextFrame: 14
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_14.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_14.png",
             nextFrame: 15
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_15.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_15.png",
             nextFrame: 16
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_16.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_16.png",
             nextFrame: 17
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_17.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_17.png",
             nextFrame: 18
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_18.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_18.png",
             nextFrame: 19
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_19.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_19.png",
             nextFrame: 20
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_20.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_20.png",
             nextFrame: 21
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_21.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_21.png",
             nextFrame: 22
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_22.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_22.png",
             nextFrame: 0
         },
     ],
     [SequenceTypes.ACTION_HOLD]: [
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_00.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_00.png",
             nextFrame: 1
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_01.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_01.png",
             nextFrame: 2
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_02.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_02.png",
             nextFrame: 3
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_03.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_03.png",
             nextFrame: 4
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_04.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_04.png",
             nextFrame: 5
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_05.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_05.png",
             nextFrame: 6
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_06.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_06.png",
             nextFrame: 7
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_07.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_07.png",
             nextFrame: 8
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_08.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_08.png",
             nextFrame: 9
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_09.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_09.png",
             nextFrame: 10
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_10.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_10.png",
             nextFrame: 11
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_11.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_11.png",
             nextFrame: 12
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_12.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_12.png",
             nextFrame: 13
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_13.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_13.png",
             nextFrame: 14
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_14.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_14.png",
             nextFrame: 15
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_15.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_15.png",
             nextFrame: 16
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_16.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_16.png",
             nextFrame: 17
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_17.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_17.png",
             nextFrame: 18
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_18.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_18.png",
             nextFrame: 19
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_19.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_19.png",
             nextFrame: 20
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_20.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_20.png",
             nextFrame: 21
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_21.png",
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_21.png",
             nextFrame: 22
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_22.png",
-            nextFrame: 22
+            texture: "./assets/textures/wizard/basic_attack/Heroine_wizard_attack_regular_22.png",
+            nextFrame: 0
         },
     ],
 }
