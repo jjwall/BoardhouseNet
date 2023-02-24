@@ -3,6 +3,7 @@ import { knightAnim } from "../../modules/animations/animationdata/knight";
 import { rangerAnim } from "../../modules/animations/animationdata/ranger";
 import { AnimationSchema } from "../../modules/animations/animationschema";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
+import { pageAnim } from "../../modules/animations/animationdata/page";
 import { SequenceTypes } from "../../modules/animations/sequencetypes";
 import { processPlayerInitialInventory } from "../messaging/helpers";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
@@ -33,8 +34,8 @@ const getInitialClassSprite = (playerClass: PlayerClassTypes): string => {
             return "./assets/textures/knight/idle/Heroine_idle_00.png"
         case PlayerClassTypes.WIZARD:
             return "./assets/textures/wizard/idle/Heroine_wizard_idle_00.png"
-        // case PlayerClassTypes.PAGE:
-        //     return "../.."
+        case PlayerClassTypes.PAGE:
+            return "./assets/textures/page/idle/Heroine_page_idle_00.png"
     }
 }
 
@@ -46,6 +47,8 @@ const getClassAnimBlob = (playerClass: PlayerClassTypes): AnimationSchema => {
             return knightAnim
         case PlayerClassTypes.WIZARD:
             return wizardAnim
+        case PlayerClassTypes.PAGE:
+            return pageAnim
     }
 }
 
