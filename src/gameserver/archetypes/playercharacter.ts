@@ -1,3 +1,4 @@
+import { wizardAnim } from "../../modules/animations/animationdata/wizard";
 import { knightAnim } from "../../modules/animations/animationdata/knight";
 import { rangerAnim } from "../../modules/animations/animationdata/ranger";
 import { AnimationSchema } from "../../modules/animations/animationschema";
@@ -30,9 +31,9 @@ const getInitialClassSprite = (playerClass: PlayerClassTypes): string => {
             return "./assets/textures/ranger/idle/Heroine_ranger_idle_00.png"
         case PlayerClassTypes.KNIGHT:
             return "./assets/textures/knight/idle/Heroine_idle_00.png"
+        case PlayerClassTypes.WIZARD:
+            return "./assets/textures/wizard/idle/Heroine_wizard_idle_00.png"
         // case PlayerClassTypes.PAGE:
-        //     return "../.."
-        // case PlayerClassTypes.MAGICIAN:
         //     return "../.."
     }
 }
@@ -43,10 +44,8 @@ const getClassAnimBlob = (playerClass: PlayerClassTypes): AnimationSchema => {
             return rangerAnim
         case PlayerClassTypes.KNIGHT:
             return knightAnim
-        // case PlayerClassTypes.PAGE:
-        //     return "../.."
-        // case PlayerClassTypes.MAGICIAN:
-        //     return "../.."
+        case PlayerClassTypes.WIZARD:
+            return wizardAnim
     }
 }
 

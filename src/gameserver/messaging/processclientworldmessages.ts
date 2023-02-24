@@ -46,9 +46,9 @@ import { createPage } from "../archetypes/page";
             const pagePos: PositionComponent = setPosition(150, 150, 5);
             playerEnt = createPage(server, clientWorld, message.data.clientId, pagePos);
             break;
-        case PlayerClassTypes.MAGICIAN:
-            const magicianPos: PositionComponent = setPosition(150, 150, 6);
-            playerEnt = createMagician(server, clientWorld, message.data.clientId, magicianPos);
+        case PlayerClassTypes.WIZARD:
+            playerEntParams.spawnPos = setPosition(0, 0, 5);
+            playerEntParams.currentInventory = presetRangerInventory;
             break;
         case PlayerClassTypes.RANGER:
             playerEntParams.spawnPos = setPosition(0, 0, 5);

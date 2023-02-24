@@ -16,7 +16,7 @@ import { presetInventory } from "../../database/preset_inventory";
 
 export function createMagician(server: Server, worldEngine: BaseWorldEngine, clientId: string, pos: PositionComponent): Entity {
     let magician = new Entity();
-    magician.player = setPlayer(clientId, PlayerStates.UNLOADED, PlayerClassTypes.MAGICIAN, presetInventory);
+    magician.player = setPlayer(clientId, PlayerStates.UNLOADED, PlayerClassTypes.WIZARD, presetInventory);
     magician.pos = pos;
     magician.vel = setVelocity(15, 0.5);
     // magician.sprite = { url: "./assets/textures/player_stand.png", pixelRatio: 1 };

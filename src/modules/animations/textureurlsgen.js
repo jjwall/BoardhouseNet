@@ -10,15 +10,22 @@
  * @param {*} frames process.argv[3] should contain the number of frames you want to generate
  */
 function generateTextureUrls({ baseTextureName, frames }) {
-    for (var i = 0; i <= frames; i++) {
-        let currentFrame = "0"
+    if (!baseTextureName)
+        console.log(`
+* @param {*} baseTextureName process.argv[2] should contain the base name of your texture i.e. "data/textures/ranger/idle/Ranger_idle"
+* @param {*} frames process.argv[3] should contain the number of frames you want to generate
+        `)
+    else {
+        for (var i = 0; i <= frames; i++) {
+            let currentFrame = "0"
 
-        if (i < 10)
-            currentFrame += i.toString()
-        else
-            currentFrame = i.toString()
+            if (i < 10)
+                currentFrame += i.toString()
+            else
+                currentFrame = i.toString()
 
-        console.log(`        "${baseTextureName}_${currentFrame}.png",`)
+            console.log(`        "${baseTextureName}_${currentFrame}.png",`)
+        }
     }
 }
 
