@@ -4,15 +4,15 @@ import { createPlayerCharacter, PlayerCharacterParams } from "../archetypes/play
 import { findPlayerEntityByClientId, processPlayerEquipEvent } from "./helpers";
 import { presetKnightInventory } from "../../database/presets/knightinventory";
 import { presetRangerInventory } from "../../database/presets/rangerinventory";
+import { presetWizardInventory } from "../../database/presets/wizardinventory";
+import { presetPageInventory } from "../../database/presets/pageinventory";
 import { broadcastCreateEntitiesMessage } from "./sendnetentitymessages";
-import { PositionComponent, setPosition } from "../components/position";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
-import { createMagician } from "../archetypes/magician";
+import { setPosition } from "../components/position";
 import { PlayerStates } from "../components/player";
 import { Entity } from "../serverengine/entity";
 import { Server } from "../serverengine/server";
-import { createPage } from "../archetypes/page";
 
 /**
  * Just because player joins, doesn't mean an ent necessarily needs to be created for them.
@@ -43,12 +43,12 @@ import { createPage } from "../archetypes/page";
 
     switch (message.data.playerClass) {
         case PlayerClassTypes.PAGE:
-            const pagePos: PositionComponent = setPosition(150, 150, 5);
-            playerEnt = createPage(server, clientWorld, message.data.clientId, pagePos);
+            playerEntParams.spawnPos = setPosition(0, 0, 5);
+            playerEntParams.currentInventory = presetPageInventory;
             break;
         case PlayerClassTypes.WIZARD:
             playerEntParams.spawnPos = setPosition(0, 0, 5);
-            playerEntParams.currentInventory = presetRangerInventory;
+            playerEntParams.currentInventory = presetWizardInventory;
             break;
         case PlayerClassTypes.RANGER:
             playerEntParams.spawnPos = setPosition(0, 0, 5);
@@ -83,26 +83,14 @@ export function processPlayerWorldTransitionMessage(message: ClientMessagePlayer
         throw Error("unable to find world");
     }
 
-    // TODO no switch necessary now -> resolve.
-    // switch (message.data.playerClass) {
-        // case PlayerClassTypes.PAGE:
-        //     const pagePos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 5);
-        //     playerEnt = createPage(server, clientWorld, message.data.clientId, pagePos);
-        //     break;
-        // case PlayerClassTypes.MAGICIAN:
-        //     const magicianPos: PositionComponent = setPosition(message.data.newPos.x, message.data.newPos.y, 6);
-        //     playerEnt = createMagician(server, clientWorld, message.data.clientId, magicianPos);
-        //     break;
-        // case PlayerClassTypes.RANGER:
-            const params: PlayerCharacterParams = {
-                worldEngine: clientWorld,
-                clientId: message.data.clientId,
-                spawnPos: setPosition(message.data.newPos.x, message.data.newPos.y, 5),
-                class: message.data.playerClass,
-                currentInventory: message.data.playerInventory
-            }
-            playerEnt = createPlayerCharacter(params)
-    // }
+    const params: PlayerCharacterParams = {
+        worldEngine: clientWorld,
+        clientId: message.data.clientId,
+        spawnPos: setPosition(message.data.newPos.x, message.data.newPos.y, 5),
+        class: message.data.playerClass,
+        currentInventory: message.data.playerInventory
+    }
+    playerEnt = createPlayerCharacter(params)
 
     // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
