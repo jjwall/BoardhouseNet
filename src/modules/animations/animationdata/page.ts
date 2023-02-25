@@ -306,113 +306,63 @@ export const pageAnim: AnimationSchema = {
     [SequenceTypes.ATTACK]: [
         {
             ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_00.png",
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_10.png",
             nextFrame: 1
         },
         {
             ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_01.png",
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_11.png",
             nextFrame: 2
         },
         {
             ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_02.png",
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_12.png",
             nextFrame: 3
         },
         {
             ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_03.png",
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_13.png",
             nextFrame: 4
         },
         {
             ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_04.png",
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_14.png",
             nextFrame: 5
         },
         {
             ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_05.png",
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_15.png",
             nextFrame: 6
         },
         {
             ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_06.png",
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_16.png",
             nextFrame: 7
         },
         {
             ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_07.png",
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_17.png",
             nextFrame: 8
         },
         {
             ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_08.png",
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_18.png",
             nextFrame: 9
         },
         {
             ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_09.png",
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_19.png",
             nextFrame: 10
         },
         {
             ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_10.png",
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_20.png",
             nextFrame: 11
         },
         {
             ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_11.png",
-            nextFrame: 12
-        },
-        {
-            ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_12.png",
-            nextFrame: 13
-        },
-        {
-            ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_13.png",
-            nextFrame: 14
-        },
-        {
-            ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_14.png",
-            nextFrame: 15
-        },
-        {
-            ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_15.png",
-            nextFrame: 16
-        },
-        {
-            ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_16.png",
-            nextFrame: 17
-        },
-        {
-            ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_17.png",
-            nextFrame: 18
-        },
-        {
-            ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_18.png",
-            nextFrame: 19
-        },
-        {
-            ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_19.png",
-            nextFrame: 20
-        },
-        {
-            ticks: 3,
-            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_20.png",
-            nextFrame: 21
-        },
-        {
-            ticks: 3,
             texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_21.png",
-            nextFrame: 22
+            nextFrame: 12
         },
         {
             ticks: 3,
@@ -423,38 +373,68 @@ export const pageAnim: AnimationSchema = {
     [SequenceTypes.ACTION_HOLD]: [
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_10.png",
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_10.png",
             nextFrame: 1
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_11.png",
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_11.png",
             nextFrame: 2
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_12.png",
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_12.png",
             nextFrame: 3
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_13.png",
-            nextFrame: 4
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_13.png",
+            nextFrame: 3
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_14.png",
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_14.png",
             nextFrame: 5
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_15.png",
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_15.png",
             nextFrame: 6
         },
         {
             ticks: 3,
-            texture: "./assets/textures/knight/spear_attack/Heroine_attack_poke_16.png",
-            nextFrame: 6
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_16.png",
+            nextFrame: 7
+        },
+        {
+            ticks: 3,
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_17.png",
+            nextFrame: 8
+        },
+        {
+            ticks: 3,
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_18.png",
+            nextFrame: 9
+        },
+        {
+            ticks: 3,
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_19.png",
+            nextFrame: 10
+        },
+        {
+            ticks: 3,
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_20.png",
+            nextFrame: 11
+        },
+        {
+            ticks: 3,
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_21.png",
+            nextFrame: 12
+        },
+        {
+            ticks: 3,
+            texture: "./assets/textures/page/basic_attack/Heroine_page_attack_slash_22.png",
+            nextFrame: 12
         },
     ],
 }
