@@ -1,3 +1,4 @@
+import { setStatus, StatusComponent, StatusParams } from "../components/status";
 import { wizardAnim } from "../../modules/animations/animationdata/wizard";
 import { knightAnim } from "../../modules/animations/animationdata/knight";
 import { rangerAnim } from "../../modules/animations/animationdata/ranger";
@@ -52,11 +53,30 @@ const getClassAnimBlob = (playerClass: PlayerClassTypes): AnimationSchema => {
     }
 }
 
+// TODO: Adust starting values for each class.
+const getInitialClassStatusValues = (playerClass: PlayerClassTypes): StatusComponent => {
+    const statusParams: StatusParams = {
+        name: "Player",
+        level: 1,
+        maxHp: 1000,
+        maxMp: 1000,
+        maxXp: 1000,
+        height: 5,
+        width: 80,
+        offsetX: -40,
+        offsetY: 65,
+    }
+
+    return setStatus(statusParams)
+}
+
 export function createPlayerCharacter(params: PlayerCharacterParams) {
     // Initialize Player Character entity.
     let playerChar = new Entity();
     // Initialize Player Character player component.
     playerChar.player = setPlayer(params.clientId, PlayerStates.UNLOADED, params.class, params.currentInventory);
+    // Initialize Player Character status component.
+    playerChar.status = getInitialClassStatusValues(params.class)
     // Initialize Player Character position component with spawn coordinates.
     playerChar.pos = params.spawnPos;
     // Initialize Player Character velocity component.

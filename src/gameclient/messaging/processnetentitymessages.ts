@@ -1,11 +1,12 @@
 import { NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEntities } from "../../packets/messages/netentitymessage";
+import { changeSequence, setAnimation } from "../components/animation";
 import { ClientEntity } from "../clientengine/cliententity";
 import { setHitboxGraphic } from "../components/hitbox";
+import { setStatusGraphic } from "../components/status";
 import { setPosition } from "../components/position";
 import { setSprite } from "../components/sprite";
 import { Client } from "../clientengine/client";
 import { Vector3 } from "three";
-import { changeSequence, setAnimation } from "../components/animation";
 
 // Create front-end representations of EntData list. Should pass in all entities
 // using the "global" ecsKey when a player or spectator first joins (or scene transition happens).
@@ -33,6 +34,10 @@ export function createEntities(message: NetMessageCreateEntities, client: Client
 
                 if (entData.anim) {
                     clientEnt.anim = setAnimation(entData.anim.sequence, entData.anim.blob);
+                }
+
+                if (entData.status) {
+                    setStatusGraphic(clientEnt.sprite, entData.status)
                 }
 
                 if (entData.player) {

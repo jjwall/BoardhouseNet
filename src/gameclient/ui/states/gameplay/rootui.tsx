@@ -57,6 +57,15 @@ export class Root extends Component<Props, GlobalState> {
             maxXP: props.initialState.maxXP,
             currentXP: props.initialState.currentXP,
         };
+
+        // setInterval(this.updateStatus, 50)
+    }
+
+    /** Example of how we might update status within UI. */
+    updateStatus = () => {
+        this.setState({
+            currentHP: this.state.currentHP + 1
+        })
     }
 
     getState() {

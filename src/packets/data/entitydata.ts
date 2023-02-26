@@ -36,4 +36,20 @@ export interface EntityData {
     player?: {
         id: string;
     }
+    status?: {
+        // Data fields.
+        name: string;
+        level: number;
+        maxHp: number;
+        currentHp: number;
+        maxMp: number;
+        currentMp: number;
+        maxXp: number;
+        currentXp: number;
+        // Graphic fields.
+        height: number;
+        width: number;
+        offsetX: number;
+        offsetY: number;
+    }
 }

@@ -21,16 +21,16 @@ import { WorldTypes } from "../../packets/enums/worldtypes";
 // (done) validation on each slot
 // (done) primary slot displays "weapon" or item on character's back kinda like genshin
 // -> (done) thinking is kinda "follows" you for a cool little effect
-// secondary slot still shows weapon rendering when using action
-// once we have this working well, bring in other characters
+// (Done) secondary slot still shows weapon rendering when using action
+// (Done) once we have this working well, bring in other characters
 // (Done) HP / MP UI 
-// -> (later...) Character portraits & gold UI next to Lv
-// Preset inventories for each class, this can't sit in archetype code since that gets re-used for changing worlds
+// (Done) Preset inventories for each class, this can't sit in archetype code since that gets re-used for changing worlds
 // Set up "Gamertag" -> if user doesn't type it in they become "Player [NetId]"
 // Render this plus HP bars, Lv above character entities / enemy names, Lv and HP bars over enemies.
 // More advanced "cooldown" subsystem. Stutter ticks ain't working well for dodgeroll and skills.
 // (Challenge) chat window in bottom left of screen
 // Tiled data loader.
+// Character portraits & gold UI next to Lv
 // Better enemy AI.
 // Better weapon skill actions.
 // Fishing system.
@@ -51,7 +51,7 @@ const config: ClientConfig = {
     screenHeight: 720,
     // gameTicksPerSecond: 60,
     // displayFPS: true,
-    displayHitBoxes: false,
+    displayHitBoxes: true,
     // globalErrorHandling: true,
     fontUrls: [
         "./assets/fonts/helvetiker_regular_typeface.json"

@@ -1,8 +1,8 @@
 import { NetEntityEventTypes, NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEntities } from "../../packets/messages/netentitymessage";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
-import { EntityData } from "../../packets/data/entitydata";
-import { WorldTypes } from "../../packets/enums/worldtypes";
 import { MessageTypes } from "../../packets/messages/message";
+import { WorldTypes } from "../../packets/enums/worldtypes";
+import { EntityData } from "../../packets/data/entitydata";
 import { Entity } from "../serverengine/entity";
 import { Server } from "../serverengine/server";
 
@@ -37,6 +37,7 @@ export function broadcastCreateEntitiesMessage(ents: Entity[], server: Server, w
                 sprite: ent.sprite,
                 anim: ent.anim,
                 player: ent.player,
+                status: ent.status,
             }
 
             if (ent.hitbox) {
@@ -92,6 +93,7 @@ export function broadcastUpdateEntitiesMessage(ents: Entity[], server: Server, w
                 sprite: ent.sprite,
                 anim: ent.anim,
                 player: ent.player,
+                status: ent.status,
             }
 
             message.data.ents.push(entData);

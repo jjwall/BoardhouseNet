@@ -15,8 +15,6 @@ interface Props {
 }
 
 interface State {
-    currentUnits: number;
-    maxUnits: number;
     maxBarWidth: number;
 }
 
@@ -24,22 +22,12 @@ export class ProgressBar extends Component<Props, State> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
-            currentUnits: this.props.currentUnits,
-            maxUnits: this.props.maxUnits,
             maxBarWidth: this.props.baseWidth - 4,
         }
-
-        // setInterval(this.loseProgress, 50)
-    }
-
-    loseProgress = () => {
-        this.setState({
-            currentUnits: this.state.currentUnits - 1
-        })
     }
 
     getCurrentBarWidth = () => {
-        return (this.state.currentUnits / this.state.maxUnits) * this.state.maxBarWidth
+        return (this.props.currentUnits / this.props.maxUnits) * this.state.maxBarWidth
     }
 
     render(): JSXElement {
