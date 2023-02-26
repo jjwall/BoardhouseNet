@@ -213,6 +213,7 @@ export class Client {
             const shapes = font.generateShapes(contents, font_size);
             const geometry = new ShapeGeometry(shapes);
 
+            // vvv Old code, we don't want text centered vvv
             // Ensure font is centered on (parent) widget.
             // geometry.computeBoundingBox();
             // const xMid = - 0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x);

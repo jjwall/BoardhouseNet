@@ -64,7 +64,7 @@ export class Root extends Component<Props, GlobalState> {
     /** Example of how we might update status within UI. */
     updateStatus = () => {
         this.setState({
-            currentHP: this.state.currentHP + 1
+            currentHP: this.state.currentHP - 1
         })
     }
 

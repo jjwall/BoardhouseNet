@@ -37,14 +37,14 @@ export class HUD extends Component<Props, {}> {
                 <Text
                     contents="HP"
                     top={30}
-                    left={280}
+                    left={270}
                     fontSize={12}
                     fontColor="#c9424a"
                 />
                 <Text
                     contents={this.props.currentHP.toString()}
                     top={29}
-                    left={137}
+                    left={132}
                     fontSize={11}
                 />
                 {/* MP Status Bar */}
@@ -60,14 +60,14 @@ export class HUD extends Component<Props, {}> {
                 <Text
                     contents="MP"
                     top={50}
-                    left={280}
+                    left={270}
                     fontSize={12}
                     fontColor="#1baac1"
                 />
                 <Text
                     contents={this.props.currentMP.toString()}
                     top={49}
-                    left={137}
+                    left={132}
                     fontSize={11}
                 />
                 {/* XP Status Bar */}
@@ -83,20 +83,20 @@ export class HUD extends Component<Props, {}> {
                 <Text
                     contents="XP"
                     top={70}
-                    left={280}
+                    left={270}
                     fontSize={12}
                     fontColor="#23b14d"
                 />
                 <Text
                     contents={`${Math.floor((this.props.currentXP / this.props.maxXP)*100)}%`}
                     top={69}
-                    left={137}
+                    left={132}
                     fontSize={11}
                 />
                 <Text
                     contents="Lv: 1" // TODO: Make leveling functionality.
                     top="85"
-                    left="35"
+                    left="20"
                     fontSize="12"
                 />
             </panel>
