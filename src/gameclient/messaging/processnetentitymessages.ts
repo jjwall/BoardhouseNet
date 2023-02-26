@@ -37,7 +37,7 @@ export function createEntities(message: NetMessageCreateEntities, client: Client
                 }
 
                 if (entData.status) {
-                    setStatusGraphic(clientEnt.sprite, entData.status)
+                    setStatusGraphic(client, clientEnt.sprite, entData.status)
                 }
 
                 if (entData.player) {

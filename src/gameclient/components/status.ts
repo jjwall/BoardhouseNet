@@ -1,4 +1,6 @@
+import { createTextMesh, TextMeshParams } from "../clientengine/utils";
 import { Group, Mesh, MeshBasicMaterial, PlaneGeometry } from "three";
+import { Client } from "../clientengine/client";
 
 export interface StatusComponent {
     // Data fields.
@@ -36,7 +38,7 @@ type StatusData = {
     offsetY: number;
 }
 
-export function setStatusGraphic(entMesh: Mesh, statusData: StatusData) {
+export function setStatusGraphic(client: Client, entMesh: Mesh, statusData: StatusData) {
     // HP Base Bar.
     const hpBaseBarWidth = statusData.width + 4;
     const hpBaseBarHeight = statusData.height + 4;
@@ -57,9 +59,49 @@ export function setStatusGraphic(entMesh: Mesh, statusData: StatusData) {
     hpBar.position.z += 2;
     hpBar.position.x += statusData.offsetX;
     hpBar.position.y += statusData.offsetY;
-    
+    // Player name text shadow.
+    const playerNameOffsetX = 0;
+    const playerNameOffsetY = 7;
+    const playerNameTextShadowMeshParams: TextMeshParams = {
+        contents: statusData.name,
+        color: "#000000"
+    }
+    const playerNameTextShadowMesh = createTextMesh(client, playerNameTextShadowMeshParams);
+    playerNameTextShadowMesh.position.x += playerNameOffsetX + statusData.offsetX - 1;
+    playerNameTextShadowMesh.position.y += playerNameOffsetY + statusData.offsetY - 1;
+    // Player name text.
+    const playerNameTextMeshParams: TextMeshParams = {
+        contents: statusData.name,
+        color: "#FFFFFF"
+    }
+    const playerNameTextMesh = createTextMesh(client, playerNameTextMeshParams);
+    playerNameTextMesh.position.x += playerNameOffsetX + statusData.offsetX;
+    playerNameTextMesh.position.y += playerNameOffsetY + statusData.offsetY;
+    // Level text shadow.
+    const levelTextOffsetX = 0;
+    const levelTextOffsetY = 22;
+    const levelTextShadowMeshParams: TextMeshParams = {
+        contents: "Lv: 2",
+        color: "#000000"
+    }
+    const levelTextShadowMesh = createTextMesh(client, levelTextShadowMeshParams);
+    levelTextShadowMesh.position.x += levelTextOffsetX + statusData.offsetX - 1;
+    levelTextShadowMesh.position.y += levelTextOffsetY + statusData.offsetY - 1;
+    // Level text.
+    const levelTextMeshParams = {
+        contents: "Lv: 2",
+        color: "#FFFFFF"
+    }
+    const levelTextMesh = createTextMesh(client, levelTextMeshParams);
+    levelTextMesh.position.x += levelTextOffsetX + statusData.offsetX;
+    levelTextMesh.position.y += levelTextOffsetY + statusData.offsetY;
+    // Add to group.
     const container = new Group();
     entMesh.add(container);
     container.add(hpBar);
     container.add(hpBaseBar);
+    container.add(levelTextShadowMesh);
+    container.add(levelTextMesh);
+    container.add(playerNameTextShadowMesh);
+    container.add(playerNameTextMesh);
 }

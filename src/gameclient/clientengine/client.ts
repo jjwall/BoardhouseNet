@@ -202,6 +202,7 @@ export class Client {
         return this._audioBuffers[url];
     }
 
+    // TODO: Have way to clean up old cached text geometries.
     public getTextGeometry(contents: string, fontUrl: string, font_size: number) {
         const key = `${contents}|${fontUrl}|${font_size}`;
         const geom = this._textGeometries[key];
@@ -213,9 +214,9 @@ export class Client {
             const geometry = new ShapeGeometry(shapes);
 
             // Ensure font is centered on (parent) widget.
-            geometry.computeBoundingBox();
-            const xMid = - 0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x);
-            geometry.translate(xMid, 0, 0);
+            // geometry.computeBoundingBox();
+            // const xMid = - 0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x);
+            // geometry.translate(xMid, 0, 0);
 
             this._textGeometries[key] = geometry;
 
