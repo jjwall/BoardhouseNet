@@ -65,6 +65,7 @@ function processMovementInputs(ent: Readonly<Entity>, movementDirection: Vector3
             ent.vel.positional.add(movementDirection.multiplyScalar(ent.vel.acceleration));
             ent.pos.flipX = true;
             ent.status.level += 1;
+            ent.status.currentHp -= 5;
 
             // updatePlayerEnt = true;
         }

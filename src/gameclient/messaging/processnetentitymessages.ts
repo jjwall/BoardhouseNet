@@ -1,12 +1,12 @@
 import { NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEntities } from "../../packets/messages/netentitymessage";
 import { changeSequence, setAnimation } from "../components/animation";
+import { setStatusComponentAndGraphic } from "../components/status";
 import { ClientEntity } from "../clientengine/cliententity";
 import { setHitboxGraphic } from "../components/hitbox";
-import { setStatusComponentAndGraphic } from "../components/status";
 import { setPosition } from "../components/position";
 import { setSprite } from "../components/sprite";
 import { Client } from "../clientengine/client";
-import { Vector3 } from "three";
+import { PlaneGeometry, Vector3 } from "three";
 
 // Create front-end representations of EntData list. Should pass in all entities
 // using the "global" ecsKey when a player or spectator first joins (or scene transition happens).
@@ -79,16 +79,33 @@ export function updateEntities(message: NetMessageUpdateEntities, client: Client
                     clientEnt.anim = changeSequence(entData.anim.sequence, clientEnt.anim);
                 }
 
+                // example on updating UI
+                // if (clientEnt.player) {
+                //     if (client.currentClientId === entData.player.id) {
+                //         client.rootComponent.updateStatus()
+                //     }
+                // }
+
                 if (clientEnt.status) {
                     if (clientEnt.status.currentHp !== entData.status.currentHp) {
-                        // update
+                        // Update current hp and hp bar to reflect hp changes.
                         clientEnt.status.currentHp = entData.status.currentHp;
-                        // render update clientEnt.status.hpBarMesh
+                        clientEnt.status.hpBarMesh.geometry = new PlaneGeometry((clientEnt.status.currentHp / clientEnt.status.maxHp) * clientEnt.status.maxHpBarWidth, clientEnt.status.hpBarHeight);
+                        const { width: prevWidth, height: prevHeight } = (clientEnt.status.hpBarMesh.geometry as PlaneGeometry).parameters;
+                        clientEnt.status.hpBarMesh.geometry.translate(prevWidth/2, -prevHeight/2, 0);
+
+                        // Example if we showed both status plate and ui
+                        // if (client.currentClientId === entData.player.id) {
+                        //     client.rootComponent.updateStatus()
+                        // }
                     }
 
                     if (clientEnt.status.maxHp !== entData.status.maxHp) {
-                        // update - no render changes needed?
+                        // Update max hp and hp bar to reflect hp upgrade.
                         clientEnt.status.maxHp = entData.status.maxHp;
+                        clientEnt.status.hpBarMesh.geometry = new PlaneGeometry((clientEnt.status.currentHp / clientEnt.status.maxHp) * clientEnt.status.maxHpBarWidth, clientEnt.status.hpBarHeight);
+                        const { width: prevWidth, height: prevHeight } = (clientEnt.status.hpBarMesh.geometry as PlaneGeometry).parameters;
+                        clientEnt.status.hpBarMesh.geometry.translate(prevWidth/2, -prevHeight/2, 0);
                     }
 
                     if (clientEnt.status.level !== entData.status.level) {

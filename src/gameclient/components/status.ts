@@ -1,17 +1,23 @@
 import { createTextMesh, TextMeshParams } from "../clientengine/clientutils";
-import { Group, Mesh, MeshBasicMaterial, PlaneGeometry } from "three";
+import { BufferGeometry, Group, Mesh, MeshBasicMaterial, PlaneGeometry } from "three";
 import { Client } from "../clientengine/client";
 
+// TODO: Hp bar updates.
+// TODO: HUD state updates from client entity updates -> use root component . setState
+// TODO: Usernames set in lobby. Default if nothing is chosen is: Player_ClientId
+// -> Once done I'm done with UI??
 export interface StatusComponent {
     // name: string; // Name won't change - unnecessary to keep reference.
-    level: number;
     maxHp: number;
     currentHp: number;
+    maxHpBarWidth: number;
+    hpBarHeight: number;
+    hpBarMesh: Mesh;
+    level: number;
     levelTextMesh: Mesh;
     levelTextShadowMesh: Mesh;
     levelFontUrl: string;
     levelFontSize: number;
-    hpBarMesh: Mesh;
     // maxMp: number; // Not displaying Mp in status currently.
     // currentMp: number; // Not displaying Mp in status currently.
     // maxXp: number; // Not displaying Xp in status currently.
@@ -36,24 +42,25 @@ type StatusData = {
     offsetY: number;
 }
 
+/** Note: This method assumes HP is full when being set. Otherwise we need to reconfigure maxBarWidth and current HP. */
 export function setStatusComponentAndGraphic(client: Client, entMesh: Mesh, statusData: StatusData): StatusComponent {
     // HP Base Bar.
     const hpBaseBarWidth = statusData.width + 4;
     const hpBaseBarHeight = statusData.height + 4;
     const hpBaseBarGeom = new PlaneGeometry(hpBaseBarWidth, hpBaseBarHeight);
     const hpBaseBarMaterial = new MeshBasicMaterial({ color: "#282828", opacity: 0.75, transparent: true });
-    hpBaseBarGeom.translate(hpBaseBarWidth/2, -hpBaseBarHeight/2, 0);
     const hpBaseBar = new Mesh(hpBaseBarGeom, hpBaseBarMaterial);
+    hpBaseBar.geometry.translate(hpBaseBarWidth/2, -hpBaseBarHeight/2, 0);
     hpBaseBar.position.z += 1;
     hpBaseBar.position.x += statusData.offsetX - 2;
     hpBaseBar.position.y += statusData.offsetY + 2;
     // HP Bar.
-    const hpBarWidth = statusData.width;
+    const maxHpBarWidth = statusData.width;
     const hpBarHeight = statusData.height;
-    const hpBarGeom = new PlaneGeometry(hpBarWidth, hpBarHeight);
+    const hpBarGeom = new PlaneGeometry(maxHpBarWidth, hpBarHeight);
     const hpBarMaterial = new MeshBasicMaterial({ color: statusData.hpBarColor });
-    hpBarGeom.translate(hpBarWidth/2, -hpBarHeight/2, 0);
     const hpBar = new Mesh(hpBarGeom, hpBarMaterial);
+    hpBar.geometry.translate(maxHpBarWidth/2, -hpBarHeight/2, 0);
     hpBar.position.z += 2;
     hpBar.position.x += statusData.offsetX;
     hpBar.position.y += statusData.offsetY;
@@ -105,14 +112,17 @@ export function setStatusComponentAndGraphic(client: Client, entMesh: Mesh, stat
     container.add(playerNameTextShadowMesh);
     container.add(playerNameTextMesh);
 
+    // Return Status Component.
     return { 
-        level: statusData.level,
         maxHp: statusData.maxHp,
         currentHp: statusData.currentHp,
+        maxHpBarWidth: statusData.width,
+        hpBarHeight: statusData.height,
+        hpBarMesh: hpBar,
+        level: statusData.level,
         levelTextMesh: levelTextMesh,
         levelTextShadowMesh: levelTextShadowMesh,
         levelFontSize: 9,
         levelFontUrl: "./assets/fonts/helvetiker_regular_typeface.json",
-        hpBarMesh: hpBar,
     }
 }

@@ -1,7 +1,7 @@
+import { AnimationComponent } from "../components/animation";
 import { PositionComponent } from "../components/position";
 import { SpriteComponent } from "../components/sprite";
 import { PlayerComponent } from "../components/player";
-import { AnimationComponent } from "../components/animation";
 import { StatusComponent } from "../components/status";
 
 export class ClientEntity {
