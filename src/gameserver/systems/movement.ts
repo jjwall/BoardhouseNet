@@ -66,6 +66,8 @@ function processMovementInputs(ent: Readonly<Entity>, movementDirection: Vector3
             ent.pos.flipX = true;
             ent.status.level += 1;
             ent.status.currentHp -= 5;
+            ent.status.currentXp -=3;
+            ent.status.currentMp -= 2;
 
             // updatePlayerEnt = true;
         }

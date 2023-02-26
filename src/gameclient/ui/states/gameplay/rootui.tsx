@@ -14,6 +14,16 @@ import { HUD } from "./hud";
 export type UIEvents = Array<UIEventTypes>
 export type ClientInventory = Array<ItemData | undefined>
 
+export interface StatusStateParams {
+    level?: number
+    maxHp?: number;
+    currentHp?: number;
+    maxMp?: number;
+    currentMp?: number;
+    maxXp?: number;
+    currentXp?: number;
+}
+
 export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props): Root {
     let rootInstance = renderWidget(<Root { ...props }/>, rootWidget, scene);
 
@@ -29,6 +39,7 @@ export interface GlobalState {
     inventoryViewToggle: boolean
     inventoryTop: string | number
     // HUD
+    level: number;
     maxHP: number;
     currentHP: number;
     maxMP: number;
@@ -50,6 +61,7 @@ export class Root extends Component<Props, GlobalState> {
             inventoryViewToggle: props.initialState.inventoryViewToggle,
             inventoryTop: props.initialState.inventoryTop,
             notificationMessage: props.initialState.notificationMessage,
+            level: props.initialState.level,
             maxHP: props.initialState.maxHP,
             currentHP: props.initialState.currentHP,
             maxMP: props.initialState.maxMP,
@@ -62,10 +74,41 @@ export class Root extends Component<Props, GlobalState> {
     }
 
     /** Example of how we might update status within UI. */
-    updateStatus = () => {
-        this.setState({
-            currentHP: this.state.currentHP - 1
-        })
+    updateStatus = (params: StatusStateParams) => {
+        if (params.level)
+            this.setState({
+                level: params.level
+            })
+
+        if (params.currentHp)
+            this.setState({
+                currentHP: params.currentHp
+            })
+
+        if (params.maxHp)
+            this.setState({
+                maxHP: params.maxHp
+            })
+        
+        if (params.currentMp)
+            this.setState({
+                currentMP: params.currentMp
+            })
+
+        if (params.maxMp)
+            this.setState({
+                maxMP: params.maxMp
+            })
+
+        if (params.currentXp)
+            this.setState({
+                currentXP: params.currentXp
+            })
+
+        if (params.maxXp)
+            this.setState({
+                maxXP: params.maxXp
+            })
     }
 
     getState() {
@@ -124,6 +167,7 @@ export class Root extends Component<Props, GlobalState> {
         return(
             <panel>
                 <HUD
+                    level={this.state.level}
                     maxHP={this.state.maxHP}
                     currentHP={this.state.currentHP}
                     maxMP={this.state.maxMP}

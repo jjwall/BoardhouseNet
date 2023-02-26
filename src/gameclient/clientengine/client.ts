@@ -300,12 +300,13 @@ export class Client {
                         inventoryViewToggle: true,
                         inventoryTop: 456,
                         // HUD
-                        maxHP: 1000,
-                        currentHP: 963,
-                        maxMP: 1000,
-                        currentMP: 687,
-                        maxXP: 1000,
-                        currentXP: 140,
+                        level: 0,
+                        maxHP: 0,
+                        currentHP: 0,
+                        maxMP: 0,
+                        currentMP: 0,
+                        maxXP: 0,
+                        currentXP: 0,
                     }
                 });
                 break;

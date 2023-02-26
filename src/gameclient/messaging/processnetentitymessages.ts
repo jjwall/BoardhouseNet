@@ -37,8 +37,8 @@ export function createEntities(message: NetMessageCreateEntities, client: Client
                 }
 
                 if (entData.status) {
-                    // if (client.currentClientId !== entData.player.id)
-                        clientEnt.status = setStatusComponentAndGraphic(client, clientEnt.sprite, entData.status);
+                    // if (client.currentClientId !== entData.player.id) // if we don't show this for player, separate out component and graphic logic.
+                    clientEnt.status = setStatusComponentAndGraphic(client, clientEnt.sprite, entData.status);
                 }
 
                 if (entData.player) {
@@ -49,6 +49,17 @@ export function createEntities(message: NetMessageCreateEntities, client: Client
                         client.currentPlayerEntity = clientEnt;
                         // Client player ents should have +1 to their z index so they are always rendered over other player ents.
                         client.currentPlayerEntity.pos.loc.z++;
+
+                        // Set UI values.
+                        client.rootComponent.updateStatus({
+                            level: entData.status.level, 
+                            currentHp: entData.status.currentHp,
+                            maxHp: entData.status.maxHp,
+                            currentMp: entData.status.currentMp,
+                            maxMp: entData.status.maxMp,
+                            currentXp: entData.status.currentXp,
+                            maxXp: entData.status.maxXp,
+                        });
                     }
                 }
 
@@ -79,13 +90,33 @@ export function updateEntities(message: NetMessageUpdateEntities, client: Client
                     clientEnt.anim = changeSequence(entData.anim.sequence, clientEnt.anim);
                 }
 
-                // example on updating UI
-                // if (clientEnt.player) {
-                //     if (client.currentClientId === entData.player.id) {
-                //         client.rootComponent.updateStatus()
-                //     }
-                // }
+                // Update current player's HUD Status UI.
+                if (clientEnt.player) {
+                    if (client.currentClientId === entData.player.id) {
+                        if (client.rootComponent.getState().level !== entData.status.level)
+                            client.rootComponent.updateStatus({ level: entData.status.level })
 
+                        if (client.rootComponent.getState().currentHP !== entData.status.currentHp)
+                            client.rootComponent.updateStatus({ currentHp: entData.status.currentHp })
+                        
+                        if (client.rootComponent.getState().maxHP !== entData.status.maxHp)
+                            client.rootComponent.updateStatus({ maxHp: entData.status.maxHp })
+
+                        if (client.rootComponent.getState().currentMP !== entData.status.currentMp)
+                            client.rootComponent.updateStatus({ currentMp: entData.status.currentMp })
+                        
+                        if (client.rootComponent.getState().maxMP !== entData.status.maxMp)
+                            client.rootComponent.updateStatus({ maxMp: entData.status.maxMp })
+
+                        if (client.rootComponent.getState().currentXP !== entData.status.currentXp)
+                            client.rootComponent.updateStatus({ currentXp: entData.status.currentXp })
+                        
+                        if (client.rootComponent.getState().maxXP !== entData.status.maxXp)
+                            client.rootComponent.updateStatus({ maxXp: entData.status.maxXp })
+                    }
+                }
+
+                // Update entity's status plates.
                 if (clientEnt.status) {
                     if (clientEnt.status.currentHp !== entData.status.currentHp) {
                         // Update current hp and hp bar to reflect hp changes.
@@ -93,11 +124,6 @@ export function updateEntities(message: NetMessageUpdateEntities, client: Client
                         clientEnt.status.hpBarMesh.geometry = new PlaneGeometry((clientEnt.status.currentHp / clientEnt.status.maxHp) * clientEnt.status.maxHpBarWidth, clientEnt.status.hpBarHeight);
                         const { width: prevWidth, height: prevHeight } = (clientEnt.status.hpBarMesh.geometry as PlaneGeometry).parameters;
                         clientEnt.status.hpBarMesh.geometry.translate(prevWidth/2, -prevHeight/2, 0);
-
-                        // Example if we showed both status plate and ui
-                        // if (client.currentClientId === entData.player.id) {
-                        //     client.rootComponent.updateStatus()
-                        // }
                     }
 
                     if (clientEnt.status.maxHp !== entData.status.maxHp) {

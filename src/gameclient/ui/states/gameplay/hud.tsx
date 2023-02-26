@@ -8,6 +8,7 @@ import { Scene } from "THREE";
 interface Props {
     top?: string | number;
     left?: string | number;
+    level: number;
     maxHP: number;
     currentHP: number;
     maxMP: number;
@@ -94,7 +95,7 @@ export class HUD extends Component<Props, {}> {
                     fontSize={11}
                 />
                 <Text
-                    contents="Lv: 1" // TODO: Make leveling functionality.
+                    contents={`Lv: ${this.props.level}`}
                     top="85"
                     left="20"
                     fontSize="12"

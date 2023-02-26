@@ -2,8 +2,9 @@ import { createTextMesh, TextMeshParams } from "../clientengine/clientutils";
 import { BufferGeometry, Group, Mesh, MeshBasicMaterial, PlaneGeometry } from "three";
 import { Client } from "../clientengine/client";
 
-// TODO: Hp bar updates.
+// TODO: (Done) Hp bar updates.
 // TODO: HUD state updates from client entity updates -> use root component . setState
+// -> This works fine. But do we want status plate to show for current player?
 // TODO: Usernames set in lobby. Default if nothing is chosen is: Player_ClientId
 // -> Once done I'm done with UI??
 export interface StatusComponent {
@@ -42,7 +43,6 @@ type StatusData = {
     offsetY: number;
 }
 
-/** Note: This method assumes HP is full when being set. Otherwise we need to reconfigure maxBarWidth and current HP. */
 export function setStatusComponentAndGraphic(client: Client, entMesh: Mesh, statusData: StatusData): StatusComponent {
     // HP Base Bar.
     const hpBaseBarWidth = statusData.width + 4;
@@ -57,7 +57,8 @@ export function setStatusComponentAndGraphic(client: Client, entMesh: Mesh, stat
     // HP Bar.
     const maxHpBarWidth = statusData.width;
     const hpBarHeight = statusData.height;
-    const hpBarGeom = new PlaneGeometry(maxHpBarWidth, hpBarHeight);
+    // Initialize size of hp bar based on current hp.
+    const hpBarGeom = new PlaneGeometry((statusData.currentHp / statusData.maxHp) * maxHpBarWidth, hpBarHeight);
     const hpBarMaterial = new MeshBasicMaterial({ color: statusData.hpBarColor });
     const hpBar = new Mesh(hpBarGeom, hpBarMaterial);
     hpBar.geometry.translate(maxHpBarWidth/2, -hpBarHeight/2, 0);
