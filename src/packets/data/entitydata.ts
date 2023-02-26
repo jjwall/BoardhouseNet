@@ -47,6 +47,7 @@ export interface EntityData {
         maxXp: number;
         currentXp: number;
         // Graphic fields.
+        hpBarColor: string;
         height: number;
         width: number;
         offsetX: number;

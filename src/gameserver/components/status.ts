@@ -14,6 +14,7 @@ export interface StatusComponent {
     maxXp: number;
     currentXp: number;
     // Graphic fields.
+    hpBarColor: string;
     height: number;
     width: number;
     offsetX: number;
@@ -26,6 +27,7 @@ export interface StatusParams {
     maxHp: number;
     maxMp: number;
     maxXp: number;
+    hpBarColor: string;
     height: number;
     width: number;
     offsetX: number;
@@ -42,6 +44,7 @@ export function setStatus(params: StatusParams): StatusComponent  {
         currentMp: params.maxMp,
         maxXp: params.maxXp,
         currentXp: params.maxXp,
+        hpBarColor: params.hpBarColor,
         height: params.height,
         width: params.width,
         offsetX: params.offsetX,
