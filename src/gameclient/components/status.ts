@@ -1,23 +1,21 @@
-import { createTextMesh, TextMeshParams } from "../clientengine/utils";
+import { createTextMesh, TextMeshParams } from "../clientengine/clientutils";
 import { Group, Mesh, MeshBasicMaterial, PlaneGeometry } from "three";
 import { Client } from "../clientengine/client";
 
 export interface StatusComponent {
-    // Data fields.
-    name: string;
+    // name: string; // Name won't change - unnecessary to keep reference.
     level: number;
     maxHp: number;
     currentHp: number;
-    maxMp: number;
-    currentMp: number;
-    maxXp: number;
-    currentXp: number;
-    // Graphic fields.
-    // height: number;
-    // width: number;
-    // offsetX: number;
-    // offsetY: number;
-    // statusPlate: Group
+    levelTextMesh: Mesh;
+    levelTextShadowMesh: Mesh;
+    levelFontUrl: string;
+    levelFontSize: number;
+    hpBarMesh: Mesh;
+    // maxMp: number; // Not displaying Mp in status currently.
+    // currentMp: number; // Not displaying Mp in status currently.
+    // maxXp: number; // Not displaying Xp in status currently.
+    // currentXp: number; // Not displaying Xp in status currently.
 }
 
 type StatusData = {
@@ -38,7 +36,7 @@ type StatusData = {
     offsetY: number;
 }
 
-export function setStatusGraphic(client: Client, entMesh: Mesh, statusData: StatusData) {
+export function setStatusComponentAndGraphic(client: Client, entMesh: Mesh, statusData: StatusData): StatusComponent {
     // HP Base Bar.
     const hpBaseBarWidth = statusData.width + 4;
     const hpBaseBarHeight = statusData.height + 4;
@@ -64,7 +62,7 @@ export function setStatusGraphic(client: Client, entMesh: Mesh, statusData: Stat
     const playerNameOffsetY = 7;
     const playerNameTextShadowMeshParams: TextMeshParams = {
         contents: statusData.name,
-        color: "#000000"
+        color: "#000000",
     }
     const playerNameTextShadowMesh = createTextMesh(client, playerNameTextShadowMeshParams);
     playerNameTextShadowMesh.position.x += playerNameOffsetX + statusData.offsetX - 1;
@@ -72,7 +70,7 @@ export function setStatusGraphic(client: Client, entMesh: Mesh, statusData: Stat
     // Player name text.
     const playerNameTextMeshParams: TextMeshParams = {
         contents: statusData.name,
-        color: "#FFFFFF"
+        color: "#FFFFFF",
     }
     const playerNameTextMesh = createTextMesh(client, playerNameTextMeshParams);
     playerNameTextMesh.position.x += playerNameOffsetX + statusData.offsetX;
@@ -81,16 +79,18 @@ export function setStatusGraphic(client: Client, entMesh: Mesh, statusData: Stat
     const levelTextOffsetX = 0;
     const levelTextOffsetY = 22;
     const levelTextShadowMeshParams: TextMeshParams = {
-        contents: "Lv: 2",
-        color: "#000000"
+        contents: `Lv: ${statusData.level}`,
+        color: "#000000",
+        fontSize: 9,
     }
     const levelTextShadowMesh = createTextMesh(client, levelTextShadowMeshParams);
     levelTextShadowMesh.position.x += levelTextOffsetX + statusData.offsetX - 1;
     levelTextShadowMesh.position.y += levelTextOffsetY + statusData.offsetY - 1;
     // Level text.
     const levelTextMeshParams = {
-        contents: "Lv: 2",
-        color: "#FFFFFF"
+        contents: `Lv: ${statusData.level}`,
+        color: "#FFFFFF",
+        fontSize: 9,
     }
     const levelTextMesh = createTextMesh(client, levelTextMeshParams);
     levelTextMesh.position.x += levelTextOffsetX + statusData.offsetX;
@@ -104,4 +104,15 @@ export function setStatusGraphic(client: Client, entMesh: Mesh, statusData: Stat
     container.add(levelTextMesh);
     container.add(playerNameTextShadowMesh);
     container.add(playerNameTextMesh);
+
+    return { 
+        level: statusData.level,
+        maxHp: statusData.maxHp,
+        currentHp: statusData.currentHp,
+        levelTextMesh: levelTextMesh,
+        levelTextShadowMesh: levelTextShadowMesh,
+        levelFontSize: 9,
+        levelFontUrl: "./assets/fonts/helvetiker_regular_typeface.json",
+        hpBarMesh: hpBar,
+    }
 }

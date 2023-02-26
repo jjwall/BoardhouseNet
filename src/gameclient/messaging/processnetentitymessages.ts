@@ -2,7 +2,7 @@ import { NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEn
 import { changeSequence, setAnimation } from "../components/animation";
 import { ClientEntity } from "../clientengine/cliententity";
 import { setHitboxGraphic } from "../components/hitbox";
-import { setStatusGraphic } from "../components/status";
+import { setStatusComponentAndGraphic } from "../components/status";
 import { setPosition } from "../components/position";
 import { setSprite } from "../components/sprite";
 import { Client } from "../clientengine/client";
@@ -38,7 +38,7 @@ export function createEntities(message: NetMessageCreateEntities, client: Client
 
                 if (entData.status) {
                     // if (client.currentClientId !== entData.player.id)
-                        setStatusGraphic(client, clientEnt.sprite, entData.status)
+                        clientEnt.status = setStatusComponentAndGraphic(client, clientEnt.sprite, entData.status);
                 }
 
                 if (entData.player) {
@@ -77,6 +77,26 @@ export function updateEntities(message: NetMessageUpdateEntities, client: Client
         
                 if (clientEnt.anim) {
                     clientEnt.anim = changeSequence(entData.anim.sequence, clientEnt.anim);
+                }
+
+                if (clientEnt.status) {
+                    if (clientEnt.status.currentHp !== entData.status.currentHp) {
+                        // update
+                        clientEnt.status.currentHp = entData.status.currentHp;
+                        // render update clientEnt.status.hpBarMesh
+                    }
+
+                    if (clientEnt.status.maxHp !== entData.status.maxHp) {
+                        // update - no render changes needed?
+                        clientEnt.status.maxHp = entData.status.maxHp;
+                    }
+
+                    if (clientEnt.status.level !== entData.status.level) {
+                        // Update level text and shadow meshes.
+                        clientEnt.status.level = entData.status.level;
+                        clientEnt.status.levelTextMesh.geometry = client.getTextGeometry(`Lv: ${entData.status.level}`, clientEnt.status.levelFontUrl, clientEnt.status.levelFontSize);
+                        clientEnt.status.levelTextShadowMesh.geometry = client.getTextGeometry(`Lv: ${entData.status.level}`, clientEnt.status.levelFontUrl, clientEnt.status.levelFontSize);
+                    }
                 }
             }
         });

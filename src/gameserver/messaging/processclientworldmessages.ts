@@ -41,6 +41,7 @@ import { Server } from "../serverengine/server";
         currentInventory: undefined,
     }
 
+    // Preset inventory based on chosen class. This happens outside of playerCharacter archetype since inventory will change when players transition worlds.
     switch (message.data.playerClass) {
         case PlayerClassTypes.PAGE:
             playerEntParams.spawnPos = setPosition(0, 0, 5);
@@ -60,7 +61,7 @@ import { Server } from "../serverengine/server";
             break;
     }
 
-    playerEnt = createPlayerCharacter(playerEntParams) // this is breaking other classes currently. -> resolve
+    playerEnt = createPlayerCharacter(playerEntParams)
 
     // Not exactly sure why we need this setTimeout here.
     setTimeout(function() {
