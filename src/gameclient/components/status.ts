@@ -1,12 +1,18 @@
 import { createTextMesh, TextMeshParams } from "../clientengine/clientutils";
-import { BufferGeometry, Group, Mesh, MeshBasicMaterial, PlaneGeometry } from "three";
+import { Group, Mesh, MeshBasicMaterial, PlaneGeometry } from "three";
 import { Client } from "../clientengine/client";
 
 // TODO: (Done) Hp bar updates.
-// TODO: HUD state updates from client entity updates -> use root component . setState
+// TODO: (Done) HUD state updates from client entity updates -> use root component . setState
 // -> This works fine. But do we want status plate to show for current player?
 // TODO: Usernames set in lobby. Default if nothing is chosen is: Player_ClientId
+// TODO: Preset stats for each class. Pass in like inventory on world join.
 // -> Once done I'm done with UI??
+// TODO: Max HP upgrades don't seem to reflect in ui
+// TODO: Get new goblin spawned in with status plate w/ name "goblin"
+// TODO: Different colored HP bars for players (green) vs enemies (red)
+// Possible TODO: Refactor Status -> Stats? or does this status make sense.
+// Possible TODO: Refactor HP -> Hp in root ui?
 export interface StatusComponent {
     // name: string; // Name won't change - unnecessary to keep reference.
     maxHp: number;
@@ -51,7 +57,7 @@ export function setStatusComponentAndGraphic(client: Client, entMesh: Mesh, stat
     const hpBaseBarMaterial = new MeshBasicMaterial({ color: "#282828", opacity: 0.75, transparent: true });
     const hpBaseBar = new Mesh(hpBaseBarGeom, hpBaseBarMaterial);
     hpBaseBar.geometry.translate(hpBaseBarWidth/2, -hpBaseBarHeight/2, 0);
-    hpBaseBar.position.z += 1;
+    hpBaseBar.position.z += 2;
     hpBaseBar.position.x += statusData.offsetX - 2;
     hpBaseBar.position.y += statusData.offsetY + 2;
     // HP Bar.
@@ -62,7 +68,7 @@ export function setStatusComponentAndGraphic(client: Client, entMesh: Mesh, stat
     const hpBarMaterial = new MeshBasicMaterial({ color: statusData.hpBarColor });
     const hpBar = new Mesh(hpBarGeom, hpBarMaterial);
     hpBar.geometry.translate(maxHpBarWidth/2, -hpBarHeight/2, 0);
-    hpBar.position.z += 2;
+    hpBar.position.z += 3;
     hpBar.position.x += statusData.offsetX;
     hpBar.position.y += statusData.offsetY;
     // Player name text shadow.
@@ -73,6 +79,7 @@ export function setStatusComponentAndGraphic(client: Client, entMesh: Mesh, stat
         color: "#000000",
     }
     const playerNameTextShadowMesh = createTextMesh(client, playerNameTextShadowMeshParams);
+    playerNameTextShadowMesh.position.z += 2
     playerNameTextShadowMesh.position.x += playerNameOffsetX + statusData.offsetX - 1;
     playerNameTextShadowMesh.position.y += playerNameOffsetY + statusData.offsetY - 1;
     // Player name text.
@@ -81,6 +88,7 @@ export function setStatusComponentAndGraphic(client: Client, entMesh: Mesh, stat
         color: "#FFFFFF",
     }
     const playerNameTextMesh = createTextMesh(client, playerNameTextMeshParams);
+    playerNameTextMesh.position.z += 2
     playerNameTextMesh.position.x += playerNameOffsetX + statusData.offsetX;
     playerNameTextMesh.position.y += playerNameOffsetY + statusData.offsetY;
     // Level text shadow.
@@ -92,6 +100,7 @@ export function setStatusComponentAndGraphic(client: Client, entMesh: Mesh, stat
         fontSize: 9,
     }
     const levelTextShadowMesh = createTextMesh(client, levelTextShadowMeshParams);
+    levelTextShadowMesh.position.z += 2
     levelTextShadowMesh.position.x += levelTextOffsetX + statusData.offsetX - 1;
     levelTextShadowMesh.position.y += levelTextOffsetY + statusData.offsetY - 1;
     // Level text.
@@ -101,13 +110,14 @@ export function setStatusComponentAndGraphic(client: Client, entMesh: Mesh, stat
         fontSize: 9,
     }
     const levelTextMesh = createTextMesh(client, levelTextMeshParams);
+    levelTextMesh.position.z += 2
     levelTextMesh.position.x += levelTextOffsetX + statusData.offsetX;
     levelTextMesh.position.y += levelTextOffsetY + statusData.offsetY;
     // Add to group.
     const container = new Group();
     entMesh.add(container);
-    container.add(hpBar);
     container.add(hpBaseBar);
+    container.add(hpBar);
     container.add(levelTextShadowMesh);
     container.add(levelTextMesh);
     container.add(playerNameTextShadowMesh);

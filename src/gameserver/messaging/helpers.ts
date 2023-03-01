@@ -33,6 +33,7 @@ export function transitionPlayerToAnotherWorld(playerEnt: Entity, currentWorld: 
         clientId: playerEnt.player.id,
         playerClass: playerEnt.player.class,
         playerInventory: playerEnt.player.inventory,
+        playerStats: playerEnt.stats,
         newWorldType: newWorldType,
         newPos: {
             x: newPos.loc.x,

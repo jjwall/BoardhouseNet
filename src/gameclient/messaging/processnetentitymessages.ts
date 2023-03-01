@@ -37,8 +37,8 @@ export function createEntities(message: NetMessageCreateEntities, client: Client
                 }
 
                 if (entData.status) {
-                    // if (client.currentClientId !== entData.player.id) // if we don't show this for player, separate out component and graphic logic.
-                    clientEnt.status = setStatusComponentAndGraphic(client, clientEnt.sprite, entData.status);
+                    if (client.currentClientId !== entData.player.id) // if we don't show this for player, separate out component and graphic logic.
+                        clientEnt.status = setStatusComponentAndGraphic(client, clientEnt.sprite, entData.status);
                 }
 
                 if (entData.player) {

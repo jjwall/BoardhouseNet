@@ -8,6 +8,10 @@ import { presetWizardInventory } from "../../database/presets/wizardinventory";
 import { presetPageInventory } from "../../database/presets/pageinventory";
 import { broadcastCreateEntitiesMessage } from "./sendnetentitymessages";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
+import { presetKnightStats } from "../../database/presets/knightstats";
+import { presetWizardStats } from "../../database/presets/wizardstats";
+import { presetRangerStats } from "../../database/presets/rangerstats";
+import { presetPageStats } from "../../database/presets/pagestats";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { setPosition } from "../components/position";
 import { PlayerStates } from "../components/player";
@@ -39,25 +43,31 @@ import { Server } from "../serverengine/server";
         spawnPos: undefined,
         class: message.data.playerClass,
         currentInventory: undefined,
+        currentStats: undefined,
     }
 
-    // Preset inventory based on chosen class. This happens outside of playerCharacter archetype since inventory will change when players transition worlds.
+    // Preset inventory and statsbased on chosen class. 
+    // This happens outside of playerCharacter archetype since inventory and stats will change when players transition worlds.
     switch (message.data.playerClass) {
         case PlayerClassTypes.PAGE:
             playerEntParams.spawnPos = setPosition(0, 0, 5);
             playerEntParams.currentInventory = presetPageInventory;
+            playerEntParams.currentStats = presetPageStats;
             break;
         case PlayerClassTypes.WIZARD:
             playerEntParams.spawnPos = setPosition(0, 0, 5);
             playerEntParams.currentInventory = presetWizardInventory;
+            playerEntParams.currentStats = presetWizardStats;
             break;
         case PlayerClassTypes.RANGER:
             playerEntParams.spawnPos = setPosition(0, 0, 5);
             playerEntParams.currentInventory = presetRangerInventory;
+            playerEntParams.currentStats = presetRangerStats;
             break;
         case PlayerClassTypes.KNIGHT:
             playerEntParams.spawnPos = setPosition(0, 0, 5);
             playerEntParams.currentInventory = presetKnightInventory;
+            playerEntParams.currentStats = presetKnightStats;
             break;
     }
 
@@ -89,7 +99,8 @@ export function processPlayerWorldTransitionMessage(message: ClientMessagePlayer
         clientId: message.data.clientId,
         spawnPos: setPosition(message.data.newPos.x, message.data.newPos.y, 5),
         class: message.data.playerClass,
-        currentInventory: message.data.playerInventory
+        currentInventory: message.data.playerInventory,
+        currentStats: message.data.playerStats,
     }
     playerEnt = createPlayerCharacter(params)
 

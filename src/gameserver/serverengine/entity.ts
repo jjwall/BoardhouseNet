@@ -4,18 +4,18 @@ import { BehaviorComponent } from "../components/behavior";
 import { PositionComponent } from "../components/position";
 import { VelocityComponent } from "../components/velocity";
 import { MovementComponent} from "../components/movement";
+import { StatsData } from "../../packets/data/statsdata";
 import { HitboxComponent } from "../components/hitbox";
 import { PlayerComponent } from "../components/player";
 import { SpriteComponent } from "../components/sprite";
 import { FollowComponent } from "../components/follow";
-import { StatusComponent } from "../components/status";
 import { TimerComponent } from "../components/timer";
 
 export class Entity {
     netId: number;
     parent?: Entity;
     player: PlayerComponent;
-    status: StatusComponent;
+    stats: StatsData;
     pos: PositionComponent;
     vel: VelocityComponent;
     sprite: SpriteComponent;
