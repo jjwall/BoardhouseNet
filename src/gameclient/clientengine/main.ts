@@ -29,6 +29,7 @@ import { WorldTypes } from "../../packets/enums/worldtypes";
 // (Done) Render this plus HP bars, Lv above character entities / enemy names, Lv and HP bars over enemies.
 // More advanced "cooldown" subsystem. Stutter ticks ain't working well for dodgeroll and skills.
 // (Challenge) chat window in bottom left of screen
+// Get goblin hp in nameplate to reflect current hp
 // Tiled data loader.
 // Character portraits & gold UI next to Lv
 // Better enemy AI.
