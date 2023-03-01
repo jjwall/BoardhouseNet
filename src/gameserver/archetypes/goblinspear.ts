@@ -1,8 +1,8 @@
 import { broadcastCreateEntitiesMessage, broadcastDestroyEntitiesMessage } from "../messaging/sendnetentitymessages";
 import { getWorldPosition, PositionComponent, setPosition } from "../components/position";
-import { kenneyGoblinAnim } from "../../modules/animations/animationdata/kenneygoblin";
 import { goblinSpearAnim } from "../../modules/animations/animationdata/goblinspear";
-import { goblinSpearBehavior, GoblinSpearState } from "./../behaviors/goblinspear"
+import { goblinSpearBehavior, GoblinSpearState } from "./../behaviors/goblinspear";
+import { presetGoblinSpearStats } from "../../database/presets/goblinspearstats";
 import { SequenceTypes } from "../../modules/animations/sequencetypes";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { HitboxTypes, setHitbox } from "../components/hitbox";
@@ -26,6 +26,7 @@ export function createGoblinSpear(worldEngine: BaseWorldEngine, pos: PositionCom
     goblin.vel = setVelocity(15, 0.5);
     goblin.sprite = { url: "./assets/textures/npcs/goblin_spear/run/Heroine_goblin_spear_run_00.png", pixelRatio: 1 };
     goblin.anim = { sequence: SequenceTypes.RUN, blob: goblinSpearAnim };
+    goblin.stats = presetGoblinSpearStats
     goblin.behavior = setBehavior(goblinSpearBehavior);
 
     // const goblinVision = createGoblinVision(goblin, state);
@@ -112,7 +113,7 @@ export function createGoblinSpearVision(goblinEnt: Entity, state: GoblinSpearSta
     goblinVision.pos = setPosition (0, 0, 1);
     goblinVision.sprite = { url: "./assets/textures/misc/empty_texture.png", pixelRatio: 1 };
     goblinVision.parent = goblinEnt;
-    goblinVision.hitbox = setHitbox(HitboxTypes.ENEMY_VISION, [HitboxTypes.PLAYER], 500, 500);//, 180);
+    goblinVision.hitbox = setHitbox(HitboxTypes.ENEMY_VISION, [HitboxTypes.PLAYER], 100, 100);//, 180);
     goblinVision.hitbox.onHit = (vision, other, manifold) => {
         // if (!state.stunlocked) {
             if (other.hitbox.collideType === HitboxTypes.PLAYER && !state.target) {

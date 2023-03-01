@@ -52,7 +52,7 @@ const config: ClientConfig = {
     screenHeight: 720,
     // gameTicksPerSecond: 60,
     // displayFPS: true,
-    displayHitBoxes: true,
+    displayHitBoxes: false,
     // globalErrorHandling: true,
     fontUrls: [
         "./assets/fonts/helvetiker_regular_typeface.json"

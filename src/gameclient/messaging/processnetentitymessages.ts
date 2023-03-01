@@ -37,7 +37,10 @@ export function createEntities(message: NetMessageCreateEntities, client: Client
                 }
 
                 if (entData.stats) {
-                    if (client.currentClientId !== entData.player.id) // if we don't show this for player, separate out component and graphic logic.
+                    if (entData.player && client.currentClientId !== entData.player.id) 
+                        clientEnt.nameplate = setNameplateComponent(client, clientEnt.sprite, entData.stats);
+                        
+                    if (!entData.player)
                         clientEnt.nameplate = setNameplateComponent(client, clientEnt.sprite, entData.stats);
                 }
 
