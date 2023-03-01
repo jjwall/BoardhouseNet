@@ -58,6 +58,17 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
                 sendDodgeKeyPressMessage(client);
             }
             break;
+        
+        case 73: // i
+            if (!client.inventoryKeyPressed) {
+                client.inventoryKeyPressed = true;
+
+                if (client.getUIState().inventoryViewToggle)
+                    client.rootComponent.setInventoryViewToggle(false)
+                else
+                    client.rootComponent.setInventoryViewToggle(true)
+            }
+            break;
     }
 }
 
@@ -114,6 +125,13 @@ export function handleKeyUpEvent(client: Client, e: KeyboardEvent) {
             if (client.dodgeKeyPressed) {
                 // No event to send, set boolean to false.
                 client.dodgeKeyPressed = false;
+            }
+            break;
+
+        case 73: // i
+            if (client.inventoryKeyPressed) {
+                // No event to process, set boolean to false.
+                client.inventoryKeyPressed = false;
             }
             break;
     }

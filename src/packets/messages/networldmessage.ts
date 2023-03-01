@@ -2,6 +2,7 @@ import { WorldTransitionData } from "../data/worldtransitiondata";
 import { NotificationData } from "../data/notificationdata";
 import { WorldLevelData } from "../data/worldleveldata";
 import { ItemPickupData } from "../data/itempickupdata";
+import { InventoryData } from "../data/inventorydata";
 import { Message } from "./message";
 
 export type NetWorldMessage = 
@@ -9,6 +10,7 @@ export type NetWorldMessage =
     NetMessageUnloadWorld | 
     NetMessagePlayerWorldTransition |
     NetMessagePlayerItemPickup |
+    NetMessagePlayerReconcileInventory |
     NetMessagePlayerNotification;
 
 export interface NetMessageLoadWorld extends Message {
@@ -30,6 +32,11 @@ export interface NetMessagePlayerItemPickup extends Message {
     data: ItemPickupData;
 }
 
+export interface NetMessagePlayerReconcileInventory extends Message {
+    eventType: NetWorldEventTypes.PLAYER_RECONCILE_INVENTORY;
+    data: InventoryData;
+}
+
 export interface NetMessagePlayerNotification extends Message {
     eventType: NetWorldEventTypes.PLAYER_NOTIFICATION;
     data: NotificationData;
@@ -40,5 +47,6 @@ export enum NetWorldEventTypes {
     UNLOAD_WORLD = "UNLOAD_WORLD",
     PLAYER_WORLD_TRANSITION = "PLAYER_WORLD_TRANSITION",
     PLAYER_ITEM_PICKUP = "PLAYER_ITEM_PICKUP",
+    PLAYER_RECONCILE_INVENTORY = "PLAYER_RECONCILE_INVENTORY",
     PLAYER_NOTIFICATION = "PLAYER_NOTIFICATION"
 }

@@ -4,15 +4,18 @@ import { BehaviorComponent } from "../components/behavior";
 import { PositionComponent } from "../components/position";
 import { VelocityComponent } from "../components/velocity";
 import { MovementComponent} from "../components/movement";
+import { StatsData } from "../../packets/data/statsdata";
 import { HitboxComponent } from "../components/hitbox";
 import { PlayerComponent } from "../components/player";
 import { SpriteComponent } from "../components/sprite";
+import { FollowComponent } from "../components/follow";
 import { TimerComponent } from "../components/timer";
 
 export class Entity {
     netId: number;
     parent?: Entity;
     player: PlayerComponent;
+    stats: StatsData;
     pos: PositionComponent;
     vel: VelocityComponent;
     sprite: SpriteComponent;
@@ -23,4 +26,6 @@ export class Entity {
     timer: TimerComponent;
     skillSlots: SkillSlotsComponent;
     actionReticle: Entity;
+    follow: FollowComponent;
+    followerNetId: number;
 }

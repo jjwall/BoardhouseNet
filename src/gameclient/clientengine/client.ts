@@ -1,23 +1,25 @@
-import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh, Group, Vector2, PerspectiveCamera } from "three";
+import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh } from "three";
 import { handlePointerDownEvent, handlePointerMoveEvent, handlePointerUpEvent } from "../events/pointerevents";
+import { sendPlayerInventoryEventMessage } from "../messaging/sendclientworldmessages";
+import { GlobalState, renderGamePlayUi, Root } from "../ui/states/gameplay/rootui";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
-import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
-import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { GameServerStateTypes } from "../../packets/enums/gameserverstatetypes";
-import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
-import { EventTypes } from "../events/eventtypes";
-import { ClientEntity } from "./cliententity";
-import { NetIdToEntityMap } from "./interfaces";
-import { ClientRender } from "../renders/clientrender";
+import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
+import { presetEmptyInventory } from "../../database/presets/emptyinventory";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
-import { WorldTypes } from "../../packets/enums/worldtypes";
+import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
+import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
+import { UIEventTypes } from "../../packets/enums/uieventtypes";
 import { SceneTransition } from "../renders/scenetransitions";
-import { animationSystem } from "../systems/animation";
-import { centerCameraOnPlayer } from "./camera";
-import { renderGamePlayUi, Root } from "../ui/states/gameplay/rootui";
+import { WorldTypes } from "../../packets/enums/worldtypes";
 import { createWidget, Widget } from "../ui/core/widget";
+import { ClientRender } from "../renders/clientrender";
+import { animationSystem } from "../systems/animation";
 import { layoutWidget } from "../ui/core/layoutwidget";
-import { presetInventory } from "../../../database/preset_inventory";
+import { EventTypes } from "../events/eventtypes";
+import { NetIdToEntityMap } from "./interfaces";
+import { centerCameraOnPlayer } from "./camera";
+import { ClientEntity } from "./cliententity";
 
 export interface ClientConfig {
     /// state stuff ///
@@ -27,6 +29,7 @@ export interface ClientConfig {
     /// end state stuff ///
     role: ClientRoleTypes;
     playerClass: PlayerClassTypes;
+    username: string;
     worldType: WorldTypes;
     /// old configs
     connection: WebSocket;
@@ -50,6 +53,7 @@ export class Client {
         ///
         this.role = config.role;
         this.playerClass = config.playerClass;
+        this.username = config.username;
         this.worldType = config.worldType;
         ///
         // vvv merged from old configs vvv
@@ -57,6 +61,8 @@ export class Client {
         this.currentPort = config.currentPort;
         this.currentClientId = config.currentClientId;
         this.hostName = config.hostName;
+
+        // Inputs
         this.keyLeftIsDown = false;
         this.keyRightIsDown = false;
         this.keyUpIsDown = false;
@@ -64,6 +70,7 @@ export class Client {
         this.keyZIsDown = false;
         this.keyXIsDown = false;
         this.dodgeKeyPressed = false;
+        this.inventoryKeyPressed = false;
 
         // ...
         // vvv regular engine stuff vvv
@@ -82,6 +89,7 @@ export class Client {
     public currentPlayerEntity: ClientEntity; // just a reference
     public role: ClientRoleTypes;
     public playerClass: PlayerClassTypes;
+    public username: string;
     public gameScene: Scene;
     public gameCamera: Camera;
     public uiScene: Scene;
@@ -110,6 +118,7 @@ export class Client {
     keyZIsDown: boolean;
     keyXIsDown: boolean;
     dodgeKeyPressed: boolean;
+    inventoryKeyPressed: boolean;
 
     /// ^^^ old configs ^^^
     public rootComponent: Root;
@@ -196,6 +205,7 @@ export class Client {
         return this._audioBuffers[url];
     }
 
+    // TODO: Have way to clean up old cached text geometries.
     public getTextGeometry(contents: string, fontUrl: string, font_size: number) {
         const key = `${contents}|${fontUrl}|${font_size}`;
         const geom = this._textGeometries[key];
@@ -206,10 +216,11 @@ export class Client {
             const shapes = font.generateShapes(contents, font_size);
             const geometry = new ShapeGeometry(shapes);
 
+            // vvv Old code, we don't want text centered vvv
             // Ensure font is centered on (parent) widget.
-            geometry.computeBoundingBox();
-            const xMid = - 0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x);
-            geometry.translate(xMid, 0, 0);
+            // geometry.computeBoundingBox();
+            // const xMid = - 0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x);
+            // geometry.translate(xMid, 0, 0);
 
             this._textGeometries[key] = geometry;
 
@@ -254,7 +265,7 @@ export class Client {
                 // Set up game scene.
                 this.gameScene = new Scene();
                 // this.gameScene.background = new Color("#FFFFFF");
-                this.gameScene.background = new Color("#000000");
+                this.gameScene.background = new Color("#547e64");
 
                 // Set up game camera.
                 this.gameCamera = new OrthographicCamera(0, this.screenWidth, this.screenHeight, 0, -1000, 1000);
@@ -270,21 +281,43 @@ export class Client {
                 this.uiScene.add(this.rootWidget);
 
                 this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, {
+                    // TODO: Thinking about this more... if we ever want to "unload" ui
+                    // in the midst of someone's gameplay, this initial state will be invalid
+                    // we would have to pass around a ui state object through
+                    // player world transition messages and what not
                     initialState: {
                         // Using preset client inventory for now.
                         // In future pull from database or pre-set data set.
                         // Todo: Load from playerJoinData ? - yes - yes
-                        clientInventory: presetInventory,
+
+                        // Misc
+                        uiEvents: [],
                         notificationMessage: {
                             milliseconds: 0,
                             color: "",
                             clientId: "", // unnecessary
                             notification: ""
-                        }
+                        },
+                        // Inventory
+                        clientInventory: presetEmptyInventory,
+                        inventoryViewToggle: true,
+                        inventoryTop: 456,
+                        // HUD
+                        level: 0,
+                        maxHP: 0,
+                        currentHP: 0,
+                        maxMP: 0,
+                        currentMP: 0,
+                        maxXP: 0,
+                        currentXP: 0,
                     }
                 });
                 break;
         }
+    }
+
+    public getUIState(): GlobalState {
+        return this.rootComponent.getState()
     }
 
     public handleEvent(e: Event) : void {
@@ -343,13 +376,13 @@ export class Client {
                 if (ent.pos.flipX) { 
                     ent.sprite.scale.x = -1;
                     
-                    if (this.displayHitBoxes) // Don't scale hitbox graphics.
+                    // if (this.displayHitBoxes) // Don't scale hitbox or nameplate graphics.
                         ent.sprite.children.map(child => child.scale.x = 1.0 / ent.sprite.scale.x);
                 }
                 else {
                     ent.sprite.scale.x = 1;
 
-                    if (this.displayHitBoxes) // Don't scale hitbox graphics.
+                    // if (this.displayHitBoxes) // Don't scale hitbox or nameplate graphics.
                         ent.sprite.children.map(child => child.scale.x = 1.0 / ent.sprite.scale.x);
                 }
             
@@ -437,6 +470,22 @@ export class Client {
         }
     }
 
+    private processUIEvents() {
+        if (this.getUIState().uiEvents.length > 0) {
+            this.getUIState().uiEvents.forEach(uiEvent => {
+                switch(uiEvent) {
+                    case UIEventTypes.ITEM_EQUIP_EVENT:
+                        sendPlayerInventoryEventMessage(this)
+                        break;
+                    // case ...
+                }
+            })
+
+            // UI events have been processed, reset the state.
+            this.rootComponent.setUIEvents([])
+        }
+    }
+
     public render() : void {
         this.updateClientEntPositions(this.entityList);
         // this.updateClientRenders(this.renderList);
@@ -452,5 +501,8 @@ export class Client {
 
         // Render UI updates. // -> set up later
         layoutWidget(this.rootWidget, this);
+
+        // Process UI Events.
+        this.processUIEvents()
     }
 }

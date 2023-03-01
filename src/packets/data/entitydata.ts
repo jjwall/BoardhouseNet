@@ -36,4 +36,21 @@ export interface EntityData {
     player?: {
         id: string;
     }
+    stats?: {
+        // Data fields.
+        name: string;
+        level: number;
+        maxHp: number;
+        currentHp: number;
+        maxMp: number;
+        currentMp: number;
+        maxXp: number;
+        currentXp: number;
+        // Graphic fields.
+        hpBarColor: string;
+        height: number;
+        width: number;
+        offsetX: number;
+        offsetY: number;
+    }
 }

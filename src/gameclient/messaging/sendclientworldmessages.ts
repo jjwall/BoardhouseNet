@@ -1,4 +1,4 @@
-import { ClientWorldEventTypes, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin, ClientMessagePlayerWorldTransition } from "../../packets/messages/clientworldmessage";
+import { ClientWorldEventTypes, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin, ClientMessagePlayerWorldTransition, ClientMessagePlayerInventoryEvent } from "../../packets/messages/clientworldmessage";
 import { WorldTransitionData } from "../../packets/data/worldtransitiondata";
 import { MessageTypes } from "../../packets/messages/message";
 import { Client } from "../clientengine/client";
@@ -9,6 +9,7 @@ export function sendPlayerWorldJoinMessage(client: Client) {
         eventType: ClientWorldEventTypes.PLAYER_WORLD_JOIN,
         data: {
             clientId: client.currentClientId,
+            username: client.username,
             playerClass: client.playerClass,
             worldType: client.worldType,
         }
@@ -35,11 +36,27 @@ export function sendSpectatorWorldJoinMessage(client: Client) {
         eventType: ClientWorldEventTypes.SPECTATOR_WORLD_JOIN,
         data: {
             clientId: client.currentClientId,
+            username: client.username,
             playerClass: client.playerClass,
             worldType: client.worldType,
         }
     }
     
     console.log("client joining as spectator");
+    client.connection.send(JSON.stringify(message));
+}
+
+export function sendPlayerInventoryEventMessage(client: Client) {
+    const message: ClientMessagePlayerInventoryEvent = {
+        messageType: MessageTypes.CLIENT_WORLD_MESSAGE,
+        eventType: ClientWorldEventTypes.PLAYER_INVENTORY_EVENT,
+        data: {
+            clientId: client.currentClientId,
+            worldType: client.worldType,
+            inventory: client.getUIState().clientInventory
+        }
+    }
+
+    console.log("sending inventory event for player with client id: " + client.currentClientId);
     client.connection.send(JSON.stringify(message));
 }

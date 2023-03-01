@@ -1,8 +1,8 @@
 import { NetEntityEventTypes, NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEntities } from "../../packets/messages/netentitymessage";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
-import { EntityData } from "../../packets/data/entitydata";
-import { WorldTypes } from "../../packets/enums/worldtypes";
 import { MessageTypes } from "../../packets/messages/message";
+import { WorldTypes } from "../../packets/enums/worldtypes";
+import { EntityData } from "../../packets/data/entitydata";
 import { Entity } from "../serverengine/entity";
 import { Server } from "../serverengine/server";
 
@@ -37,6 +37,7 @@ export function broadcastCreateEntitiesMessage(ents: Entity[], server: Server, w
                 sprite: ent.sprite,
                 anim: ent.anim,
                 player: ent.player,
+                stats: ent.stats,
             }
 
             if (ent.hitbox) {
@@ -92,6 +93,7 @@ export function broadcastUpdateEntitiesMessage(ents: Entity[], server: Server, w
                 sprite: ent.sprite,
                 anim: ent.anim,
                 player: ent.player,
+                stats: ent.stats,
             }
 
             message.data.ents.push(entData);
@@ -105,6 +107,7 @@ export function broadcastUpdateEntitiesMessage(ents: Entity[], server: Server, w
     server.entityChangeList = [];
 }
 
+// TODO: Refactor out server from params here, can pull from worldEngine reference.
 export function broadcastDestroyEntitiesMessage(ents: Entity[], server: Server, worldEngine: BaseWorldEngine) {
     let message: NetMessageDestroyEntities = {
         messageType: MessageTypes.NET_ENTITY_MESSAGE,
@@ -116,6 +119,16 @@ export function broadcastDestroyEntitiesMessage(ents: Entity[], server: Server, 
     }
 
     ents.forEach(ent => {
+        // Remove follower entity if exists.
+        if (ent.followerNetId) {
+            worldEngine.removeEntity(worldEngine.server.netIdToEntityMap[ent.followerNetId]);
+            const entFollowerData: EntityData = {
+                netId: ent.followerNetId
+            }
+
+            message.data.ents.push(entFollowerData);
+        }
+
         // Remove entity from backend entity list.
         worldEngine.removeEntity(ent);
         

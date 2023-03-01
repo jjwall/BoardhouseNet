@@ -18,6 +18,7 @@ import { setMovement } from "../../components/movement";
 import { movementSystem } from "../../systems/movement";
 import { behaviorSystem } from "../../systems/behavior";
 import { createGoblin } from "../../archetypes/goblin";
+import { followSystem } from "../../systems/follow";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
@@ -44,8 +45,9 @@ export class CastleWorldEngine extends BaseWorldEngine {
         this.registerSystem(skillSlotsSystem);
         this.registerSystem(behaviorSystem);
         this.registerSystem(timerSystem);
+        this.registerSystem(followSystem);
 
-        // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
+        // playAudio("./assets/audio/Pale_Blue.mp3", 0.3, true);
 
         // TODO: Make it where you don't have to do this, delay on entity creation breaks stuff
         // I guess just create other ents first
@@ -55,10 +57,10 @@ export class CastleWorldEngine extends BaseWorldEngine {
 
         let magicCircle = new Entity();
         magicCircle.pos = setPosition(450, 250, 3, new Vector3(1, -1, 0));
-        magicCircle.sprite = { url: "./data/textures/vfx/magic_circle.png", pixelRatio: 1 };
+        magicCircle.sprite = { url: "./assets/textures/vfx/magic_circle.png", pixelRatio: 1 };
         let fish = new Entity();
         fish.pos = setPosition(1400, 250, 3);
-        fish.sprite = { url: "./data/textures/npcs/fish/fish001.png", pixelRatio: 4 };
+        fish.sprite = { url: "./assets/textures/npcs/fish/fish001.png", pixelRatio: 4 };
         fish.anim = { sequence: SequenceTypes.IDLE, blob: fishAnim };
         fish.hitbox = setHitbox(HitboxTypes.FISH_MOUTH, [HitboxTypes.PLAYER_SWORD_ATTACK], 10, 10, 15, -2);
         fish.hitbox.onHit = (tile, other, manifold) => {
@@ -81,7 +83,7 @@ export class CastleWorldEngine extends BaseWorldEngine {
         this.registerEntity(magicCircle, server);
         this.registerEntity(fish, server);
 
-        this.worldLevelData = this.registerWorldLevelData(kenneyFantasy2, "./data/textures/tilesets/colored_packed.png");
+        this.worldLevelData = this.registerWorldLevelData(kenneyFantasy2, "./assets/textures/tilesets/colored_packed.png");
     }
 
     public registerWorldLevelData(tileMapData: TileMapSchema, tileSetTextureUrl: string): WorldLevelData {

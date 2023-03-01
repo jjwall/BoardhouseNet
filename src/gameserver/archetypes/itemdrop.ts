@@ -33,31 +33,45 @@ export function createItemDrop(worldEngine: BaseWorldEngine, pos: PositionCompon
 
     let itemPickupArrow = new Entity();
     itemPickupArrow.pos = setPosition(0, 64, 3);
-    itemPickupArrow.sprite = setSprite("./data/textures/vfx/item_pickup_arrow001.png", 4)
+    itemPickupArrow.sprite = setSprite("./assets/textures/vfx/item_pickup_arrow001.png", 4)
     itemPickupArrow.anim = setAnim(itemPickupArrowAnim)
     itemPickupArrow.parent = itemDrop
 
+    // Todo: put this in new events dir? like playerpicksupitemevent...
     itemDrop.hitbox.onHit = (self, other, manifold) => {
         if (other.player) {
             // If there's space in the inventory, add the item to it.
-            if (other.player.inventory.includes(undefined)) {
+            if (other.player.inventory.includes(null)) {
                 // Find first available item slot index and add item to server side inventory.
-                const emptyItemSlotIndex = other.player.inventory.indexOf(undefined)
-                other.player.inventory[emptyItemSlotIndex] = item
+                const emptyItemSlotIndex = other.player.inventory.indexOf(null)
 
-                // Remove item drop from world.
-                broadcastDestroyEntitiesMessage(
-                    [itemDrop, itemPickupArrow], 
-                    worldEngine.server, 
-                    worldEngine
-                );
+                // Make sure item slot index is less than max inventory size, otherwise we'll be looking at equipment slots.
+                if (emptyItemSlotIndex < 8) {
+                    other.player.inventory[emptyItemSlotIndex] = item
 
-                // Broadcast to all client that a player successfully picked up an item.
-                const itemPickupData: ItemPickupData = {
-                    pickupClientId: other.player.id,
-                    item: item,
+                    // Remove item drop from world.
+                    broadcastDestroyEntitiesMessage(
+                        [itemDrop, itemPickupArrow], 
+                        worldEngine.server, 
+                        worldEngine
+                    );
+    
+                    // Broadcast to all client that a player successfully picked up an item.
+                    const itemPickupData: ItemPickupData = {
+                        pickupClientId: other.player.id,
+                        item: item,
+                    }
+                    broadcastPlayerItemPickupMessage(worldEngine.server, itemPickupData)
+                } else {
+                    // Send player inventory is full notification.
+                    const notificationData: NotificationData = {
+                        clientId: other.player.id,
+                        notification: "Inventory Is Full...",
+                        color: "#FF0000",
+                        milliseconds: 3500
+                    }
+                    sendPlayerNotificationMessage(worldEngine.server, notificationData)
                 }
-                broadcastPlayerItemPickupMessage(worldEngine.server, itemPickupData)
             } else {
                 // Send player inventory is full notification.
                 const notificationData: NotificationData = {

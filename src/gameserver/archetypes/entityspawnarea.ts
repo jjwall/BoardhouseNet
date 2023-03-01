@@ -24,7 +24,7 @@ interface SpawnAreaState {
 export function createEntitySpawnArea(params: SpawnAreaParams) {
     const spawnArea = new Entity();
     spawnArea.pos = params.pos;
-    spawnArea.sprite = { url: "./data/textures/misc/empty_texture.png", pixelRatio: 1 };
+    spawnArea.sprite = { url: "./assets/textures/misc/empty_texture.png", pixelRatio: 1 };
     spawnArea.hitbox = setHitbox(HitboxTypes.SPAWN_AREA, [], params.areaHeight, params.areaWidth); //... areaHeight areaWidth (for viewing spawn area)
     params.worldEngine.registerEntity(spawnArea, params.worldEngine.server);
 

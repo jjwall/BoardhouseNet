@@ -28,7 +28,7 @@ module.exports = {
             patterns: [
                 { from: './public/game.html', to: './../'},
                 { from: './public/style.css', to: './../'},
-                { from: './data', to: './../data' },
+                { from: './assets', to: './../assets' },
                 { from: './node_modules/three/build/three.min.js' }
             ]
         }),

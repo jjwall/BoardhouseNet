@@ -4,16 +4,16 @@ import { Entity } from "../serverengine/entity"
 export class SkillSlotsComponent {
     private skillSlotOne: Skill
     private skillSlotTwo: Skill
-    setSkillOne(value: Skill) {
+    setSkillOne = (value: Skill) => {
         this.skillSlotOne = value
     }
-    getSkillOne() {
+    getSkillOne = () => {
         return this.skillSlotOne
     }
-    setSkillTwo(value: Skill) {
+    setSkillTwo = (value: Skill) => {
         this.skillSlotTwo = value
     }
-    getSkillTwo() {
+    getSkillTwo = () => {
         return this.skillSlotTwo
     }
 }

@@ -70,7 +70,7 @@ export abstract class BaseWorldEngine {
      * and every specific registry for each ecsKey component match.
      * @param ent 
      */
-    public registerEntity(ent: Entity, server: Server) {
+    public registerEntity(ent: Entity, server: Server) { // TODO: Refactor out server param here, can pull from this.server
         let entityComponents: Array<string> = [];
         ent.netId = ++server.currentNetId;
         server.netIdToEntityMap[server.currentNetId] = ent;

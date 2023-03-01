@@ -1,12 +1,13 @@
-import { NetMessageLoadWorld, NetMessagePlayerItemPickup, NetMessagePlayerNotification, NetMessagePlayerWorldTransition, NetMessageUnloadWorld, NetWorldEventTypes } from "../../packets/messages/networldmessage";
+import { NetMessageLoadWorld, NetMessagePlayerItemPickup, NetMessagePlayerNotification, NetMessagePlayerReconcileInventory, NetMessagePlayerWorldTransition, NetMessageUnloadWorld, NetWorldEventTypes } from "../../packets/messages/networldmessage";
 import { WorldTransitionData } from "../../packets/data/worldtransitiondata";
+import { NotificationData } from "../../packets/data/notificationdata";
 import { WorldLevelData } from "../../packets/data/worldleveldata";
-import { MyWebSocket } from "../serverengine/setupgameserver";
-import { WorldTypes } from "../../packets/enums/worldtypes";
-import { MessageTypes } from "../../packets/messages/message";
-import { Server } from "../serverengine/server";
 import { ItemPickupData } from "../../packets/data/itempickupdata";
-import { NotificationData } from "src/packets/data/notificationdata";
+import { InventoryData } from "../../packets/data/inventorydata";
+import { MyWebSocket } from "../serverengine/setupgameserver";
+import { MessageTypes } from "../../packets/messages/message";
+import { ItemData } from "../../packets/data/itemdata";
+import { Server } from "../serverengine/server";
 
 export function sendLoadWorldMessage(server: Server, worldLevelData: WorldLevelData, clientId: string) {
     const message: NetMessageLoadWorld = {
@@ -41,7 +42,7 @@ export function sendUnloadWorldMessage(server: Server, worldLevelData: WorldLeve
     });
 }
 
-export function sendPlayerWorldTransitionMessage(server: Server, worldTransitionData: WorldTransitionData, clientId: string, worldToLoad: WorldTypes) {
+export function sendPlayerWorldTransitionMessage(server: Server, worldTransitionData: WorldTransitionData, clientId: string) {
     const message: NetMessagePlayerWorldTransition = {
         messageType: MessageTypes.NET_WORLD_MESSAGE,
         eventType: NetWorldEventTypes.PLAYER_WORLD_TRANSITION,
@@ -68,6 +69,28 @@ export function broadcastPlayerItemPickupMessage(server: Server, itemPickupData:
     server.boardhouseServer.clients.forEach(client => {
         console.log(`(port: ${server.gameServerPort}): broadcasting player item pickup message. Pickup clientId = "${itemPickupData.pickupClientId}"`)
         client.send(JSON.stringify(message));
+    });
+}
+
+export function sendPlayerReconcileInventoryMessage(server: Server, inventory: ItemData[], clientId: string) {
+    const inventoryData: InventoryData = {
+        inventory: inventory,
+        clientId: clientId
+    }
+
+    const message: NetMessagePlayerReconcileInventory = {
+        messageType: MessageTypes.NET_WORLD_MESSAGE,
+        eventType: NetWorldEventTypes.PLAYER_RECONCILE_INVENTORY,
+        data: inventoryData,
+    }
+
+    server.boardhouseServer.clients.forEach(client => {
+        const myClient = client as MyWebSocket;
+
+        if (myClient.clientId === clientId) {
+            console.log(`(port: ${server.gameServerPort}): sending player reconcile inventory message to client with clientId = "${clientId}"`)
+            client.send(JSON.stringify(message));
+        }
     });
 }
 

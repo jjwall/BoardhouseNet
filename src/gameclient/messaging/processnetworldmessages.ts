@@ -1,8 +1,8 @@
-import { NetMessageLoadWorld, NetMessagePlayerItemPickup, NetMessagePlayerNotification, NetMessagePlayerWorldTransition } from "../../packets/messages/networldmessage";
+import { NetMessageLoadWorld, NetMessagePlayerItemPickup, NetMessagePlayerNotification, NetMessagePlayerReconcileInventory, NetMessagePlayerWorldTransition } from "../../packets/messages/networldmessage";
+import { renderSceneFadeIn, renderSceneFadeOut } from "../renders/scenetransitions";
 import { sendPlayerWorldTransitionMessage } from "./sendclientworldmessages";
 import { renderWorldMap } from "../clientengine/renderworldmap";
 import { Client } from "../clientengine/client";
-import { renderSceneFadeIn, renderSceneFadeOut } from "../renders/scenetransitions";
 
 export function loadWorld(message: NetMessageLoadWorld, client: Client) {
     console.log("load world...");
@@ -72,7 +72,7 @@ export function transitionPlayerClientToNewWorld(message: NetMessagePlayerWorldT
 
 export function playerPickupItem(message: NetMessagePlayerItemPickup, client: Client) {
     if (client.currentClientId === message.data.pickupClientId) {
-        const clientState = client.rootComponent.getState()
+        const clientState = client.getUIState()
         const firstAvailableSlotIndex = clientState.clientInventory.findIndex(element => !element);
 
         // Note: this check shouldn't be necessary since this logic should be run on server.
@@ -88,6 +88,12 @@ export function playerPickupItem(message: NetMessagePlayerItemPickup, client: Cl
         } else {
             console.log("Render: not enough space")
         }
+    }
+}
+
+export function playerReconcileInventory(message: NetMessagePlayerReconcileInventory, client: Client) {
+    if (client.currentClientId === message.data.clientId) {
+        client.rootComponent.setClientInventory(message.data.inventory);
     }
 }
 

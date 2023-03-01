@@ -7,7 +7,7 @@ import { setTimer } from "../components/timer";
 export function createDustPlume(worldEngine: BaseWorldEngine, pos: PositionComponent) {
     let dustPlume = new Entity();
     dustPlume.pos = pos;
-    dustPlume.sprite = { url: "./data/textures/vfx/dust_plume.png", pixelRatio: 4 };
+    dustPlume.sprite = { url: "./assets/textures/vfx/dust_plume.png", pixelRatio: 4 };
     dustPlume.timer = setTimer(5, () => {
         broadcastDestroyEntitiesMessage([dustPlume], worldEngine.server, worldEngine);
     });

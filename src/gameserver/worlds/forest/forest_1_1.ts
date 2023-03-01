@@ -2,6 +2,7 @@ import { createEntitySpawnArea, SpawnAreaParams } from "../../archetypes/entitys
 import { ravenFantasyForest_1_1 } from "../../../modules/tilemapping/tilemaps/ravenfantasyforest_1_1";
 import { itemPickupArrowAnim } from "../../../modules/animations/animationdata/itempickuparrow";
 import { TileData, WorldLevelData } from "../../../packets/data/worldleveldata";
+import { createGoblinSpear } from "../../../gameserver/archetypes/goblinspear";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { PositionComponent, setPosition } from "../../components/position";
@@ -11,6 +12,8 @@ import { transitionPlayerToAnotherWorld } from "../../messaging/helpers";
 import { BaseWorldEngine } from "../../serverengine/baseworldengine";
 import { WorldTypes } from "../../../packets/enums/worldtypes";
 import { skillSlotsSystem } from "../../systems/skillslots";
+import { createItemDrop } from "../../archetypes/itemdrop";
+import { ItemData } from "../../../packets/data/itemdata";
 import { worldEdgeSystem } from "../../systems/worldedge";
 import { collisionSystem } from "../../systems/collision";
 import { velocitySystem } from "../../systems/velocity";
@@ -21,13 +24,12 @@ import { behaviorSystem } from "../../systems/behavior";
 import { createGoblin } from "../../archetypes/goblin";
 import { setAnim } from "../../components/animation";
 import { setSprite } from "../../components/sprite";
+import { followSystem } from "../../systems/follow";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
 import { timerSystem } from "../../systems/timer";
 import { Vector3 } from "three";
-import { createItemDrop } from "../../archetypes/itemdrop";
-import { ItemData } from "../../../packets/data/itemdata";
 
 export class Forest_1_1 extends BaseWorldEngine {
     // public rootWidget: Widget;
@@ -46,22 +48,34 @@ export class Forest_1_1 extends BaseWorldEngine {
         this.registerSystem(skillSlotsSystem);
         this.registerSystem(behaviorSystem);
         this.registerSystem(timerSystem);
+        this.registerSystem(followSystem);
 
         const swordItemDropPos = setPosition(450, 250, 3);
         const swordItemData: ItemData = {
-            spriteUrl: "./data/textures/icons/d20.png",
-            onDragSpriteUrl: "./data/textures/icons/d20.png"
+            spriteUrl: "./assets/textures/icons/d20.png",
+            onDragSpriteUrl: "./assets/textures/icons/d20.png"
         }
         createItemDrop(this, swordItemDropPos, swordItemData);
 
         const bowItemDropPos = setPosition(650, 250, 3);
         const bowItemData: ItemData = {
-            spriteUrl: "./data/textures/icons/d3403.png",
-            onDragSpriteUrl: "./data/textures/icons/d3403.png"
+            spriteUrl: "./assets/textures/icons/d3403.png",
+            onDragSpriteUrl: "./assets/textures/icons/d3403.png"
         }
         createItemDrop(this, bowItemDropPos, bowItemData);
 
-        // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
+        const goblinSpearSpawnArea1: SpawnAreaParams = {
+            pos: setPosition(500, 500, 4),
+            areaHeight: 300,
+            areaWidth: 700,
+            maxNumberOfEntities: 1,
+            createEntityArchetypes: [createGoblinSpear],
+            worldEngine: this,
+        }
+
+        createEntitySpawnArea(goblinSpearSpawnArea1)
+
+        // playAudio("./assets/audio/Pale_Blue.mp3", 0.3, true);
 
         // TODO: Make it where you don't have to do this, delay on entity creation breaks stuff
         // I guess just create other ents first
@@ -69,7 +83,7 @@ export class Forest_1_1 extends BaseWorldEngine {
         ent.movement = setMovement();
         this.registerEntity(ent, server);
 
-        this.worldLevelData = this.registerWorldLevelData(ravenFantasyForest_1_1, "./data/textures/tilesets/raven_fantasy_green_forest_16x16.png");
+        this.worldLevelData = this.registerWorldLevelData(ravenFantasyForest_1_1, "./assets/textures/tilesets/raven_fantasy_green_forest_16x16.png");
     }
 
     public registerWorldLevelData(tileMapData: TileMapSchema, tileSetTextureUrl: string): WorldLevelData {

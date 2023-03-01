@@ -14,6 +14,7 @@ import { PlayerStates } from "../../components/player";
 import { setMovement } from "../../components/movement";
 import { movementSystem } from "../../systems/movement";
 import { skillSlotsSystem } from "../../systems/skillslots";
+import { followSystem } from "../../systems/follow";
 import { playerSystem } from "../../systems/player";
 import { Server } from "../../serverengine/server";
 import { Entity } from "../../serverengine/entity";
@@ -38,8 +39,9 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
         this.registerSystem(worldEdgeSystem);
         this.registerSystem(skillSlotsSystem); // comment out to test no skills in item shop?
         this.registerSystem(timerSystem);
+        this.registerSystem(followSystem);
 
-        // playAudio("./data/audio/Pale_Blue.mp3", 0.3, true);
+        // playAudio("./assets/audio/Pale_Blue.mp3", 0.3, true);
 
         // TODO: Make it where you don't have to do this, delay on entity creation breaks stuff
         // I guess just create other ents first
@@ -47,7 +49,7 @@ export class ItemShopWorldEngine extends BaseWorldEngine {
         ent.movement = setMovement();
         this.registerEntity(ent, server);
 
-        this.worldLevelData = this.registerWorldLevelData(kenneyItemShop2, "./data/textures/tilesets/colored_packed.png");
+        this.worldLevelData = this.registerWorldLevelData(kenneyItemShop2, "./assets/textures/tilesets/colored_packed.png");
     }
 
     public registerWorldLevelData(tileMapData: TileMapSchema, tileSetTextureUrl: string): WorldLevelData {

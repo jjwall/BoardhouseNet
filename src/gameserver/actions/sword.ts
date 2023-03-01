@@ -28,7 +28,7 @@ export function basicSwordAttack(attackingEnt: Entity, worldEngine: BaseWorldEng
         swordAttack.pos = setPosition(0, 0, 6);
     }
 
-    swordAttack.sprite = { url: "./data/textures/items/kenney_sword001.png", pixelRatio: 1 };
+    swordAttack.sprite = { url: "./assets/textures/items/kenney_sword001.png", pixelRatio: 1 };
     swordAttack.anim = { sequence: SequenceTypes.ATTACK, blob: kenneySwordAnim };
 
     // Set parent Since we're setting position relative to attacking ent.
