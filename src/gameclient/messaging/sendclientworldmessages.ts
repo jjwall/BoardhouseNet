@@ -9,6 +9,7 @@ export function sendPlayerWorldJoinMessage(client: Client) {
         eventType: ClientWorldEventTypes.PLAYER_WORLD_JOIN,
         data: {
             clientId: client.currentClientId,
+            username: client.username,
             playerClass: client.playerClass,
             worldType: client.worldType,
         }
@@ -35,6 +36,7 @@ export function sendSpectatorWorldJoinMessage(client: Client) {
         eventType: ClientWorldEventTypes.SPECTATOR_WORLD_JOIN,
         data: {
             clientId: client.currentClientId,
+            username: client.username,
             playerClass: client.playerClass,
             worldType: client.worldType,
         }

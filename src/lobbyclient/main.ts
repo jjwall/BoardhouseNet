@@ -18,6 +18,7 @@ function createRandomClientId(): string {
 const globalLobby: IGlobalLobby = {
     createRoomButton: <HTMLButtonElement>document.getElementById("createRoomButton"),
     roomNameInput: <HTMLButtonElement>document.getElementById("roomNameInput"),
+    usernameInput: <HTMLButtonElement>document.getElementById("usernameInput"),
     createRoomText: <HTMLElement>document.getElementById("createRoomText"),
     gameRooms: <HTMLElement>document.getElementById("gameRooms"),
     classSelectRadioElements: document.getElementsByName("classSelect"),

@@ -40,6 +40,7 @@ const params = <URLSearchParams> new URLSearchParams(window.location.search);
 const config: ClientConfig = {
     role: params.get("clientRole") as ClientRoleTypes, // Role would change how event handling works. Only need player sending key press events for example.
     playerClass: params.get("playerClass") as PlayerClassTypes,
+    username: params.get("username"),
     worldType: params.get("worldType") as WorldTypes,
     connection: <WebSocket> null,
     currentPort: <number>parseInt(params.get("port")),

@@ -71,6 +71,11 @@ import { Server } from "../serverengine/server";
             break;
     }
 
+    // Override preset name field if username is set.
+    if (message.data.username.length > 0) {
+        playerEntParams.currentStats.name = message.data.username;
+    }
+
     playerEnt = createPlayerCharacter(playerEntParams)
 
     // Not exactly sure why we need this setTimeout here.

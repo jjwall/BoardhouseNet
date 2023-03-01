@@ -6,8 +6,8 @@ import { Client } from "../clientengine/client";
 // TODO: (Done) Hp bar updates.
 // TODO: (Done) HUD state updates from client entity updates -> use root component . setState
 // -> This works fine. But do we want nameplate to show for current player?
-// TODO: Usernames set in lobby. Default if nothing is chosen is: Player_ClientId
-// TODO: Preset stats for each class. Pass in like inventory on world join.
+// TODO: (Done) Usernames set in lobby. Default if nothing is chosen is: Player_ClientId
+// TODO: (Done) Preset stats for each class. Pass in like inventory on world join.
 // -> Once done I'm done with UI??
 // TODO: Max HP upgrades don't seem to reflect in ui
 // TODO: Get new goblin spawned in with status plate w/ name "goblin"

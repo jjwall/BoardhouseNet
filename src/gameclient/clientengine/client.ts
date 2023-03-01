@@ -29,6 +29,7 @@ export interface ClientConfig {
     /// end state stuff ///
     role: ClientRoleTypes;
     playerClass: PlayerClassTypes;
+    username: string;
     worldType: WorldTypes;
     /// old configs
     connection: WebSocket;
@@ -52,6 +53,7 @@ export class Client {
         ///
         this.role = config.role;
         this.playerClass = config.playerClass;
+        this.username = config.username;
         this.worldType = config.worldType;
         ///
         // vvv merged from old configs vvv
@@ -87,6 +89,7 @@ export class Client {
     public currentPlayerEntity: ClientEntity; // just a reference
     public role: ClientRoleTypes;
     public playerClass: PlayerClassTypes;
+    public username: string;
     public gameScene: Scene;
     public gameCamera: Camera;
     public uiScene: Scene;
