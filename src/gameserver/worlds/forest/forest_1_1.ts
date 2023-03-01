@@ -2,6 +2,7 @@ import { createEntitySpawnArea, SpawnAreaParams } from "../../archetypes/entitys
 import { ravenFantasyForest_1_1 } from "../../../modules/tilemapping/tilemaps/ravenfantasyforest_1_1";
 import { itemPickupArrowAnim } from "../../../modules/animations/animationdata/itempickuparrow";
 import { TileData, WorldLevelData } from "../../../packets/data/worldleveldata";
+import { createGoblinSpear } from "../../../gameserver/archetypes/goblinspear";
 import { getHitbox, HitboxTypes, setHitbox } from "../../components/hitbox";
 import { TileMapSchema } from "../../../modules/tilemapping/tilemapschema";
 import { PositionComponent, setPosition } from "../../components/position";
@@ -62,6 +63,17 @@ export class Forest_1_1 extends BaseWorldEngine {
             onDragSpriteUrl: "./assets/textures/icons/d3403.png"
         }
         createItemDrop(this, bowItemDropPos, bowItemData);
+
+        const goblinSpearSpawnArea1: SpawnAreaParams = {
+            pos: setPosition(500, 500, 4),
+            areaHeight: 300,
+            areaWidth: 700,
+            maxNumberOfEntities: 1,
+            createEntityArchetypes: [createGoblinSpear],
+            worldEngine: this,
+        }
+
+        createEntitySpawnArea(goblinSpearSpawnArea1)
 
         // playAudio("./assets/audio/Pale_Blue.mp3", 0.3, true);
 
