@@ -14,7 +14,7 @@ import { HUD } from "./hud";
 export type UIEvents = Array<UIEventTypes>
 export type ClientInventory = Array<ItemData | undefined>
 
-export interface StatusStateParams {
+export interface StatsStateParams {
     level?: number
     maxHp?: number;
     currentHp?: number;
@@ -70,11 +70,10 @@ export class Root extends Component<Props, GlobalState> {
             currentXP: props.initialState.currentXP,
         };
 
-        // setInterval(this.updateStatus, 50)
+        // setInterval(this.updateStats, 50)
     }
 
-    /** Example of how we might update status within UI. */
-    updateStatus = (params: StatusStateParams) => {
+    updateStats = (params: StatsStateParams) => {
         if (params.level)
             this.setState({
                 level: params.level

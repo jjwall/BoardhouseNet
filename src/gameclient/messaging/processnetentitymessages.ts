@@ -1,6 +1,6 @@
 import { NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEntities } from "../../packets/messages/netentitymessage";
 import { changeSequence, setAnimation } from "../components/animation";
-import { setStatusComponentAndGraphic } from "../components/status";
+import { setNameplateComponent } from "../components/nameplate";
 import { ClientEntity } from "../clientengine/cliententity";
 import { setHitboxGraphic } from "../components/hitbox";
 import { setPosition } from "../components/position";
@@ -36,9 +36,9 @@ export function createEntities(message: NetMessageCreateEntities, client: Client
                     clientEnt.anim = setAnimation(entData.anim.sequence, entData.anim.blob);
                 }
 
-                if (entData.status) {
+                if (entData.stats) {
                     if (client.currentClientId !== entData.player.id) // if we don't show this for player, separate out component and graphic logic.
-                        clientEnt.status = setStatusComponentAndGraphic(client, clientEnt.sprite, entData.status);
+                        clientEnt.nameplate = setNameplateComponent(client, clientEnt.sprite, entData.stats);
                 }
 
                 if (entData.player) {
@@ -51,14 +51,14 @@ export function createEntities(message: NetMessageCreateEntities, client: Client
                         client.currentPlayerEntity.pos.loc.z++;
 
                         // Set UI values.
-                        client.rootComponent.updateStatus({
-                            level: entData.status.level, 
-                            currentHp: entData.status.currentHp,
-                            maxHp: entData.status.maxHp,
-                            currentMp: entData.status.currentMp,
-                            maxMp: entData.status.maxMp,
-                            currentXp: entData.status.currentXp,
-                            maxXp: entData.status.maxXp,
+                        client.rootComponent.updateStats({
+                            level: entData.stats.level, 
+                            currentHp: entData.stats.currentHp,
+                            maxHp: entData.stats.maxHp,
+                            currentMp: entData.stats.currentMp,
+                            maxMp: entData.stats.maxMp,
+                            currentXp: entData.stats.currentXp,
+                            maxXp: entData.stats.maxXp,
                         });
                     }
                 }
@@ -90,55 +90,55 @@ export function updateEntities(message: NetMessageUpdateEntities, client: Client
                     clientEnt.anim = changeSequence(entData.anim.sequence, clientEnt.anim);
                 }
 
-                // Update current player's HUD Status UI.
+                // Update current player's HUD Nameplate UI.
                 if (clientEnt.player) {
                     if (client.currentClientId === entData.player.id) {
-                        if (client.rootComponent.getState().level !== entData.status.level)
-                            client.rootComponent.updateStatus({ level: entData.status.level })
+                        if (client.rootComponent.getState().level !== entData.stats.level)
+                            client.rootComponent.updateStats({ level: entData.stats.level })
 
-                        if (client.rootComponent.getState().currentHP !== entData.status.currentHp)
-                            client.rootComponent.updateStatus({ currentHp: entData.status.currentHp })
+                        if (client.rootComponent.getState().currentHP !== entData.stats.currentHp)
+                            client.rootComponent.updateStats({ currentHp: entData.stats.currentHp })
                         
-                        if (client.rootComponent.getState().maxHP !== entData.status.maxHp)
-                            client.rootComponent.updateStatus({ maxHp: entData.status.maxHp })
+                        if (client.rootComponent.getState().maxHP !== entData.stats.maxHp)
+                            client.rootComponent.updateStats({ maxHp: entData.stats.maxHp })
 
-                        if (client.rootComponent.getState().currentMP !== entData.status.currentMp)
-                            client.rootComponent.updateStatus({ currentMp: entData.status.currentMp })
+                        if (client.rootComponent.getState().currentMP !== entData.stats.currentMp)
+                            client.rootComponent.updateStats({ currentMp: entData.stats.currentMp })
                         
-                        if (client.rootComponent.getState().maxMP !== entData.status.maxMp)
-                            client.rootComponent.updateStatus({ maxMp: entData.status.maxMp })
+                        if (client.rootComponent.getState().maxMP !== entData.stats.maxMp)
+                            client.rootComponent.updateStats({ maxMp: entData.stats.maxMp })
 
-                        if (client.rootComponent.getState().currentXP !== entData.status.currentXp)
-                            client.rootComponent.updateStatus({ currentXp: entData.status.currentXp })
+                        if (client.rootComponent.getState().currentXP !== entData.stats.currentXp)
+                            client.rootComponent.updateStats({ currentXp: entData.stats.currentXp })
                         
-                        if (client.rootComponent.getState().maxXP !== entData.status.maxXp)
-                            client.rootComponent.updateStatus({ maxXp: entData.status.maxXp })
+                        if (client.rootComponent.getState().maxXP !== entData.stats.maxXp)
+                            client.rootComponent.updateStats({ maxXp: entData.stats.maxXp })
                     }
                 }
 
-                // Update entity's status plates.
-                if (clientEnt.status) {
-                    if (clientEnt.status.currentHp !== entData.status.currentHp) {
+                // Update entity's nameplate.
+                if (clientEnt.nameplate) {
+                    if (clientEnt.nameplate.currentHp !== entData.stats.currentHp) {
                         // Update current hp and hp bar to reflect hp changes.
-                        clientEnt.status.currentHp = entData.status.currentHp;
-                        clientEnt.status.hpBarMesh.geometry = new PlaneGeometry((clientEnt.status.currentHp / clientEnt.status.maxHp) * clientEnt.status.maxHpBarWidth, clientEnt.status.hpBarHeight);
-                        const { width: prevWidth, height: prevHeight } = (clientEnt.status.hpBarMesh.geometry as PlaneGeometry).parameters;
-                        clientEnt.status.hpBarMesh.geometry.translate(prevWidth/2, -prevHeight/2, 0);
+                        clientEnt.nameplate.currentHp = entData.stats.currentHp;
+                        clientEnt.nameplate.hpBarMesh.geometry = new PlaneGeometry((clientEnt.nameplate.currentHp / clientEnt.nameplate.maxHp) * clientEnt.nameplate.maxHpBarWidth, clientEnt.nameplate.hpBarHeight);
+                        const { width: prevWidth, height: prevHeight } = (clientEnt.nameplate.hpBarMesh.geometry as PlaneGeometry).parameters;
+                        clientEnt.nameplate.hpBarMesh.geometry.translate(prevWidth/2, -prevHeight/2, 0);
                     }
 
-                    if (clientEnt.status.maxHp !== entData.status.maxHp) {
+                    if (clientEnt.nameplate.maxHp !== entData.stats.maxHp) {
                         // Update max hp and hp bar to reflect hp upgrade.
-                        clientEnt.status.maxHp = entData.status.maxHp;
-                        clientEnt.status.hpBarMesh.geometry = new PlaneGeometry((clientEnt.status.currentHp / clientEnt.status.maxHp) * clientEnt.status.maxHpBarWidth, clientEnt.status.hpBarHeight);
-                        const { width: prevWidth, height: prevHeight } = (clientEnt.status.hpBarMesh.geometry as PlaneGeometry).parameters;
-                        clientEnt.status.hpBarMesh.geometry.translate(prevWidth/2, -prevHeight/2, 0);
+                        clientEnt.nameplate.maxHp = entData.stats.maxHp;
+                        clientEnt.nameplate.hpBarMesh.geometry = new PlaneGeometry((clientEnt.nameplate.currentHp / clientEnt.nameplate.maxHp) * clientEnt.nameplate.maxHpBarWidth, clientEnt.nameplate.hpBarHeight);
+                        const { width: prevWidth, height: prevHeight } = (clientEnt.nameplate.hpBarMesh.geometry as PlaneGeometry).parameters;
+                        clientEnt.nameplate.hpBarMesh.geometry.translate(prevWidth/2, -prevHeight/2, 0);
                     }
 
-                    if (clientEnt.status.level !== entData.status.level) {
+                    if (clientEnt.nameplate.level !== entData.stats.level) {
                         // Update level text and shadow meshes.
-                        clientEnt.status.level = entData.status.level;
-                        clientEnt.status.levelTextMesh.geometry = client.getTextGeometry(`Lv: ${entData.status.level}`, clientEnt.status.levelFontUrl, clientEnt.status.levelFontSize);
-                        clientEnt.status.levelTextShadowMesh.geometry = client.getTextGeometry(`Lv: ${entData.status.level}`, clientEnt.status.levelFontUrl, clientEnt.status.levelFontSize);
+                        clientEnt.nameplate.level = entData.stats.level;
+                        clientEnt.nameplate.levelTextMesh.geometry = client.getTextGeometry(`Lv: ${entData.stats.level}`, clientEnt.nameplate.levelFontUrl, clientEnt.nameplate.levelFontSize);
+                        clientEnt.nameplate.levelTextShadowMesh.geometry = client.getTextGeometry(`Lv: ${entData.stats.level}`, clientEnt.nameplate.levelFontUrl, clientEnt.nameplate.levelFontSize);
                     }
                 }
             }

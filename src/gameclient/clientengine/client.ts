@@ -373,13 +373,13 @@ export class Client {
                 if (ent.pos.flipX) { 
                     ent.sprite.scale.x = -1;
                     
-                    // if (this.displayHitBoxes) // Don't scale hitbox or status graphics.
+                    // if (this.displayHitBoxes) // Don't scale hitbox or nameplate graphics.
                         ent.sprite.children.map(child => child.scale.x = 1.0 / ent.sprite.scale.x);
                 }
                 else {
                     ent.sprite.scale.x = 1;
 
-                    // if (this.displayHitBoxes) // Don't scale hitbox or status graphics.
+                    // if (this.displayHitBoxes) // Don't scale hitbox or nameplate graphics.
                         ent.sprite.children.map(child => child.scale.x = 1.0 / ent.sprite.scale.x);
                 }
             

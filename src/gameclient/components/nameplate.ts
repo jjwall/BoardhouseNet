@@ -1,10 +1,11 @@
 import { createTextMesh, TextMeshParams } from "../clientengine/clientutils";
 import { Group, Mesh, MeshBasicMaterial, PlaneGeometry } from "three";
+import { StatsData } from "../../packets/data/statsdata";
 import { Client } from "../clientengine/client";
 
 // TODO: (Done) Hp bar updates.
 // TODO: (Done) HUD state updates from client entity updates -> use root component . setState
-// -> This works fine. But do we want status plate to show for current player?
+// -> This works fine. But do we want nameplate to show for current player?
 // TODO: Usernames set in lobby. Default if nothing is chosen is: Player_ClientId
 // TODO: Preset stats for each class. Pass in like inventory on world join.
 // -> Once done I'm done with UI??
@@ -13,7 +14,7 @@ import { Client } from "../clientengine/client";
 // TODO: Different colored HP bars for players (green) vs enemies (red)
 // Possible TODO: Refactor Status -> Stats? or does this status make sense.
 // Possible TODO: Refactor HP -> Hp in root ui?
-export interface StatusComponent {
+export interface NameplateComponent {
     // name: string; // Name won't change - unnecessary to keep reference.
     maxHp: number;
     currentHp: number;
@@ -25,94 +26,76 @@ export interface StatusComponent {
     levelTextShadowMesh: Mesh;
     levelFontUrl: string;
     levelFontSize: number;
-    // maxMp: number; // Not displaying Mp in status currently.
-    // currentMp: number; // Not displaying Mp in status currently.
-    // maxXp: number; // Not displaying Xp in status currently.
-    // currentXp: number; // Not displaying Xp in status currently.
+    // maxMp: number; // Not displaying Mp in nameplate currently.
+    // currentMp: number; // Not displaying Mp in nameplate currently.
+    // maxXp: number; // Not displaying Xp in nameplate currently.
+    // currentXp: number; // Not displaying Xp in nameplate currently.
 }
 
-type StatusData = {
-    // Data fields.
-    name: string;
-    level: number;
-    maxHp: number;
-    currentHp: number;
-    maxMp: number;
-    currentMp: number;
-    maxXp: number;
-    currentXp: number;
-    // Graphic fields.
-    hpBarColor: string;
-    height: number;
-    width: number;
-    offsetX: number;
-    offsetY: number;
-}
-
-export function setStatusComponentAndGraphic(client: Client, entMesh: Mesh, statusData: StatusData): StatusComponent {
+export function setNameplateComponent(client: Client, entMesh: Mesh, statsData: StatsData): NameplateComponent {
     // HP Base Bar.
-    const hpBaseBarWidth = statusData.width + 4;
-    const hpBaseBarHeight = statusData.height + 4;
+    const hpBaseBarWidth = statsData.width + 4;
+    const hpBaseBarHeight = statsData.height + 4;
     const hpBaseBarGeom = new PlaneGeometry(hpBaseBarWidth, hpBaseBarHeight);
     const hpBaseBarMaterial = new MeshBasicMaterial({ color: "#282828", opacity: 0.75, transparent: true });
     const hpBaseBar = new Mesh(hpBaseBarGeom, hpBaseBarMaterial);
     hpBaseBar.geometry.translate(hpBaseBarWidth/2, -hpBaseBarHeight/2, 0);
     hpBaseBar.position.z += 2;
-    hpBaseBar.position.x += statusData.offsetX - 2;
-    hpBaseBar.position.y += statusData.offsetY + 2;
+    hpBaseBar.position.x += statsData.offsetX - 2;
+    hpBaseBar.position.y += statsData.offsetY + 2;
     // HP Bar.
-    const maxHpBarWidth = statusData.width;
-    const hpBarHeight = statusData.height;
+    const maxHpBarWidth = statsData.width;
+    const hpBarHeight = statsData.height;
     // Initialize size of hp bar based on current hp.
-    const hpBarGeom = new PlaneGeometry((statusData.currentHp / statusData.maxHp) * maxHpBarWidth, hpBarHeight);
-    const hpBarMaterial = new MeshBasicMaterial({ color: statusData.hpBarColor });
+    const hpBarGeom = new PlaneGeometry((statsData.currentHp / statsData.maxHp) * maxHpBarWidth, hpBarHeight);
+    const hpBarMaterial = new MeshBasicMaterial({ color: statsData.hpBarColor });
     const hpBar = new Mesh(hpBarGeom, hpBarMaterial);
     hpBar.geometry.translate(maxHpBarWidth/2, -hpBarHeight/2, 0);
     hpBar.position.z += 3;
-    hpBar.position.x += statusData.offsetX;
-    hpBar.position.y += statusData.offsetY;
+    hpBar.position.x += statsData.offsetX;
+    hpBar.position.y += statsData.offsetY;
     // Player name text shadow.
     const playerNameOffsetX = 0;
     const playerNameOffsetY = 7;
     const playerNameTextShadowMeshParams: TextMeshParams = {
-        contents: statusData.name,
+        contents: statsData.name,
         color: "#000000",
     }
     const playerNameTextShadowMesh = createTextMesh(client, playerNameTextShadowMeshParams);
     playerNameTextShadowMesh.position.z += 2
-    playerNameTextShadowMesh.position.x += playerNameOffsetX + statusData.offsetX - 1;
-    playerNameTextShadowMesh.position.y += playerNameOffsetY + statusData.offsetY - 1;
+    playerNameTextShadowMesh.position.x += playerNameOffsetX + statsData.offsetX - 1;
+    playerNameTextShadowMesh.position.y += playerNameOffsetY + statsData.offsetY - 1;
     // Player name text.
     const playerNameTextMeshParams: TextMeshParams = {
-        contents: statusData.name,
+        contents: statsData.name,
         color: "#FFFFFF",
     }
     const playerNameTextMesh = createTextMesh(client, playerNameTextMeshParams);
     playerNameTextMesh.position.z += 2
-    playerNameTextMesh.position.x += playerNameOffsetX + statusData.offsetX;
-    playerNameTextMesh.position.y += playerNameOffsetY + statusData.offsetY;
+    playerNameTextMesh.position.x += playerNameOffsetX + statsData.offsetX;
+    playerNameTextMesh.position.y += playerNameOffsetY + statsData.offsetY;
     // Level text shadow.
     const levelTextOffsetX = 0;
     const levelTextOffsetY = 22;
     const levelTextShadowMeshParams: TextMeshParams = {
-        contents: `Lv: ${statusData.level}`,
+        contents: `Lv: ${statsData.level}`,
         color: "#000000",
         fontSize: 9,
     }
     const levelTextShadowMesh = createTextMesh(client, levelTextShadowMeshParams);
     levelTextShadowMesh.position.z += 2
-    levelTextShadowMesh.position.x += levelTextOffsetX + statusData.offsetX - 1;
-    levelTextShadowMesh.position.y += levelTextOffsetY + statusData.offsetY - 1;
+    levelTextShadowMesh.position.x += levelTextOffsetX + statsData.offsetX - 1;
+    levelTextShadowMesh.position.y += levelTextOffsetY + statsData.offsetY - 1;
     // Level text.
     const levelTextMeshParams = {
-        contents: `Lv: ${statusData.level}`,
+        contents: `Lv: ${statsData.level}`,
         color: "#FFFFFF",
         fontSize: 9,
     }
     const levelTextMesh = createTextMesh(client, levelTextMeshParams);
     levelTextMesh.position.z += 2
-    levelTextMesh.position.x += levelTextOffsetX + statusData.offsetX;
-    levelTextMesh.position.y += levelTextOffsetY + statusData.offsetY;
+    levelTextMesh.position.x += levelTextOffsetX + statsData.offsetX;
+    levelTextMesh.position.y += levelTextOffsetY + statsData.offsetY;
     // Add to group.
     const container = new Group();
     entMesh.add(container);
@@ -123,14 +106,14 @@ export function setStatusComponentAndGraphic(client: Client, entMesh: Mesh, stat
     container.add(playerNameTextShadowMesh);
     container.add(playerNameTextMesh);
 
-    // Return Status Component.
+    // Return Nameplate Component.
     return { 
-        maxHp: statusData.maxHp,
-        currentHp: statusData.currentHp,
-        maxHpBarWidth: statusData.width,
-        hpBarHeight: statusData.height,
+        maxHp: statsData.maxHp,
+        currentHp: statsData.currentHp,
+        maxHpBarWidth: statsData.width,
+        hpBarHeight: statsData.height,
         hpBarMesh: hpBar,
-        level: statusData.level,
+        level: statsData.level,
         levelTextMesh: levelTextMesh,
         levelTextShadowMesh: levelTextShadowMesh,
         levelFontSize: 9,

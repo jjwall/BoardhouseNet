@@ -36,7 +36,7 @@ export interface EntityData {
     player?: {
         id: string;
     }
-    status?: {
+    stats?: {
         // Data fields.
         name: string;
         level: number;

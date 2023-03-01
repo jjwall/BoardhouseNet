@@ -54,13 +54,12 @@ const getClassAnimBlob = (playerClass: PlayerClassTypes): AnimationSchema => {
     }
 }
 
-// TODO: Initial class status values should be set outside of this archetype. See preset inventories.
 export function createPlayerCharacter(params: PlayerCharacterParams) {
     // Initialize Player Character entity.
     let playerChar = new Entity();
     // Initialize Player Character player component.
     playerChar.player = setPlayer(params.clientId, PlayerStates.UNLOADED, params.class, params.currentInventory);
-    // Initialize Player Character status component.
+    // Initialize Player Character stats component.
     playerChar.stats = params.currentStats;
     // Initialize Player Character position component with spawn coordinates.
     playerChar.pos = params.spawnPos;

@@ -37,7 +37,7 @@ export function broadcastCreateEntitiesMessage(ents: Entity[], server: Server, w
                 sprite: ent.sprite,
                 anim: ent.anim,
                 player: ent.player,
-                status: ent.stats,
+                stats: ent.stats,
             }
 
             if (ent.hitbox) {
@@ -93,7 +93,7 @@ export function broadcastUpdateEntitiesMessage(ents: Entity[], server: Server, w
                 sprite: ent.sprite,
                 anim: ent.anim,
                 player: ent.player,
-                status: ent.stats,
+                stats: ent.stats,
             }
 
             message.data.ents.push(entData);
