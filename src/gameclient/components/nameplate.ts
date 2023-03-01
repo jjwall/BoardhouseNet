@@ -3,17 +3,6 @@ import { Group, Mesh, MeshBasicMaterial, PlaneGeometry } from "three";
 import { StatsData } from "../../packets/data/statsdata";
 import { Client } from "../clientengine/client";
 
-// TODO: (Done) Hp bar updates.
-// TODO: (Done) HUD state updates from client entity updates -> use root component . setState
-// -> This works fine. But do we want nameplate to show for current player?
-// TODO: (Done) Usernames set in lobby. Default if nothing is chosen is: Player_ClientId
-// TODO: (Done) Preset stats for each class. Pass in like inventory on world join.
-// -> Once done I'm done with UI??
-// TODO: Max HP upgrades don't seem to reflect in ui
-// TODO: Get new goblin spawned in with status plate w/ name "goblin"
-// TODO: Different colored HP bars for players (green) vs enemies (red)
-// Possible TODO: Refactor Status -> Stats? or does this status make sense.
-// Possible TODO: Refactor HP -> Hp in root ui?
 export interface NameplateComponent {
     // name: string; // Name won't change - unnecessary to keep reference.
     maxHp: number;
