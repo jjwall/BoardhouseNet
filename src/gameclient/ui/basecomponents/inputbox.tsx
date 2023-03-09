@@ -5,8 +5,7 @@ import { Scene } from "THREE";
 import { Component } from "../core/component";
 
 interface Props {
-    focusColor: string,
-    blurColor: string,
+    boxColor: string,
     borderColor: string,
     width: number,
     height: number,
@@ -33,18 +32,6 @@ export class InputBox extends Component<Props, State> {
         }
     }
 
-    // public press = (): void => {
-    //     this.setState({
-    //         pressed: true
-    //     });
-    // }
-
-    // public unpress = (): void => {
-    //     this.setState({
-    //         focused: false
-    //     });
-    // }
-
     public focus = (): void => {
         this.setState({
             focused: true
@@ -65,20 +52,22 @@ export class InputBox extends Component<Props, State> {
         //     <panel height="25" width="300" color="#000000"></panel>
         // </panel>
             <panel
-                height={this.props.height + 10}
-                width={this.props.width + 10}
-                color={this.props.borderColor}
+                height={this.props.height + 2}
+                width={this.props.width + 2}
+                color={this.state.focused ? this.props.borderColor : this.props.boxColor}
                 top={this.props.top}
                 left={this.props.left}
             >
                 <panel
-                    color={this.state.focused ? this.props.focusColor : this.props.blurColor}
+                    color={this.props.boxColor}
                     height={this.props.height}
                     width={this.props.width}
                     onPress={() => {}}
                     onUnpress={() => {}}
                     onBlur={() => this.blur()}
                     onFocus={() => this.focus()}
+                    top={1}
+                    left={1}
                 >
                     <label
                         // color={this.state.pressed ? this.props.pressedFontColor : this.props.unpressedFontColor}

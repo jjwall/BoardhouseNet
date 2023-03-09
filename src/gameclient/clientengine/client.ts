@@ -310,6 +310,8 @@ export class Client {
                         currentMP: 0,
                         maxXP: 0,
                         currentXP: 0,
+                        // Chat
+                        chatInputBoxContents: "",
                     }
                 });
                 break;

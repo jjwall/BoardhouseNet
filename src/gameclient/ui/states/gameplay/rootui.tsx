@@ -47,6 +47,8 @@ export interface GlobalState {
     currentMP: number;
     maxXP: number;
     currentXP: number;
+    // Chat
+    chatInputBoxContents: string;
 }
 
 interface Props {
@@ -69,9 +71,40 @@ export class Root extends Component<Props, GlobalState> {
             currentMP: props.initialState.currentMP,
             maxXP: props.initialState.maxXP,
             currentXP: props.initialState.currentXP,
+            chatInputBoxContents: props.initialState.chatInputBoxContents,
         };
 
-        // setInterval(this.updateStats, 50)
+        // Text input reticle.
+        setInterval(() => {
+            if (this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === "|") {
+                this.backspaceChatInputBoxContents();
+            } else {
+                this.setChatInputBoxContents("|");
+            }
+        }, 500)
+    }
+
+    getState() {
+        return this.state
+    }
+
+    backspaceChatInputBoxContents = () => {
+        if (this.state.chatInputBoxContents.length > 1) {
+            this.setState({
+                chatInputBoxContents: this.state.chatInputBoxContents.slice(0, this.state.chatInputBoxContents.length - 1)
+            })
+        } else if (this.state.chatInputBoxContents.length === 1 && this.state.chatInputBoxContents !== " ") {
+            this.setState({
+                chatInputBoxContents: " " // Workaround, empty string doesn't play well.
+            })
+        }
+    }
+
+    setChatInputBoxContents = (newContents: string) => {
+        // check for backspace, and remove if exists? Make special cases for other keys like tab, ctrl, etc.
+        this.setState({
+            chatInputBoxContents: this.state.chatInputBoxContents += newContents
+        })
     }
 
     updateStats = (params: StatsStateParams) => {
@@ -109,10 +142,6 @@ export class Root extends Component<Props, GlobalState> {
             this.setState({
                 maxXP: params.maxXp
             })
-    }
-
-    getState() {
-        return this.state
     }
 
     setUIEvents = (newUIEvents: UIEvents) => {
@@ -167,14 +196,14 @@ export class Root extends Component<Props, GlobalState> {
         return(
             <panel>
                 <InputBox
-                    focusColor="#FFFFFF"
-                    blurColor="#C9CFFF"
+                    boxColor="#C9CFFF"
                     borderColor="#000000"
-                    top="200"
-                    left="200"
-                    width={100}
-                    height={50}
+                    top="600"
+                    left="100"
+                    width={250}
+                    height={20}
                     submit={()=>{}}
+                    contents={this.state.chatInputBoxContents}
                 />
                 <HUD
                     level={this.state.level}
