@@ -56,6 +56,7 @@ export function setGoblinSpearHitbox(goblin: Entity, state: GoblinSpearState, wo
             // Todo: Build stats component that tracks damage multiplayers for magic and physical attack.
             // Also will track defense. Should make a process damage module that takes all factors into account.
             state.hp--;
+            goblin.stats.currentHp -= 15;
 
             // Push goblin in direction of collision with fireball.
             const pushDirection = other.pos.dir.clone().normalize();
@@ -65,6 +66,7 @@ export function setGoblinSpearHitbox(goblin: Entity, state: GoblinSpearState, wo
         if (other.hitbox.collideType === HitboxTypes.PLAYER_SWORD_ATTACK) {
             // TODO: See above.
             state.hp -= 0.1;
+            goblin.stats.currentHp -= 1;
 
             // Push goblin in opposite X direction of attacking player.
             const pushDirection = new Vector3(0, 0, 0);
@@ -101,7 +103,8 @@ export function setGoblinSpearHitbox(goblin: Entity, state: GoblinSpearState, wo
             other.vel.positional.add(pushDirection.multiplyScalar(state.pushEnemyAccel));
         }
 
-        if (state.hp <= 0) {
+        if (goblin.stats.currentHp <= 0) {
+            // TODO: Death animation.
             broadcastDestroyEntitiesMessage([goblin], worldEngine.server, worldEngine);
         }
     }
