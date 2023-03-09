@@ -20,6 +20,7 @@ import { Vector3 } from "three";
 // -> could be generic, takes x number of createEnemy archetype methods, and uses a random bag to "spawn"
 // a given assortment of enemies.
 
+// KNOWN BUG: Enemies share stat state somewhat. See when hitting one enemy, multiple goblins lose Hp. 
 export function createGoblinSpear(worldEngine: BaseWorldEngine, pos: PositionComponent): Entity {
     let goblin = new Entity();
     goblin.pos = pos;
