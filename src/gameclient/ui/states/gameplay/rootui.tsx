@@ -12,6 +12,8 @@ import { Inventory } from "./inventory";
 import { Scene } from "three";
 import { HUD } from "./hud";
 
+let textReticleInterval: NodeJS.Timeout = undefined
+
 export type UIEvents = Array<UIEventTypes>
 export type ClientInventory = Array<ItemData | undefined>
 
@@ -49,6 +51,7 @@ export interface GlobalState {
     currentXP: number;
     // Chat
     chatInputBoxContents: string;
+    chatFocused: boolean;
 }
 
 interface Props {
@@ -72,16 +75,8 @@ export class Root extends Component<Props, GlobalState> {
             maxXP: props.initialState.maxXP,
             currentXP: props.initialState.currentXP,
             chatInputBoxContents: props.initialState.chatInputBoxContents,
+            chatFocused: props.initialState.chatFocused,
         };
-
-        // Text input reticle.
-        setInterval(() => {
-            if (this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === "|") {
-                this.backspaceChatInputBoxContents();
-            } else {
-                this.setChatInputBoxContents("|");
-            }
-        }, 500)
     }
 
     getState() {
@@ -105,6 +100,28 @@ export class Root extends Component<Props, GlobalState> {
         this.setState({
             chatInputBoxContents: this.state.chatInputBoxContents += newContents
         })
+    }
+
+    setChatFocus = (toggle: boolean) => {
+        this.setState({
+            chatFocused: toggle
+        })
+
+        if (toggle) {
+            textReticleInterval = setInterval(() => {
+                if (this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === "|") {
+                    this.backspaceChatInputBoxContents();
+                } else {
+                    this.setChatInputBoxContents("|");
+                }
+            }, 500)
+        } else {
+            clearInterval(textReticleInterval)
+
+            if (this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === "|") {
+                this.backspaceChatInputBoxContents();
+            }
+        }
     }
 
     updateStats = (params: StatsStateParams) => {
@@ -200,9 +217,11 @@ export class Root extends Component<Props, GlobalState> {
                     borderColor="#000000"
                     top="600"
                     left="100"
+                    fontTop="18"
                     width={250}
-                    height={20}
-                    submit={()=>{}}
+                    height={25}
+                    setFocus={this.setChatFocus}
+                    focused={this.state.chatFocused}
                     contents={this.state.chatInputBoxContents}
                 />
                 <HUD

@@ -1,8 +1,7 @@
-// /** @jsx createJSXElement */
 import { createJSXElement } from "../core/createjsxelement";
 import { JSXElement } from "../core/interfaces";
-import { Scene } from "THREE";
 import { Component } from "../core/component";
+import { Scene } from "THREE";
 
 interface Props {
     boxColor: string,
@@ -17,44 +16,22 @@ interface Props {
     fontTop?: string | number;
     fontLeft?: string | number;
     font?: string;
-    submit: () => void,
-}
-
-interface State {
+    // submit: () => void;
     focused: boolean;
+    setFocus: (toggle: boolean) => void;
 }
 
-export class InputBox extends Component<Props, State> {
+export class InputBox extends Component<Props, {}> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
-        this.state = {
-            focused: false,
-        }
-    }
-
-    public focus = (): void => {
-        this.setState({
-            focused: true
-        });
-    }
-
-    public blur = (): void => {
-        if (this.state.focused) {
-            this.setState({
-                focused: false
-            });
-        }
     }
 
     render(): JSXElement {
         return (
-        // <panel height="35" width="310" color="#FFFFFF" top="400" left="640">
-        //     <panel height="25" width="300" color="#000000"></panel>
-        // </panel>
             <panel
                 height={this.props.height + 2}
                 width={this.props.width + 2}
-                color={this.state.focused ? this.props.borderColor : this.props.boxColor}
+                color={this.props.focused ? this.props.borderColor : this.props.boxColor}
                 top={this.props.top}
                 left={this.props.left}
             >
@@ -64,13 +41,12 @@ export class InputBox extends Component<Props, State> {
                     width={this.props.width}
                     onPress={() => {}}
                     onUnpress={() => {}}
-                    onBlur={() => this.blur()}
-                    onFocus={() => this.focus()}
+                    onBlur={() => this.props.setFocus(false)}
+                    onFocus={() => this.props.setFocus(true)}
                     top={1}
                     left={1}
                 >
                     <label
-                        // color={this.state.pressed ? this.props.pressedFontColor : this.props.unpressedFontColor}
                         color = {this.props.fontColor}
                         top={this.props.fontTop}
                         left={this.props.fontLeft}

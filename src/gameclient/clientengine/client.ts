@@ -312,6 +312,7 @@ export class Client {
                         currentXP: 0,
                         // Chat
                         chatInputBoxContents: "",
+                        chatFocused: false,
                     }
                 });
                 break;
