@@ -41,15 +41,24 @@ export function handlePointerDownEvent(widget: Widget, e: PointerEvent) {
     }
 
     if (focusedWidget) {
-        const halfWidth = Number(focusedWidget.attr("width"))/2;
-        const halfHeight = Number(focusedWidget.attr("height"))/2;
+        let halfWidth = Number(focusedWidget.attr("width"))/2;
+        let halfHeight = Number(focusedWidget.attr("height"))/2;
         const position = new Vector3();
         focusedWidget.getWorldPosition(position);
+        let notCenteredOffsetX = 0
+        let notCenteredOffsetY = 0
+
+        if(!widget.attr('center')) {
+            notCenteredOffsetX = halfWidth * 2
+            notCenteredOffsetY = halfHeight * 2
+            halfWidth *= 2
+            halfHeight *= 2
+        }
 
         // TODO: use sweep & prune alg instead of AABB
-        if (e.offsetY > -position.y - halfHeight
+        if (e.offsetY - notCenteredOffsetY > -position.y - halfHeight
             && e.offsetY - halfHeight < -position.y
-            && e.offsetX > position.x - halfWidth
+            && e.offsetX - notCenteredOffsetX > position.x - halfWidth
             && e.offsetX - halfWidth < position.x)
         {}
         else {

@@ -3,6 +3,7 @@ import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
 import { ItemData } from "../../../../packets/data/itemdata";
 import { NotificationWidget } from "./notificationwidget";
+import { InputBox } from "../../basecomponents/inputbox";
 import { renderWidget } from "../../core/renderwidget";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
@@ -165,6 +166,16 @@ export class Root extends Component<Props, GlobalState> {
     render(): JSXElement {
         return(
             <panel>
+                <InputBox
+                    focusColor="#FFFFFF"
+                    blurColor="#C9CFFF"
+                    borderColor="#000000"
+                    top="200"
+                    left="200"
+                    width={100}
+                    height={50}
+                    submit={()=>{}}
+                />
                 <HUD
                     level={this.state.level}
                     maxHP={this.state.maxHP}
