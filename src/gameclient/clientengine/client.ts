@@ -5,7 +5,7 @@ import { GlobalState, renderGamePlayUi, Root } from "../ui/states/gameplay/rootu
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { GameServerStateTypes } from "../../packets/enums/gameserverstatetypes";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
-import { presetEmptyInventory } from "../../database/presets/emptyinventory";
+import { presetEmptyInventory } from "../../database/inventory/preset_emptyinventory";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { ClientRoleTypes } from "../../packets/enums/clientroletypes";

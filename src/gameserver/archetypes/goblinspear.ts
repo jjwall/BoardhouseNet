@@ -2,7 +2,7 @@ import { broadcastCreateEntitiesMessage, broadcastDestroyEntitiesMessage } from 
 import { getWorldPosition, PositionComponent, setPosition } from "../components/position";
 import { goblinSpearAnim } from "../../modules/animations/animationdata/goblinspear";
 import { goblinSpearBehavior, GoblinSpearState } from "./../behaviors/goblinspear";
-import { presetGoblinSpearStats } from "../../database/presets/goblinspearstats";
+import { presetGoblinSpearStats } from "../../database/stats/preset_goblinspearstats";
 import { SequenceTypes } from "../../modules/animations/sequencetypes";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { HitboxTypes, setHitbox } from "../components/hitbox";
