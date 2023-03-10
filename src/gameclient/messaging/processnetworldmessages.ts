@@ -106,6 +106,6 @@ export function notifyPlayer(message: NetMessagePlayerNotification, client: Clie
 
 export function appendPlayerChatMessage(message: NetMessagePlayerChatMessage, client: Client) {
     if (message.data.worldType === client.worldType) {
-        console.log(`${message.data.clientUsername}: ${message.data.chatMessage}`);
+        console.log(`${message.data.clientUsername} (PlayerId: ${message.data.clientId}): ${message.data.chatMessage}`);
     }
 }

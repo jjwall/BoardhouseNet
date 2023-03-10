@@ -74,7 +74,7 @@ import { Server } from "../serverengine/server";
     // Override preset name field if username is set.
     if (message.data.username.length > 0) {
         playerEntParams.currentStats.name = message.data.username;
-    } // assign in url params if not set. usname = Knight
+    }
 
     playerEnt = createPlayerCharacter(playerEntParams)
 

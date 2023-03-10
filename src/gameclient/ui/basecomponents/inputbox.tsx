@@ -3,10 +3,10 @@ import { JSXElement } from "../core/interfaces";
 import { Component } from "../core/component";
 import { Scene } from "THREE";
 
-// TODO: Display Usernames
+// TODO: (Done) Display Usernames
 // TODO: Maintain client cached chat histories, i.e. chat history state
 // TODO: Fix | bug for sent messages.
-// TODO: Test to make sure clients within the same world recieve chat messages.
+// TODO: (Done) Test to make sure clients within the same world recieve chat messages.
 // TODO: Input box text overflow... how?? z indexes? transparent layer?? Would be good knoweldge for scrollbar stuff too
 
 interface Props {
