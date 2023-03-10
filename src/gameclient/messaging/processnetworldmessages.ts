@@ -1,4 +1,4 @@
-import { NetMessageLoadWorld, NetMessagePlayerItemPickup, NetMessagePlayerNotification, NetMessagePlayerReconcileInventory, NetMessagePlayerWorldTransition } from "../../packets/messages/networldmessage";
+import { NetMessageLoadWorld, NetMessagePlayerChatMessage, NetMessagePlayerItemPickup, NetMessagePlayerNotification, NetMessagePlayerReconcileInventory, NetMessagePlayerWorldTransition } from "../../packets/messages/networldmessage";
 import { renderSceneFadeIn, renderSceneFadeOut } from "../renders/scenetransitions";
 import { sendPlayerWorldTransitionMessage } from "./sendclientworldmessages";
 import { renderWorldMap } from "../clientengine/renderworldmap";
@@ -101,5 +101,11 @@ export function playerReconcileInventory(message: NetMessagePlayerReconcileInven
 export function notifyPlayer(message: NetMessagePlayerNotification, client: Client) {
     if (client.currentClientId === message.data.clientId) {
         client.rootComponent.setNotificationMessage(message.data)
+    }
+}
+
+export function appendPlayerChatMessage(message: NetMessagePlayerChatMessage, client: Client) {
+    if (message.data.worldType === client.worldType) {
+        console.log(message.data.chatMessage);
     }
 }

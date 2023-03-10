@@ -1,6 +1,7 @@
-import { NetMessageLoadWorld, NetMessagePlayerItemPickup, NetMessagePlayerNotification, NetMessagePlayerReconcileInventory, NetMessagePlayerWorldTransition, NetMessageUnloadWorld, NetWorldEventTypes } from "../../packets/messages/networldmessage";
+import { NetMessageLoadWorld, NetMessagePlayerChatMessage, NetMessagePlayerItemPickup, NetMessagePlayerNotification, NetMessagePlayerReconcileInventory, NetMessagePlayerWorldTransition, NetMessageUnloadWorld, NetWorldEventTypes } from "../../packets/messages/networldmessage";
 import { WorldTransitionData } from "../../packets/data/worldtransitiondata";
 import { NotificationData } from "../../packets/data/notificationdata";
+import { ChatMessageData } from "../../packets/data/chatmessagedata";
 import { WorldLevelData } from "../../packets/data/worldleveldata";
 import { ItemPickupData } from "../../packets/data/itempickupdata";
 import { InventoryData } from "../../packets/data/inventorydata";
@@ -108,6 +109,19 @@ export function sendPlayerNotificationMessage(server: Server, notificationData: 
             console.log(`(port: ${server.gameServerPort}): sending notification message to client with clientId = "${notificationData.clientId}"`)
             client.send(JSON.stringify(message));
         }
+    });
+}
+
+export function broadcastPlayerChatMessage(server: Server, chatMessageData: ChatMessageData) {
+    const message: NetMessagePlayerChatMessage = {
+        messageType: MessageTypes.NET_WORLD_MESSAGE,
+        eventType: NetWorldEventTypes.PLAYER_CHAT_MESSAGE,
+        data: chatMessageData
+    }
+
+    server.boardhouseServer.clients.forEach(client => {
+        console.log(`(port: ${server.gameServerPort}): broadcasting player chat message for clientId = "${chatMessageData.clientId}"`)
+        client.send(JSON.stringify(message));
     });
 }
 

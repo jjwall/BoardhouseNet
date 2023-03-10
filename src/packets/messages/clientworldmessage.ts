@@ -1,4 +1,5 @@
 import { WorldTransitionData } from "../data/worldtransitiondata";
+import { ChatMessageData } from "../data/chatmessagedata";
 import { WorldJoinData } from "../data/worldjoindata";
 import { InventoryData } from "../data/inventorydata";
 import { Message } from "./message";
@@ -8,7 +9,8 @@ export type ClientWorldMessage =
     ClientMessageSpectatorWorldJoin |
     ClientMessagePlayerWorldJoin |
     ClientMessageSpectatorWorldTransition |
-    ClientMessagePlayerInventoryEvent
+    ClientMessagePlayerInventoryEvent | 
+    ClientMessagePlayerChatMessage
 ;
 
 export interface ClientMessagePlayerWorldJoin extends Message {
@@ -36,10 +38,16 @@ export interface ClientMessagePlayerInventoryEvent extends Message {
     data: InventoryData
 }
 
+export interface ClientMessagePlayerChatMessage extends Message {
+    eventType: ClientWorldEventTypes.PLAYER_CHAT_MESSAGE
+    data: ChatMessageData
+}
+
 export enum ClientWorldEventTypes {
     PLAYER_WORLD_JOIN = "PLAYER_WORLD_JOIN",
     SPECTATOR_WORLD_JOIN = "SPECTATOR_WORLD_JOIN",
     PLAYER_WORLD_TRANSITION = "PLAYER_WORLD_TRANSITION",
     SPECTATOR_WORLD_TRANSITION = "SPECTATOR_WORLD_TRANSITION",
     PLAYER_INVENTORY_EVENT = "PLAYER_INVENTORY_EVENT",
+    PLAYER_CHAT_MESSAGE = "PLAYER_CHAT_MESSAGE",
 }

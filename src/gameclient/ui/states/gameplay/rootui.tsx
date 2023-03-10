@@ -110,10 +110,7 @@ export class Root extends Component<Props, GlobalState> {
         } else if (enteredKey === 'Backspace') {
             this.lastCharIsTextReticle() ? this.backspaceChatInputBoxContents(2) : this.backspaceChatInputBoxContents()
         } else if (enteredKey === 'Enter') {
-            console.log('Submit contents and clear input box')
-            this.setState({
-                chatInputBoxContents: " "
-            })
+            this.setUIEvents([UIEventTypes.SEND_CHAT_MESSAGE])
         }
     }
 

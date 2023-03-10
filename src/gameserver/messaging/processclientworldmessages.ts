@@ -1,5 +1,5 @@
-import { ClientMessagePlayerWorldTransition, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin, ClientMessagePlayerInventoryEvent } from "../../packets/messages/clientworldmessage";
-import { sendLoadWorldMessage, sendPlayerReconcileInventoryMessage } from "./sendnetworldmessages";
+import { ClientMessagePlayerWorldTransition, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin, ClientMessagePlayerInventoryEvent, ClientMessagePlayerChatMessage } from "../../packets/messages/clientworldmessage";
+import { broadcastPlayerChatMessage, sendLoadWorldMessage, sendPlayerReconcileInventoryMessage } from "./sendnetworldmessages";
 import { createPlayerCharacter, PlayerCharacterParams } from "../archetypes/playercharacter";
 import { findPlayerEntityByClientId, processPlayerEquipEvent } from "./helpers";
 import { presetKnightInventory } from "../../database/inventory/preset_knightinventory";
@@ -150,4 +150,10 @@ export function processPlayerInventoryEventMessage(message: ClientMessagePlayerI
     const playerEnt = findPlayerEntityByClientId(clientWorld, message.data.clientId)
 
     processPlayerEquipEvent(playerEnt, message.data.inventory, clientWorld)
+}
+
+export function processPlayerChatMessage(message: ClientMessagePlayerChatMessage, server: Server) {
+    console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.data.clientId}" sent a chat message.`)
+
+    broadcastPlayerChatMessage(server, message.data);
 }

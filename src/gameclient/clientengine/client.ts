@@ -1,6 +1,6 @@
 import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh } from "three";
 import { handlePointerDownEvent, handlePointerMoveEvent, handlePointerUpEvent } from "../events/pointerevents";
-import { sendPlayerInventoryEventMessage } from "../messaging/sendclientworldmessages";
+import { sendPlayerChatMessage, sendPlayerInventoryEventMessage } from "../messaging/sendclientworldmessages";
 import { GlobalState, renderGamePlayUi, Root } from "../ui/states/gameplay/rootui";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { GameServerStateTypes } from "../../packets/enums/gameserverstatetypes";
@@ -482,9 +482,15 @@ export class Client {
             this.getUIState().uiEvents.forEach(uiEvent => {
                 switch(uiEvent) {
                     case UIEventTypes.ITEM_EQUIP_EVENT:
-                        sendPlayerInventoryEventMessage(this)
+                        sendPlayerInventoryEventMessage(this);
                         break;
-                    // case ...
+                    case UIEventTypes.SEND_CHAT_MESSAGE:
+                        sendPlayerChatMessage(this);
+                        // Clear chat input box contents.
+                        this.rootComponent.setState({
+                            chatInputBoxContents: " "
+                        })
+                        break;
                 }
             })
 
