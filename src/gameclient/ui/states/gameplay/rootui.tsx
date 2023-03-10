@@ -115,11 +115,21 @@ export class Root extends Component<Props, GlobalState> {
     }
 
     setChatFocus = (toggle: boolean) => {
-        this.setState({
-            chatFocused: toggle
-        })
+        if (this.state.chatFocused && !toggle) {
+            this.setState({
+                chatFocused: false
+            })
 
-        if (toggle) {
+            clearInterval(textReticleInterval)
+
+            if (this.lastCharIsTextReticle()) {
+                this.backspaceChatInputBoxContents();
+            }
+        } else if (!this.state.chatFocused && toggle) {
+            this.setState({
+                chatFocused: true
+            })
+
             textReticleInterval = setInterval(() => {
                 if (this.lastCharIsTextReticle()) {
                     this.backspaceChatInputBoxContents();
@@ -127,12 +137,6 @@ export class Root extends Component<Props, GlobalState> {
                     this.updateChatInputBoxContents("|");
                 }
             }, 500)
-        } else {
-            clearInterval(textReticleInterval)
-
-            if (this.lastCharIsTextReticle()) {
-                this.backspaceChatInputBoxContents();
-            }
         }
     }
 
