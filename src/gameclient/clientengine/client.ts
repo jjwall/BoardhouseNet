@@ -338,11 +338,15 @@ export class Client {
                     handlePointerMoveEvent(e as PointerEvent);
                 break;
             case EventTypes.KEY_DOWN:
-                if (this.role === ClientRoleTypes.PLAYER)
-                    handleKeyDownEvent(this, e as KeyboardEvent);
+                if (this.role === ClientRoleTypes.PLAYER) {
+                    if (!this.rootComponent.getState().chatFocused)
+                        handleKeyDownEvent(this, e as KeyboardEvent);
+                    else
+                        this.rootComponent.setChatInputBoxContents((e as KeyboardEvent).key);
+                }
                 break;
             case EventTypes.KEY_UP:
-                if (this.role === ClientRoleTypes.PLAYER)
+                if (this.role === ClientRoleTypes.PLAYER && !this.rootComponent.getState().chatFocused)
                     handleKeyUpEvent(this, e as KeyboardEvent);
                 break;
         }

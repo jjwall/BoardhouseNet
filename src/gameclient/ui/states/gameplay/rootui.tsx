@@ -1,4 +1,5 @@
 import { NotificationData } from "../../../../packets/data/notificationdata";
+import { chatInputBoxAllowedCharactersJoined } from "../utils/chatutils";
 import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
 import { ItemData } from "../../../../packets/data/itemdata";
@@ -59,6 +60,7 @@ interface Props {
 }
 
 export class Root extends Component<Props, GlobalState> {
+    // lastTypedChar = this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === "|"
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
@@ -97,9 +99,22 @@ export class Root extends Component<Props, GlobalState> {
 
     setChatInputBoxContents = (newContents: string) => {
         // check for backspace, and remove if exists? Make special cases for other keys like tab, ctrl, etc.
-        this.setState({
-            chatInputBoxContents: this.state.chatInputBoxContents += newContents
-        })
+        const strRegEx = '[^,]*'+newContents+'[,$]*';
+        if (chatInputBoxAllowedCharactersJoined.match(strRegEx)) {
+            if (this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === "|") {
+                this.backspaceChatInputBoxContents();
+            }
+            this.setState({
+                chatInputBoxContents: this.state.chatInputBoxContents += newContents
+            })
+        } else if (newContents === 'Backspace') {
+            this.backspaceChatInputBoxContents()
+        } else if (newContents === 'Enter') {
+            console.log('Submit contents and clear input box')
+            this.setState({
+                chatInputBoxContents: " "
+            })
+        }
     }
 
     setChatFocus = (toggle: boolean) => {
