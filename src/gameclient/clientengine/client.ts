@@ -342,7 +342,7 @@ export class Client {
                     if (!this.rootComponent.getState().chatFocused)
                         handleKeyDownEvent(this, e as KeyboardEvent);
                     else
-                        this.rootComponent.setChatInputBoxContents((e as KeyboardEvent).key);
+                        this.rootComponent.updateChatInputBoxContents((e as KeyboardEvent).key);
                 }
                 break;
             case EventTypes.KEY_UP:

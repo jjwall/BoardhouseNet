@@ -60,7 +60,7 @@ interface Props {
 }
 
 export class Root extends Component<Props, GlobalState> {
-    // lastTypedChar = this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === "|"
+    lastCharIsTextReticle = () => this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === "|"
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
@@ -81,14 +81,14 @@ export class Root extends Component<Props, GlobalState> {
         };
     }
 
-    getState() {
+    getState = () => {
         return this.state
     }
 
-    backspaceChatInputBoxContents = () => {
+    backspaceChatInputBoxContents = (deleteIndex = 1) => {
         if (this.state.chatInputBoxContents.length > 1) {
             this.setState({
-                chatInputBoxContents: this.state.chatInputBoxContents.slice(0, this.state.chatInputBoxContents.length - 1)
+                chatInputBoxContents: this.state.chatInputBoxContents.slice(0, this.state.chatInputBoxContents.length - deleteIndex)
             })
         } else if (this.state.chatInputBoxContents.length === 1 && this.state.chatInputBoxContents !== " ") {
             this.setState({
@@ -97,19 +97,19 @@ export class Root extends Component<Props, GlobalState> {
         }
     }
 
-    setChatInputBoxContents = (newContents: string) => {
-        // check for backspace, and remove if exists? Make special cases for other keys like tab, ctrl, etc.
-        const strRegEx = '[^,]*'+newContents+'[,$]*';
+    // TODO: Handle tab case?
+    updateChatInputBoxContents = (enteredKey: string) => {
+        const strRegEx = '[^,]*'+enteredKey+'[,$]*';
         if (chatInputBoxAllowedCharactersJoined.match(strRegEx)) {
-            if (this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === "|") {
+            if (this.lastCharIsTextReticle()) {
                 this.backspaceChatInputBoxContents();
             }
             this.setState({
-                chatInputBoxContents: this.state.chatInputBoxContents += newContents
+                chatInputBoxContents: this.state.chatInputBoxContents += enteredKey
             })
-        } else if (newContents === 'Backspace') {
-            this.backspaceChatInputBoxContents()
-        } else if (newContents === 'Enter') {
+        } else if (enteredKey === 'Backspace') {
+            this.lastCharIsTextReticle() ? this.backspaceChatInputBoxContents(2) : this.backspaceChatInputBoxContents()
+        } else if (enteredKey === 'Enter') {
             console.log('Submit contents and clear input box')
             this.setState({
                 chatInputBoxContents: " "
@@ -124,16 +124,16 @@ export class Root extends Component<Props, GlobalState> {
 
         if (toggle) {
             textReticleInterval = setInterval(() => {
-                if (this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === "|") {
+                if (this.lastCharIsTextReticle()) {
                     this.backspaceChatInputBoxContents();
                 } else {
-                    this.setChatInputBoxContents("|");
+                    this.updateChatInputBoxContents("|");
                 }
             }, 500)
         } else {
             clearInterval(textReticleInterval)
 
-            if (this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === "|") {
+            if (this.lastCharIsTextReticle()) {
                 this.backspaceChatInputBoxContents();
             }
         }
