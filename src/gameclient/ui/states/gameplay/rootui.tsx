@@ -63,7 +63,7 @@ interface Props {
 }
 
 export class Root extends Component<Props, GlobalState> {
-    textCursorCharacter = "|";
+    textCursorCharacter = "_";
     lastCharIsTextCursor = () => this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === this.textCursorCharacter;
     constructor(props: Props, scene: Scene) {
         super(props, scene);
@@ -257,6 +257,7 @@ export class Root extends Component<Props, GlobalState> {
                     left="50"
                     color="#282828"
                     opacity="0.5"
+                    chatHistory={this.state.chatHistory}
                     inputBoxContents={this.state.chatInputBoxContents}
                     inputBoxFocused={this.state.chatFocused}
                     setInputBoxFocus={this.setChatFocus}

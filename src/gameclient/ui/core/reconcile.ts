@@ -36,6 +36,10 @@ export function reconcile(parentWidget: Widget, instance: Instance, element: JSX
     else {
         // Update component instance.
         let componentInstance = instance as ComponentInstance;
+        // Set previous props and previous state.
+        componentInstance.component.prevProps = { ...componentInstance.component.props }
+        componentInstance.component.prevState = { ...componentInstance.component.state }
+        
         componentInstance.component.props = element.props;
         const childElement = componentInstance.component.render();
         const oldChildInstance = componentInstance.child;
@@ -43,6 +47,10 @@ export function reconcile(parentWidget: Widget, instance: Instance, element: JSX
         componentInstance.widget = childInstance.widget;
         componentInstance.child = childInstance;
         componentInstance.element = element;
+
+        // Call componentDidUpdate if defined on component.
+        if (componentInstance.component.componentDidUpdate)
+            componentInstance.component.componentDidUpdate(componentInstance.component.prevProps, componentInstance.component.prevState); //oldChildInstance.element.props)
 
         return componentInstance;
     }

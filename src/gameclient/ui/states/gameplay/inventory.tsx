@@ -22,6 +22,8 @@ import { Scene } from "three";
 // This way if a player was to drop a bunch of items all at once they likely wouldn't stack on each other. OR
 // --> Better idea: When items hitboxes touch each other they push each other out - like how goblins do with one another.
 
+// KNOWN BUG: Putting inventory away (pressing I while dragging an item) causes the item to get stuck wherever it was dragged to.
+
 interface Props {
     top: string | number
     left: string | number
