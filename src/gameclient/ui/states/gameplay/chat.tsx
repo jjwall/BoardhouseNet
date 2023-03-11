@@ -26,16 +26,27 @@ export class Chat extends Component<Props, {}> {
         super(props, scene);
     }
 
+    renderChatHistory = () => {
+        const testChatHistory = ["test1", "test2", "test3"];
+        let currentTopOffset = 150
+        return testChatHistory.map((chatMsg, index) =>
+            (<label top={currentTopOffset - (index*20)} left={5} contents={chatMsg}></label>)
+        )
+    }
+
     render(): JSXElement {
         return (
             <panel top={this.props.top} left={this.props.left} height={237} width={450} color={this.props.color} opacity={this.props.opacity}>
+                <panel top="5" left="5" height="152" width="410" color="#FFFFFF" opacity={this.props.opacity}>
+                    {this.renderChatHistory()}
+                </panel>
                 <InputBox
                     boxColor="#FFFFFF"
                     borderColor="#000000"
-                    top="192"
-                    left="20"
+                    top="182"
+                    left="5"
                     fontTop="18"
-                    width="350"
+                    width="325"
                     height="25"
                     setFocus={this.props.setInputBoxFocus}
                     focused={this.props.inputBoxFocused}
