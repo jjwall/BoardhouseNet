@@ -25,23 +25,57 @@ interface Props {
     setInputBoxFocus: (toggle: boolean) => void;
 }
 
-export class Chat extends Component<Props, {}> {
+interface State {
+    updateChatHistory: boolean;
+}
+
+export class Chat extends Component<Props, State> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
-    }
-
-    public componentDidUpdate = (prevProps: Props) => {
-        if (prevProps.chatHistory.length !== this.props.chatHistory.length) {
-            console.log("do something")
+        this.state = {
+            updateChatHistory: false,
         }
     }
 
+    // public componentDidUpdate = (prevProps: Props) => {
+    //     if (prevProps.chatHistory.length !== this.props.chatHistory.length) {
+    //         console.log("do something")
+    //         this.setState({
+    //             updateChatHistory: true,
+    //         })
+    //     }
+    // }
+
     renderChatHistory = () => {
-        const testChatHistory = ["test1", "test2", "test3"];
-        let currentTopOffset = 150
-        return testChatHistory.map((chatMsg, index) =>
-            (<label top={currentTopOffset - (index*20)} left={5} contents={chatMsg}></label>)
-        )
+        // console.log('renderChatHistory')
+        // if (chat)
+        //     console.log(chat)
+        // const testChatHistory = ["test1", "test2", "test3"];
+        // let currentTopOffset = 150
+        // return testChatHistory.map((chatMsg, index) =>
+        //     (<label top={currentTopOffset - (index*20)} left={5} contents={chatMsg}></label>)
+        // )
+
+
+
+
+        // if (this.state.updateChatHistory) {
+        //     this.setState({
+        //         updateChatHistory: false,
+        //     })
+
+            let currentTopOffset = 150
+            const newChatHistory = [...this.props.chatHistory]
+            return newChatHistory.reverse().map((chatMsgData, index) => (
+                (<label 
+                    top={currentTopOffset - (index*20)} 
+                    left={5} 
+                    contents={`${chatMsgData.clientUsername}: ${chatMsgData.chatMessage}`}>
+                </label>)
+            ))
+        // } else {
+        //     return (<label></label>) // (<label top={100} left={5} contents={"hi"}></label>)
+        // }
     }
 
     render(): JSXElement {
