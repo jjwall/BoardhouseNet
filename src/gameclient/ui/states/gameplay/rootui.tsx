@@ -14,7 +14,7 @@ import { Scene } from "three";
 import { Chat } from "./chat";
 import { HUD } from "./hud";
 
-let textReticleInterval: NodeJS.Timeout = undefined
+let textCursorInterval: NodeJS.Timeout = undefined
 
 export type UIEvents = Array<UIEventTypes>
 export type ClientInventory = Array<ItemData | undefined>
@@ -63,7 +63,8 @@ interface Props {
 }
 
 export class Root extends Component<Props, GlobalState> {
-    lastCharIsTextReticle = () => this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === "|"
+    textCursorCharacter = "|";
+    lastCharIsTextCursor = () => this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === this.textCursorCharacter;
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
@@ -105,14 +106,14 @@ export class Root extends Component<Props, GlobalState> {
     updateChatInputBoxContents = (enteredKey: string) => {
         const strRegEx = '[^,]*'+enteredKey+'[,$]*';
         if (chatInputBoxAllowedCharactersJoined.match(strRegEx)) {
-            if (this.lastCharIsTextReticle()) {
+            if (this.lastCharIsTextCursor()) {
                 this.backspaceChatInputBoxContents();
             }
             this.setState({
                 chatInputBoxContents: this.state.chatInputBoxContents += enteredKey
             })
         } else if (enteredKey === 'Backspace') {
-            this.lastCharIsTextReticle() ? this.backspaceChatInputBoxContents(2) : this.backspaceChatInputBoxContents()
+            this.lastCharIsTextCursor() ? this.backspaceChatInputBoxContents(2) : this.backspaceChatInputBoxContents()
         } else if (enteredKey === 'Enter') {
             this.setUIEvents([UIEventTypes.SEND_CHAT_MESSAGE])
         }
@@ -124,9 +125,9 @@ export class Root extends Component<Props, GlobalState> {
                 chatFocused: false
             })
 
-            clearInterval(textReticleInterval)
+            clearInterval(textCursorInterval)
 
-            if (this.lastCharIsTextReticle()) {
+            if (this.lastCharIsTextCursor()) {
                 this.backspaceChatInputBoxContents();
             }
         } else if (!this.state.chatFocused && toggle) {
@@ -134,11 +135,11 @@ export class Root extends Component<Props, GlobalState> {
                 chatFocused: true
             })
 
-            textReticleInterval = setInterval(() => {
-                if (this.lastCharIsTextReticle()) {
+            textCursorInterval = setInterval(() => {
+                if (this.lastCharIsTextCursor()) {
                     this.backspaceChatInputBoxContents();
                 } else {
-                    this.updateChatInputBoxContents("|");
+                    this.updateChatInputBoxContents(this.textCursorCharacter);
                 }
             }, 500)
         }

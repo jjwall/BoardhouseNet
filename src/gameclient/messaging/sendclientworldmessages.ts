@@ -62,7 +62,7 @@ export function sendPlayerInventoryEventMessage(client: Client) {
 }
 
 export function sendPlayerChatMessage(client: Client) {
-    if (client.rootComponent.lastCharIsTextReticle())
+    if (client.rootComponent.lastCharIsTextCursor())
         client.rootComponent.backspaceChatInputBoxContents();
 
     const message: ClientMessagePlayerChatMessage = {
