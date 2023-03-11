@@ -5,13 +5,13 @@ import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
 import { ItemData } from "../../../../packets/data/itemdata";
 import { NotificationWidget } from "./notificationwidget";
-import { InputBox } from "../../basecomponents/inputbox";
 import { renderWidget } from "../../core/renderwidget";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
 import { Widget } from "../../core/widget";
 import { Inventory } from "./inventory";
 import { Scene } from "three";
+import { Chat } from "./chat";
 import { HUD } from "./hud";
 
 let textReticleInterval: NodeJS.Timeout = undefined
@@ -238,17 +238,9 @@ export class Root extends Component<Props, GlobalState> {
     render(): JSXElement {
         return(
             <panel>
-                <InputBox
-                    boxColor="#C9CFFF"
-                    borderColor="#000000"
-                    top="600"
-                    left="100"
-                    fontTop="18"
-                    width={250}
-                    height={25}
-                    setFocus={this.setChatFocus}
-                    focused={this.state.chatFocused}
-                    contents={this.state.chatInputBoxContents}
+                <NotificationWidget
+                    message={this.state.notificationMessage.notification}
+                    color={this.state.notificationMessage.color}
                 />
                 <HUD
                     level={this.state.level}
@@ -259,9 +251,14 @@ export class Root extends Component<Props, GlobalState> {
                     maxXP={this.state.maxXP}
                     currentXP={this.state.currentXP}
                 />
-                <NotificationWidget
-                    message={this.state.notificationMessage.notification}
-                    color={this.state.notificationMessage.color}
+                <Chat
+                    top="456"
+                    left="50"
+                    color="#282828"
+                    opacity="0.5"
+                    inputBoxContents={this.state.chatInputBoxContents}
+                    inputBoxFocused={this.state.chatFocused}
+                    setInputBoxFocus={this.setChatFocus}
                 />
                 <Inventory
                     top={this.state.inventoryTop}

@@ -8,21 +8,21 @@ import { Scene } from "THREE";
 // TODO: (Done) Fix | bug for sent messages.
 // TODO: (Done) Test to make sure clients within the same world recieve chat messages.
 // TODO: Input box text overflow... how?? z indexes? transparent layer?? Would be good knoweldge for scrollbar stuff too
+// TODO: Bug -> " " before chat messages b/c of workaround
 
 interface Props {
     boxColor: string,
     borderColor: string,
-    width: number,
-    height: number,
+    width: string | number,
+    height: string | number,
     top: string | number,
     left: string | number,
-    contents?: string,
+    contents: string,
     fontColor?: string,
     fontSize?: string | number,
     fontTop?: string | number;
     fontLeft?: string | number;
     font?: string;
-    // submit: () => void;
     focused: boolean;
     setFocus: (toggle: boolean) => void;
 }
@@ -35,8 +35,8 @@ export class InputBox extends Component<Props, {}> {
     render(): JSXElement {
         return (
             <panel
-                height={this.props.height + 2}
-                width={this.props.width + 2}
+                height={Number(this.props.height) + 2}
+                width={Number(this.props.width) + 2}
                 color={this.props.focused ? this.props.borderColor : this.props.boxColor}
                 top={this.props.top}
                 left={this.props.left}
