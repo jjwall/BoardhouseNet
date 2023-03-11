@@ -1,4 +1,5 @@
 import { NotificationData } from "../../../../packets/data/notificationdata";
+import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
 import { chatInputBoxAllowedCharactersJoined } from "../utils/chatutils";
 import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
@@ -17,6 +18,7 @@ let textReticleInterval: NodeJS.Timeout = undefined
 
 export type UIEvents = Array<UIEventTypes>
 export type ClientInventory = Array<ItemData | undefined>
+export type ChatHistory = Array<ChatMessageData>
 
 export interface StatsStateParams {
     level?: number
@@ -53,6 +55,7 @@ export interface GlobalState {
     // Chat
     chatInputBoxContents: string;
     chatFocused: boolean;
+    chatHistory: ChatHistory;
 }
 
 interface Props {
@@ -78,6 +81,7 @@ export class Root extends Component<Props, GlobalState> {
             currentXP: props.initialState.currentXP,
             chatInputBoxContents: props.initialState.chatInputBoxContents,
             chatFocused: props.initialState.chatFocused,
+            chatHistory: props.initialState.chatHistory,
         };
     }
 
@@ -138,6 +142,12 @@ export class Root extends Component<Props, GlobalState> {
                 }
             }, 500)
         }
+    }
+
+    appendChatHistory = (newChatMessage: ChatMessageData) => {
+        this.setState({
+            chatHistory: this.state.chatHistory.concat(newChatMessage)
+        })
     }
 
     updateStats = (params: StatsStateParams) => {

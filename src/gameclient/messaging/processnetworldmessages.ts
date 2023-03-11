@@ -108,6 +108,8 @@ export function appendPlayerChatMessage(message: NetMessagePlayerChatMessage, cl
     if (message.data.worldType === client.worldType) {
         // Append username with playerId.
         // Perhaps we only append playerId if a default username is chosen.
-        console.log(`${message.data.clientUsername} (PlayerId: ${message.data.clientId}): ${message.data.chatMessage}`);
+        // console.log(`${message.data.clientUsername} (PlayerId: ${message.data.clientId}): ${message.data.chatMessage}`);
+        client.rootComponent.appendChatHistory(message.data);
+        console.log(client.getUIState().chatHistory);
     }
 }

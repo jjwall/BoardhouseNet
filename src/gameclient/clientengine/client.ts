@@ -313,6 +313,7 @@ export class Client {
                         // Chat
                         chatInputBoxContents: "",
                         chatFocused: false,
+                        chatHistory: [],
                     }
                 });
                 break;
