@@ -13,7 +13,7 @@ import { Scene } from "THREE";
 // TODO: Input box text overflow... how?? z indexes? transparent layer?? Would be good knoweldge for scrollbar stuff too
 // TODO: Bug -> " " before chat messages b/c of workaround -> Shouldn't be able to backspace.
 // TODO: Bug -> Button -> think on release is misaligned
-// Note: Input box " " space workaround means we can backspace right off the bat. Kinda annoying but ignoring for now.
+// Note: (Done - Edge case resolved) Input box " " space workaround means we can backspace right off the bat. Kinda annoying but ignoring for now.
 interface Props {
     top?: string | number;
     left?: string | number;
@@ -69,6 +69,7 @@ export class Chat extends Component<Props, {}> {
                     unpressedLayout="#000000"
                     height="50"
                     width="50"
+                    opacity="1"
                     submit={() => console.log("submitted")}
                 />
             </panel>

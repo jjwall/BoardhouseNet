@@ -13,6 +13,7 @@ interface Props {
     height: string | number,
     top: string | number,
     left: string | number,
+    opacity?: string | number
     contents?: string,
     fontSize?: string | number,
     pressedFontColor?: string;
@@ -61,6 +62,7 @@ export class Button extends Component<Props, State> {
                     onPress={() => this.press()}
                     onUnpress={() => this.unpress()}
                     onSubmit={() => this.props.submit()}
+                    opacity={this.props.opacity}
                 >
                     <label
                         color={this.state.pressed ? this.props.pressedFontColor : this.props.unpressedFontColor}

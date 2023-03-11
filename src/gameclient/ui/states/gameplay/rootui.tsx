@@ -91,6 +91,10 @@ export class Root extends Component<Props, GlobalState> {
     }
 
     backspaceChatInputBoxContents = (deleteIndex = 1) => {
+        // Edge case for keeping " " cushion workaround at index = 1 for chat input box.
+        if (deleteIndex === 2 && this.state.chatInputBoxContents === " " + this.textCursorCharacter)
+            deleteIndex = 1
+
         if (this.state.chatInputBoxContents.length > 1) {
             this.setState({
                 chatInputBoxContents: this.state.chatInputBoxContents.slice(0, this.state.chatInputBoxContents.length - deleteIndex)

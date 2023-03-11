@@ -311,7 +311,7 @@ export class Client {
                         maxXP: 0,
                         currentXP: 0,
                         // Chat
-                        chatInputBoxContents: "",
+                        chatInputBoxContents: " ",
                         chatFocused: false,
                         chatHistory: [],
                     }
