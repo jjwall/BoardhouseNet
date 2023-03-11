@@ -486,11 +486,17 @@ export class Client {
                         sendPlayerInventoryEventMessage(this);
                         break;
                     case UIEventTypes.SEND_CHAT_MESSAGE:
-                        sendPlayerChatMessage(this);
-                        // Clear chat input box contents.
-                        this.rootComponent.setState({
-                            chatInputBoxContents: " "
-                        })
+                        // Remove text cursor for pending chat message if it's there.
+                        if (this.rootComponent.lastCharIsTextCursor())
+                            this.rootComponent.backspaceChatInputBoxContents();
+
+                        if (this.rootComponent.getState().chatInputBoxContents.length > 1) {
+                            sendPlayerChatMessage(this);
+                            // Clear chat input box contents.
+                            this.rootComponent.setState({
+                                chatInputBoxContents: " "
+                            })
+                        }
                         break;
                 }
             })

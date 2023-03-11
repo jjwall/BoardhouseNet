@@ -11,7 +11,7 @@ import { Scene } from "THREE";
 // TODO: (Done) Fix | bug for sent messages.
 // TODO: (Done) Test to make sure clients within the same world recieve chat messages.
 // TODO: Input box text overflow... how?? z indexes? transparent layer?? Would be good knoweldge for scrollbar stuff too
-// TODO: Bug -> " " before chat messages b/c of workaround -> Shouldn't be able to backspace.
+// TODO: (Done) Bug -> " " before chat messages b/c of workaround -> Shouldn't be able to backspace.
 // TODO: Bug -> Button -> think on release is misaligned
 // Note: (Done - Edge case resolved) Input box " " space workaround means we can backspace right off the bat. Kinda annoying but ignoring for now.
 interface Props {

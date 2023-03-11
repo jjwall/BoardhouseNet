@@ -62,9 +62,6 @@ export function sendPlayerInventoryEventMessage(client: Client) {
 }
 
 export function sendPlayerChatMessage(client: Client) {
-    if (client.rootComponent.lastCharIsTextCursor())
-        client.rootComponent.backspaceChatInputBoxContents();
-
     const message: ClientMessagePlayerChatMessage = {
         messageType: MessageTypes.CLIENT_WORLD_MESSAGE,
         eventType: ClientWorldEventTypes.PLAYER_CHAT_MESSAGE,
@@ -72,7 +69,7 @@ export function sendPlayerChatMessage(client: Client) {
             clientId: client.currentClientId,
             clientUsername: client.username,
             worldType: client.worldType,
-            chatMessage: client.getUIState().chatInputBoxContents
+            chatMessage: client.getUIState().chatInputBoxContents.trim()
         }
     }
 
