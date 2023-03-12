@@ -22,6 +22,10 @@ import { Scene } from "THREE";
 // TODO: (Done) Time limit on not focused chat bar.
 // TODO: Chat bubble over player's heads.
 // -> Reposition nameplates or just do bubbles on top?
+// TODO: Add blur / focus back with clicking. I like it
+// TODO: Make chat window and input wider, chat display taller.
+// TODO: Minimum msgs (more) for focused, minimum msgs (less) for unfocused 
+// TODO: Prohibit typing more characters if max char limit reached.
 
 // TODO (stretch): Input box text overflow... how?? z indexes? transparent layer?? Would be good knoweldge for scrollbar stuff too
 // TODO (stretch): Scrollable content. - doable... but necessary?
@@ -36,6 +40,8 @@ interface Props {
     opacity: string | number
     inputBoxContents: string;
     inputBoxFocused: boolean;
+    lastCharacterIsTextCursor: boolean;
+    maxChatHistoryLength: number;
     setUIEvents: (newUIEvents: UIEvents) => void;
 }
 
@@ -52,8 +58,6 @@ interface ChatHistoryWithMetaData extends ChatMessageData {
 export class Chat extends Component<Props, State> {
     unfocusedViewMessageRenderTime = 7500;
     maxNumberOfMessagesToDisplay = 7;
-    maxChatHistoryLength = 32;
-    textCursorCharacter = "_";
     maxCharacters = 50;
     constructor(props: Props, scene: Scene) {
         super(props, scene);
@@ -64,30 +68,59 @@ export class Chat extends Component<Props, State> {
         }
     }
 
-    public componentDidUpdate = (prevProps: Props) => {
+    componentDidUpdate = (prevProps: Props) => {
         if (prevProps.chatHistory.length !== this.props.chatHistory.length) {
             this.updateChatHistoryWithMetaData()
         }
 
         if (prevProps.inputBoxContents.length !== this.props.inputBoxContents.length) {
-            if (this.props.inputBoxContents.substring(this.props.inputBoxContents.length - 1, this.props.inputBoxContents.length) !== this.textCursorCharacter) {
-                const charactersTypedWithoutTextCursor = this.maxCharacters - this.props.inputBoxContents.length + 1
-                if (this.state.charactersRemaining !== charactersTypedWithoutTextCursor) {
-                    this.setState({
-                        charactersRemaining: charactersTypedWithoutTextCursor
-                    })
+            this.updateCharactersRemainingText()
+        }
+    }
 
-                    this.setCharactersRemainingFontColor();
-                }
-            } else {
-                const charactersTypedWithTextCursor = this.maxCharacters - this.props.inputBoxContents.length + 2
-                if (this.state.charactersRemaining !== charactersTypedWithTextCursor) {
-                    this.setState({
-                        charactersRemaining: charactersTypedWithTextCursor
-                    })
+    updateChatHistoryWithMetaData = () => {
+        // New message will be the most recently appended element on the chatHistory array.
+        const newMessage: ChatHistoryWithMetaData = this.props.chatHistory[this.props.chatHistory.length - 1]
+        newMessage.displayInUnfocusedView = true
 
-                    this.setCharactersRemainingFontColor();
-                }
+        // We want our internal chatHistory array to be reversed so prepend newMessage to chatHistory.
+        if (this.state.chatHistoryWithMetaData.length > this.props.maxChatHistoryLength) {
+            this.setState({
+                chatHistoryWithMetaData: [newMessage].concat(this.state.chatHistoryWithMetaData.slice(0, this.props.maxChatHistoryLength - 1))
+            })
+        } else {
+            this.setState({
+                chatHistoryWithMetaData: [newMessage].concat(this.state.chatHistoryWithMetaData)
+            })
+        }
+        
+        // Set timeout for unfocused view message render. Set state to force a re-render.
+        setTimeout(() => {
+            newMessage.displayInUnfocusedView = false
+            this.setState({
+                chatHistoryWithMetaData: [...this.state.chatHistoryWithMetaData]
+            })
+        }, this.unfocusedViewMessageRenderTime)
+    }
+
+    updateCharactersRemainingText = () => {
+        if (!this.props.lastCharacterIsTextCursor) {
+            const charactersTypedWithoutTextCursor = this.maxCharacters - this.props.inputBoxContents.length + 1
+            if (this.state.charactersRemaining !== charactersTypedWithoutTextCursor) {
+                this.setState({
+                    charactersRemaining: charactersTypedWithoutTextCursor
+                })
+
+                this.setCharactersRemainingFontColor();
+            }
+        } else {
+            const charactersTypedWithTextCursor = this.maxCharacters - this.props.inputBoxContents.length + 2
+            if (this.state.charactersRemaining !== charactersTypedWithTextCursor) {
+                this.setState({
+                    charactersRemaining: charactersTypedWithTextCursor
+                })
+
+                this.setCharactersRemainingFontColor();
             }
         }
     }
@@ -107,31 +140,6 @@ export class Chat extends Component<Props, State> {
                 charactersRemainingFontColor: "#811331"
             })
         }
-    }
-
-    updateChatHistoryWithMetaData = () => {
-        // New message will be the most recently appended element on the chatHistory array.
-        const newMessage: ChatHistoryWithMetaData = this.props.chatHistory[this.props.chatHistory.length - 1]
-        newMessage.displayInUnfocusedView = true
-
-        // We want our internal chatHistory array to be reversed so prepend newMessage to chatHistory.
-        if (this.state.chatHistoryWithMetaData.length > this.maxChatHistoryLength) {
-            this.setState({
-                chatHistoryWithMetaData: [newMessage].concat(this.state.chatHistoryWithMetaData.slice(0, this.maxChatHistoryLength - 1))
-            })
-        } else {
-            this.setState({
-                chatHistoryWithMetaData: [newMessage].concat(this.state.chatHistoryWithMetaData)
-            })
-        }
-        
-        // Set timeout for unfocused view message render. Set state to force a re-render.
-        setTimeout(() => {
-            newMessage.displayInUnfocusedView = false
-            this.setState({
-                chatHistoryWithMetaData: [...this.state.chatHistoryWithMetaData]
-            })
-        }, this.unfocusedViewMessageRenderTime)
     }
 
     renderChatHistoryWithMetaData = () => {
