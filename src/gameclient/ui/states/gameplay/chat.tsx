@@ -1,6 +1,5 @@
 import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
-import { Button } from "../../basecomponents/button";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
 import { Text } from "../../basecomponents/text";
@@ -12,17 +11,20 @@ import { Scene } from "THREE";
 // TODO: (Done) Maintain client cached chat histories, i.e. chat history state
 // TODO: (Done) Fix | bug for sent messages.
 // TODO: (Done) Test to make sure clients within the same world recieve chat messages.
-// TODO: Input box text overflow... how?? z indexes? transparent layer?? Would be good knoweldge for scrollbar stuff too
 // TODO: (Done) Bug -> " " before chat messages b/c of workaround -> Shouldn't be able to backspace.
-// TODO: Bug -> Button -> think on release is misaligned
 // Note: (Done - Edge case resolved) Input box " " space workaround means we can backspace right off the bat. Kinda annoying but ignoring for now.
-// TODO: Add timestamps at beg of messages.
+// TODO (maybe): Add timestamps at beg of messages.
 // TODO: Use chat for world notifications too like "inventory full" and "You can't equip that item"
 // -> Could use same ChatMessageData interface to this and just append to client's chatHistory
 // -> Make more sense if we call it messageHistory?
 // TODO: Add color field to chatMessageData interface. Player chats - white, notifications - red, server notifications - yellow, etc.
 // TODO: Character limit.
 // TODO: Time limit on not focused chat bar.
+// TODO: Chat bubble over player's heads.
+// -> Reposition nameplates or just do bubbles on top?
+
+// TODO (stretch): Input box text overflow... how?? z indexes? transparent layer?? Would be good knoweldge for scrollbar stuff too
+// TODO (stretch): Scrollable content. - doable... but necessary?
 interface Props {
     top?: string | number;
     left?: string | number;
@@ -80,19 +82,19 @@ export class Chat extends Component<Props, State> {
         return (
             <panel top={this.props.top} left={this.props.left}>
                 <panel
-                    height={190}
-                    width={450}
+                    height="190"
+                    width="450"
                     color={this.props.color}
                     opacity={this.props.inputBoxFocused ? this.props.opacity : 0.001 }>
                 </panel>
 
                 <ChatInputBox
                     boxColor={this.props.color}
-                    opacity={0.75}
-                    top="220"
+                    opacity="0.75"
+                    top="207"
                     left="0"
                     fontTop="23"
-                    width="325"
+                    width="450"
                     height="30"
                     focused={this.props.inputBoxFocused}
                     contents={this.props.inputBoxContents}
