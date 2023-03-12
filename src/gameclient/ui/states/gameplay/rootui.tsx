@@ -149,9 +149,9 @@ export class Root extends Component<Props, GlobalState> {
         }
     }
 
-    appendChatHistory = (newChatMessage: ChatMessageData) => {
+    appendChatHistory = (newChatMessage: ChatMessageData) => {        
         this.setState({
-            chatHistory: this.state.chatHistory.concat(newChatMessage)
+            chatHistory: [newChatMessage].concat(this.state.chatHistory) // this.state.chatHistory.concat(newChatMessage)
         })
     }
 

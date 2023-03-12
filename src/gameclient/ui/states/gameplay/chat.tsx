@@ -1,3 +1,4 @@
+import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
 import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
 import { JSXElement } from "../../core/interfaces";
@@ -37,33 +38,49 @@ interface Props {
 }
 
 interface State {
-    updateChatHistory: boolean;
+    chatHistoryWithMetaData: Array<ChatHistoryWithMetaData>
+}
+
+interface ChatHistoryWithMetaData extends ChatMessageData {
+    displayInUnfocusedView?: boolean;
 }
 
 export class Chat extends Component<Props, State> {
+    unfocusedViewMessageRenderTime = 7500;
+    maxNumberOfMessagesToDisplay = 7;
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
-            updateChatHistory: false,
+            chatHistoryWithMetaData: [],
         }
     }
 
-    // public componentDidUpdate = (prevProps: Props) => {
-    //     if (prevProps.chatHistory.length !== this.props.chatHistory.length) {
-    //         console.log("do something")
-    //         this.setState({
-    //             updateChatHistory: true,
-    //         })
-    //     }
-    // }
+    public componentDidUpdate = (prevProps: Props) => {
+        if (prevProps.chatHistory.length !== this.props.chatHistory.length) {
+            const newMessage: ChatHistoryWithMetaData = this.props.chatHistory[0]
+            newMessage.displayInUnfocusedView = true
+            
+            this.setState({
+                chatHistoryWithMetaData: [newMessage].concat(this.state.chatHistoryWithMetaData)//[...this.props.chatHistory] [newChatMessage].concat(this.state.chatHistory)
+            })
+            
+            setTimeout(() => {
+                newMessage.displayInUnfocusedView = false
+                this.setState({
+                    chatHistoryWithMetaData: [...this.state.chatHistoryWithMetaData]
+                })
+            }, this.unfocusedViewMessageRenderTime)
+        }
+    }
 
     renderChatHistory = () => {
         const currentTopOffset = 185
         const messageSpacing = 25
-        const newChatHistory = [...this.props.chatHistory]
+        // const newChatHistory = [...this.props.chatHistory]
+        // console.log("yo")
         
-        return newChatHistory.reverse().map((chatMsgData, index) => {
-            if (index < 7) {
+        return this.state.chatHistoryWithMetaData.map((chatMsgData, index) => {
+            if ((index < this.maxNumberOfMessagesToDisplay && chatMsgData.displayInUnfocusedView) || (index < this.maxNumberOfMessagesToDisplay && this.props.inputBoxFocused)) {
                 return (<Text
                     top={currentTopOffset - (index*messageSpacing)} 
                     left={5} 
