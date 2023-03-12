@@ -258,13 +258,14 @@ export class Root extends Component<Props, GlobalState> {
                 />
                 <Chat
                     top="456"
-                    left="50"
+                    left="24"
                     color="#282828"
                     opacity="0.5"
                     chatHistory={this.state.chatHistory}
                     inputBoxContents={this.state.chatInputBoxContents}
                     inputBoxFocused={this.state.chatFocused}
                     setInputBoxFocus={this.setChatFocus}
+                    setUIEvents={this.setUIEvents}
                 />
                 <Inventory
                     top={this.state.inventoryTop}

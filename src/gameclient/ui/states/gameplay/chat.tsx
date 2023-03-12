@@ -1,9 +1,11 @@
+import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
 import { InputBox } from "../../basecomponents/inputbox";
 import { Button } from "../../basecomponents/button";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
-import { ChatHistory } from "./rootui";
+import { Text } from "../../basecomponents/text";
+import { ChatHistory, UIEvents } from "./rootui";
 import { Scene } from "THREE";
 
 // TODO: (Done) Display Usernames
@@ -14,6 +16,13 @@ import { Scene } from "THREE";
 // TODO: (Done) Bug -> " " before chat messages b/c of workaround -> Shouldn't be able to backspace.
 // TODO: Bug -> Button -> think on release is misaligned
 // Note: (Done - Edge case resolved) Input box " " space workaround means we can backspace right off the bat. Kinda annoying but ignoring for now.
+// TODO: Add timestamps at beg of messages.
+// TODO: Use chat for world notifications too like "inventory full" and "You can't equip that item"
+// -> Could use same ChatMessageData interface to this and just append to client's chatHistory
+// -> Make more sense if we call it messageHistory?
+// TODO: Add color field to chatMessageData interface. Player chats - white, notifications - red, server notifications - yellow, etc.
+// TODO: Character limit.
+// TODO: Time limit on not focused chat bar.
 interface Props {
     top?: string | number;
     left?: string | number;
@@ -23,6 +32,7 @@ interface Props {
     inputBoxContents: string;
     inputBoxFocused: boolean;
     setInputBoxFocus: (toggle: boolean) => void;
+    setUIEvents: (newUIEvents: UIEvents) => void;
 }
 
 interface State {
@@ -64,39 +74,52 @@ export class Chat extends Component<Props, State> {
         //         updateChatHistory: false,
         //     })
 
-            let currentTopOffset = 150
-            const newChatHistory = [...this.props.chatHistory]
-            return newChatHistory.reverse().map((chatMsgData, index) => (
-                (<label 
-                    top={currentTopOffset - (index*20)} 
-                    left={5} 
-                    contents={`${chatMsgData.clientUsername}: ${chatMsgData.chatMessage}`}>
-                </label>)
-            ))
+        const currentTopOffset = 185
+        const messageSpacing = 25
+        const newChatHistory = [...this.props.chatHistory]
+        return newChatHistory.reverse().map((chatMsgData, index) => (
+            (<Text
+                top={currentTopOffset - (index*messageSpacing)} 
+                left={5} 
+                contents={`[${chatMsgData.clientUsername}]: ${chatMsgData.chatMessage}`}>
+            </Text>)
+        ))
         // } else {
         //     return (<label></label>) // (<label top={100} left={5} contents={"hi"}></label>)
         // }
     }
 
+    submit = () => {
+        this.props.setUIEvents([UIEventTypes.SEND_CHAT_MESSAGE])
+    }
+
     render(): JSXElement {
         return (
-            <panel top={this.props.top} left={this.props.left} height={237} width={450} color={this.props.color} opacity={this.props.opacity}>
-                <panel top="5" left="5" height="152" width="410" color="#FFFFFF" opacity={this.props.opacity}>
-                    {this.renderChatHistory()}
+            <panel top={this.props.top} left={this.props.left}>
+                <panel
+                    height={190}
+                    width={450}
+                    color={this.props.color}
+                    opacity={this.props.inputBoxFocused ? this.props.opacity : 0.001 }>
                 </panel>
+
                 <InputBox
-                    boxColor="#FFFFFF"
-                    borderColor="#000000"
-                    top="182"
-                    left="5"
-                    fontTop="18"
+                    boxColor={this.props.color}
+                    opacity={0.75}
+                    // borderColor="#000000"
+                    top="220"
+                    left="0"
+                    fontTop="23"
                     width="325"
-                    height="25"
+                    height="30"
                     setFocus={this.props.setInputBoxFocus}
                     focused={this.props.inputBoxFocused}
                     contents={this.props.inputBoxContents}
                 />
-                <Button
+
+                {/* This needs to happen after all main chat UI has rendered, less we trigger unwanted re-renders. */}
+                {this.renderChatHistory()}
+                {/* <Button
                     top="200"
                     left="400"
                     pressedLayout="#FFFFFF"
@@ -104,8 +127,8 @@ export class Chat extends Component<Props, State> {
                     height="50"
                     width="50"
                     opacity="1"
-                    submit={() => console.log("submitted")}
-                />
+                    submit={() => this.submit()}
+                /> */}
             </panel>
         );
     }
