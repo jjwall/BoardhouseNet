@@ -63,6 +63,7 @@ interface Props {
 }
 
 export class Root extends Component<Props, GlobalState> {
+    maxChatHistoryLength = 32
     textCursorCharacter = "_";
     lastCharIsTextCursor = () => this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === this.textCursorCharacter;
     constructor(props: Props, scene: Scene) {
@@ -150,9 +151,15 @@ export class Root extends Component<Props, GlobalState> {
     }
 
     appendChatHistory = (newChatMessage: ChatMessageData) => {        
-        this.setState({
-            chatHistory: [newChatMessage].concat(this.state.chatHistory) // this.state.chatHistory.concat(newChatMessage)
-        })
+        if (this.state.chatHistory.length > this.maxChatHistoryLength){
+            this.setState({
+                chatHistory: this.state.chatHistory.slice(1, this.maxChatHistoryLength).concat(newChatMessage)
+            })
+        } else {
+            this.setState({
+                chatHistory: this.state.chatHistory.concat(newChatMessage)
+            })
+        }
     }
 
     updateStats = (params: StatsStateParams) => {

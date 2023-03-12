@@ -48,6 +48,7 @@ interface ChatHistoryWithMetaData extends ChatMessageData {
 export class Chat extends Component<Props, State> {
     unfocusedViewMessageRenderTime = 7500;
     maxNumberOfMessagesToDisplay = 7;
+    maxChatHistoryLength = 32;
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
@@ -57,13 +58,22 @@ export class Chat extends Component<Props, State> {
 
     public componentDidUpdate = (prevProps: Props) => {
         if (prevProps.chatHistory.length !== this.props.chatHistory.length) {
-            const newMessage: ChatHistoryWithMetaData = this.props.chatHistory[0]
+            // New message will be the most recently appended element on the chatHistory array.
+            const newMessage: ChatHistoryWithMetaData = this.props.chatHistory[this.props.chatHistory.length - 1]
             newMessage.displayInUnfocusedView = true
+
+            // We want our internal chatHistory array to be reversed so prepend newMessage to chatHistory.
+            if (this.state.chatHistoryWithMetaData.length > this.maxChatHistoryLength) {
+                this.setState({
+                    chatHistoryWithMetaData: [newMessage].concat(this.state.chatHistoryWithMetaData.slice(0, this.maxChatHistoryLength - 1))
+                })
+            } else {
+                this.setState({
+                    chatHistoryWithMetaData: [newMessage].concat(this.state.chatHistoryWithMetaData)
+                })
+            }
             
-            this.setState({
-                chatHistoryWithMetaData: [newMessage].concat(this.state.chatHistoryWithMetaData)//[...this.props.chatHistory] [newChatMessage].concat(this.state.chatHistory)
-            })
-            
+            // Set timeout for unfocused view message render. Set state to force a re-render.
             setTimeout(() => {
                 newMessage.displayInUnfocusedView = false
                 this.setState({
