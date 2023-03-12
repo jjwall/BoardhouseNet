@@ -9,7 +9,7 @@ import { ChatHistory, UIEvents } from "./rootui";
 import { Scene } from "THREE";
 
 // TODO: (Done) Display Usernames
-// TODO: Maintain client cached chat histories, i.e. chat history state
+// TODO: (Done) Maintain client cached chat histories, i.e. chat history state
 // TODO: (Done) Fix | bug for sent messages.
 // TODO: (Done) Test to make sure clients within the same world recieve chat messages.
 // TODO: Input box text overflow... how?? z indexes? transparent layer?? Would be good knoweldge for scrollbar stuff too
@@ -57,36 +57,20 @@ export class Chat extends Component<Props, State> {
     // }
 
     renderChatHistory = () => {
-        // console.log('renderChatHistory')
-        // if (chat)
-        //     console.log(chat)
-        // const testChatHistory = ["test1", "test2", "test3"];
-        // let currentTopOffset = 150
-        // return testChatHistory.map((chatMsg, index) =>
-        //     (<label top={currentTopOffset - (index*20)} left={5} contents={chatMsg}></label>)
-        // )
-
-
-
-
-        // if (this.state.updateChatHistory) {
-        //     this.setState({
-        //         updateChatHistory: false,
-        //     })
-
         const currentTopOffset = 185
         const messageSpacing = 25
         const newChatHistory = [...this.props.chatHistory]
-        return newChatHistory.reverse().map((chatMsgData, index) => (
-            (<Text
-                top={currentTopOffset - (index*messageSpacing)} 
-                left={5} 
-                contents={`[${chatMsgData.clientUsername}]: ${chatMsgData.chatMessage}`}>
-            </Text>)
-        ))
-        // } else {
-        //     return (<label></label>) // (<label top={100} left={5} contents={"hi"}></label>)
-        // }
+        
+        return newChatHistory.reverse().map((chatMsgData, index) => {
+            if (index < 7) {
+                return (<Text
+                    top={currentTopOffset - (index*messageSpacing)} 
+                    left={5} 
+                    contents={`[${chatMsgData.clientUsername}]: ${chatMsgData.chatMessage}`}>
+                </Text>)
+            } else
+                return (<label></label>)
+        })
     }
 
     submit = () => {
@@ -106,7 +90,6 @@ export class Chat extends Component<Props, State> {
                 <InputBox
                     boxColor={this.props.color}
                     opacity={0.75}
-                    // borderColor="#000000"
                     top="220"
                     left="0"
                     fontTop="23"
@@ -117,8 +100,6 @@ export class Chat extends Component<Props, State> {
                     contents={this.props.inputBoxContents}
                 />
 
-                {/* This needs to happen after all main chat UI has rendered, less we trigger unwanted re-renders. */}
-                {this.renderChatHistory()}
                 {/* <Button
                     top="200"
                     left="400"
@@ -129,6 +110,9 @@ export class Chat extends Component<Props, State> {
                     opacity="1"
                     submit={() => this.submit()}
                 /> */}
+
+                {/* This needs to happen after all main chat UI has rendered, less we trigger unwanted re-renders. */}
+                {this.renderChatHistory()}
             </panel>
         );
     }
