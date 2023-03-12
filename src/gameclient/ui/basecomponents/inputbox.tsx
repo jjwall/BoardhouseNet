@@ -49,7 +49,7 @@ export class InputBox extends Component<Props, {}> {
                 left={this.props.left}
             >
                 <Text
-                    fontColor={this.props.focused ? this.props.fontColor : "#808080"}
+                    fontColor={this.props.focused ? this.props.fontColor : "#C0C0C0"}
                     top={this.props.fontTop}
                     left={this.props.fontLeft}
                     contents={this.props.focused ? this.props.contents : "[Enter] to Chat"}
