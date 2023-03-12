@@ -1,11 +1,11 @@
 import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
-import { InputBox } from "../../basecomponents/inputbox";
 import { Button } from "../../basecomponents/button";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
 import { Text } from "../../basecomponents/text";
 import { ChatHistory, UIEvents } from "./rootui";
+import { ChatInputBox } from "./chatinputbox";
 import { Scene } from "THREE";
 
 // TODO: (Done) Display Usernames
@@ -87,7 +87,7 @@ export class Chat extends Component<Props, State> {
                     opacity={this.props.inputBoxFocused ? this.props.opacity : 0.001 }>
                 </panel>
 
-                <InputBox
+                <ChatInputBox
                     boxColor={this.props.color}
                     opacity={0.75}
                     top="220"
