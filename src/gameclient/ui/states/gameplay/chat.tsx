@@ -1,5 +1,4 @@
 import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
-import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
@@ -18,19 +17,20 @@ import { Scene } from "THREE";
 // -> Could use same ChatMessageData interface to this and just append to client's chatHistory
 // -> Make more sense if we call it messageHistory?
 // TODO: Add color field to chatMessageData interface. Player chats - white, notifications - red, server notifications - yellow, etc.
-// TODO: Character limit.
+// TODO: (Done) Character limit render.
 // TODO: (Done) Time limit on not focused chat bar.
 // TODO: Chat bubble over player's heads.
 // -> Reposition nameplates or just do bubbles on top?
 // TODO: Add blur / focus back with clicking. I like it
 // TODO: Make chat window and input wider, chat display taller.
-// TODO: Minimum msgs (more) for focused, minimum msgs (less) for unfocused 
+// TODO: max msgs (more) for focused, max msgs (less) for unfocused 
 // TODO: Prohibit typing more characters if max char limit reached.
+// TODO: Bleep out banned keywords
 
 // TODO (stretch): Input box text overflow... how?? z indexes? transparent layer?? Would be good knoweldge for scrollbar stuff too
 // TODO (stretch): Scrollable content. - doable... but necessary?
 // TODO (maybe): Add timestamps at beg of messages.
-// TODO (maybe): Make chat window text smaller
+// TODO (maybe): Make chat window font size smaller
 
 interface Props {
     top?: string | number;
@@ -42,6 +42,7 @@ interface Props {
     inputBoxFocused: boolean;
     lastCharacterIsTextCursor: boolean;
     maxChatHistoryLength: number;
+    chatInputBackspace: () => void;
     setUIEvents: (newUIEvents: UIEvents) => void;
 }
 
@@ -56,7 +57,7 @@ interface ChatHistoryWithMetaData extends ChatMessageData {
 }
 
 export class Chat extends Component<Props, State> {
-    unfocusedViewMessageRenderTime = 7500;
+    unfocusedViewMessageRenderTime = 15000;
     maxNumberOfMessagesToDisplay = 7;
     maxCharacters = 50;
     constructor(props: Props, scene: Scene) {
@@ -123,6 +124,11 @@ export class Chat extends Component<Props, State> {
                 this.setCharactersRemainingFontColor();
             }
         }
+
+        // If max char limit reached, backspace next typed char.
+        if (this.state.charactersRemaining < 0) {
+            this.props.chatInputBackspace()
+        }
     }
 
     setCharactersRemainingFontColor = () => {
@@ -169,10 +175,6 @@ export class Chat extends Component<Props, State> {
             </Text>)
         else
             return (<label></label>)
-    }
-
-    submit = () => {
-        this.props.setUIEvents([UIEventTypes.SEND_CHAT_MESSAGE])
     }
 
     render(): JSXElement {
