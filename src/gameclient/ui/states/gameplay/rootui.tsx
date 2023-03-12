@@ -264,7 +264,6 @@ export class Root extends Component<Props, GlobalState> {
                     chatHistory={this.state.chatHistory}
                     inputBoxContents={this.state.chatInputBoxContents}
                     inputBoxFocused={this.state.chatFocused}
-                    setInputBoxFocus={this.setChatFocus}
                     setUIEvents={this.setUIEvents}
                 />
                 <Inventory

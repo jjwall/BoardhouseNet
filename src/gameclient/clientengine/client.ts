@@ -71,6 +71,7 @@ export class Client {
         this.keyXIsDown = false;
         this.dodgeKeyPressed = false;
         this.inventoryKeyPressed = false;
+        this.chatKeyPressed = false;
 
         // ...
         // vvv regular engine stuff vvv
@@ -119,6 +120,7 @@ export class Client {
     keyXIsDown: boolean;
     dodgeKeyPressed: boolean;
     inventoryKeyPressed: boolean;
+    chatKeyPressed: boolean;
 
     /// ^^^ old configs ^^^
     public rootComponent: Root;
@@ -344,10 +346,18 @@ export class Client {
                         handleKeyDownEvent(this, e as KeyboardEvent);
                     else
                         this.rootComponent.updateChatInputBoxContents((e as KeyboardEvent).key);
+                    
+                    // Edge case for handling chat focus key.
+                    if ((e as KeyboardEvent).code === 'Enter')
+                        handleKeyDownEvent(this, e as KeyboardEvent);
                 }
                 break;
             case EventTypes.KEY_UP:
                 if (this.role === ClientRoleTypes.PLAYER && !this.rootComponent.getState().chatFocused)
+                    handleKeyUpEvent(this, e as KeyboardEvent);
+
+                // Edge case for handling chat focus key.
+                if ((e as KeyboardEvent).code === 'Enter')
                     handleKeyUpEvent(this, e as KeyboardEvent);
                 break;
         }

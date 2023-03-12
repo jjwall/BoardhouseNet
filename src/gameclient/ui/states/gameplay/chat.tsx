@@ -31,7 +31,6 @@ interface Props {
     opacity: string | number
     inputBoxContents: string;
     inputBoxFocused: boolean;
-    setInputBoxFocus: (toggle: boolean) => void;
     setUIEvents: (newUIEvents: UIEvents) => void;
 }
 
@@ -95,7 +94,6 @@ export class Chat extends Component<Props, State> {
                     fontTop="23"
                     width="325"
                     height="30"
-                    setFocus={this.props.setInputBoxFocus}
                     focused={this.props.inputBoxFocused}
                     contents={this.props.inputBoxContents}
                 />
