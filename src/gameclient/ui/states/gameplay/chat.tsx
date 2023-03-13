@@ -7,30 +7,36 @@ import { ChatHistory, UIEvents } from "./rootui";
 import { ChatInputBox } from "./chatinputbox";
 import { Scene } from "THREE";
 
+// To-done's.
 // TODO: (Done) Display Usernames
 // TODO: (Done) Maintain client cached chat histories, i.e. chat history state
 // TODO: (Done) Fix | bug for sent messages.
 // TODO: (Done) Test to make sure clients within the same world recieve chat messages.
 // TODO: (Done) Bug -> " " before chat messages b/c of workaround -> Shouldn't be able to backspace.
 // Note: (Done - Edge case resolved) Input box " " space workaround means we can backspace right off the bat. Kinda annoying but ignoring for now.
+// TODO: (Done) Prohibit typing more characters if max char limit reached.
+// TODO: (Done) Character limit render.
+// TODO: (Done) Time limit on not focused chat bar.
+
+// Feature / branch complete list:
 // TODO: Use chat for world notifications too like "inventory full" and "You can't equip that item"
 // -> Could use same ChatMessageData interface to this and just append to client's chatHistory
 // -> Make more sense if we call it messageHistory?
 // -> Add color field to chatMessageData interface. Player chats - white, notifications - red, server notifications - yellow, etc.
-// TODO: (Done) Character limit render.
-// TODO: (Done) Time limit on not focused chat bar.
-// TODO: Chat bubble over player's heads.
-// -> Reposition nameplates or just do bubbles on top?
 // TODO: Add blur / focus back with clicking. I like it
 // TODO: Make chat window and input wider, chat display taller.
 // TODO: max msgs (more) for focused, max msgs (less) for unfocused 
-// TODO: (Done) Prohibit typing more characters if max char limit reached.
 // TODO: Bleep out banned keywords
-
-// TODO (stretch): Input box text overflow... how?? z indexes? transparent layer?? Would be good knoweldge for scrollbar stuff too
-// TODO (stretch): Scrollable content. - doable... but necessary?
-// TODO (maybe): Add timestamps at beg of messages.
 // TODO (maybe): Make chat window font size smaller
+// TODO (maybe): Add timestamps at beg of messages.
+
+// Future feature expansions:
+// TODO: Chat bubble over player's heads.
+// -> Reposition nameplates or just do bubbles on top?
+// TODO (stretch): Input box text overflow - using scissors. Would be good knoweldge for scrollbar stuff too
+// TODO (stretch): Scrollable chat history - using scissors.
+// TODO (stretch): /slash commands for things like direct messaging: /msg [Gizmolo] Hello.
+// -> Direct Messages come in different font colors (teal / light blue). Can message people cross worlds.
 
 interface Props {
     top?: string | number;
@@ -141,7 +147,7 @@ export class Chat extends Component<Props, State> {
             let randomLeftOffset = Math.floor(Math.random() * 2);
             randomTopOffset *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
             randomLeftOffset *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
-            
+
             // Set offset.
             this.setState({
                 charactersRemainingTop: this.state.charactersRemainingTop += randomTopOffset,
