@@ -16,7 +16,7 @@ import { Scene } from "THREE";
 // TODO: Use chat for world notifications too like "inventory full" and "You can't equip that item"
 // -> Could use same ChatMessageData interface to this and just append to client's chatHistory
 // -> Make more sense if we call it messageHistory?
-// TODO: Add color field to chatMessageData interface. Player chats - white, notifications - red, server notifications - yellow, etc.
+// -> Add color field to chatMessageData interface. Player chats - white, notifications - red, server notifications - yellow, etc.
 // TODO: (Done) Character limit render.
 // TODO: (Done) Time limit on not focused chat bar.
 // TODO: Chat bubble over player's heads.
@@ -24,7 +24,7 @@ import { Scene } from "THREE";
 // TODO: Add blur / focus back with clicking. I like it
 // TODO: Make chat window and input wider, chat display taller.
 // TODO: max msgs (more) for focused, max msgs (less) for unfocused 
-// TODO: Prohibit typing more characters if max char limit reached.
+// TODO: (Done) Prohibit typing more characters if max char limit reached.
 // TODO: Bleep out banned keywords
 
 // TODO (stretch): Input box text overflow... how?? z indexes? transparent layer?? Would be good knoweldge for scrollbar stuff too
@@ -43,13 +43,14 @@ interface Props {
     lastCharacterIsTextCursor: boolean;
     maxChatHistoryLength: number;
     chatInputBackspace: () => void;
-    setUIEvents: (newUIEvents: UIEvents) => void;
 }
 
 interface State {
-    chatHistoryWithMetaData: Array<ChatHistoryWithMetaData>
-    charactersRemaining: number
-    charactersRemainingFontColor: string
+    chatHistoryWithMetaData: Array<ChatHistoryWithMetaData>;
+    charactersRemaining: number;
+    charactersRemainingFontColor: string;
+    charactersRemainingTop: number;
+    charactersRemainingLeft: number;
 }
 
 interface ChatHistoryWithMetaData extends ChatMessageData {
@@ -65,7 +66,9 @@ export class Chat extends Component<Props, State> {
         this.state = {
             chatHistoryWithMetaData: [],
             charactersRemaining: this.maxCharacters,
-            charactersRemainingFontColor: "#5A5A5A"
+            charactersRemainingFontColor: "#5A5A5A",
+            charactersRemainingTop: 227,
+            charactersRemainingLeft: 425,
         }
     }
 
@@ -128,6 +131,30 @@ export class Chat extends Component<Props, State> {
         // If max char limit reached, backspace next typed char.
         if (this.state.charactersRemaining < 0) {
             this.props.chatInputBackspace()
+            this.charactersRemainingShake()
+        }
+    }
+
+    charactersRemainingShake = () => {
+        for (let i = 1; i < 10; i++) {
+            let randomTopOffset = Math.floor(Math.random() * 2);
+            let randomLeftOffset = Math.floor(Math.random() * 2);
+            randomTopOffset *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
+            randomLeftOffset *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
+            
+            // Set offset.
+            this.setState({
+                charactersRemainingTop: this.state.charactersRemainingTop += randomTopOffset,
+                charactersRemainingLeft: this.state.charactersRemainingLeft += randomLeftOffset,
+            })
+
+            // Reset to original position after a delay.
+            setTimeout(() => {
+                this.setState({
+                    charactersRemainingTop: this.state.charactersRemainingTop += randomTopOffset * -1,
+                    charactersRemainingLeft: this.state.charactersRemainingLeft += randomLeftOffset * -1,
+                })
+            }, 25 * i)
         }
     }
 
@@ -164,13 +191,13 @@ export class Chat extends Component<Props, State> {
         })
     }
 
-    renderCharactersRemaing = () => {
+    renderCharactersRemaining = () => {
         if (this.props.inputBoxFocused)
             return (<Text
                 fontColor={this.state.charactersRemainingFontColor}
                 fontSize="12"
-                top="227"
-                left="425"
+                top={this.state.charactersRemainingTop}
+                left={this.state.charactersRemainingLeft}
                 contents={this.state.charactersRemaining.toString()}>
             </Text>)
         else
@@ -199,7 +226,7 @@ export class Chat extends Component<Props, State> {
                     contents={this.props.inputBoxContents}
                 />
 
-                {this.renderCharactersRemaing()}
+                {this.renderCharactersRemaining()}
 
                 {/* This needs to happen after all main chat UI has rendered, less we trigger unwanted re-renders. */}
                 {this.renderChatHistoryWithMetaData()}

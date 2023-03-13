@@ -273,7 +273,6 @@ export class Root extends Component<Props, GlobalState> {
                     inputBoxFocused={this.state.chatFocused}
                     lastCharacterIsTextCursor={this.lastCharIsTextCursor()}
                     maxChatHistoryLength={this.maxChatHistoryLength}
-                    setUIEvents={this.setUIEvents}
                     chatInputBackspace={this.backspaceChatInputBoxContents}
                 />
                 <Inventory
