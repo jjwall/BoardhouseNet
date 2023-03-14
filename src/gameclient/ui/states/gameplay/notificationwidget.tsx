@@ -21,7 +21,7 @@ export class NotificationWidget extends Component<Props, State> {
             // May need "center" attribute in future.
             <Text
                 fontSize="24"
-                left="640"
+                left="440"
                 top="150"
                 shadowOffset={2}
                 fontColor={this.props.color}

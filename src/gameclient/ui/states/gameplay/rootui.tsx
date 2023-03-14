@@ -285,6 +285,7 @@ export class Root extends Component<Props, GlobalState> {
                     setUIEvents={this.setUIEvents}
                     setClientInventory={this.setClientInventory}
                     setNotificationMessage={this.setNotificationMessage}
+                    appendChatHistory={this.appendChatHistory}
                 />
             </panel>
         )

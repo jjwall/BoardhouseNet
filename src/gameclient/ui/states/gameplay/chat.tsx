@@ -25,8 +25,8 @@ import { Scene } from "THREE";
 // -> Add color field to chatMessageData interface. Player chats - white, notifications - red, server notifications - yellow, etc.
 // -> System is username so i.e. [System]: Inventory full. in red font.
 // TODO: Add blur / focus back with clicking. I like it
-// TODO: Make chat window and input wider, chat display taller.
-// TODO: max msgs (more) for focused, max msgs (less) for unfocused 
+// TODO: (Done) Make chat window and input wider, chat display taller.
+// TODO: (Done) max msgs (more) for focused, max msgs (less) for unfocused 
 // TODO: Bleep out banned keywords
 
 // Future feature expansions:

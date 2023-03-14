@@ -1,5 +1,6 @@
 import { InventorySlotMetaData, inventorySlotsMetaData, processItemSlotSwap } from "../utils/inventoryutils";
 import { NotificationData } from "../../../../packets/data/notificationdata";
+import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
 import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { InventorySlot, DraggedItemData } from "./inventoryslot";
 import { createJSXElement } from "../../core/createjsxelement";
@@ -34,6 +35,7 @@ interface Props {
     setUIEvents: (newUIEvents: UIEvents) => void
     setClientInventory: (newClientInventory: ClientInventory) => void
     setNotificationMessage: (newNotificationMessage: NotificationData) => void
+    appendChatHistory: (newChatMessage: ChatMessageData) => void
 }
 
 /**
@@ -77,6 +79,27 @@ export class Inventory extends Component<Props, State> {
         return validEquip
     }
 
+    renderInvalidEquipMessage = () => {
+        // Notify client that this item cannot be equipped here.
+        const notificationData: NotificationData = {
+            clientId: 'test', // get this from somewhere...
+            notification: "This item cannot be equipped here...",
+            color: "#FF0000",
+            milliseconds: 3500
+        }
+        this.props.setNotificationMessage(notificationData)
+
+        // Set chat history system message.
+        const systemNotificationMessage: ChatMessageData = {
+            clientId: "SystemId",
+            clientUsername: "System",
+            chatMessage: "This item cannot be equipped here...",
+            chatFontColor: "#FF0000",
+        }
+
+        this.props.appendChatHistory(systemNotificationMessage)
+    }
+
     /**
      * Reconciles inventory and send equip events for any un/equips that happen.
      * TODO (maybe): Think one more POSSIBLE edge case to be solved for... swapping equipment slots...
@@ -97,13 +120,7 @@ export class Inventory extends Component<Props, State> {
                 this.props.clientInventory[newSlotIndex] = draggedItemData.item
             } else {
                 // Notify client that this item cannot be equipped here.
-                const notificationData: NotificationData = {
-                    clientId: 'test', // get this from somewhere...
-                    notification: "This item cannot be equipped here...",
-                    color: "#FF0000",
-                    milliseconds: 3500
-                }
-                this.props.setNotificationMessage(notificationData)
+                this.renderInvalidEquipMessage()
 
                 // Set item in original slot state.
                 this.props.clientInventory[draggedItemData.index] = draggedItemData.item
@@ -139,13 +156,7 @@ export class Inventory extends Component<Props, State> {
             // If this was a valid inventory event, trigger equip event, else undo inventory event.
             if (!this.validateItemEquip(draggedItemData, newSlotIndex)) {
                 // Notify client that this item cannot be equipped here.
-                const notificationData: NotificationData = {
-                    clientId: 'test', // get this from somewhere...
-                    notification: "This item cannot be equipped here...",
-                    color: "#FF0000",
-                    milliseconds: 3500
-                }
-                this.props.setNotificationMessage(notificationData)
+                this.renderInvalidEquipMessage()
 
                 // Set items in their original slot states.
                 this.props.clientInventory[newSlotIndex] = this.props.clientInventory[draggedItemData.index]
