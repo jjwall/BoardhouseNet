@@ -264,7 +264,7 @@ export class Root extends Component<Props, GlobalState> {
                     currentXP={this.state.currentXP}
                 />
                 <Chat
-                    top="456"
+                    top="271"
                     left="24"
                     color="#282828"
                     opacity="0.5"

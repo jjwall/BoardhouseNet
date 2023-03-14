@@ -23,12 +23,11 @@ import { Scene } from "THREE";
 // -> Could use same ChatMessageData interface to this and just append to client's chatHistory
 // -> Make more sense if we call it messageHistory?
 // -> Add color field to chatMessageData interface. Player chats - white, notifications - red, server notifications - yellow, etc.
+// -> System is username so i.e. [System]: Inventory full. in red font.
 // TODO: Add blur / focus back with clicking. I like it
 // TODO: Make chat window and input wider, chat display taller.
 // TODO: max msgs (more) for focused, max msgs (less) for unfocused 
 // TODO: Bleep out banned keywords
-// TODO (maybe): Make chat window font size smaller
-// TODO (maybe): Add timestamps at beg of messages.
 
 // Future feature expansions:
 // TODO: Chat bubble over player's heads.
@@ -37,6 +36,10 @@ import { Scene } from "THREE";
 // TODO (stretch): Scrollable chat history - using scissors.
 // TODO (stretch): /slash commands for things like direct messaging: /msg [Gizmolo] Hello.
 // -> Direct Messages come in different font colors (teal / light blue). Can message people cross worlds.
+// -> Mod commands like /spawn [Goblin lv3]
+// TODO (maybe): Add timestamps at beg of messages.
+// TODO (maybe): Make chat window font size smaller.
+// TODO (maybe): Display Player / Client Ids.
 
 interface Props {
     top?: string | number;
@@ -65,7 +68,8 @@ interface ChatHistoryWithMetaData extends ChatMessageData {
 
 export class Chat extends Component<Props, State> {
     unfocusedViewMessageRenderTime = 15000;
-    maxNumberOfMessagesToDisplay = 7;
+    maxNumberOfMessagesToDisplayFocused = 15;
+    maxNumberOfMessagesToDisplayUnfocused = 7;
     maxCharacters = 50;
     constructor(props: Props, scene: Scene) {
         super(props, scene);
@@ -73,8 +77,8 @@ export class Chat extends Component<Props, State> {
             chatHistoryWithMetaData: [],
             charactersRemaining: this.maxCharacters,
             charactersRemainingFontColor: "#5A5A5A",
-            charactersRemainingTop: 227,
-            charactersRemainingLeft: 425,
+            charactersRemainingTop: 412,
+            charactersRemainingLeft: 625,
         }
     }
 
@@ -165,16 +169,16 @@ export class Chat extends Component<Props, State> {
     }
 
     setCharactersRemainingFontColor = () => {
-        if (this.state.charactersRemaining >= 21) {
+        if (this.state.charactersRemaining >= 20) {
             this.setState({
                 charactersRemainingFontColor: "#5A5A5A"
             })
         }
-        else if (this.state.charactersRemaining < 21 && this.state.charactersRemaining >= 11) {
+        else if (this.state.charactersRemaining < 20 && this.state.charactersRemaining >= 10) {
             this.setState({
                 charactersRemainingFontColor: "#8B8000"
             })
-        } else if (this.state.charactersRemaining < 11) {
+        } else if (this.state.charactersRemaining < 10) {
             this.setState({
                 charactersRemainingFontColor: "#811331"
             })
@@ -182,11 +186,11 @@ export class Chat extends Component<Props, State> {
     }
 
     renderChatHistoryWithMetaData = () => {
-        const currentTopOffset = 185
+        const currentTopOffset = 370
         const messageSpacing = 25
         
         return this.state.chatHistoryWithMetaData.map((chatMsgData, index) => {
-            if ((index < this.maxNumberOfMessagesToDisplay && chatMsgData.displayInUnfocusedView) || (index < this.maxNumberOfMessagesToDisplay && this.props.inputBoxFocused)) {
+            if ((index < this.maxNumberOfMessagesToDisplayUnfocused && chatMsgData.displayInUnfocusedView) || (index < this.maxNumberOfMessagesToDisplayFocused && this.props.inputBoxFocused)) {
                 return (<Text
                     top={currentTopOffset - (index*messageSpacing)} 
                     left={5} 
@@ -214,8 +218,8 @@ export class Chat extends Component<Props, State> {
         return (
             <panel top={this.props.top} left={this.props.left}>
                 <panel
-                    height="190"
-                    width="450"
+                    height="375"
+                    width="650"
                     color={this.props.color}
                     opacity={this.props.inputBoxFocused ? this.props.opacity : 0.001 }>
                 </panel>
@@ -223,10 +227,10 @@ export class Chat extends Component<Props, State> {
                 <ChatInputBox
                     boxColor={this.props.color}
                     opacity="0.75"
-                    top="207"
+                    top="392"
                     left="0"
                     fontTop="23"
-                    width="450"
+                    width="650"
                     height="30"
                     focused={this.props.inputBoxFocused}
                     contents={this.props.inputBoxContents}
