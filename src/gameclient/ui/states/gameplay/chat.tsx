@@ -194,7 +194,8 @@ export class Chat extends Component<Props, State> {
                 return (<Text
                     top={currentTopOffset - (index*messageSpacing)} 
                     left={5} 
-                    contents={`[${chatMsgData.clientUsername}]: ${chatMsgData.chatMessage}`}>
+                    contents={`[${chatMsgData.clientUsername}]: ${chatMsgData.chatMessage}`}
+                    fontColor={chatMsgData.chatFontColor}>
                 </Text>)
             } else
                 return (<label></label>)

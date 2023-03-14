@@ -13,8 +13,8 @@ import { PlaneGeometry, Vector3 } from "three";
 export function createEntities(message: NetMessageCreateEntities, client: Client) {
     if (message.data.worldType === client.worldType) {
         message.data.ents.forEach(entData => {
-            console.log("create entity front");
-            console.log(entData);
+            // console.log("create entity front");
+            // console.log(entData);
 
             // Create a front-end entity for the client that will represent a back-end entity.
             // Don't create the ent twice if it had already been created.
@@ -153,17 +153,17 @@ export function updateEntities(message: NetMessageUpdateEntities, client: Client
 export function destroyEntities(message: NetMessageDestroyEntities, client: Client) {
     if (message.data.worldType === client.worldType) {
         message.data.ents.forEach(entData => {
-            console.log("destroy entity front");
             const entToDestroy = client.NetIdToEntityMap[entData.netId];
-            console.log(client.entityList);
+            // console.log("destroy entity front");
+            // console.log(client.entityList);
 
             // Remove from entityList.
             if (client.entityList.indexOf(entToDestroy) !== -1) {
                 client.entityList.splice(client.entityList.indexOf(entToDestroy), 1);
             }
 
-            console.log("removing ent from entity list");
-            console.log(client.entityList);
+            // console.log("removing ent from entity list");
+            // console.log(client.entityList);
         
             // Remove from NetId to Entity map.
             if (client.NetIdToEntityMap[entData.netId]) {

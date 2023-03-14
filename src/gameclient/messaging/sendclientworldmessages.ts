@@ -2,6 +2,7 @@ import { ClientWorldEventTypes, ClientMessagePlayerWorldJoin, ClientMessageSpect
 import { WorldTransitionData } from "../../packets/data/worldtransitiondata";
 import { MessageTypes } from "../../packets/messages/message";
 import { Client } from "../clientengine/client";
+import { ChatMessageData } from "src/packets/data/chatmessagedata";
 
 export function sendPlayerWorldJoinMessage(client: Client) {
     const message: ClientMessagePlayerWorldJoin = {
@@ -17,6 +18,17 @@ export function sendPlayerWorldJoinMessage(client: Client) {
     
     console.log("client joining as player");
     client.connection.send(JSON.stringify(message));
+
+    setTimeout(() => {
+        const welcomeMessage: ChatMessageData = {
+            clientId: "SystemId",
+            clientUsername: "System",
+            worldType: client.worldType,
+            chatMessage: "Welcome to the game.",
+            chatFontColor: "#00DCDC"
+        }
+        client.rootComponent.appendChatHistory(welcomeMessage);
+    }, 5000)
 }
 
 export function sendPlayerWorldTransitionMessage(client: Client, data: WorldTransitionData) {
@@ -69,7 +81,8 @@ export function sendPlayerChatMessage(client: Client) {
             clientId: client.currentClientId,
             clientUsername: client.username,
             worldType: client.worldType,
-            chatMessage: client.getUIState().chatInputBoxContents.trim()
+            chatMessage: client.getUIState().chatInputBoxContents.trim(),
+            chatFontColor: "#FFFFFF"
         }
     }
 
