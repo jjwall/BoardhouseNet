@@ -19,21 +19,22 @@ import { Scene } from "THREE";
 // TODO: (Done) Time limit on not focused chat bar.
 
 // Feature / branch complete list:
-// TODO: Use chat for world notifications too like "inventory full" and "You can't equip that item"
-// -> Could use same ChatMessageData interface to this and just append to client's chatHistory
-// -> Make more sense if we call it messageHistory?
-// -> Add color field to chatMessageData interface. Player chats - white, notifications - red, server notifications - yellow, etc.
-// -> System is username so i.e. [System]: Inventory full. in red font.
-// TODO: Add blur / focus back with clicking. I like it
+// TODO: (Done) Use chat for world notifications too like "inventory full" and "You can't equip that item"
+// -> (Done) Could use same ChatMessageData interface to this and just append to client's chatHistory
+// -> (Meh) Make more sense if we call it messageHistory?
+// -> (Done) Add color field to chatMessageData interface. Player chats - white, notifications - red, server notifications - yellow, etc.
+// -> (Done) System is username so i.e. [System]: Inventory full. in red font.
 // TODO: (Done) Make chat window and input wider, chat display taller.
 // TODO: (Done) max msgs (more) for focused, max msgs (less) for unfocused 
-// TODO: Bleep out banned keywords
-
-// Future feature expansions:
+// TODO: Add blur / focus back with clicking. I like it
 // TODO: Chat bubble over player's heads.
 // -> Reposition nameplates or just do bubbles on top?
+
+// Future feature expansions:
+// TODO: Bleep out banned keywords
 // TODO (stretch): Input box text overflow - using scissors. Would be good knoweldge for scrollbar stuff too
 // TODO (stretch): Scrollable chat history - using scissors.
+// TODO (stretch): Wrapping message. Max of 2 lines.
 // TODO (stretch): /slash commands for things like direct messaging: /msg [Gizmolo] Hello.
 // -> Direct Messages come in different font colors (teal / light blue). Can message people cross worlds.
 // -> Mod commands like /spawn [Goblin lv3]

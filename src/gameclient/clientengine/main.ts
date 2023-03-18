@@ -38,6 +38,7 @@ import { WebGLRenderer } from "three";
 // Better enemy AI.
 // Better weapon skill actions.
 // Fishing system.
+// Damage numbers: should be ent animation going up for a time.
 
 // Known Bugs:
 // Max HP upgrades (and likely all stat upgrades) don't seem to reflect in ui
