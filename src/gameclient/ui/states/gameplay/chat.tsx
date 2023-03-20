@@ -26,11 +26,11 @@ import { Scene } from "THREE";
 // -> (Done) System is username so i.e. [System]: Inventory full. in red font.
 // TODO: (Done) Make chat window and input wider, chat display taller.
 // TODO: (Done) max msgs (more) for focused, max msgs (less) for unfocused 
-// TODO: Add blur / focus back with clicking. I like it
+// TODO: (Done) Add blur / focus back with clicking. I like it
+
+// Future feature expansions (as of 03/19/2023):
 // TODO: Chat bubble over player's heads.
 // -> Reposition nameplates or just do bubbles on top?
-
-// Future feature expansions:
 // TODO: Bleep out banned keywords
 // TODO (stretch): Input box text overflow - using scissors. Would be good knoweldge for scrollbar stuff too
 // TODO (stretch): Scrollable chat history - using scissors.
@@ -53,6 +53,7 @@ interface Props {
     lastCharacterIsTextCursor: boolean;
     maxChatHistoryLength: number;
     chatInputBackspace: () => void;
+    setFocus: (toggle: boolean) => void;
 }
 
 interface State {
@@ -236,6 +237,7 @@ export class Chat extends Component<Props, State> {
                     height="30"
                     focused={this.props.inputBoxFocused}
                     contents={this.props.inputBoxContents}
+                    setFocus={this.props.setFocus}
                 />
 
                 {this.renderCharactersRemaining()}

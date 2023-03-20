@@ -39,6 +39,7 @@ import { WebGLRenderer } from "three";
 // Better weapon skill actions.
 // Fishing system.
 // Damage numbers: should be ent animation going up for a time.
+// Movement: use state machines!! For anims AND movement smdh
 
 // Known Bugs:
 // Max HP upgrades (and likely all stat upgrades) don't seem to reflect in ui

@@ -274,6 +274,7 @@ export class Root extends Component<Props, GlobalState> {
                     lastCharacterIsTextCursor={this.lastCharIsTextCursor()}
                     maxChatHistoryLength={this.maxChatHistoryLength}
                     chatInputBackspace={this.backspaceChatInputBoxContents}
+                    setFocus={this.setChatFocus}
                 />
                 <Inventory
                     top={this.state.inventoryTop}

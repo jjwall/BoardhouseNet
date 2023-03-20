@@ -12,12 +12,13 @@ interface Props {
     left: string | number,
     contents: string,
     opacity: string | number,
+    focused: boolean;
     fontColor?: string,
     fontSize?: string | number,
     fontTop?: string | number;
     fontLeft?: string | number;
     font?: string;
-    focused: boolean;
+    setFocus: (toggle: boolean) => void;
 }
 
 export class ChatInputBox extends Component<Props, {}> {
@@ -34,6 +35,8 @@ export class ChatInputBox extends Component<Props, {}> {
                 width={this.props.width}
                 top={this.props.top}
                 left={this.props.left}
+                onBlur={() => this.props.setFocus(false)}
+                onFocus={() => this.props.setFocus(true)}
             >
                 <Text
                     fontColor={this.props.focused ? this.props.fontColor : "#C0C0C0"}
