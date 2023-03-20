@@ -50,7 +50,7 @@ export function reconcile(parentWidget: Widget, instance: Instance, element: JSX
 
         // Call componentDidUpdate if defined on component.
         if (componentInstance.component.componentDidUpdate)
-            componentInstance.component.componentDidUpdate(componentInstance.component.prevProps, componentInstance.component.prevState); //oldChildInstance.element.props)
+            componentInstance.component.componentDidUpdate(componentInstance.component.prevProps, componentInstance.component.prevState);
 
         return componentInstance;
     }
