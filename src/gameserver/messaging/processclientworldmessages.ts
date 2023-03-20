@@ -1,17 +1,17 @@
-import { ClientMessagePlayerWorldTransition, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin, ClientMessagePlayerInventoryEvent } from "../../packets/messages/clientworldmessage";
-import { sendLoadWorldMessage, sendPlayerReconcileInventoryMessage } from "./sendnetworldmessages";
+import { ClientMessagePlayerWorldTransition, ClientMessagePlayerWorldJoin, ClientMessageSpectatorWorldJoin, ClientMessagePlayerInventoryEvent, ClientMessagePlayerChatMessage } from "../../packets/messages/clientworldmessage";
+import { broadcastPlayerChatMessage, sendLoadWorldMessage, sendPlayerReconcileInventoryMessage } from "./sendnetworldmessages";
 import { createPlayerCharacter, PlayerCharacterParams } from "../archetypes/playercharacter";
 import { findPlayerEntityByClientId, processPlayerEquipEvent } from "./helpers";
-import { presetKnightInventory } from "../../database/presets/knightinventory";
-import { presetRangerInventory } from "../../database/presets/rangerinventory";
-import { presetWizardInventory } from "../../database/presets/wizardinventory";
-import { presetPageInventory } from "../../database/presets/pageinventory";
+import { presetKnightInventory } from "../../database/inventory/preset_knightinventory";
+import { presetRangerInventory } from "../../database/inventory/preset_rangerinventory";
+import { presetWizardInventory } from "../../database/inventory/preset_wizardinventory";
+import { presetPageInventory } from "../../database/inventory/preset_pageinventory";
 import { broadcastCreateEntitiesMessage } from "./sendnetentitymessages";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
-import { presetKnightStats } from "../../database/presets/knightstats";
-import { presetWizardStats } from "../../database/presets/wizardstats";
-import { presetRangerStats } from "../../database/presets/rangerstats";
-import { presetPageStats } from "../../database/presets/pagestats";
+import { presetKnightStats } from "../../database/stats/preset_knightstats";
+import { presetWizardStats } from "../../database/stats/preset_wizardstats";
+import { presetRangerStats } from "../../database/stats/preset_rangerstats";
+import { presetPageStats } from "../../database/stats/preset_pagestats";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { setPosition } from "../components/position";
 import { PlayerStates } from "../components/player";
@@ -150,4 +150,10 @@ export function processPlayerInventoryEventMessage(message: ClientMessagePlayerI
     const playerEnt = findPlayerEntityByClientId(clientWorld, message.data.clientId)
 
     processPlayerEquipEvent(playerEnt, message.data.inventory, clientWorld)
+}
+
+export function processPlayerChatMessage(message: ClientMessagePlayerChatMessage, server: Server) {
+    console.log(`(port: ${server.gameServerPort}): client with clientId = "${message.data.clientId}" sent a chat message.`)
+
+    broadcastPlayerChatMessage(server, message.data);
 }

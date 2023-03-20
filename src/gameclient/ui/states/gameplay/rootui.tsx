@@ -1,4 +1,6 @@
 import { NotificationData } from "../../../../packets/data/notificationdata";
+import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
+import { chatInputBoxAllowedCharactersJoined } from "../utils/chatutils";
 import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
 import { ItemData } from "../../../../packets/data/itemdata";
@@ -9,10 +11,14 @@ import { Component } from "../../core/component";
 import { Widget } from "../../core/widget";
 import { Inventory } from "./inventory";
 import { Scene } from "three";
+import { Chat } from "./chat";
 import { HUD } from "./hud";
+
+let textCursorInterval: NodeJS.Timeout = undefined
 
 export type UIEvents = Array<UIEventTypes>
 export type ClientInventory = Array<ItemData | undefined>
+export type ChatHistory = Array<ChatMessageData>
 
 export interface StatsStateParams {
     level?: number
@@ -46,6 +52,10 @@ export interface GlobalState {
     currentMP: number;
     maxXP: number;
     currentXP: number;
+    // Chat
+    chatInputBoxContents: string;
+    chatFocused: boolean;
+    chatHistory: ChatHistory;
 }
 
 interface Props {
@@ -53,6 +63,9 @@ interface Props {
 }
 
 export class Root extends Component<Props, GlobalState> {
+    maxChatHistoryLength = 32
+    textCursorCharacter = "_";
+    lastCharIsTextCursor = () => this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === this.textCursorCharacter;
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
@@ -68,9 +81,85 @@ export class Root extends Component<Props, GlobalState> {
             currentMP: props.initialState.currentMP,
             maxXP: props.initialState.maxXP,
             currentXP: props.initialState.currentXP,
+            chatInputBoxContents: props.initialState.chatInputBoxContents,
+            chatFocused: props.initialState.chatFocused,
+            chatHistory: props.initialState.chatHistory,
         };
+    }
 
-        // setInterval(this.updateStats, 50)
+    getState = () => {
+        return this.state
+    }
+
+    backspaceChatInputBoxContents = (deleteIndex = 1) => {
+        // Edge case for keeping " " cushion workaround at index = 1 for chat input box.
+        if (deleteIndex === 2 && this.state.chatInputBoxContents === " " + this.textCursorCharacter)
+            deleteIndex = 1
+
+        if (this.state.chatInputBoxContents.length > 1) {
+            this.setState({
+                chatInputBoxContents: this.state.chatInputBoxContents.slice(0, this.state.chatInputBoxContents.length - deleteIndex)
+            })
+        } else if (this.state.chatInputBoxContents.length === 1 && this.state.chatInputBoxContents !== " ") {
+            this.setState({
+                chatInputBoxContents: " " // Workaround, empty string doesn't play well.
+            })
+        }
+    }
+
+    // TODO: Handle tab case?
+    updateChatInputBoxContents = (enteredKey: string) => {
+        const strRegEx = '[^,]*'+enteredKey+'[,$]*';
+        if (chatInputBoxAllowedCharactersJoined.match(strRegEx)) {
+            if (this.lastCharIsTextCursor()) {
+                this.backspaceChatInputBoxContents();
+            }
+            this.setState({
+                chatInputBoxContents: this.state.chatInputBoxContents += enteredKey
+            })
+        } else if (enteredKey === 'Backspace') {
+            this.lastCharIsTextCursor() ? this.backspaceChatInputBoxContents(2) : this.backspaceChatInputBoxContents()
+        } else if (enteredKey === 'Enter') {
+            this.setUIEvents([UIEventTypes.SEND_CHAT_MESSAGE])
+        }
+    }
+
+    setChatFocus = (toggle: boolean) => {
+        if (this.state.chatFocused && !toggle) {
+            this.setState({
+                chatFocused: false
+            })
+
+            clearInterval(textCursorInterval)
+
+            if (this.lastCharIsTextCursor()) {
+                this.backspaceChatInputBoxContents();
+            }
+        } else if (!this.state.chatFocused && toggle) {
+            this.setState({
+                chatFocused: true
+            })
+
+            textCursorInterval = setInterval(() => {
+                if (this.lastCharIsTextCursor()) {
+                    this.backspaceChatInputBoxContents();
+                } else {
+                    this.updateChatInputBoxContents(this.textCursorCharacter);
+                }
+            }, 500)
+        }
+    }
+
+    appendChatHistory = (newChatMessage: ChatMessageData) => {        
+        if (this.state.chatHistory.length > this.maxChatHistoryLength){
+            this.setState({
+                chatHistory: this.state.chatHistory.slice(1, this.maxChatHistoryLength).concat(newChatMessage)
+            })
+        } else {
+            this.setState({
+                chatHistory: this.state.chatHistory.concat(newChatMessage)
+            })
+        }
     }
 
     updateStats = (params: StatsStateParams) => {
@@ -108,10 +197,6 @@ export class Root extends Component<Props, GlobalState> {
             this.setState({
                 maxXP: params.maxXp
             })
-    }
-
-    getState() {
-        return this.state
     }
 
     setUIEvents = (newUIEvents: UIEvents) => {
@@ -165,6 +250,10 @@ export class Root extends Component<Props, GlobalState> {
     render(): JSXElement {
         return(
             <panel>
+                <NotificationWidget
+                    message={this.state.notificationMessage.notification}
+                    color={this.state.notificationMessage.color}
+                />
                 <HUD
                     level={this.state.level}
                     maxHP={this.state.maxHP}
@@ -174,9 +263,18 @@ export class Root extends Component<Props, GlobalState> {
                     maxXP={this.state.maxXP}
                     currentXP={this.state.currentXP}
                 />
-                <NotificationWidget
-                    message={this.state.notificationMessage.notification}
-                    color={this.state.notificationMessage.color}
+                <Chat
+                    top="271"
+                    left="24"
+                    color="#282828"
+                    opacity="0.5"
+                    chatHistory={this.state.chatHistory}
+                    inputBoxContents={this.state.chatInputBoxContents}
+                    inputBoxFocused={this.state.chatFocused}
+                    lastCharacterIsTextCursor={this.lastCharIsTextCursor()}
+                    maxChatHistoryLength={this.maxChatHistoryLength}
+                    chatInputBackspace={this.backspaceChatInputBoxContents}
+                    setFocus={this.setChatFocus}
                 />
                 <Inventory
                     top={this.state.inventoryTop}
@@ -188,6 +286,7 @@ export class Root extends Component<Props, GlobalState> {
                     setUIEvents={this.setUIEvents}
                     setClientInventory={this.setClientInventory}
                     setNotificationMessage={this.setNotificationMessage}
+                    appendChatHistory={this.appendChatHistory}
                 />
             </panel>
         )

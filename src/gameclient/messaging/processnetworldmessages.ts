@@ -1,6 +1,7 @@
-import { NetMessageLoadWorld, NetMessagePlayerItemPickup, NetMessagePlayerNotification, NetMessagePlayerReconcileInventory, NetMessagePlayerWorldTransition } from "../../packets/messages/networldmessage";
+import { NetMessageLoadWorld, NetMessagePlayerChatMessage, NetMessagePlayerItemPickup, NetMessagePlayerNotification, NetMessagePlayerReconcileInventory, NetMessagePlayerWorldTransition } from "../../packets/messages/networldmessage";
 import { renderSceneFadeIn, renderSceneFadeOut } from "../renders/scenetransitions";
 import { sendPlayerWorldTransitionMessage } from "./sendclientworldmessages";
+import { ChatMessageData } from "../../packets/data/chatmessagedata";
 import { renderWorldMap } from "../clientengine/renderworldmap";
 import { Client } from "../clientengine/client";
 
@@ -100,6 +101,25 @@ export function playerReconcileInventory(message: NetMessagePlayerReconcileInven
 // This is a client specific notification, perhaps we have a broadcast one too?
 export function notifyPlayer(message: NetMessagePlayerNotification, client: Client) {
     if (client.currentClientId === message.data.clientId) {
+        // Set notification widget message.
         client.rootComponent.setNotificationMessage(message.data)
+
+        // Set chat history system message.
+        const systemNotificationMessage: ChatMessageData = {
+            clientId: "SystemId",
+            clientUsername: "System",
+            worldType: client.worldType,
+            chatMessage: message.data.notification,
+            chatFontColor: message.data.color,
+        }
+
+        client.rootComponent.appendChatHistory(systemNotificationMessage)
+    }
+}
+
+export function appendPlayerChatMessage(message: NetMessagePlayerChatMessage, client: Client) {
+    if (message.data.worldType === client.worldType) {
+        // Perhaps we only append playerId if a default username is chosen.
+        client.rootComponent.appendChatHistory(message.data);
     }
 }

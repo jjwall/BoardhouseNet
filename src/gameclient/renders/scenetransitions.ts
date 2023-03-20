@@ -50,8 +50,6 @@ export function renderSceneFadeOut(client: Client, onDone?: () => void) {
 }
 
 export function renderSceneFadeIn(client: Client) {
-    console.log("scene fade in");
-
     // Set client sceneTransitionDone field to false.
     client.sceneTransitionDone = false;
 

@@ -1,11 +1,11 @@
 import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh } from "three";
 import { handlePointerDownEvent, handlePointerMoveEvent, handlePointerUpEvent } from "../events/pointerevents";
-import { sendPlayerInventoryEventMessage } from "../messaging/sendclientworldmessages";
+import { sendPlayerChatMessage, sendPlayerInventoryEventMessage } from "../messaging/sendclientworldmessages";
 import { GlobalState, renderGamePlayUi, Root } from "../ui/states/gameplay/rootui";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { GameServerStateTypes } from "../../packets/enums/gameserverstatetypes";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
-import { presetEmptyInventory } from "../../database/presets/emptyinventory";
+import { presetEmptyInventory } from "../../database/inventory/preset_emptyinventory";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
@@ -71,6 +71,7 @@ export class Client {
         this.keyXIsDown = false;
         this.dodgeKeyPressed = false;
         this.inventoryKeyPressed = false;
+        this.chatKeyPressed = false;
 
         // ...
         // vvv regular engine stuff vvv
@@ -119,6 +120,7 @@ export class Client {
     keyXIsDown: boolean;
     dodgeKeyPressed: boolean;
     inventoryKeyPressed: boolean;
+    chatKeyPressed: boolean;
 
     /// ^^^ old configs ^^^
     public rootComponent: Root;
@@ -310,6 +312,10 @@ export class Client {
                         currentMP: 0,
                         maxXP: 0,
                         currentXP: 0,
+                        // Chat
+                        chatInputBoxContents: " ",
+                        chatFocused: false,
+                        chatHistory: [],
                     }
                 });
                 break;
@@ -335,11 +341,23 @@ export class Client {
                     handlePointerMoveEvent(e as PointerEvent);
                 break;
             case EventTypes.KEY_DOWN:
-                if (this.role === ClientRoleTypes.PLAYER)
-                    handleKeyDownEvent(this, e as KeyboardEvent);
+                if (this.role === ClientRoleTypes.PLAYER) {
+                    if (!this.rootComponent.getState().chatFocused)
+                        handleKeyDownEvent(this, e as KeyboardEvent);
+                    else
+                        this.rootComponent.updateChatInputBoxContents((e as KeyboardEvent).key);
+                    
+                    // Edge case for handling chat focus key.
+                    if ((e as KeyboardEvent).code === 'Enter')
+                        handleKeyDownEvent(this, e as KeyboardEvent);
+                }
                 break;
             case EventTypes.KEY_UP:
-                if (this.role === ClientRoleTypes.PLAYER)
+                if (this.role === ClientRoleTypes.PLAYER && !this.rootComponent.getState().chatFocused)
+                    handleKeyUpEvent(this, e as KeyboardEvent);
+
+                // Edge case for handling chat focus key.
+                if ((e as KeyboardEvent).code === 'Enter')
                     handleKeyUpEvent(this, e as KeyboardEvent);
                 break;
         }
@@ -475,9 +493,21 @@ export class Client {
             this.getUIState().uiEvents.forEach(uiEvent => {
                 switch(uiEvent) {
                     case UIEventTypes.ITEM_EQUIP_EVENT:
-                        sendPlayerInventoryEventMessage(this)
+                        sendPlayerInventoryEventMessage(this);
                         break;
-                    // case ...
+                    case UIEventTypes.SEND_CHAT_MESSAGE:
+                        // Remove text cursor for pending chat message if it's there.
+                        if (this.rootComponent.lastCharIsTextCursor())
+                            this.rootComponent.backspaceChatInputBoxContents();
+
+                        if (this.rootComponent.getState().chatInputBoxContents.length > 1) {
+                            sendPlayerChatMessage(this);
+                            // Clear chat input box contents.
+                            this.rootComponent.setState({
+                                chatInputBoxContents: " "
+                            })
+                        }
+                        break;
                 }
             })
 

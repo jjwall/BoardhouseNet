@@ -7,7 +7,9 @@ import { getRandomInt } from "../serverengine/helpers";
 import { Entity } from "../serverengine/entity";
 import { Vector3 } from "three";
 
+/** @deprecated - To Do: Add to stats component. */
 export interface GoblinSpearState {
+    /** @deprecated */
     hp: number;
     // strength: number;
     movementAccel: number;

@@ -1,6 +1,8 @@
 import { sendDownKeyUpMessage, sendDownKeyDownMessage, sendLeftKeyDownMessage, sendLeftKeyUpMessage, sendRightKeyDownMessage, sendRightKeyUpMessage, sendUpKeyDownMessage, sendUpKeyUpMessage, sendSkillOneReleaseMessage, sendSkillTwoReleaseMessage, sendSkillOnePressMessage, sendSkillTwoPressMessage, sendDodgeKeyPressMessage } from "../messaging/sendclientinputmessages";
 import { Client } from "../clientengine/client";
 
+// TODO: Refactor to using e.code over deprecated e.keyCodes
+
 // keyboard controls
 // visit https://keycode.info/ for other key codes.
 export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
@@ -69,6 +71,18 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
                     client.rootComponent.setInventoryViewToggle(true)
             }
             break;
+
+        case 13: // enter
+            if (!client.chatKeyPressed) {
+                client.chatKeyPressed = true;
+
+                if (!client.getUIState().chatFocused)
+                    client.rootComponent.setChatFocus(true)
+                else {
+                    client.rootComponent.setChatFocus(false)
+                }
+            }
+            break;
     }
 }
 
@@ -132,6 +146,13 @@ export function handleKeyUpEvent(client: Client, e: KeyboardEvent) {
             if (client.inventoryKeyPressed) {
                 // No event to process, set boolean to false.
                 client.inventoryKeyPressed = false;
+            }
+            break;
+
+        case 13: // enter
+            if (client.chatKeyPressed) {
+                // No event to process, set boolean to false.
+                client.chatKeyPressed = false;
             }
             break;
     }

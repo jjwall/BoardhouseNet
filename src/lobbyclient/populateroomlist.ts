@@ -45,9 +45,11 @@ export function populateRoomList(globalLobby: IGlobalLobby, portsToConnectionsMa
 
 function joinEvent (element:HTMLElement, port:String, globalLobby: IGlobalLobby) {
     element.onclick = function() {
-        const playerClassSelection = classSelectRadioValue(globalLobby);
+        const [defaultDisplayUsername, playerClassSelection] = classSelectRadioValue(globalLobby);
         const worldSelection = worldSelectRadioValue(globalLobby);
-        window.location.href = `/playgame?port=${port}&clientId=${globalLobby.currentClientId}&clientRole=${ClientRoleTypes.PLAYER}&playerClass=${playerClassSelection}&worldType=${worldSelection}&username=${globalLobby.usernameInput.value}`
+        const username = globalLobby.usernameInput.value.length > 0 ? globalLobby.usernameInput.value : defaultDisplayUsername
+        console.log(username)
+        window.location.href = `/playgame?port=${port}&clientId=${globalLobby.currentClientId}&clientRole=${ClientRoleTypes.PLAYER}&playerClass=${playerClassSelection}&worldType=${worldSelection}&username=${username}`
         console.log(port);
     }
 }
@@ -60,29 +62,31 @@ function spectateEvent (element:HTMLElement, port:String, globalLobby: IGlobalLo
     }
 }
 
-function classSelectRadioValue (globalLobby: IGlobalLobby): PlayerClassTypes {
+function classSelectRadioValue (globalLobby: IGlobalLobby): [string, PlayerClassTypes] {
     let playerClassSelection = PlayerClassTypes.NULL;
+    let defaultDisplayUsername;
     for (var i = 0, length = globalLobby.classSelectRadioElements.length; i < length; i++) {
         if ((globalLobby.classSelectRadioElements[i] as HTMLInputElement).checked) {
             switch ((globalLobby.classSelectRadioElements[i] as HTMLInputElement).value) {
-                case "page":
+                case "Page":
                     playerClassSelection = PlayerClassTypes.PAGE;
                     break;
-                case "ranger":
+                case "Ranger":
                     playerClassSelection = PlayerClassTypes.RANGER;
                     break;
-                case "wizard":
+                case "Wizard":
                     playerClassSelection = PlayerClassTypes.WIZARD;
                     break;
-                case "knight":
+                case "Knight":
                     playerClassSelection = PlayerClassTypes.KNIGHT;
                     break;
             }
-          break;
+            defaultDisplayUsername = (globalLobby.classSelectRadioElements[i] as HTMLInputElement).value
+            break;
         }
     }
 
-    return playerClassSelection;
+    return [defaultDisplayUsername, playerClassSelection];
 }
 
 function worldSelectRadioValue (globalLobby: IGlobalLobby) : WorldTypes {

@@ -5,6 +5,8 @@ import { Scene } from "THREE";
 export abstract class Component<Props, State> {
     public state: State;
     public props: Readonly<Props>;
+    public prevState: Readonly<State> = null;
+    public prevProps: Readonly<Props> = null;
     private scene: Scene;
     public _internalInstance: ComponentInstance;
     public constructor(props: Props, scene: Scene){
@@ -16,6 +18,8 @@ export abstract class Component<Props, State> {
         this.state = Object.assign({}, this.state, partialState);
         updateInstance(this._internalInstance, this.scene);
     }
+
+    public componentDidUpdate?(prevProps: Props, prevState: State): void
 
     abstract render(): JSXElement;
 }

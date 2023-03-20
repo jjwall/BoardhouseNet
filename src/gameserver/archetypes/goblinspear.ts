@@ -2,7 +2,7 @@ import { broadcastCreateEntitiesMessage, broadcastDestroyEntitiesMessage } from 
 import { getWorldPosition, PositionComponent, setPosition } from "../components/position";
 import { goblinSpearAnim } from "../../modules/animations/animationdata/goblinspear";
 import { goblinSpearBehavior, GoblinSpearState } from "./../behaviors/goblinspear";
-import { presetGoblinSpearStats } from "../../database/presets/goblinspearstats";
+import { presetGoblinSpearStats } from "../../database/stats/preset_goblinspearstats";
 import { SequenceTypes } from "../../modules/animations/sequencetypes";
 import { BaseWorldEngine } from "../serverengine/baseworldengine";
 import { HitboxTypes, setHitbox } from "../components/hitbox";
@@ -20,6 +20,7 @@ import { Vector3 } from "three";
 // -> could be generic, takes x number of createEnemy archetype methods, and uses a random bag to "spawn"
 // a given assortment of enemies.
 
+// KNOWN BUG: Enemies share stat state somewhat. See when hitting one enemy, multiple goblins lose Hp. 
 export function createGoblinSpear(worldEngine: BaseWorldEngine, pos: PositionComponent): Entity {
     let goblin = new Entity();
     goblin.pos = pos;
@@ -56,6 +57,7 @@ export function setGoblinSpearHitbox(goblin: Entity, state: GoblinSpearState, wo
             // Todo: Build stats component that tracks damage multiplayers for magic and physical attack.
             // Also will track defense. Should make a process damage module that takes all factors into account.
             state.hp--;
+            goblin.stats.currentHp -= 15;
 
             // Push goblin in direction of collision with fireball.
             const pushDirection = other.pos.dir.clone().normalize();
@@ -65,6 +67,7 @@ export function setGoblinSpearHitbox(goblin: Entity, state: GoblinSpearState, wo
         if (other.hitbox.collideType === HitboxTypes.PLAYER_SWORD_ATTACK) {
             // TODO: See above.
             state.hp -= 0.1;
+            goblin.stats.currentHp -= 1;
 
             // Push goblin in opposite X direction of attacking player.
             const pushDirection = new Vector3(0, 0, 0);
@@ -101,7 +104,8 @@ export function setGoblinSpearHitbox(goblin: Entity, state: GoblinSpearState, wo
             other.vel.positional.add(pushDirection.multiplyScalar(state.pushEnemyAccel));
         }
 
-        if (state.hp <= 0) {
+        if (goblin.stats.currentHp <= 0) {
+            // TODO: Death animation.
             broadcastDestroyEntitiesMessage([goblin], worldEngine.server, worldEngine);
         }
     }

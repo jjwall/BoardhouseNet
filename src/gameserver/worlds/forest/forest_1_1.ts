@@ -68,7 +68,7 @@ export class Forest_1_1 extends BaseWorldEngine {
             pos: setPosition(500, 500, 4),
             areaHeight: 300,
             areaWidth: 700,
-            maxNumberOfEntities: 1,
+            maxNumberOfEntities: 2,
             createEntityArchetypes: [createGoblinSpear],
             worldEngine: this,
         }

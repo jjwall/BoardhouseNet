@@ -30,9 +30,11 @@ import {
     ClientMessagePlayerWorldTransition, 
     ClientMessagePlayerWorldJoin, 
     ClientMessageSpectatorWorldJoin, 
-    ClientMessagePlayerInventoryEvent} 
+    ClientMessagePlayerInventoryEvent,
+    ClientMessagePlayerChatMessage} 
 from "../../packets/messages/clientworldmessage";
 import { 
+    processPlayerChatMessage,
     processPlayerInventoryEventMessage,
     processPlayerWorldJoinMessage, 
     processPlayerWorldTransitionMessage, 
@@ -70,6 +72,9 @@ function processClientWorldMessages(message: ClientWorldMessage, server: Server)
         //     break;
         case ClientWorldEventTypes.PLAYER_INVENTORY_EVENT:
             processPlayerInventoryEventMessage(message as ClientMessagePlayerInventoryEvent, server);
+            break;
+        case ClientWorldEventTypes.PLAYER_CHAT_MESSAGE:
+            processPlayerChatMessage(message as ClientMessagePlayerChatMessage, server);
             break;
 
     }

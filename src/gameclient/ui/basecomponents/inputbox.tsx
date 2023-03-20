@@ -1,12 +1,23 @@
-// /** @jsx createJSXElement */
 import { createJSXElement } from "../core/createjsxelement";
 import { JSXElement } from "../core/interfaces";
-import { Scene } from "THREE";
 import { Component } from "../core/component";
+import { Scene } from "THREE";
+
+/** Example how you might use this component:
+    <InputBox
+        boxColor="#C9CFFF"
+        borderColor="#000000"
+        top="600"
+        left="100"
+        fontTop="18"
+        width={250}
+        height={20}
+        contents={someDynamicState's contents}
+    />
+ */
 
 interface Props {
-    focusColor: string,
-    blurColor: string,
+    boxColor: string,
     borderColor: string,
     width: number,
     height: number,
@@ -18,7 +29,6 @@ interface Props {
     fontTop?: string | number;
     fontLeft?: string | number;
     font?: string;
-    submit: () => void,
 }
 
 interface State {
@@ -32,18 +42,6 @@ export class InputBox extends Component<Props, State> {
             focused: false,
         }
     }
-
-    // public press = (): void => {
-    //     this.setState({
-    //         pressed: true
-    //     });
-    // }
-
-    // public unpress = (): void => {
-    //     this.setState({
-    //         focused: false
-    //     });
-    // }
 
     public focus = (): void => {
         this.setState({
@@ -61,27 +59,25 @@ export class InputBox extends Component<Props, State> {
 
     render(): JSXElement {
         return (
-        // <panel height="35" width="310" color="#FFFFFF" top="400" left="640">
-        //     <panel height="25" width="300" color="#000000"></panel>
-        // </panel>
             <panel
-                height={this.props.height + 10}
-                width={this.props.width + 10}
-                color={this.props.borderColor}
+                height={this.props.height + 2}
+                width={this.props.width + 2}
+                color={this.state.focused ? this.props.borderColor : this.props.boxColor}
                 top={this.props.top}
                 left={this.props.left}
             >
                 <panel
-                    color={this.state.focused ? this.props.focusColor : this.props.blurColor}
+                    color={this.props.boxColor}
                     height={this.props.height}
                     width={this.props.width}
                     onPress={() => {}}
                     onUnpress={() => {}}
                     onBlur={() => this.blur()}
                     onFocus={() => this.focus()}
+                    top={1}
+                    left={1}
                 >
                     <label
-                        // color={this.state.pressed ? this.props.pressedFontColor : this.props.unpressedFontColor}
                         color = {this.props.fontColor}
                         top={this.props.fontTop}
                         left={this.props.fontLeft}
