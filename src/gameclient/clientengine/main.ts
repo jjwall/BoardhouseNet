@@ -43,6 +43,8 @@ import { WebGLRenderer } from "three";
 
 // Known Bugs:
 // Max HP upgrades (and likely all stat upgrades) don't seem to reflect in ui
+// Up key events won't send if browser get unfocused or chat gets focused mid movement
+// -> Solution: Track "down" events and automatically send respective "up" event when play is interrupted
 
 const params = <URLSearchParams> new URLSearchParams(window.location.search);
 

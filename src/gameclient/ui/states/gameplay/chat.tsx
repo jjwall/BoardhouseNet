@@ -7,27 +7,6 @@ import { ChatInputBox } from "./chatinputbox";
 import { ChatHistory } from "./rootui";
 import { Scene } from "THREE";
 
-// To-done's.
-// TODO: (Done) Display Usernames
-// TODO: (Done) Maintain client cached chat histories, i.e. chat history state
-// TODO: (Done) Fix | bug for sent messages.
-// TODO: (Done) Test to make sure clients within the same world recieve chat messages.
-// TODO: (Done) Bug -> " " before chat messages b/c of workaround -> Shouldn't be able to backspace.
-// Note: (Done - Edge case resolved) Input box " " space workaround means we can backspace right off the bat. Kinda annoying but ignoring for now.
-// TODO: (Done) Prohibit typing more characters if max char limit reached.
-// TODO: (Done) Character limit render.
-// TODO: (Done) Time limit on not focused chat bar.
-
-// Feature / branch complete list:
-// TODO: (Done) Use chat for world notifications too like "inventory full" and "You can't equip that item"
-// -> (Done) Could use same ChatMessageData interface to this and just append to client's chatHistory
-// -> (Meh) Make more sense if we call it messageHistory?
-// -> (Done) Add color field to chatMessageData interface. Player chats - white, notifications - red, server notifications - yellow, etc.
-// -> (Done) System is username so i.e. [System]: Inventory full. in red font.
-// TODO: (Done) Make chat window and input wider, chat display taller.
-// TODO: (Done) max msgs (more) for focused, max msgs (less) for unfocused 
-// TODO: (Done) Add blur / focus back with clicking. I like it
-
 // Future feature expansions (as of 03/19/2023):
 // TODO: Chat bubble over player's heads.
 // -> Reposition nameplates or just do bubbles on top?
