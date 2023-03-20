@@ -3,8 +3,8 @@ import { createJSXElement } from "../../core/createjsxelement";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
 import { Text } from "../../basecomponents/text";
-import { ChatHistory, UIEvents } from "./rootui";
 import { ChatInputBox } from "./chatinputbox";
+import { ChatHistory } from "./rootui";
 import { Scene } from "THREE";
 
 // To-done's.
@@ -46,8 +46,8 @@ interface Props {
     top?: string | number;
     left?: string | number;
     chatHistory: ChatHistory;
-    color: string
-    opacity: string | number
+    color: string;
+    opacity: string | number;
     inputBoxContents: string;
     inputBoxFocused: boolean;
     lastCharacterIsTextCursor: boolean;

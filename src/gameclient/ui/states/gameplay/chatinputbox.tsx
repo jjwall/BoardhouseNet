@@ -5,16 +5,16 @@ import { Component } from "../../core/component";
 import { Scene } from "THREE";
 
 interface Props {
-    boxColor: string,
-    width: string | number,
-    height: string | number,
-    top: string | number,
-    left: string | number,
-    contents: string,
-    opacity: string | number,
+    boxColor: string;
+    width: string | number;
+    height: string | number;
+    top: string | number;
+    left: string | number;
+    contents: string;
+    opacity: string | number;
     focused: boolean;
-    fontColor?: string,
-    fontSize?: string | number,
+    fontColor?: string;
+    fontSize?: string | number;
     fontTop?: string | number;
     fontLeft?: string | number;
     font?: string;
@@ -22,6 +22,8 @@ interface Props {
 }
 
 export class ChatInputBox extends Component<Props, {}> {
+    unfocusedFontColor = "#C0C0C0";
+    unfocusedContents = "[Enter] to Chat";
     constructor(props: Props, scene: Scene) {
         super(props, scene);
     }
@@ -39,10 +41,10 @@ export class ChatInputBox extends Component<Props, {}> {
                 onFocus={() => this.props.setFocus(true)}
             >
                 <Text
-                    fontColor={this.props.focused ? this.props.fontColor : "#C0C0C0"}
+                    fontColor={this.props.focused ? this.props.fontColor : this.unfocusedFontColor}
                     top={this.props.fontTop}
                     left={this.props.fontLeft}
-                    contents={this.props.focused ? this.props.contents : "[Enter] to Chat"}
+                    contents={this.props.focused ? this.props.contents : this.unfocusedContents}
                     font={this.props.font}
                     fontSize={this.props.fontSize}>
                 </Text>
