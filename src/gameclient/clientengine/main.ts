@@ -1,5 +1,5 @@
 import { sendPlayerWorldJoinMessage, sendSpectatorWorldJoinMessage } from "../messaging/sendclientworldmessages";
-import { GameServerStateTypes } from "../../packets/enums/gameserverstatetypes";
+import { UIStateTypes } from "../../packets/enums/gameserverstatetypes";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
 import { processNetMessages } from "../messaging/processnetmessages";
@@ -40,6 +40,9 @@ import { WebGLRenderer } from "three";
 // Fishing system.
 // Damage numbers: should be ent animation going up for a time.
 // Movement: use state machines!! For anims AND movement smdh
+// Bring back client render -> render vfx based on certain animations
+// -> For example, sword slash should include sword trails and dust plumes
+// -> These types of renders shouldn't need to get sent from server at all
 
 // Known Bugs:
 // Max HP upgrades (and likely all stat upgrades) don't seem to reflect in ui
@@ -93,7 +96,11 @@ client.connection.onopen = function() {
 }
 
 client.loadAssets().then(() => {
-    client.initializeState(GameServerStateTypes.GAMEPLAY);
+    client.initializeClient();
+
+    // This might should go into initializeClient
+    client.initializeUIState(UIStateTypes.GAMEPLAY);
+    
     main(<HTMLElement>document.getElementById("canvasContainer"));
 });
 

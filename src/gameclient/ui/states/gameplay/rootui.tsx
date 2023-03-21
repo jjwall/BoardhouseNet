@@ -30,10 +30,10 @@ export interface StatsStateParams {
     currentXp?: number;
 }
 
-export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props): Root {
-    let rootInstance = renderWidget(<Root { ...props }/>, rootWidget, scene);
+export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props): GameplayRoot {
+    let rootInstance = renderWidget(<GameplayRoot { ...props }/>, rootWidget, scene);
 
-    return rootInstance.component as Root;
+    return rootInstance.component as GameplayRoot;
 }
 
 export interface GlobalState {
@@ -62,7 +62,7 @@ interface Props {
     initialState: GlobalState
 }
 
-export class Root extends Component<Props, GlobalState> {
+export class GameplayRoot extends Component<Props, GlobalState> {
     maxChatHistoryLength = 32
     textCursorCharacter = "_";
     lastCharIsTextCursor = () => this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === this.textCursorCharacter;

@@ -1,11 +1,11 @@
 import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh } from "three";
 import { handlePointerDownEvent, handlePointerMoveEvent, handlePointerUpEvent } from "../events/pointerevents";
 import { sendPlayerChatMessage, sendPlayerInventoryEventMessage } from "../messaging/sendclientworldmessages";
-import { GlobalState, renderGamePlayUi, Root } from "../ui/states/gameplay/rootui";
-import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
-import { GameServerStateTypes } from "../../packets/enums/gameserverstatetypes";
-import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
+import { GlobalState, renderGamePlayUi, GameplayRoot } from "../ui/states/gameplay/rootui";
 import { presetEmptyInventory } from "../../database/inventory/preset_emptyinventory";
+import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
+import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
+import { UIStateTypes } from "../../packets/enums/gameserverstatetypes";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
@@ -87,6 +87,7 @@ export class Client {
     }
 
     /// state stuff
+    public uiState: UIStateTypes;
     public currentPlayerEntity: ClientEntity; // just a reference
     public role: ClientRoleTypes;
     public playerClass: PlayerClassTypes;
@@ -123,7 +124,7 @@ export class Client {
     chatKeyPressed: boolean;
 
     /// ^^^ old configs ^^^
-    public rootComponent: Root;
+    public rootComponent: GameplayRoot; // any
     public rootWidget: Widget;
 
     public screenWidth: number;
@@ -256,32 +257,39 @@ export class Client {
     }
 
     /**
-     * Initialize Game Client state based on Game Server state.
-     * @param gameServerState
+     * Initialize Game Client
      */
-    public initializeState(gameServerState: GameServerStateTypes) {
-        switch (gameServerState) {
-            case GameServerStateTypes.GAMEPLAY:
-                // do stuff based on game server state
-                console.log("initializing client for game play state");
-                // Set up game scene.
-                this.gameScene = new Scene();
-                // this.gameScene.background = new Color("#FFFFFF");
-                this.gameScene.background = new Color("#547e64");
+    public initializeClient() {
+        console.log("initializing client");
 
-                // Set up game camera.
-                this.gameCamera = new OrthographicCamera(0, this.screenWidth, this.screenHeight, 0, -1000, 1000);
+        // Set up game scene.
+        this.gameScene = new Scene();
+        // this.gameScene.background = new Color("#FFFFFF");
+        this.gameScene.background = new Color("#547e64");
 
-                // Set up ui scene.
-                this.uiScene = new Scene();
+        // Set up game camera.
+        this.gameCamera = new OrthographicCamera(0, this.screenWidth, this.screenHeight, 0, -1000, 1000);
 
-                // Set up ui camera.
-                this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
+        // Set up ui scene.
+        this.uiScene = new Scene();
 
-                // Set up ui widget and instance.
-                this.rootWidget = createWidget("root");
-                this.uiScene.add(this.rootWidget);
+        // Set up ui camera.
+        this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
 
+        // Set up ui widget and instance.
+        this.rootWidget = createWidget("root");
+        this.uiScene.add(this.rootWidget);
+    }
+
+    public initializeUIState(uiState: UIStateTypes) {
+        this.uiState = uiState
+
+        switch (uiState) {
+            case UIStateTypes.MAIN_MENU:
+                console.log("main menu")
+                // this.rootComponent = renderMainMenuUi(this.uiScene, this.rootWidget, {});
+                break;
+            case UIStateTypes.GAMEPLAY:
                 this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, {
                     // TODO: Thinking about this more... if we ever want to "unload" ui
                     // in the midst of someone's gameplay, this initial state will be invalid
@@ -291,7 +299,7 @@ export class Client {
                         // Using preset client inventory for now.
                         // In future pull from database or pre-set data set.
                         // Todo: Load from playerJoinData ? - yes - yes
-
+        
                         // Misc
                         uiEvents: [],
                         notificationMessage: {
