@@ -16,6 +16,7 @@ export class Widget extends Mesh {
     private _children: Widget[] = [];
     private _widgetChildren: Group = new Group();
     private _imageChildren: Group = new Group();
+    public reactComponentInstance: any = null;
     public image: Mesh;
     public text: Mesh;
     public text_params: { contents: string, fontUrl: string, font_size: number };

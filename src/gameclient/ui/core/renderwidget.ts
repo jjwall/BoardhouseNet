@@ -10,9 +10,10 @@ import { Scene} from "three";
  * @param scene 
  */
 export function renderWidget(element: JSXElement, container: Widget, scene: Scene): ComponentInstance {
-    let rootInstance: ComponentInstance = null;
+    let rootInstance: ComponentInstance = container.reactComponentInstance;
     const prevInstance = rootInstance;
     const nextInstance = reconcile(container, prevInstance, element, scene)
+    container.reactComponentInstance = nextInstance
     rootInstance = nextInstance as ComponentInstance;
 
     return rootInstance;
