@@ -1,4 +1,4 @@
-export const createStore = (yourReducer: (...args: any) => void) => {
+export const createStore = (yourReducer: (...args: any) => any) => {
 	let listeners: any[] = [];
 	let currentState = yourReducer(undefined, {});
 

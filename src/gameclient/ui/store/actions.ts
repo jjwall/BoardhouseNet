@@ -8,5 +8,3 @@ export type ChatHistoryAction = {
     type: string
     chatMessageData: ChatMessageData
 }
-
-// type DispatchType = (args: ChatHistoryAction) => ChatHistoryAction

@@ -4,6 +4,7 @@ import { sendPlayerWorldTransitionMessage } from "./sendclientworldmessages";
 import { ChatMessageData } from "../../packets/data/chatmessagedata";
 import { renderWorldMap } from "../clientengine/renderworldmap";
 import { Client } from "../clientengine/client";
+import { appendChatHistory2 } from "../ui/store/reducers";
 
 export function loadWorld(message: NetMessageLoadWorld, client: Client) {
     console.log("load world...");
@@ -120,6 +121,7 @@ export function notifyPlayer(message: NetMessagePlayerNotification, client: Clie
 export function appendPlayerChatMessage(message: NetMessagePlayerChatMessage, client: Client) {
     if (message.data.worldType === client.worldType) {
         // Perhaps we only append playerId if a default username is chosen.
-        client.rootComponent.appendChatHistory(message.data);
+        client.rootComponent.appendChatHistory(message.data); // deprecated
+        appendChatHistory2(client, message.data)
     }
 }

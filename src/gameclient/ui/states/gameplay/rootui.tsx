@@ -13,6 +13,9 @@ import { Inventory } from "./inventory";
 import { Scene } from "three";
 import { Chat } from "./chat";
 import { HUD } from "./hud";
+import { chatHistoryStore } from "../../store/reducers";
+import { ChatHistoryAction } from "../../store/actions";
+import { APPEND_CHAT_HISTORY } from "../../store/actiontypes";
 
 let textCursorInterval: NodeJS.Timeout = undefined
 
@@ -36,7 +39,7 @@ export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props)
     return rootInstance.component as GameplayRoot;
 }
 
-export interface GlobalState {
+export interface GlobalState { // should be GameState
     // Misc
     uiEvents: UIEvents
     notificationMessage: NotificationData
@@ -59,7 +62,7 @@ export interface GlobalState {
 }
 
 interface Props {
-    initialState: GlobalState
+    initialState: GlobalState // call this gameState prop
 }
 
 export class GameplayRoot extends Component<Props, GlobalState> {
@@ -85,6 +88,15 @@ export class GameplayRoot extends Component<Props, GlobalState> {
             chatFocused: props.initialState.chatFocused,
             chatHistory: props.initialState.chatHistory,
         };
+    }
+
+    public mapContextToProps(context: any): any {
+        console.log(context)
+        return { 
+            // prop1: context.propICareAbout, 
+            // prop2: context.someOtherProp,
+            chatHistory: context.chatHistory
+        }
     }
 
     getState = () => {
@@ -150,16 +162,23 @@ export class GameplayRoot extends Component<Props, GlobalState> {
         }
     }
 
+    /** (Deprecated) This would need to be like a global store method */
     appendChatHistory = (newChatMessage: ChatMessageData) => {        
-        if (this.state.chatHistory.length > this.maxChatHistoryLength){
-            this.setState({
-                chatHistory: this.state.chatHistory.slice(1, this.maxChatHistoryLength).concat(newChatMessage)
-            })
-        } else {
-            this.setState({
-                chatHistory: this.state.chatHistory.concat(newChatMessage)
-            })
+        // if (this.state.chatHistory.length > this.maxChatHistoryLength){
+        //     this.setState({
+        //         chatHistory: this.state.chatHistory.slice(1, this.maxChatHistoryLength).concat(newChatMessage)
+        //     })
+        // } else {
+        //     this.setState({
+        //         chatHistory: this.state.chatHistory.concat(newChatMessage)
+        //     })
+        // }
+        const chatHistoryAction: ChatHistoryAction = {
+            type: APPEND_CHAT_HISTORY,
+            chatMessageData: newChatMessage
         }
+        // chatHistoryStore.dispatch(chatHistoryAction)
+        // console.log(chatHistoryStore.getState())
     }
 
     updateStats = (params: StatsStateParams) => {
@@ -268,7 +287,7 @@ export class GameplayRoot extends Component<Props, GlobalState> {
                     left="24"
                     color="#282828"
                     opacity="0.5"
-                    chatHistory={this.state.chatHistory}
+                    chatHistory={this.props.initialState.chatHistory}
                     inputBoxContents={this.state.chatInputBoxContents}
                     inputBoxFocused={this.state.chatFocused}
                     lastCharacterIsTextCursor={this.lastCharIsTextCursor()}

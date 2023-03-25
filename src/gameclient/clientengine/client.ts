@@ -13,6 +13,7 @@ import { UIEventTypes } from "../../packets/enums/uieventtypes";
 import { SceneTransition } from "../renders/scenetransitions";
 import { WorldTypes } from "../../packets/enums/worldtypes";
 import { createWidget, Widget } from "../ui/core/widget";
+import { initialGameContext } from "../ui/store/context";
 import { ClientRender } from "../renders/clientrender";
 import { animationSystem } from "../systems/animation";
 import { layoutWidget } from "../ui/core/layoutwidget";
@@ -20,6 +21,19 @@ import { EventTypes } from "../events/eventtypes";
 import { NetIdToEntityMap } from "./interfaces";
 import { centerCameraOnPlayer } from "./camera";
 import { ClientEntity } from "./cliententity";
+
+// let currentContext = null;
+// let currentRootComponent = MainMenu;
+
+// function setUIGameContext(data) {
+//     currentContext = data;
+//     react.render(<currentRootComponent gameContext={currentContext} />);
+// }
+
+// function switchRoot(component) {
+//     currentRootComponent = component;
+//     react.render(<currentRootComponent gameContext={currentContext} />;
+// }
 
 export interface ClientConfig {
     /// state stuff ///
@@ -124,7 +138,9 @@ export class Client {
     chatKeyPressed: boolean;
 
     /// ^^^ old configs ^^^
-    public rootComponent: GameplayRoot; // any
+    public currentContext: any = null
+    public currentRootRender: any
+    public rootComponent: any
     public rootWidget: Widget;
 
     public screenWidth: number;
@@ -281,6 +297,16 @@ export class Client {
         this.uiScene.add(this.rootWidget);
     }
 
+    
+
+    public setUIGameContext(data: any) {
+        this.currentContext = data;
+        console.log(data)
+        // this.uiScene.remove(this.rootWidget); // good for swapping
+        // this.uiScene.add(this.rootWidget);
+        this.currentRootRender(this.uiScene, this.rootWidget, { initialState: this.currentContext })
+    }
+
     public initializeUIState(uiState: UIStateTypes) {
         this.uiState = uiState
 
@@ -290,42 +316,45 @@ export class Client {
                 // this.rootComponent = renderMainMenuUi(this.uiScene, this.rootWidget, {});
                 break;
             case UIStateTypes.GAMEPLAY:
-                this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, {
-                    // TODO: Thinking about this more... if we ever want to "unload" ui
-                    // in the midst of someone's gameplay, this initial state will be invalid
-                    // we would have to pass around a ui state object through
-                    // player world transition messages and what not
-                    initialState: {
-                        // Using preset client inventory for now.
-                        // In future pull from database or pre-set data set.
-                        // Todo: Load from playerJoinData ? - yes - yes
+                this.currentRootRender = renderGamePlayUi
+                this.currentContext = initialGameContext
+                this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, { initialState: this.currentContext })
+                // this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, {
+                //     // TODO: Thinking about this more... if we ever want to "unload" ui
+                //     // in the midst of someone's gameplay, this initial state will be invalid
+                //     // we would have to pass around a ui state object through
+                //     // player world transition messages and what not
+                //     initialState: {
+                //         // Using preset client inventory for now.
+                //         // In future pull from database or pre-set data set.
+                //         // Todo: Load from playerJoinData ? - yes - yes
         
-                        // Misc
-                        uiEvents: [],
-                        notificationMessage: {
-                            milliseconds: 0,
-                            color: "",
-                            clientId: "", // unnecessary
-                            notification: ""
-                        },
-                        // Inventory
-                        clientInventory: presetEmptyInventory,
-                        inventoryViewToggle: true,
-                        inventoryTop: 456,
-                        // HUD
-                        level: 0,
-                        maxHP: 0,
-                        currentHP: 0,
-                        maxMP: 0,
-                        currentMP: 0,
-                        maxXP: 0,
-                        currentXP: 0,
-                        // Chat
-                        chatInputBoxContents: " ",
-                        chatFocused: false,
-                        chatHistory: [],
-                    }
-                });
+                //         // Misc
+                //         uiEvents: [],
+                //         notificationMessage: {
+                //             milliseconds: 0,
+                //             color: "",
+                //             clientId: "", // unnecessary
+                //             notification: ""
+                //         },
+                //         // Inventory
+                //         clientInventory: presetEmptyInventory,
+                //         inventoryViewToggle: true,
+                //         inventoryTop: 456,
+                //         // HUD
+                //         level: 0,
+                //         maxHP: 0,
+                //         currentHP: 0,
+                //         maxMP: 0,
+                //         currentMP: 0,
+                //         maxXP: 0,
+                //         currentXP: 0,
+                //         // Chat
+                //         chatInputBoxContents: " ",
+                //         chatFocused: false,
+                //         chatHistory: [],
+                //     }
+                // });
                 break;
         }
     }
