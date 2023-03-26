@@ -22,9 +22,9 @@ import { Scene } from "THREE";
 // TODO (maybe): Display Player / Client Ids.
 
 interface Props {
+    // Component fields.
     top?: string | number;
     left?: string | number;
-    chatHistory: ChatHistory;
     color: string;
     opacity: string | number;
     inputBoxContents: string;
@@ -33,6 +33,8 @@ interface Props {
     maxChatHistoryLength: number;
     chatInputBackspace: () => void;
     setFocus: (toggle: boolean) => void;
+    // Context fields.
+    chatHistory?: ChatHistory;
 }
 
 interface State {
@@ -63,12 +65,18 @@ export class Chat extends Component<Props, State> {
         }
     }
 
+    mapContextToProps(context: any): any {
+        return { 
+            chatHistory: context.chatHistory
+        }
+    }
+
     componentDidUpdate = (prevProps: Props) => {
-        if (prevProps.chatHistory.length !== this.props.chatHistory.length) {
+        if (prevProps?.chatHistory?.length !== this.props?.chatHistory?.length ) {
             this.updateChatHistoryWithMetaData()
         }
 
-        if (prevProps.inputBoxContents.length !== this.props.inputBoxContents.length) {
+        if (prevProps?.inputBoxContents?.length !== this.props?.inputBoxContents?.length) {
             this.updateCharactersRemainingText()
         }
     }

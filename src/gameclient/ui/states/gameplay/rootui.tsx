@@ -3,8 +3,10 @@ import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
 import { chatInputBoxAllowedCharactersJoined } from "../utils/chatutils";
 import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
+import { APPEND_CHAT_HISTORY } from "../../store/actiontypes";
 import { ItemData } from "../../../../packets/data/itemdata";
 import { NotificationWidget } from "./notificationwidget";
+import { ChatHistoryAction } from "../../store/actions";
 import { renderWidget } from "../../core/renderwidget";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
@@ -13,9 +15,6 @@ import { Inventory } from "./inventory";
 import { Scene } from "three";
 import { Chat } from "./chat";
 import { HUD } from "./hud";
-import { chatHistoryStore } from "../../store/reducers";
-import { ChatHistoryAction } from "../../store/actions";
-import { APPEND_CHAT_HISTORY } from "../../store/actiontypes";
 
 let textCursorInterval: NodeJS.Timeout = undefined
 
@@ -88,15 +87,6 @@ export class GameplayRoot extends Component<Props, GlobalState> {
             chatFocused: props.initialState.chatFocused,
             chatHistory: props.initialState.chatHistory,
         };
-    }
-
-    public mapContextToProps(context: any): any {
-        console.log(context)
-        return { 
-            // prop1: context.propICareAbout, 
-            // prop2: context.someOtherProp,
-            chatHistory: context.chatHistory
-        }
     }
 
     getState = () => {
@@ -287,7 +277,7 @@ export class GameplayRoot extends Component<Props, GlobalState> {
                     left="24"
                     color="#282828"
                     opacity="0.5"
-                    chatHistory={this.props.initialState.chatHistory}
+                    // chatHistory={this.props.initialState.chatHistory}
                     inputBoxContents={this.state.chatInputBoxContents}
                     inputBoxFocused={this.state.chatFocused}
                     lastCharacterIsTextCursor={this.lastCharIsTextCursor()}

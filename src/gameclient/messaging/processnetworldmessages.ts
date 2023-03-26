@@ -121,7 +121,6 @@ export function notifyPlayer(message: NetMessagePlayerNotification, client: Clie
 export function appendPlayerChatMessage(message: NetMessagePlayerChatMessage, client: Client) {
     if (message.data.worldType === client.worldType) {
         // Perhaps we only append playerId if a default username is chosen.
-        client.rootComponent.appendChatHistory(message.data); // deprecated
         appendChatHistory2(client, message.data)
     }
 }
