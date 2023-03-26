@@ -1,10 +1,10 @@
-export const createStore = (yourReducer: (...args: any) => any) => {
+export function createStore<S, A>(yourReducer: (state: S, action: A | {}) => S) {
 	let listeners: any[] = [];
 	let currentState = yourReducer(undefined, {});
 
 	return {
 		getState: () => currentState,
-		dispatch: (action: any) => {
+		dispatch: (action: A) => {
 			currentState = yourReducer(currentState, action);
 
 			listeners.forEach((listener) => {

@@ -10,9 +10,11 @@ import { Scene } from "three";
 // Todo: (Done) Rename "initialState" with (this) globalGameState OR globalGameContext.
 // Todo: Remove all setState methods that were purely used for application state
 // -> Keep component state methods using setState
-// Todo: R&D on naming conventions for reducer consumers: i.e. our appendChatHistory2 method
+// Todo: (Done)[See chatSlice] R&D on naming conventions for reducer consumers: i.e. our appendChatHistory2 method
 // Todo: R&D on if having multiple stores is okay with current design.
-// Todo: Reorganize redux layer's architecture. Consider best redux practices
+// Todo: Swap out main menu / gameplay ui and test
+// Todo: General branch cleanup, commented out code, structure etc.
+// Todo: (Done) Reorganize redux layer's architecture. Consider best redux practices
 // -> Current thought is to organize by feature. I.e:
 // store/
 //  L context/
@@ -32,9 +34,6 @@ import { Scene } from "three";
 //  L inventory/
 //    L reducers.ts
 //    L actions.ts
-
-// Todo: Swap out main menu / gameplay ui and test
-// Todo: General branch cleanup, commented out code, structure etc.
 
 interface Props {}
 

@@ -37,7 +37,7 @@ const appendHistory = (client: Client, newChatMessage: ChatMessageData) => {
 	}
 	chatHistoryStore.dispatch(chatHistoryAction)
 	globalGameContext.chatHistory = chatHistoryStore.getState().chatHistory
-	client.setUIGameContext(client.currentContext)
+	client.setUIGameContext({ ...globalGameContext })
 }
 
 export const chatSlice = {

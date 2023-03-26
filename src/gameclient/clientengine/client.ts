@@ -318,42 +318,6 @@ export class Client {
                 this.currentRootRender = renderGamePlayUi
                 this.currentContext = globalGameContext
                 this.rootComponent = this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
-                // this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, {
-                //     // TODO: Thinking about this more... if we ever want to "unload" ui
-                //     // in the midst of someone's gameplay, this initial state will be invalid
-                //     // we would have to pass around a ui state object through
-                //     // player world transition messages and what not
-                //     initialState: {
-                //         // Using preset client inventory for now.
-                //         // In future pull from database or pre-set data set.
-                //         // Todo: Load from playerJoinData ? - yes - yes
-        
-                //         // Misc
-                //         uiEvents: [],
-                //         notificationMessage: {
-                //             milliseconds: 0,
-                //             color: "",
-                //             clientId: "", // unnecessary
-                //             notification: ""
-                //         },
-                //         // Inventory
-                //         clientInventory: presetEmptyInventory,
-                //         inventoryViewToggle: true,
-                //         inventoryTop: 456,
-                //         // HUD
-                //         level: 0,
-                //         maxHP: 0,
-                //         currentHP: 0,
-                //         maxMP: 0,
-                //         currentMP: 0,
-                //         maxXP: 0,
-                //         currentXP: 0,
-                //         // Chat
-                //         chatInputBoxContents: " ",
-                //         chatFocused: false,
-                //         chatHistory: [],
-                //     }
-                // });
                 break;
         }
     }
