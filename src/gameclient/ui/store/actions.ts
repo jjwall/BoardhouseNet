@@ -1,10 +1,12 @@
-import { ChatMessageData } from "../../../packets/data/chatmessagedata";
+// DEPRECATED
 
-export type ChatHistoryState = {
-    chatHistory: ChatMessageData[]
-}
+// import { ChatMessageData } from "../../../packets/data/chatmessagedata";
 
-export type ChatHistoryAction = {
-    type: string
-    chatMessageData: ChatMessageData
-}
+// export type ChatHistoryState = {
+//     chatHistory: ChatMessageData[]
+// }
+
+// export type ChatHistoryAction = {
+//     type: string
+//     chatMessageData: ChatMessageData
+// }

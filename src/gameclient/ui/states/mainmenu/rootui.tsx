@@ -15,12 +15,12 @@ import { Scene } from "three";
 // Todo: Reorganize redux layer's architecture. Consider best redux practices
 // -> Current thought is to organize by feature. I.e:
 // store/
-//  L context.ts
+//  L context/
+//    L globalgamestate.ts
 //  L core/
 //    L actiontypes.ts
 //    L createstore.ts
-//    L context.ts goes here?
-//  L chat/
+//  L chat/ // scratch see features
 //    L reducers.ts
 //    L actions.ts
 //  L hud/

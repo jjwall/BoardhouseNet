@@ -2,7 +2,7 @@ import { ClientWorldEventTypes, ClientMessagePlayerWorldJoin, ClientMessageSpect
 import { WorldTransitionData } from "../../packets/data/worldtransitiondata";
 import { ChatMessageData } from "../../packets/data/chatmessagedata";
 import { MessageTypes } from "../../packets/messages/message";
-import { appendChatHistory2 } from "../ui/store/reducers";
+import { chatSlice } from "../ui/store/features/chatslice";
 import { Client } from "../clientengine/client";
 
 export function sendPlayerWorldJoinMessage(client: Client) {
@@ -28,7 +28,7 @@ export function sendPlayerWorldJoinMessage(client: Client) {
             chatMessage: "Welcome to the game.",
             chatFontColor: "#00DCDC"
         }
-        appendChatHistory2(client, systemWelcomeMessage);
+        chatSlice.appendHistory(client, systemWelcomeMessage);
     }, 5000)
 }
 

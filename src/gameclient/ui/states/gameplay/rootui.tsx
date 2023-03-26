@@ -3,10 +3,8 @@ import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
 import { chatInputBoxAllowedCharactersJoined } from "../utils/chatutils";
 import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
-import { APPEND_CHAT_HISTORY } from "../../store/actiontypes";
 import { ItemData } from "../../../../packets/data/itemdata";
 import { NotificationWidget } from "./notificationwidget";
-import { ChatHistoryAction } from "../../store/actions";
 import { renderWidget } from "../../core/renderwidget";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
@@ -164,10 +162,10 @@ export class GameplayRoot extends Component<Props, GlobalState> {
         //         chatHistory: this.state.chatHistory.concat(newChatMessage)
         //     })
         // }
-        const chatHistoryAction: ChatHistoryAction = {
-            type: APPEND_CHAT_HISTORY,
-            chatMessageData: newChatMessage
-        }
+        // const chatHistoryAction: ChatHistoryAction = {
+        //     type: APPEND_CHAT_HISTORY,
+        //     chatMessageData: newChatMessage
+        // }
         // chatHistoryStore.dispatch(chatHistoryAction)
         // console.log(chatHistoryStore.getState())
     }

@@ -2,9 +2,9 @@ import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Sce
 import { handlePointerDownEvent, handlePointerMoveEvent, handlePointerUpEvent } from "../events/pointerevents";
 import { sendPlayerChatMessage, sendPlayerInventoryEventMessage } from "../messaging/sendclientworldmessages";
 import { GlobalState, renderGamePlayUi, GameplayRoot } from "../ui/states/gameplay/rootui";
-import { presetEmptyInventory } from "../../database/inventory/preset_emptyinventory";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
+import { globalGameContext } from "../ui/store/context/globalgamecontext";
 import { UIStateTypes } from "../../packets/enums/gameserverstatetypes";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
@@ -13,7 +13,6 @@ import { UIEventTypes } from "../../packets/enums/uieventtypes";
 import { SceneTransition } from "../renders/scenetransitions";
 import { WorldTypes } from "../../packets/enums/worldtypes";
 import { createWidget, Widget } from "../ui/core/widget";
-import { initialGameContext } from "../ui/store/context";
 import { ClientRender } from "../renders/clientrender";
 import { animationSystem } from "../systems/animation";
 import { layoutWidget } from "../ui/core/layoutwidget";
@@ -317,8 +316,8 @@ export class Client {
                 break;
             case UIStateTypes.GAMEPLAY:
                 this.currentRootRender = renderGamePlayUi
-                this.currentContext = initialGameContext
-                this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
+                this.currentContext = globalGameContext
+                this.rootComponent = this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
                 // this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, {
                 //     // TODO: Thinking about this more... if we ever want to "unload" ui
                 //     // in the midst of someone's gameplay, this initial state will be invalid

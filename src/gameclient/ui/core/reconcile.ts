@@ -1,6 +1,6 @@
 import { Instance, JSXElement, WidgetInstance, ComponentInstance } from "./interfaces";
+import { globalGameContext } from "../store/context/globalgamecontext";
 import { updateWidgetProperties } from "./updatewidgetproperties";
-import { initialGameContext } from "../store/context";
 import { instantiate } from "./instantiate";
 import { Widget } from "./widget";
 import { Scene } from "three";
@@ -44,7 +44,7 @@ export function reconcile(parentWidget: Widget, instance: Instance, element: JSX
         componentInstance.component.props = { ...element.props };
 
         if (componentInstance.component.mapContextToProps)
-            Object.assign(componentInstance.component.props, componentInstance.component.mapContextToProps(initialGameContext))
+            Object.assign(componentInstance.component.props, componentInstance.component.mapContextToProps(globalGameContext))
 
         const childElement = componentInstance.component.render();
         const oldChildInstance = componentInstance.child;
