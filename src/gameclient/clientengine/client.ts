@@ -304,7 +304,7 @@ export class Client {
         console.log(data)
         // this.uiScene.remove(this.rootWidget); // good for swapping
         // this.uiScene.add(this.rootWidget);
-        this.currentRootRender(this.uiScene, this.rootWidget, { initialState: this.currentContext })
+        this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
     }
 
     public initializeUIState(uiState: UIStateTypes) {
@@ -318,7 +318,7 @@ export class Client {
             case UIStateTypes.GAMEPLAY:
                 this.currentRootRender = renderGamePlayUi
                 this.currentContext = initialGameContext
-                this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, { initialState: this.currentContext })
+                this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
                 // this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, {
                 //     // TODO: Thinking about this more... if we ever want to "unload" ui
                 //     // in the midst of someone's gameplay, this initial state will be invalid

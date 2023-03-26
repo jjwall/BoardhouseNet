@@ -38,6 +38,7 @@ export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props)
     return rootInstance.component as GameplayRoot;
 }
 
+// This will be refactored into store/context
 export interface GlobalState { // should be GameState
     // Misc
     uiEvents: UIEvents
@@ -61,7 +62,7 @@ export interface GlobalState { // should be GameState
 }
 
 interface Props {
-    initialState: GlobalState // call this gameState prop
+    globalGameState: GlobalState
 }
 
 export class GameplayRoot extends Component<Props, GlobalState> {
@@ -71,21 +72,21 @@ export class GameplayRoot extends Component<Props, GlobalState> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
-            uiEvents: props.initialState.uiEvents,
-            clientInventory: props.initialState.clientInventory,
-            inventoryViewToggle: props.initialState.inventoryViewToggle,
-            inventoryTop: props.initialState.inventoryTop,
-            notificationMessage: props.initialState.notificationMessage,
-            level: props.initialState.level,
-            maxHP: props.initialState.maxHP,
-            currentHP: props.initialState.currentHP,
-            maxMP: props.initialState.maxMP,
-            currentMP: props.initialState.currentMP,
-            maxXP: props.initialState.maxXP,
-            currentXP: props.initialState.currentXP,
-            chatInputBoxContents: props.initialState.chatInputBoxContents,
-            chatFocused: props.initialState.chatFocused,
-            chatHistory: props.initialState.chatHistory,
+            uiEvents: props.globalGameState.uiEvents,
+            clientInventory: props.globalGameState.clientInventory,
+            inventoryViewToggle: props.globalGameState.inventoryViewToggle,
+            inventoryTop: props.globalGameState.inventoryTop,
+            notificationMessage: props.globalGameState.notificationMessage,
+            level: props.globalGameState.level,
+            maxHP: props.globalGameState.maxHP,
+            currentHP: props.globalGameState.currentHP,
+            maxMP: props.globalGameState.maxMP,
+            currentMP: props.globalGameState.currentMP,
+            maxXP: props.globalGameState.maxXP,
+            currentXP: props.globalGameState.currentXP,
+            chatInputBoxContents: props.globalGameState.chatInputBoxContents,
+            chatFocused: props.globalGameState.chatFocused,
+            chatHistory: props.globalGameState.chatHistory,
         };
     }
 
