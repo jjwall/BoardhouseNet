@@ -1,4 +1,5 @@
 import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
+import { GlobalGameState } from "../../store/context/globalgamecontext";
 import { createJSXElement } from "../../core/createjsxelement";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
@@ -28,13 +29,13 @@ interface Props {
     color: string;
     opacity: string | number;
     inputBoxContents: string;
-    inputBoxFocused: boolean;
     lastCharacterIsTextCursor: boolean;
     maxChatHistoryLength: number;
     chatInputBackspace: () => void;
     setFocus: (toggle: boolean) => void;
     // Context fields.
     chatHistory?: ChatHistory;
+    chatFocused?: boolean;
 }
 
 interface State {
@@ -65,9 +66,10 @@ export class Chat extends Component<Props, State> {
         }
     }
 
-    mapContextToProps(context: any): any {
+    mapContextToProps(context: GlobalGameState): any {
         return { 
-            chatHistory: context.chatHistory
+            chatHistory: context.chatHistory,
+            chatFocused: context.chatFocused,
         }
     }
 
@@ -106,6 +108,7 @@ export class Chat extends Component<Props, State> {
         }, this.unfocusedViewMessageRenderTime)
     }
 
+    // TODO: Move to chat input box component.
     updateCharactersRemainingText = () => {
         if (!this.props.lastCharacterIsTextCursor) {
             const charactersTypedWithoutTextCursor = this.maxCharacters - this.props.inputBoxContents.length + 1
@@ -134,6 +137,7 @@ export class Chat extends Component<Props, State> {
         }
     }
 
+    // TODO: Move to chat input box component.
     charactersRemainingShake = () => {
         for (let i = 1; i < 10; i++) {
             let randomTopOffset = Math.floor(Math.random() * 2);
@@ -157,6 +161,7 @@ export class Chat extends Component<Props, State> {
         }
     }
 
+    // TODO: Move to chat input box component.
     setCharactersRemainingFontColor = () => {
         if (this.state.charactersRemaining >= 20) {
             this.setState({
@@ -174,12 +179,13 @@ export class Chat extends Component<Props, State> {
         }
     }
 
+    // TODO: Move to chat input box component.
     renderChatHistoryWithMetaData = () => {
         const currentTopOffset = 370
         const messageSpacing = 25
         
         return this.state.chatHistoryWithMetaData.map((chatMsgData, index) => {
-            if ((index < this.maxNumberOfMessagesToDisplayUnfocused && chatMsgData.displayInUnfocusedView) || (index < this.maxNumberOfMessagesToDisplayFocused && this.props.inputBoxFocused)) {
+            if ((index < this.maxNumberOfMessagesToDisplayUnfocused && chatMsgData.displayInUnfocusedView) || (index < this.maxNumberOfMessagesToDisplayFocused && this.props.chatFocused)) {
                 return (<Text
                     top={currentTopOffset - (index*messageSpacing)} 
                     left={5} 
@@ -191,8 +197,9 @@ export class Chat extends Component<Props, State> {
         })
     }
 
+    // TODO: Move to chat input box component.
     renderCharactersRemaining = () => {
-        if (this.props.inputBoxFocused)
+        if (this.props.chatFocused)
             return (<Text
                 fontColor={this.state.charactersRemainingFontColor}
                 fontSize="12"
@@ -211,7 +218,7 @@ export class Chat extends Component<Props, State> {
                     height="375"
                     width="650"
                     color={this.props.color}
-                    opacity={this.props.inputBoxFocused ? this.props.opacity : 0.001 }>
+                    opacity={this.props.chatFocused ? this.props.opacity : 0.001 }>
                 </panel>
 
                 <ChatInputBox
@@ -222,9 +229,9 @@ export class Chat extends Component<Props, State> {
                     fontTop="23"
                     width="650"
                     height="30"
-                    focused={this.props.inputBoxFocused}
+                    // chatFocused={this.props.chatFocused} // this technical should be passed in from parent
                     contents={this.props.inputBoxContents}
-                    setFocus={this.props.setFocus}
+                    // setFocus={this.props.setFocus}
                 />
 
                 {this.renderCharactersRemaining()}

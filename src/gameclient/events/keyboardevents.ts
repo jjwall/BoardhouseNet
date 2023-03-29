@@ -1,4 +1,5 @@
 import { sendDownKeyUpMessage, sendDownKeyDownMessage, sendLeftKeyDownMessage, sendLeftKeyUpMessage, sendRightKeyDownMessage, sendRightKeyUpMessage, sendUpKeyDownMessage, sendUpKeyUpMessage, sendSkillOneReleaseMessage, sendSkillTwoReleaseMessage, sendSkillOnePressMessage, sendSkillTwoPressMessage, sendDodgeKeyPressMessage } from "../messaging/sendclientinputmessages";
+import { chatInputBoxSlice } from "../ui/store/features/chatinputboxslice";
 import { Client } from "../clientengine/client";
 
 // TODO: Refactor to using e.code over deprecated e.keyCodes
@@ -76,10 +77,12 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
             if (!client.chatKeyPressed) {
                 client.chatKeyPressed = true;
 
-                if (!client.getUIState().chatFocused)
-                    client.rootComponent.setChatFocus(true)
+                if (!client.getUIGameContext().chatFocused)
+                    // client.rootComponent.setChatFocus(true)
+                    chatInputBoxSlice.setFocus(true)
                 else {
-                    client.rootComponent.setChatFocus(false)
+                    // client.rootComponent.setChatFocus(false)
+                    chatInputBoxSlice.setFocus(false)
                 }
             }
             break;

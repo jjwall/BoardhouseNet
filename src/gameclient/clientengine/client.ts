@@ -2,9 +2,10 @@ import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Sce
 import { handlePointerDownEvent, handlePointerMoveEvent, handlePointerUpEvent } from "../events/pointerevents";
 import { sendPlayerChatMessage, sendPlayerInventoryEventMessage } from "../messaging/sendclientworldmessages";
 import { GlobalState, renderGamePlayUi, GameplayRoot } from "../ui/states/gameplay/rootui";
+import { globalGameContext, GlobalGameState } from "../ui/store/context/globalgamecontext";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
-import { globalGameContext } from "../ui/store/context/globalgamecontext";
+import { chatInputBoxSlice } from "../ui/store/features/chatinputboxslice";
 import { UIStateTypes } from "../../packets/enums/gameserverstatetypes";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
@@ -139,7 +140,7 @@ export class Client {
     /// ^^^ old configs ^^^
     public currentContext: any = null
     public currentRootRender: any
-    public rootComponent: any
+    public rootComponent: GameplayRoot //any TODO: Change this to any when we start swapping out. This should have limited references
     public rootWidget: Widget;
 
     public screenWidth: number;
@@ -296,14 +297,15 @@ export class Client {
         this.uiScene.add(this.rootWidget);
     }
 
-    
-
     public setUIGameContext(data: any) {
         this.currentContext = data;
-        console.log(data)
         // this.uiScene.remove(this.rootWidget); // good for swapping
         // this.uiScene.add(this.rootWidget);
         this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
+    }
+
+    public getUIGameContext(): GlobalGameState {
+        return this.currentContext
     }
 
     public initializeUIState(uiState: UIStateTypes) {
@@ -322,6 +324,7 @@ export class Client {
         }
     }
 
+    /** @deprecated */
     public getUIState(): GlobalState {
         return this.rootComponent.getState()
     }
@@ -342,10 +345,12 @@ export class Client {
                 break;
             case EventTypes.KEY_DOWN:
                 if (this.role === ClientRoleTypes.PLAYER) {
-                    if (!this.rootComponent.getState().chatFocused)
+                    if (!this.getUIGameContext().chatFocused)
                         handleKeyDownEvent(this, e as KeyboardEvent);
                     else
-                        this.rootComponent.updateChatInputBoxContents((e as KeyboardEvent).key);
+                        chatInputBoxSlice.setKeystroke((e as KeyboardEvent).key)
+
+                        // this.rootComponent.updateChatInputBoxContents((e as KeyboardEvent).key);
                     
                     // Edge case for handling chat focus key.
                     if ((e as KeyboardEvent).code === 'Enter')

@@ -278,7 +278,7 @@ export class GameplayRoot extends Component<Props, GlobalState> {
                     opacity="0.5"
                     // chatHistory={this.props.initialState.chatHistory}
                     inputBoxContents={this.state.chatInputBoxContents}
-                    inputBoxFocused={this.state.chatFocused}
+                    // chatFocused={this.state.chatFocused}
                     lastCharacterIsTextCursor={this.lastCharIsTextCursor()}
                     maxChatHistoryLength={this.maxChatHistoryLength}
                     chatInputBackspace={this.backspaceChatInputBoxContents}

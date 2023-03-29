@@ -78,7 +78,7 @@ const config: ClientConfig = {
 // Remove url params.
 window.history.replaceState(null, null, window.location.pathname);
 
-const client = new Client(config);
+export const client = new Client(config);
 
 client.connection = new WebSocket("ws://" + 
                                            client.hostName + ":" +

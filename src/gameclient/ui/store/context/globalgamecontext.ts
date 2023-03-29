@@ -19,6 +19,7 @@ export interface GlobalGameState {
     maxXP: number;
     currentXP: number;
     // Chat
+    chatCurrentKeystroke: string[]; // single string value
     chatInputBoxContents: string;
     chatFocused: boolean;
     chatHistory: ChatHistory;
@@ -54,6 +55,7 @@ export const globalGameContext: GlobalGameState = {
     maxXP: 0,
     currentXP: 0,
     // Chat
+    chatCurrentKeystroke: [],
     chatInputBoxContents: " ",
     chatFocused: false,
     chatHistory: [],
