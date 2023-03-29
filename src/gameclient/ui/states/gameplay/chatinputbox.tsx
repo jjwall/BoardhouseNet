@@ -7,8 +7,12 @@ import { Text } from "../../basecomponents/text";
 import { Component } from "../../core/component";
 import { Scene } from "THREE";
 
-// TODO: Fix sending messages
-// TODO: Move over chat stuff here.
+// TODO: (Done) Fix sending messages
+// TODO: (Done) Move over chat (parent) stuff here.
+// TODO: (Done) Move over text remaining stuff
+// TODO: Pass focus from parent
+// TODO: Set up blur click events
+
 
 interface Props {
     // Component props.
@@ -30,13 +34,27 @@ interface Props {
     onChatSubmit?: (contents: string) => void;
 }
 
-export class ChatInputBox extends Component<Props, {}> {
+interface State {
+    charactersRemaining: number;
+    charactersRemainingFontColor: string;
+    charactersRemainingTop: number;
+    charactersRemainingLeft: number;
+}
+
+export class ChatInputBox extends Component<Props, State> {
     unfocusedFontColor = "#C0C0C0";
     unfocusedContents = "[Enter] to Chat";
     textCursorCharacter = "_";
     textCursorInterval: NodeJS.Timeout = undefined;
+    maxCharacters = 50;
     constructor(props: Props, scene: Scene) {
         super(props, scene);
+        this.state = {
+            charactersRemaining: this.maxCharacters,
+            charactersRemainingFontColor: "#5A5A5A",
+            charactersRemainingTop: 20,
+            charactersRemainingLeft: 625,
+        }
     }
 
     mapContextToProps(context: GlobalGameState): Partial<GlobalGameState> {
@@ -56,6 +74,10 @@ export class ChatInputBox extends Component<Props, {}> {
         if (prevProps?.chatCurrentKeystroke !== this.props?.chatCurrentKeystroke) {
             if (this.props.chatCurrentKeystroke.length > 0)
                 this.updateChatInputBoxContents(this.props.chatCurrentKeystroke[0])
+        }
+
+        if (prevProps?.chatInputBoxContents?.length !== this.props?.chatInputBoxContents?.length) {
+            this.updateCharactersRemainingText()
         }
     }
 
@@ -111,6 +133,87 @@ export class ChatInputBox extends Component<Props, {}> {
         }
     }
 
+    updateCharactersRemainingText = () => {
+        if (!this.lastCharIsTextCursor()) {
+            const charactersTypedWithoutTextCursor = this.maxCharacters - this.props.chatInputBoxContents.length + 1
+            if (this.state.charactersRemaining !== charactersTypedWithoutTextCursor) {
+                this.setState({
+                    charactersRemaining: charactersTypedWithoutTextCursor
+                })
+
+                this.setCharactersRemainingFontColor();
+            }
+        } else {
+            const charactersTypedWithTextCursor = this.maxCharacters - this.props.chatInputBoxContents.length + 2
+            if (this.state.charactersRemaining !== charactersTypedWithTextCursor) {
+                this.setState({
+                    charactersRemaining: charactersTypedWithTextCursor
+                })
+
+                this.setCharactersRemainingFontColor();
+            }
+        }
+
+        // If max char limit reached, backspace next typed char.
+        if (this.state.charactersRemaining < 0) {
+            this.backspaceChatInputBoxContents()
+            this.charactersRemainingShake()
+        }
+    }
+
+    charactersRemainingShake = () => {
+        for (let i = 1; i < 10; i++) {
+            let randomTopOffset = Math.floor(Math.random() * 2);
+            let randomLeftOffset = Math.floor(Math.random() * 2);
+            randomTopOffset *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
+            randomLeftOffset *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
+
+            // Set offset.
+            this.setState({
+                charactersRemainingTop: this.state.charactersRemainingTop += randomTopOffset,
+                charactersRemainingLeft: this.state.charactersRemainingLeft += randomLeftOffset,
+            })
+
+            // Reset to original position after a delay.
+            setTimeout(() => {
+                this.setState({
+                    charactersRemainingTop: this.state.charactersRemainingTop += randomTopOffset * -1,
+                    charactersRemainingLeft: this.state.charactersRemainingLeft += randomLeftOffset * -1,
+                })
+            }, 25 * i)
+        }
+    }
+
+    setCharactersRemainingFontColor = () => {
+        if (this.state.charactersRemaining >= 20) {
+            this.setState({
+                charactersRemainingFontColor: "#5A5A5A"
+            })
+        }
+        else if (this.state.charactersRemaining < 20 && this.state.charactersRemaining >= 10) {
+            this.setState({
+                charactersRemainingFontColor: "#8B8000"
+            })
+        } else if (this.state.charactersRemaining < 10) {
+            this.setState({
+                charactersRemainingFontColor: "#811331"
+            })
+        }
+    }
+
+    renderCharactersRemaining = () => {
+        if (this.props.chatFocused)
+            return (<Text
+                fontColor={this.state.charactersRemainingFontColor}
+                fontSize="12"
+                top={this.state.charactersRemainingTop}
+                left={this.state.charactersRemainingLeft}
+                contents={this.state.charactersRemaining.toString()}>
+            </Text>)
+        else
+            return (<label></label>)
+    }
+
     render(): JSXElement {
         return (
             <panel
@@ -131,6 +234,8 @@ export class ChatInputBox extends Component<Props, {}> {
                     font={this.props.font}
                     fontSize={this.props.fontSize}>
                 </Text>
+
+                {this.renderCharactersRemaining()}
             </panel>
         )
     }
