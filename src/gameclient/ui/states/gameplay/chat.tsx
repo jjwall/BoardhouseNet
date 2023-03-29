@@ -230,7 +230,7 @@ export class Chat extends Component<Props, State> {
                     width="650"
                     height="30"
                     // chatFocused={this.props.chatFocused} // this technical should be passed in from parent
-                    contents={this.props.inputBoxContents}
+                    // contents={this.props.inputBoxContents}
                     // setFocus={this.props.setFocus}
                 />
 
