@@ -74,7 +74,7 @@ export function sendPlayerInventoryEventMessage(client: Client) {
     client.connection.send(JSON.stringify(message));
 }
 
-export function sendPlayerChatMessage(client: Client) {
+export function sendPlayerChatMessage(client: Client, contents: string) {
     const message: ClientMessagePlayerChatMessage = {
         messageType: MessageTypes.CLIENT_WORLD_MESSAGE,
         eventType: ClientWorldEventTypes.PLAYER_CHAT_MESSAGE,
@@ -82,7 +82,7 @@ export function sendPlayerChatMessage(client: Client) {
             clientId: client.currentClientId,
             clientUsername: client.username,
             worldType: client.worldType,
-            chatMessage: client.getUIState().chatInputBoxContents.trim(),
+            chatMessage: contents.trim(),
             chatFontColor: "#FFFFFF"
         }
     }

@@ -23,11 +23,11 @@ interface Props {
     fontTop?: string | number;
     fontLeft?: string | number;
     font?: string;
-    // setUIEvents
     // Context props.
     chatFocused?: boolean;
     chatCurrentKeystroke?: string[];
     chatInputBoxContents?: string;
+    onChatSubmit?: (contents: string) => void;
 }
 
 export class ChatInputBox extends Component<Props, {}> {
@@ -44,6 +44,7 @@ export class ChatInputBox extends Component<Props, {}> {
             chatFocused: context.chatFocused,
             chatCurrentKeystroke: context.chatCurrentKeystroke,
             chatInputBoxContents: context.chatInputBoxContents,
+            onChatSubmit: context.onChatSubmit,
         }
     }
 
@@ -88,8 +89,13 @@ export class ChatInputBox extends Component<Props, {}> {
         } else if (enteredKey === 'Backspace') {
             this.lastCharIsTextCursor() ? this.backspaceChatInputBoxContents(2) : this.backspaceChatInputBoxContents()
         } else if (enteredKey === 'Enter') {
-            // send message
-            // this.props.setUIEvents([UIEventTypes.SEND_CHAT_MESSAGE])
+            if (this.lastCharIsTextCursor())
+                this.backspaceChatInputBoxContents();
+
+            if (this.props.chatInputBoxContents.length > 1) {
+                this.props.onChatSubmit(this.props.chatInputBoxContents)
+                chatInputBoxSlice.setContents(" ")
+            }
         }
     }
 

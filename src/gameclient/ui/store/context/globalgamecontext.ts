@@ -23,6 +23,7 @@ export interface GlobalGameState {
     chatInputBoxContents: string;
     chatFocused: boolean;
     chatHistory: ChatHistory;
+    onChatSubmit: (contents: string) => void
 }
 
 // TODO: Thinking about this more... if we ever want to "unload" ui
@@ -59,4 +60,5 @@ export const globalGameContext: GlobalGameState = {
     chatInputBoxContents: " ",
     chatFocused: false,
     chatHistory: [],
+    onChatSubmit: undefined,
 }

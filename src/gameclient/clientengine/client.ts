@@ -319,6 +319,7 @@ export class Client {
             case UIStateTypes.GAMEPLAY:
                 this.currentRootRender = renderGamePlayUi
                 this.currentContext = globalGameContext
+                this.currentContext.onChatSubmit = this.onChatSubmit // Note: Might be a better way to do this...
                 this.rootComponent = this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
                 break;
         }
@@ -493,6 +494,11 @@ export class Client {
         }
     }
 
+    public onChatSubmit = (contents: string) => {
+        sendPlayerChatMessage(this, contents);
+    }
+
+    /** @deprecated */
     private processUIEvents() {
         if (this.getUIState().uiEvents.length > 0) {
             this.getUIState().uiEvents.forEach(uiEvent => {
@@ -506,7 +512,7 @@ export class Client {
                             this.rootComponent.backspaceChatInputBoxContents();
 
                         if (this.rootComponent.getState().chatInputBoxContents.length > 1) {
-                            sendPlayerChatMessage(this);
+                            // sendPlayerChatMessage(this);
                             // Clear chat input box contents.
                             this.rootComponent.setState({
                                 chatInputBoxContents: " "
