@@ -28,11 +28,6 @@ interface Props {
     left?: string | number;
     color: string;
     opacity: string | number;
-    inputBoxContents: string;
-    lastCharacterIsTextCursor: boolean;
-    maxChatHistoryLength: number;
-    chatInputBackspace: () => void;
-    setFocus: (toggle: boolean) => void;
     // Context fields.
     chatHistory?: ChatHistory;
     chatFocused?: boolean;
@@ -47,6 +42,7 @@ interface ChatHistoryWithMetaData extends ChatMessageData {
 }
 
 export class Chat extends Component<Props, State> {
+    maxChatHistoryLength = 32
     unfocusedViewMessageRenderTime = 15000;
     maxNumberOfMessagesToDisplayFocused = 15;
     maxNumberOfMessagesToDisplayUnfocused = 7;
@@ -77,9 +73,9 @@ export class Chat extends Component<Props, State> {
             newMessage.displayInUnfocusedView = true
 
             // We want our internal chatHistory array to be reversed so prepend newMessage to chatHistory.
-            if (this.state.chatHistoryWithMetaData.length > this.props.maxChatHistoryLength) {
+            if (this.state.chatHistoryWithMetaData.length > this.maxChatHistoryLength) {
                 this.setState({
-                    chatHistoryWithMetaData: [newMessage].concat(this.state.chatHistoryWithMetaData.slice(0, this.props.maxChatHistoryLength - 1))
+                    chatHistoryWithMetaData: [newMessage].concat(this.state.chatHistoryWithMetaData.slice(0, this.maxChatHistoryLength - 1))
                 })
             } else {
                 this.setState({

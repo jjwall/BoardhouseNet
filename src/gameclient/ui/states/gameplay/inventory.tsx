@@ -4,6 +4,7 @@ import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
 import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { InventorySlot, DraggedItemData } from "./inventoryslot";
 import { createJSXElement } from "../../core/createjsxelement";
+import { chatSlice } from "../../store/features/chatslice";
 import { ClientInventory, UIEvents } from "./rootui";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
@@ -35,7 +36,6 @@ interface Props {
     setUIEvents: (newUIEvents: UIEvents) => void
     setClientInventory: (newClientInventory: ClientInventory) => void
     setNotificationMessage: (newNotificationMessage: NotificationData) => void
-    appendChatHistory: (newChatMessage: ChatMessageData) => void
 }
 
 /**
@@ -97,7 +97,7 @@ export class Inventory extends Component<Props, State> {
             chatFontColor: "#FF0000",
         }
 
-        this.props.appendChatHistory(systemNotificationMessage)
+        chatSlice.appendHistory(systemNotificationMessage)
     }
 
     /**

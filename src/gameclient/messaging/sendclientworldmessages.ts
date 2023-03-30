@@ -28,7 +28,7 @@ export function sendPlayerWorldJoinMessage(client: Client) {
             chatMessage: "Welcome to the game.",
             chatFontColor: "#00DCDC"
         }
-        chatSlice.appendHistory(client, systemWelcomeMessage);
+        chatSlice.appendHistory(systemWelcomeMessage);
     }, 5000)
 }
 

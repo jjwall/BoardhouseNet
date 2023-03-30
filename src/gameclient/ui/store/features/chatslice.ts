@@ -1,6 +1,6 @@
 import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
-import { Client } from "../../../../gameclient/clientengine/client";
 import { globalGameContext } from "./../context/globalgamecontext";
+import { client } from "../../../../gameclient/clientengine/main";
 import { APPEND_CHAT_HISTORY } from "./../core/actiontypes";
 import { createStore } from "./../core/createstore";
 
@@ -30,7 +30,22 @@ const chatHistoryReducer = (
 
 const chatHistoryStore = createStore(chatHistoryReducer)
 
-const appendHistory = (client: Client, newChatMessage: ChatMessageData) => {
+/* TODO: Check for max here?
+Or don't store whole chatHistory array, just nextMessage to be appended...
+In the past in our root we were doing:
+
+    if (this.state.chatHistory.length > this.maxChatHistoryLength){
+        this.setState({
+            chatHistory: this.state.chatHistory.slice(1, this.maxChatHistoryLength).concat(newChatMessage)
+        })
+    } else {
+        this.setState({
+            chatHistory: this.state.chatHistory.concat(newChatMessage)
+        })
+    }
+
+*/
+const appendHistory = (newChatMessage: ChatMessageData) => {
 	const chatHistoryAction: ChatHistoryAction = {
 		type: APPEND_CHAT_HISTORY,
 		chatMessageData: newChatMessage

@@ -1,6 +1,5 @@
 import { NotificationData } from "../../../../packets/data/notificationdata";
 import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
-import { chatInputBoxAllowedCharactersJoined } from "../utils/chatutils";
 import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
 import { ItemData } from "../../../../packets/data/itemdata";
@@ -64,9 +63,6 @@ interface Props {
 }
 
 export class GameplayRoot extends Component<Props, GlobalState> {
-    maxChatHistoryLength = 32
-    textCursorCharacter = "_";
-    lastCharIsTextCursor = () => this.state.chatInputBoxContents.substring(this.state.chatInputBoxContents.length - 1, this.state.chatInputBoxContents.length) === this.textCursorCharacter;
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
@@ -90,84 +86,6 @@ export class GameplayRoot extends Component<Props, GlobalState> {
 
     getState = () => {
         return this.state
-    }
-
-    backspaceChatInputBoxContents = (deleteIndex = 1) => {
-        // Edge case for keeping " " cushion workaround at index = 1 for chat input box.
-        if (deleteIndex === 2 && this.state.chatInputBoxContents === " " + this.textCursorCharacter)
-            deleteIndex = 1
-
-        if (this.state.chatInputBoxContents.length > 1) {
-            this.setState({
-                chatInputBoxContents: this.state.chatInputBoxContents.slice(0, this.state.chatInputBoxContents.length - deleteIndex)
-            })
-        } else if (this.state.chatInputBoxContents.length === 1 && this.state.chatInputBoxContents !== " ") {
-            this.setState({
-                chatInputBoxContents: " " // Workaround, empty string doesn't play well.
-            })
-        }
-    }
-
-    // TODO: Handle tab case?
-    updateChatInputBoxContents = (enteredKey: string) => {
-        const strRegEx = '[^,]*'+enteredKey+'[,$]*';
-        if (chatInputBoxAllowedCharactersJoined.match(strRegEx)) {
-            if (this.lastCharIsTextCursor()) {
-                this.backspaceChatInputBoxContents();
-            }
-            this.setState({
-                chatInputBoxContents: this.state.chatInputBoxContents += enteredKey
-            })
-        } else if (enteredKey === 'Backspace') {
-            this.lastCharIsTextCursor() ? this.backspaceChatInputBoxContents(2) : this.backspaceChatInputBoxContents()
-        } else if (enteredKey === 'Enter') {
-            this.setUIEvents([UIEventTypes.SEND_CHAT_MESSAGE])
-        }
-    }
-
-    setChatFocus = (toggle: boolean) => {
-        if (this.state.chatFocused && !toggle) {
-            this.setState({
-                chatFocused: false
-            })
-
-            clearInterval(textCursorInterval)
-
-            if (this.lastCharIsTextCursor()) {
-                this.backspaceChatInputBoxContents();
-            }
-        } else if (!this.state.chatFocused && toggle) {
-            this.setState({
-                chatFocused: true
-            })
-
-            textCursorInterval = setInterval(() => {
-                if (this.lastCharIsTextCursor()) {
-                    this.backspaceChatInputBoxContents();
-                } else {
-                    this.updateChatInputBoxContents(this.textCursorCharacter);
-                }
-            }, 500)
-        }
-    }
-
-    /** (Deprecated) This would need to be like a global store method */
-    appendChatHistory = (newChatMessage: ChatMessageData) => {        
-        // if (this.state.chatHistory.length > this.maxChatHistoryLength){
-        //     this.setState({
-        //         chatHistory: this.state.chatHistory.slice(1, this.maxChatHistoryLength).concat(newChatMessage)
-        //     })
-        // } else {
-        //     this.setState({
-        //         chatHistory: this.state.chatHistory.concat(newChatMessage)
-        //     })
-        // }
-        // const chatHistoryAction: ChatHistoryAction = {
-        //     type: APPEND_CHAT_HISTORY,
-        //     chatMessageData: newChatMessage
-        // }
-        // chatHistoryStore.dispatch(chatHistoryAction)
-        // console.log(chatHistoryStore.getState())
     }
 
     updateStats = (params: StatsStateParams) => {
@@ -276,13 +194,6 @@ export class GameplayRoot extends Component<Props, GlobalState> {
                     left="24"
                     color="#282828"
                     opacity="0.5"
-                    // chatHistory={this.props.initialState.chatHistory}
-                    inputBoxContents={this.state.chatInputBoxContents}
-                    // chatFocused={this.state.chatFocused}
-                    lastCharacterIsTextCursor={this.lastCharIsTextCursor()}
-                    maxChatHistoryLength={this.maxChatHistoryLength}
-                    chatInputBackspace={this.backspaceChatInputBoxContents}
-                    setFocus={this.setChatFocus}
                 />
                 <Inventory
                     top={this.state.inventoryTop}
@@ -294,7 +205,6 @@ export class GameplayRoot extends Component<Props, GlobalState> {
                     setUIEvents={this.setUIEvents}
                     setClientInventory={this.setClientInventory}
                     setNotificationMessage={this.setNotificationMessage}
-                    appendChatHistory={this.appendChatHistory}
                 />
             </panel>
         )

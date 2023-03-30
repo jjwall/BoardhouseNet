@@ -7,6 +7,12 @@ import { Scene } from "three";
 
 // Todo: Consider chatHistory max message count with new redux refactor.
 // Todo: Refactor all components that care about application state / context to use mapContextToProps
+// -> (Done) Chat
+// -> (Done) ChatInputBox
+// -> Inventory
+// -> InventorySlot
+// -> HUD
+// -> NotificationWidget
 // Todo: (Done) Rename "initialState" with (this) globalGameState OR globalGameContext.
 // Todo: Remove all setState methods that were purely used for application state
 // -> Keep component state methods using setState

@@ -114,13 +114,13 @@ export function notifyPlayer(message: NetMessagePlayerNotification, client: Clie
             chatFontColor: message.data.color,
         }
 
-        client.rootComponent.appendChatHistory(systemNotificationMessage)
+        chatSlice.appendHistory(systemNotificationMessage)
     }
 }
 
 export function appendPlayerChatMessage(message: NetMessagePlayerChatMessage, client: Client) {
     if (message.data.worldType === client.worldType) {
         // Perhaps we only append playerId if a default username is chosen.
-        chatSlice.appendHistory(client, message.data)
+        chatSlice.appendHistory(message.data)
     }
 }
