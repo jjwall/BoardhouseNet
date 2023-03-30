@@ -1,5 +1,6 @@
 import { sendDownKeyUpMessage, sendDownKeyDownMessage, sendLeftKeyDownMessage, sendLeftKeyUpMessage, sendRightKeyDownMessage, sendRightKeyUpMessage, sendUpKeyDownMessage, sendUpKeyUpMessage, sendSkillOneReleaseMessage, sendSkillTwoReleaseMessage, sendSkillOnePressMessage, sendSkillTwoPressMessage, sendDodgeKeyPressMessage } from "../messaging/sendclientinputmessages";
 import { chatInputBoxSlice } from "../ui/store/features/chatinputboxslice";
+import { inventorySlice } from "../ui/store/features/inventoryslice";
 import { Client } from "../clientengine/client";
 
 // TODO: Refactor to using e.code over deprecated e.keyCodes
@@ -66,10 +67,10 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
             if (!client.inventoryKeyPressed) {
                 client.inventoryKeyPressed = true;
 
-                if (client.getUIState().inventoryViewToggle)
-                    client.rootComponent.setInventoryViewToggle(false)
+                if (client.getUIGameContext().inventoryViewToggle)
+                    inventorySlice.toggleView(false)
                 else
-                    client.rootComponent.setInventoryViewToggle(true)
+                    inventorySlice.toggleView(true)
             }
             break;
 

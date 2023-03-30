@@ -304,6 +304,7 @@ export class Client {
         this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
     }
 
+    /** Note: This really shouldn't be used... */
     public getUIGameContext(): GlobalGameState {
         return this.currentContext
     }

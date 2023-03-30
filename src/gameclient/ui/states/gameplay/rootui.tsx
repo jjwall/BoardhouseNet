@@ -13,8 +13,6 @@ import { Scene } from "three";
 import { Chat } from "./chat";
 import { HUD } from "./hud";
 
-let textCursorInterval: NodeJS.Timeout = undefined
-
 export type UIEvents = Array<UIEventTypes>
 export type ClientInventory = Array<ItemData | undefined>
 export type ChatHistory = Array<ChatMessageData>
@@ -84,6 +82,7 @@ export class GameplayRoot extends Component<Props, GlobalState> {
         };
     }
 
+    /** @deprecated */
     getState = () => {
         return this.state
     }
@@ -196,11 +195,11 @@ export class GameplayRoot extends Component<Props, GlobalState> {
                     opacity="0.5"
                 />
                 <Inventory
-                    top={this.state.inventoryTop}
+                    top={456}//{this.state.inventoryTop}
                     left="975"
                     color="#282828"
                     opacity="0.5"
-                    draggingDisabled={!this.state.inventoryViewToggle}
+                    // below should be context
                     clientInventory={this.state.clientInventory}
                     setUIEvents={this.setUIEvents}
                     setClientInventory={this.setClientInventory}

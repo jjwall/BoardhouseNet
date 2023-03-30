@@ -17,9 +17,10 @@ import { Scene } from "three";
 // Todo: Remove all setState methods that were purely used for application state
 // -> Keep component state methods using setState
 // Todo: (Done)[See chatSlice] R&D on naming conventions for reducer consumers: i.e. our appendChatHistory2 method
-// Todo: R&D on if having multiple stores is okay with current design.
+// Todo: (Done)[Yes it's okay] R&D on if having multiple stores is okay with current design.
 // Todo: Swap out main menu / gameplay ui and test
 // Todo: General branch cleanup, commented out code, structure etc.
+// Todo: Gameplay root state cleanup. Don't need to copy props to state like we currently do.
 // Todo: (Done) Reorganize redux layer's architecture. Consider best redux practices
 // -> Current thought is to organize by feature. I.e:
 // store/

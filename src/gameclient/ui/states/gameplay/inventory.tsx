@@ -1,6 +1,7 @@
 import { InventorySlotMetaData, inventorySlotsMetaData, processItemSlotSwap } from "../utils/inventoryutils";
 import { NotificationData } from "../../../../packets/data/notificationdata";
 import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
+import { GlobalGameState } from "../../store/context/globalgamecontext";
 import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { InventorySlot, DraggedItemData } from "./inventoryslot";
 import { createJSXElement } from "../../core/createjsxelement";
@@ -27,15 +28,18 @@ import { Scene } from "three";
 // KNOWN BUG: Putting inventory away (pressing I while dragging an item) causes the item to get stuck wherever it was dragged to.
 
 interface Props {
+    // Component props:
     top: string | number
     left: string | number
     color: string
     opacity: string | number
-    draggingDisabled: boolean
+    // draggingDisabled: boolean
     clientInventory: ClientInventory
     setUIEvents: (newUIEvents: UIEvents) => void
     setClientInventory: (newClientInventory: ClientInventory) => void
     setNotificationMessage: (newNotificationMessage: NotificationData) => void
+    // Context props:
+    inventoryViewToggle?: boolean
 }
 
 /**
@@ -56,6 +60,25 @@ export class Inventory extends Component<Props, State> {
             top: this.props.top,
             slotsMetadata: inventorySlotsMetaData
         }
+    }
+
+    mapContextToProps(context: GlobalGameState): Partial<GlobalGameState> {
+        return {
+            inventoryViewToggle: context.inventoryViewToggle
+        }
+    }
+
+    componentDidUpdate(prevProps: Props, prevState: State): void {
+        if (prevProps?.inventoryViewToggle !== this.props?.inventoryViewToggle) {
+            if (this.props.inventoryViewToggle)
+                this.setState({
+                    top: 456
+                })
+            else
+                this.setState({
+                    top: 639
+                })
+            }
     }
 
     /**
@@ -182,7 +205,7 @@ export class Inventory extends Component<Props, State> {
 
     render(): JSXElement {
         return (
-            <panel left={this.props.left} top={this.props.top} height="237" width="281" color={this.props.color} opacity={this.props.opacity}>
+            <panel left={this.props.left} top={this.state.top} height="237" width="281" color={this.props.color} opacity={this.props.opacity}>
                 {this.state.slotsMetadata.map((slot, index) =>
                     <InventorySlot
                         top={slot.top}
@@ -194,7 +217,7 @@ export class Inventory extends Component<Props, State> {
                         inventorySlotIndex={index}
                         reconcileInventory={this.reconcileInventory}
                         item={this.props.clientInventory[index]}
-                        draggingDisabled={this.props.draggingDisabled}
+                        draggingDisabled={!this.props.inventoryViewToggle}
                     />
                 )}
             </panel>

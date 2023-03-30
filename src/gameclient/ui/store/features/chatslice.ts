@@ -4,19 +4,23 @@ import { client } from "../../../../gameclient/clientengine/main";
 import { APPEND_CHAT_HISTORY } from "./../core/actiontypes";
 import { createStore } from "./../core/createstore";
 
-type ChatHistoryState = {
-    chatHistory: ChatMessageData[]
+type ChatState = {
+    chatHistory?: ChatMessageData[]
 }
 
-type ChatHistoryAction = {
+type ChatAction = {
     type: string
-    chatMessageData: ChatMessageData
+    chatMessageData?: ChatMessageData
 }
 
-const chatHistoryReducer = (
-		state: ChatHistoryState = { chatHistory: [] }, 
-		action: ChatHistoryAction
-): ChatHistoryState => {
+const initialState: ChatState = {
+	chatHistory: [],
+}
+
+const chatReducer = (
+		state: ChatState = initialState, 
+		action: ChatAction
+): ChatState => {
 	switch (action.type) {
 		case APPEND_CHAT_HISTORY:
 			return {
@@ -28,7 +32,7 @@ const chatHistoryReducer = (
 	}
 };
 
-const chatHistoryStore = createStore(chatHistoryReducer)
+const chatHistoryStore = createStore(chatReducer)
 
 /* TODO: Check for max here?
 Or don't store whole chatHistory array, just nextMessage to be appended...
@@ -46,7 +50,7 @@ In the past in our root we were doing:
 
 */
 const appendHistory = (newChatMessage: ChatMessageData) => {
-	const chatHistoryAction: ChatHistoryAction = {
+	const chatHistoryAction: ChatAction = {
 		type: APPEND_CHAT_HISTORY,
 		chatMessageData: newChatMessage
 	}
