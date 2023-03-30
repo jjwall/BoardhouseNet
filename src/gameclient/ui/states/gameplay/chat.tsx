@@ -125,6 +125,7 @@ export class Chat extends Component<Props, State> {
                 </panel>
 
                 <ChatInputBox
+                    chatFocused={this.props.chatFocused}
                     boxColor={this.props.color}
                     opacity="0.75"
                     top="392"
@@ -132,7 +133,6 @@ export class Chat extends Component<Props, State> {
                     fontTop="23"
                     width="650"
                     height="30"
-                    // chatFocused={this.props.chatFocused} // this technical should be passed in from parent
                 />
 
                 {/* This needs to happen after all main chat UI has rendered, less we trigger unwanted re-renders. */}

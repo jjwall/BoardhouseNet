@@ -78,10 +78,8 @@ export let handleKeyDownEvent = (client: Client, e: KeyboardEvent) => {
                 client.chatKeyPressed = true;
 
                 if (!client.getUIGameContext().chatFocused)
-                    // client.rootComponent.setChatFocus(true)
                     chatInputBoxSlice.setFocus(true)
                 else {
-                    // client.rootComponent.setChatFocus(false)
                     chatInputBoxSlice.setFocus(false)
                 }
             }

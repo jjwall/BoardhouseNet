@@ -7,15 +7,9 @@ import { Text } from "../../basecomponents/text";
 import { Component } from "../../core/component";
 import { Scene } from "THREE";
 
-// TODO: (Done) Fix sending messages
-// TODO: (Done) Move over chat (parent) stuff here.
-// TODO: (Done) Move over text remaining stuff
-// TODO: Pass focus from parent
-// TODO: Set up blur click events
-
-
 interface Props {
     // Component props.
+    chatFocused: boolean;
     boxColor: string;
     width: string | number;
     height: string | number;
@@ -28,7 +22,6 @@ interface Props {
     fontLeft?: string | number;
     font?: string;
     // Context props.
-    chatFocused?: boolean;
     chatCurrentKeystroke?: string[];
     chatInputBoxContents?: string;
     onChatSubmit?: (contents: string) => void;
@@ -59,7 +52,6 @@ export class ChatInputBox extends Component<Props, State> {
 
     mapContextToProps(context: GlobalGameState): Partial<GlobalGameState> {
         return { 
-            chatFocused: context.chatFocused,
             chatCurrentKeystroke: context.chatCurrentKeystroke,
             chatInputBoxContents: context.chatInputBoxContents,
             onChatSubmit: context.onChatSubmit,
@@ -223,8 +215,8 @@ export class ChatInputBox extends Component<Props, State> {
                 width={this.props.width}
                 top={this.props.top}
                 left={this.props.left}
-                // onBlur={() => this.props.setFocus(false)}
-                // onFocus={() => this.props.setFocus(true)}
+                onBlur={() => chatInputBoxSlice.setFocus(false)}
+                onFocus={() => chatInputBoxSlice.setFocus(true)}
             >
                 <Text
                     fontColor={this.props.chatFocused ? this.props.fontColor : this.unfocusedFontColor}
