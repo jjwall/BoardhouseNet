@@ -1,8 +1,6 @@
-import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
-import { Client } from "../../../../gameclient/clientengine/client";
+import { CHAT_INPUT_BOX_KEYSTROKE, CHAT_INPUT_BOX_UPDATE_CONTENTS, CHAT_INPUT_BOX_FOCUS } from "./../core/actiontypes";
 import { globalGameContext } from "./../context/globalgamecontext";
 import { client } from "../../../../gameclient/clientengine/main";
-import { CHAT_INPUT_BOX_KEYSTROKE, CHAT_INPUT_BOX_UPDATE_CONTENTS, FOCUS_CHAT_INPUT_BOX } from "./../core/actiontypes";
 import { createStore } from "./../core/createstore";
 
 type ChatInputBoxState = {
@@ -29,7 +27,7 @@ const chatInputBoxReducer = (
 		action: ChatInputBoxAction
 ): ChatInputBoxState => {
 	switch (action.type) {
-		case FOCUS_CHAT_INPUT_BOX:
+		case CHAT_INPUT_BOX_FOCUS:
 			return {
 				focused: action.focused
 			};
@@ -76,24 +74,13 @@ const setContents = (contents: string) => {
 
 const setFocus = (focused: boolean) => {
     const chatInputBoxAction: ChatInputBoxAction = {
-		type: FOCUS_CHAT_INPUT_BOX,
+		type: CHAT_INPUT_BOX_FOCUS,
 		focused: focused,
 	}
     chatInputBoxStore.dispatch(chatInputBoxAction)
     globalGameContext.chatFocused = chatInputBoxStore.getState().focused
     client.setUIGameContext({ ...globalGameContext })
-    // client.setUIGameContext(client.currentContext) // old test
 }
-
-// const appendHistory = (client: Client, newChatMessage: ChatMessageData) => {
-// 	const chatHistoryAction: ChatInputBoxAction = {
-// 		type: APPEND_CHAT_HISTORY,
-// 		chatMessageData: newChatMessage
-// 	}
-// 	chatInputBoxStore.dispatch(chatHistoryAction)
-// 	globalGameContext.chatHistory = chatInputBoxStore.getState().chatHistory
-// 	client.setUIGameContext(client.currentContext)
-// }
 
 export const chatInputBoxSlice = {
     setFocus,

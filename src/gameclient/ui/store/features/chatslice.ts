@@ -1,7 +1,7 @@
 import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
 import { globalGameContext } from "./../context/globalgamecontext";
 import { client } from "../../../../gameclient/clientengine/main";
-import { APPEND_CHAT_HISTORY } from "./../core/actiontypes";
+import { CHAT_APPEND_HISTORY } from "./../core/actiontypes";
 import { createStore } from "./../core/createstore";
 
 type ChatState = {
@@ -22,7 +22,7 @@ const chatReducer = (
 		action: ChatAction
 ): ChatState => {
 	switch (action.type) {
-		case APPEND_CHAT_HISTORY:
+		case CHAT_APPEND_HISTORY:
 			return {
 				chatHistory: state.chatHistory.concat(action.chatMessageData)
 			};
@@ -51,7 +51,7 @@ In the past in our root we were doing:
 */
 const appendHistory = (newChatMessage: ChatMessageData) => {
 	const chatHistoryAction: ChatAction = {
-		type: APPEND_CHAT_HISTORY,
+		type: CHAT_APPEND_HISTORY,
 		chatMessageData: newChatMessage
 	}
 	chatHistoryStore.dispatch(chatHistoryAction)
