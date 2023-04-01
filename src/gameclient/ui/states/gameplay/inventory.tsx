@@ -11,6 +11,10 @@ import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
 import { Scene } from "three";
 
+// Refactor TODO:
+// TODO: Add slice changes for newInventory
+// -> This should be it honestly.
+
 // IDEA: Do I need to refactor and set equip slots to indexes 0-3? :thinking:
 // -> Decided against this since I'm finding first available null value when picking up an item. Don't want that to automatically equip. 
 // TODO: Create item "drops" akin to MapleStory where you have to be near it and then press "V" or something and it 
