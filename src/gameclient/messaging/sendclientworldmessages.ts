@@ -3,6 +3,7 @@ import { WorldTransitionData } from "../../packets/data/worldtransitiondata";
 import { ChatMessageData } from "../../packets/data/chatmessagedata";
 import { MessageTypes } from "../../packets/messages/message";
 import { chatSlice } from "../ui/store/features/chatslice";
+import { ItemData } from "../../packets/data/itemdata";
 import { Client } from "../clientengine/client";
 
 export function sendPlayerWorldJoinMessage(client: Client) {
@@ -59,14 +60,14 @@ export function sendSpectatorWorldJoinMessage(client: Client) {
     client.connection.send(JSON.stringify(message));
 }
 
-export function sendPlayerInventoryEventMessage(client: Client) {
+export function sendPlayerInventoryEventMessage(client: Client, updatedInventory: ItemData[]) {
     const message: ClientMessagePlayerInventoryEvent = {
         messageType: MessageTypes.CLIENT_WORLD_MESSAGE,
         eventType: ClientWorldEventTypes.PLAYER_INVENTORY_EVENT,
         data: {
             clientId: client.currentClientId,
             worldType: client.worldType,
-            inventory: client.getUIState().clientInventory
+            inventory: updatedInventory,
         }
     }
 

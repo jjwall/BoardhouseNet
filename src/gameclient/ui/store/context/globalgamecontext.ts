@@ -1,10 +1,10 @@
 import { presetEmptyInventory } from "../../../../database/inventory/preset_emptyinventory";
-import { ChatHistory, ClientInventory, UIEvents } from "../../states/gameplay/rootui"; // prob define these elsewhere
 import { NotificationData } from "../../../../packets/data/notificationdata";
+import { ChatHistory, ClientInventory } from "../../states/gameplay/rootui"; // prob define these elsewhere
+import { ItemData } from "../../../../packets/data/itemdata";
 
 export interface GlobalGameState {
     // Misc
-    uiEvents: UIEvents
     notificationMessage: NotificationData
     // Inventory
     clientInventory: ClientInventory
@@ -24,6 +24,7 @@ export interface GlobalGameState {
     chatFocused: boolean;
     chatHistory: ChatHistory;
     onChatSubmit: (contents: string) => void
+    onItemEquip: (newInventory: ItemData[]) => void
 }
 
 // TODO: Thinking about this more... if we ever want to "unload" ui
@@ -36,7 +37,6 @@ export const globalGameContext: GlobalGameState = {
     // Todo: Load from playerJoinData ? - yes - yes
 
     // Misc
-    uiEvents: [],
     notificationMessage: {
         milliseconds: 0,
         color: "",
@@ -61,4 +61,5 @@ export const globalGameContext: GlobalGameState = {
     chatFocused: false,
     chatHistory: [],
     onChatSubmit: undefined,
+    onItemEquip: undefined,
 }

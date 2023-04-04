@@ -2,6 +2,7 @@ import { NetMessageLoadWorld, NetMessagePlayerChatMessage, NetMessagePlayerItemP
 import { renderSceneFadeIn, renderSceneFadeOut } from "../renders/scenetransitions";
 import { sendPlayerWorldTransitionMessage } from "./sendclientworldmessages";
 import { ChatMessageData } from "../../packets/data/chatmessagedata";
+import { inventorySlice } from "../ui/store/features/inventoryslice";
 import { renderWorldMap } from "../clientengine/renderworldmap";
 import { chatSlice } from "../ui/store/features/chatslice";
 import { Client } from "../clientengine/client";
@@ -74,19 +75,19 @@ export function transitionPlayerClientToNewWorld(message: NetMessagePlayerWorldT
 
 export function playerPickupItem(message: NetMessagePlayerItemPickup, client: Client) {
     if (client.currentClientId === message.data.pickupClientId) {
-        const clientState = client.getUIState()
-        const firstAvailableSlotIndex = clientState.clientInventory.findIndex(element => !element);
+        const gameContext = client.getUIGameContext()
+        const firstAvailableSlotIndex = gameContext.clientInventory.findIndex(element => !element);
 
         // Note: this check shouldn't be necessary since this logic should be run on server.
         // Message data could include things like, slot index to render item at.
         if (firstAvailableSlotIndex > -1) {
             // There's available space for item, place in first available slot.
-            clientState.clientInventory[firstAvailableSlotIndex] = {
+            gameContext.clientInventory[firstAvailableSlotIndex] = {
                 spriteUrl: message.data.item.spriteUrl,
                 onDragSpriteUrl: message.data.item.onDragSpriteUrl
             }
 
-            client.rootComponent.setClientInventory(clientState.clientInventory)
+            inventorySlice.update(gameContext.clientInventory)
         } else {
             console.log("Render: not enough space")
         }
@@ -95,7 +96,7 @@ export function playerPickupItem(message: NetMessagePlayerItemPickup, client: Cl
 
 export function playerReconcileInventory(message: NetMessagePlayerReconcileInventory, client: Client) {
     if (client.currentClientId === message.data.clientId) {
-        client.rootComponent.setClientInventory(message.data.inventory);
+        inventorySlice.update(message.data.inventory);
     }
 }
 

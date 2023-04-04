@@ -6,7 +6,7 @@ import { Component } from "../../core/component";
 import { Text } from "../../basecomponents/text";
 import { ChatInputBox } from "./chatinputbox";
 import { ChatHistory } from "./rootui";
-import { Scene } from "THREE";
+import { Scene } from "three";
 
 // Future feature expansions (as of 03/19/2023):
 // TODO: Chat bubble over player's heads.
