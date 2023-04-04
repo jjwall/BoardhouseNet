@@ -10,6 +10,7 @@ import { UIStateTypes } from "../../packets/enums/gameserverstatetypes";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
+import { inventorySlice } from "../ui/store/features/inventoryslice";
 import { UIEventTypes } from "../../packets/enums/uieventtypes";
 import { SceneTransition } from "../renders/scenetransitions";
 import { WorldTypes } from "../../packets/enums/worldtypes";
@@ -321,6 +322,8 @@ export class Client {
                 this.currentRootRender = renderGamePlayUi
                 this.currentContext = globalGameContext
                 this.currentContext.onChatSubmit = this.onChatSubmit // Note: Might be a better way to do this...
+                // Initialize inventory with default values.
+                // inventorySlice.update(globalGameContext.clientInventory)
                 this.rootComponent = this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
                 break;
         }

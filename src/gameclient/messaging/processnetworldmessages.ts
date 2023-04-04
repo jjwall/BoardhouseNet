@@ -2,6 +2,7 @@ import { NetMessageLoadWorld, NetMessagePlayerChatMessage, NetMessagePlayerItemP
 import { renderSceneFadeIn, renderSceneFadeOut } from "../renders/scenetransitions";
 import { sendPlayerWorldTransitionMessage } from "./sendclientworldmessages";
 import { ChatMessageData } from "../../packets/data/chatmessagedata";
+import { inventorySlice } from "../ui/store/features/inventoryslice";
 import { renderWorldMap } from "../clientengine/renderworldmap";
 import { chatSlice } from "../ui/store/features/chatslice";
 import { Client } from "../clientengine/client";
@@ -86,7 +87,8 @@ export function playerPickupItem(message: NetMessagePlayerItemPickup, client: Cl
                 onDragSpriteUrl: message.data.item.onDragSpriteUrl
             }
 
-            client.rootComponent.setClientInventory(clientState.clientInventory)
+            inventorySlice.update(clientState.clientInventory)
+            // client.rootComponent.setClientInventory(clientState.clientInventory)
         } else {
             console.log("Render: not enough space")
         }
@@ -95,7 +97,8 @@ export function playerPickupItem(message: NetMessagePlayerItemPickup, client: Cl
 
 export function playerReconcileInventory(message: NetMessagePlayerReconcileInventory, client: Client) {
     if (client.currentClientId === message.data.clientId) {
-        client.rootComponent.setClientInventory(message.data.inventory);
+        inventorySlice.update(message.data.inventory);
+        // client.rootComponent.setClientInventory(message.data.inventory);
     }
 }
 

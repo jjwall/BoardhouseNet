@@ -3,6 +3,7 @@ import { NotificationData } from "../../../../packets/data/notificationdata";
 import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
 import { GlobalGameState } from "../../store/context/globalgamecontext";
 import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
+import { inventorySlice } from "../../store/features/inventoryslice";
 import { InventorySlot, DraggedItemData } from "./inventoryslot";
 import { createJSXElement } from "../../core/createjsxelement";
 import { chatSlice } from "../../store/features/chatslice";
@@ -14,6 +15,7 @@ import { Scene } from "three";
 // Refactor TODO:
 // TODO: Add slice changes for newInventory
 // -> This should be it honestly.
+// TODO: fix bug with inventory context - maybe not rendering in correct order?
 
 // IDEA: Do I need to refactor and set equip slots to indexes 0-3? :thinking:
 // -> Decided against this since I'm finding first available null value when picking up an item. Don't want that to automatically equip. 
@@ -38,11 +40,11 @@ interface Props {
     color: string
     opacity: string | number
     // draggingDisabled: boolean
-    clientInventory: ClientInventory
     setUIEvents: (newUIEvents: UIEvents) => void
-    setClientInventory: (newClientInventory: ClientInventory) => void
+    // setClientInventory: (newClientInventory: ClientInventory) => void
     setNotificationMessage: (newNotificationMessage: NotificationData) => void
     // Context props:
+    clientInventory?: ClientInventory
     inventoryViewToggle?: boolean
 }
 
@@ -68,11 +70,15 @@ export class Inventory extends Component<Props, State> {
 
     mapContextToProps(context: GlobalGameState): Partial<GlobalGameState> {
         return {
+            clientInventory: context.clientInventory,
             inventoryViewToggle: context.inventoryViewToggle
         }
     }
 
     componentDidUpdate(prevProps: Props, prevState: State): void {
+        if (prevProps?.clientInventory !== this.props?.clientInventory) {
+            console.log(this.props.clientInventory)
+        }
         if (prevProps?.inventoryViewToggle !== this.props?.inventoryViewToggle) {
             if (this.props.inventoryViewToggle)
                 this.setState({
@@ -204,8 +210,17 @@ export class Inventory extends Component<Props, State> {
         }
 
         // Update client inventory state with slot changes.
-        this.props.setClientInventory(this.props.clientInventory)
+        // this.props.setClientInventory(this.props.clientInventory)
+        inventorySlice.update(this.props.clientInventory)
     }
+
+    getItemAtIndex = (inventoryIndex: number) => {
+        // TODO: Check inventory max here.
+        if (this.props?.clientInventory?.length > 0)
+            return this.props.clientInventory[inventoryIndex]
+        else
+            return null
+    } 
 
     render(): JSXElement {
         return (
@@ -220,7 +235,7 @@ export class Inventory extends Component<Props, State> {
                         opacity={this.props.opacity}
                         inventorySlotIndex={index}
                         reconcileInventory={this.reconcileInventory}
-                        item={this.props.clientInventory[index]}
+                        item={this.getItemAtIndex(index)}
                         draggingDisabled={!this.props.inventoryViewToggle}
                     />
                 )}

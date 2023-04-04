@@ -1,15 +1,18 @@
 import { globalGameContext } from "./../context/globalgamecontext";
 import { client } from "../../../../gameclient/clientengine/main";
-import { INVENTORY_TOGGLE_VIEW } from "./../core/actiontypes";
+import { INVENTORY_TOGGLE_VIEW, INVENTORY_UPDATE } from "./../core/actiontypes";
+import { ItemData } from "../../../../packets/data/itemdata";
 import { createStore } from "./../core/createstore";
 
 type InventoryState = {
     toggleView?: boolean
+	inventory?: ItemData[]
 }
 
 type InventoryAction = {
     type: string
     toggleView?: boolean
+	inventory?: ItemData[]
 }
 
 const initialState: InventoryState = {
@@ -26,6 +29,10 @@ const inventoryReducer = (
 				toggleView: action.toggleView
 			};
 
+		case INVENTORY_UPDATE:
+			return {
+				inventory: action.inventory
+			}
 		default:
 			return state;
 	}
@@ -43,6 +50,17 @@ const toggleView = (toggle: boolean) => {
 	client.setUIGameContext({ ...globalGameContext })
 }
 
+const update = (newInventory: ItemData[]) => {
+	const inventoryAction: InventoryAction = {
+		type: INVENTORY_UPDATE,
+		inventory: newInventory
+	}
+	inventoryStore.dispatch(inventoryAction)
+	globalGameContext.clientInventory = inventoryStore.getState().inventory
+	client.setUIGameContext({ ...globalGameContext })
+}
+
 export const inventorySlice = {
     toggleView,
+	update,
 }

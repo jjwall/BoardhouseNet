@@ -200,9 +200,9 @@ export class GameplayRoot extends Component<Props, GlobalState> {
                     color="#282828"
                     opacity="0.5"
                     // below should be context
-                    clientInventory={this.state.clientInventory}
+                    // clientInventory={this.state.clientInventory}
                     setUIEvents={this.setUIEvents}
-                    setClientInventory={this.setClientInventory}
+                    // setClientInventory={this.setClientInventory}
                     setNotificationMessage={this.setNotificationMessage}
                 />
             </panel>
