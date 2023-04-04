@@ -120,33 +120,14 @@ export class GameplayRoot extends Component<Props, GlobalState> {
             })
     }
 
-    // Todo: Shouldn't have "clientId" field from the data interface.
-    // Todo: Don't like setTimeout implementation - use a message box eventually.
-    setNotificationMessage = (newNotificationMessage: NotificationData) => {
-        this.setState({
-            notificationMessage: newNotificationMessage
-        })
-
-        setTimeout(() => {
-            this.setState({
-                notificationMessage: {
-                    milliseconds: 0,
-                    color: "",
-                    clientId: "", // unnecessary
-                    notification: " " // needs space to clear
-                }
-            })
-        }, newNotificationMessage.milliseconds)
-    }
-
     // setHUDState -> split into multiple parts?
 
     render(): JSXElement {
         return(
             <panel>
                 <NotificationWidget
-                    message={this.state.notificationMessage.notification}
-                    color={this.state.notificationMessage.color}
+                    top="150"
+                    left="440"
                 />
                 <HUD
                     level={this.state.level}
@@ -168,7 +149,6 @@ export class GameplayRoot extends Component<Props, GlobalState> {
                     left="975"
                     color="#282828"
                     opacity="0.5"
-                    setNotificationMessage={this.setNotificationMessage}
                 />
             </panel>
         )

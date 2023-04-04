@@ -1,6 +1,7 @@
 import { InventorySlotMetaData, inventorySlotsMetaData, processItemSlotSwap } from "../utils/inventoryutils";
 import { NotificationData } from "../../../../packets/data/notificationdata";
 import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
+import { notificationSlice } from "../../store/features/notificationslice";
 import { GlobalGameState } from "../../store/context/globalgamecontext";
 import { inventorySlice } from "../../store/features/inventoryslice";
 import { InventorySlot, DraggedItemData } from "./inventoryslot";
@@ -15,9 +16,10 @@ import { Scene } from "three";
 // Refactor TODO:
 // TODO: Find better solution to lazy evaluate clientInventory before sending to server.
 // -> Currently using setTimeout to kick onItemEquip down the event line.
-// TODO: Add slice changes for newInventory
+// -> Idea: Check clientInventory props changes in componentDidUpdate THEN call onItemEquip.
+// TODO: (Done) Add slice changes for newInventory
 // -> This should be it honestly.
-// TODO: fix bug with inventory context - maybe not rendering in correct order?
+// TODO: (Done) fix bug with inventory context - maybe not rendering in correct order?
 
 // IDEA: Do I need to refactor and set equip slots to indexes 0-3? :thinking:
 // -> Decided against this since I'm finding first available null value when picking up an item. Don't want that to automatically equip. 
@@ -41,7 +43,6 @@ interface Props {
     left: string | number
     color: string
     opacity: string | number
-    setNotificationMessage: (newNotificationMessage: NotificationData) => void
     // Context props:
     clientInventory?: ClientInventory
     inventoryViewToggle?: boolean
@@ -77,9 +78,6 @@ export class Inventory extends Component<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props, prevState: State): void {
-        if (prevProps?.clientInventory !== this.props?.clientInventory) {
-            console.log(this.props.clientInventory)
-        }
         if (prevProps?.inventoryViewToggle !== this.props?.inventoryViewToggle) {
             if (this.props.inventoryViewToggle)
                 this.setState({
@@ -124,7 +122,7 @@ export class Inventory extends Component<Props, State> {
             color: "#FF0000",
             milliseconds: 3500
         }
-        this.props.setNotificationMessage(notificationData)
+        notificationSlice.update(notificationData)
 
         // Set chat history system message.
         const systemNotificationMessage: ChatMessageData = {

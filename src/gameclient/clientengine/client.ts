@@ -361,7 +361,7 @@ export class Client {
                 }
                 break;
             case EventTypes.KEY_UP:
-                if (this.role === ClientRoleTypes.PLAYER && !this.rootComponent.getState().chatFocused)
+                if (this.role === ClientRoleTypes.PLAYER && !this.getUIGameContext().chatFocused)
                     handleKeyUpEvent(this, e as KeyboardEvent);
 
                 // Edge case for handling chat focus key.

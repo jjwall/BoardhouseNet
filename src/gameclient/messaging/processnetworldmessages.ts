@@ -1,6 +1,7 @@
 import { NetMessageLoadWorld, NetMessagePlayerChatMessage, NetMessagePlayerItemPickup, NetMessagePlayerNotification, NetMessagePlayerReconcileInventory, NetMessagePlayerWorldTransition } from "../../packets/messages/networldmessage";
 import { renderSceneFadeIn, renderSceneFadeOut } from "../renders/scenetransitions";
 import { sendPlayerWorldTransitionMessage } from "./sendclientworldmessages";
+import { notificationSlice } from "../ui/store/features/notificationslice";
 import { ChatMessageData } from "../../packets/data/chatmessagedata";
 import { inventorySlice } from "../ui/store/features/inventoryslice";
 import { renderWorldMap } from "../clientengine/renderworldmap";
@@ -104,7 +105,7 @@ export function playerReconcileInventory(message: NetMessagePlayerReconcileInven
 export function notifyPlayer(message: NetMessagePlayerNotification, client: Client) {
     if (client.currentClientId === message.data.clientId) {
         // Set notification widget message.
-        client.rootComponent.setNotificationMessage(message.data)
+        notificationSlice.update(message.data)
 
         // Set chat history system message.
         const systemNotificationMessage: ChatMessageData = {

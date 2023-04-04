@@ -9,8 +9,7 @@ import { Scene } from "three";
 // Todo: Refactor all components that care about application state / context to use mapContextToProps
 // -> (Done) Chat
 // -> (Done) ChatInputBox
-// -> Inventory
-// -> InventorySlot
+// -> (Done) Inventory
 // -> HUD
 // -> NotificationWidget
 // Todo: (Done) Rename "initialState" with (this) globalGameState OR globalGameContext.
