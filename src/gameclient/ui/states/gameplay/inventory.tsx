@@ -2,17 +2,19 @@ import { InventorySlotMetaData, inventorySlotsMetaData, processItemSlotSwap } fr
 import { NotificationData } from "../../../../packets/data/notificationdata";
 import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
 import { GlobalGameState } from "../../store/context/globalgamecontext";
-import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { inventorySlice } from "../../store/features/inventoryslice";
 import { InventorySlot, DraggedItemData } from "./inventoryslot";
 import { createJSXElement } from "../../core/createjsxelement";
+import { ItemData } from "../../../../packets/data/itemdata";
 import { chatSlice } from "../../store/features/chatslice";
-import { ClientInventory, UIEvents } from "./rootui";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
+import { ClientInventory } from "./rootui";
 import { Scene } from "three";
 
 // Refactor TODO:
+// TODO: Find better solution to lazy evaluate clientInventory before sending to server.
+// -> Currently using setTimeout to kick onItemEquip down the event line.
 // TODO: Add slice changes for newInventory
 // -> This should be it honestly.
 // TODO: fix bug with inventory context - maybe not rendering in correct order?
@@ -39,13 +41,11 @@ interface Props {
     left: string | number
     color: string
     opacity: string | number
-    // draggingDisabled: boolean
-    setUIEvents: (newUIEvents: UIEvents) => void
-    // setClientInventory: (newClientInventory: ClientInventory) => void
     setNotificationMessage: (newNotificationMessage: NotificationData) => void
     // Context props:
     clientInventory?: ClientInventory
     inventoryViewToggle?: boolean
+    onItemEquip?: (newInventory?: ItemData[]) => void
 }
 
 /**
@@ -71,7 +71,8 @@ export class Inventory extends Component<Props, State> {
     mapContextToProps(context: GlobalGameState): Partial<GlobalGameState> {
         return {
             clientInventory: context.clientInventory,
-            inventoryViewToggle: context.inventoryViewToggle
+            inventoryViewToggle: context.inventoryViewToggle,
+            onItemEquip: context.onItemEquip,
         }
     }
 
@@ -107,7 +108,10 @@ export class Inventory extends Component<Props, State> {
         let validEquip = true
 
         if (validEquip) {
-            this.props.setUIEvents([UIEventTypes.ITEM_EQUIP_EVENT])
+            // Buffer item equip so clientInventory can evaluate before sending to server.
+            setTimeout(() => {
+                this.props.onItemEquip(this.props.clientInventory)
+            }, 1)
         }
         return validEquip
     }
@@ -179,7 +183,7 @@ export class Inventory extends Component<Props, State> {
                     dragEquippedItemToOccupiedInventorySlot()
                 } else {
                     // A regular unequip event occurs.
-                    this.props.setUIEvents([UIEventTypes.ITEM_EQUIP_EVENT])
+                    this.props.onItemEquip(this.props.clientInventory)
                 }
             }
         }
@@ -210,7 +214,6 @@ export class Inventory extends Component<Props, State> {
         }
 
         // Update client inventory state with slot changes.
-        // this.props.setClientInventory(this.props.clientInventory)
         inventorySlice.update(this.props.clientInventory)
     }
 

@@ -10,14 +10,13 @@ import { UIStateTypes } from "../../packets/enums/gameserverstatetypes";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
-import { inventorySlice } from "../ui/store/features/inventoryslice";
-import { UIEventTypes } from "../../packets/enums/uieventtypes";
 import { SceneTransition } from "../renders/scenetransitions";
 import { WorldTypes } from "../../packets/enums/worldtypes";
 import { createWidget, Widget } from "../ui/core/widget";
 import { ClientRender } from "../renders/clientrender";
 import { animationSystem } from "../systems/animation";
 import { layoutWidget } from "../ui/core/layoutwidget";
+import { ItemData } from "../../packets/data/itemdata";
 import { EventTypes } from "../events/eventtypes";
 import { NetIdToEntityMap } from "./interfaces";
 import { centerCameraOnPlayer } from "./camera";
@@ -322,6 +321,7 @@ export class Client {
                 this.currentRootRender = renderGamePlayUi
                 this.currentContext = globalGameContext
                 this.currentContext.onChatSubmit = this.onChatSubmit // Note: Might be a better way to do this...
+                this.currentContext.onItemEquip = this.onItemEquip
                 // Initialize inventory with default values.
                 // inventorySlice.update(globalGameContext.clientInventory)
                 this.rootComponent = this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
@@ -502,33 +502,8 @@ export class Client {
         sendPlayerChatMessage(this, contents);
     }
 
-    /** @deprecated */
-    private processUIEvents() {
-        if (this.getUIState().uiEvents.length > 0) {
-            this.getUIState().uiEvents.forEach(uiEvent => {
-                switch(uiEvent) {
-                    case UIEventTypes.ITEM_EQUIP_EVENT:
-                        sendPlayerInventoryEventMessage(this);
-                        break;
-                    // case UIEventTypes.SEND_CHAT_MESSAGE:
-                    //     // Remove text cursor for pending chat message if it's there.
-                    //     if (this.rootComponent.lastCharIsTextCursor())
-                    //         this.rootComponent.backspaceChatInputBoxContents();
-
-                    //     if (this.rootComponent.getState().chatInputBoxContents.length > 1) {
-                    //         // sendPlayerChatMessage(this);
-                    //         // Clear chat input box contents.
-                    //         this.rootComponent.setState({
-                    //             chatInputBoxContents: " "
-                    //         })
-                    //     }
-                    //     break;
-                }
-            })
-
-            // UI events have been processed, reset the state.
-            this.rootComponent.setUIEvents([])
-        }
+    public onItemEquip = (newInventory: ItemData[]) => {
+        sendPlayerInventoryEventMessage(this, newInventory);
     }
 
     public render() : void {
@@ -544,10 +519,7 @@ export class Client {
         this.renderer.clearDepth();
         this.renderer.render(this.uiScene, this.uiCamera);
 
-        // Render UI updates. // -> set up later
+        // Render UI updates.
         layoutWidget(this.rootWidget, this);
-
-        // Process UI Events.
-        this.processUIEvents()
     }
 }

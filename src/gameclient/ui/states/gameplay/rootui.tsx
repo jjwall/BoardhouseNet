@@ -1,6 +1,5 @@
 import { NotificationData } from "../../../../packets/data/notificationdata";
 import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
-import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
 import { createJSXElement } from "../../core/createjsxelement";
 import { ItemData } from "../../../../packets/data/itemdata";
 import { NotificationWidget } from "./notificationwidget";
@@ -13,7 +12,6 @@ import { Scene } from "three";
 import { Chat } from "./chat";
 import { HUD } from "./hud";
 
-export type UIEvents = Array<UIEventTypes>
 export type ClientInventory = Array<ItemData | undefined>
 export type ChatHistory = Array<ChatMessageData>
 
@@ -36,7 +34,6 @@ export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props)
 // This will be refactored into store/context
 export interface GlobalState { // should be GameState
     // Misc
-    uiEvents: UIEvents
     notificationMessage: NotificationData
     // Inventory
     clientInventory: ClientInventory
@@ -64,7 +61,6 @@ export class GameplayRoot extends Component<Props, GlobalState> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
-            uiEvents: props.globalGameState.uiEvents,
             clientInventory: props.globalGameState.clientInventory,
             inventoryViewToggle: props.globalGameState.inventoryViewToggle,
             inventoryTop: props.globalGameState.inventoryTop,
@@ -124,33 +120,6 @@ export class GameplayRoot extends Component<Props, GlobalState> {
             })
     }
 
-    setUIEvents = (newUIEvents: UIEvents) => {
-        this.setState({
-            uiEvents: newUIEvents
-        })
-    }
-
-    setClientInventory = (newClientInventory: ClientInventory) => {
-        this.setState({
-            clientInventory: newClientInventory
-        })
-    }
-
-    setInventoryViewToggle = (toggle: boolean) => {
-        this.setState({
-            inventoryViewToggle: toggle
-        })
-
-        if (this.state.inventoryViewToggle)
-            this.setState({
-                inventoryTop: 456
-            })
-        else
-            this.setState({
-                inventoryTop: 639
-            })
-    }
-
     // Todo: Shouldn't have "clientId" field from the data interface.
     // Todo: Don't like setTimeout implementation - use a message box eventually.
     setNotificationMessage = (newNotificationMessage: NotificationData) => {
@@ -199,10 +168,6 @@ export class GameplayRoot extends Component<Props, GlobalState> {
                     left="975"
                     color="#282828"
                     opacity="0.5"
-                    // below should be context
-                    // clientInventory={this.state.clientInventory}
-                    setUIEvents={this.setUIEvents}
-                    // setClientInventory={this.setClientInventory}
                     setNotificationMessage={this.setNotificationMessage}
                 />
             </panel>
