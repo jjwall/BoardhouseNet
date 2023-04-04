@@ -322,8 +322,6 @@ export class Client {
                 this.currentContext = globalGameContext
                 this.currentContext.onChatSubmit = this.onChatSubmit // Note: Might be a better way to do this...
                 this.currentContext.onItemEquip = this.onItemEquip
-                // Initialize inventory with default values.
-                // inventorySlice.update(globalGameContext.clientInventory)
                 this.rootComponent = this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
                 break;
         }
