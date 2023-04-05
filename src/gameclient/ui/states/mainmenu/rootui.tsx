@@ -6,14 +6,14 @@ import { Widget } from "../../core/widget";
 import { Scene } from "three";
 
 // Todo: Consider chatHistory max message count with new redux refactor.
-// Todo: Refactor all components that care about application state / context to use mapContextToProps
+// Todo: (Done) Refactor all components that care about application state / context to use mapContextToProps
 // -> (Done) Chat
 // -> (Done) ChatInputBox
 // -> (Done) Inventory
-// -> HUD - next
+// -> (Done) HUD
 // -> (Done) NotificationWidget
 // Todo: (Done) Rename "initialState" with (this) globalGameState OR globalGameContext.
-// Todo: Remove all setState methods that were purely used for application state
+// Todo: (Done) Remove all setState methods that were purely used for application state
 // -> Keep component state methods using setState
 // Todo: (Done)[See chatSlice] R&D on naming conventions for reducer consumers: i.e. our appendChatHistory2 method
 // Todo: (Done)[Yes it's okay] R&D on if having multiple stores is okay with current design.

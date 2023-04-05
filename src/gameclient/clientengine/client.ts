@@ -1,10 +1,10 @@
 import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh } from "three";
 import { handlePointerDownEvent, handlePointerMoveEvent, handlePointerUpEvent } from "../events/pointerevents";
 import { sendPlayerChatMessage, sendPlayerInventoryEventMessage } from "../messaging/sendclientworldmessages";
-import { GlobalState, renderGamePlayUi, GameplayRoot } from "../ui/states/gameplay/rootui";
 import { globalGameContext, GlobalGameState } from "../ui/store/context/globalgamecontext";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
+import { renderGamePlayUi, GameplayRoot } from "../ui/states/gameplay/rootui";
 import { chatInputBoxSlice } from "../ui/store/features/chatinputboxslice";
 import { UIStateTypes } from "../../packets/enums/gameserverstatetypes";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
