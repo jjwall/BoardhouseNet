@@ -5,7 +5,6 @@ import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
 import { Text } from "../../basecomponents/text";
 import { ChatInputBox } from "./chatinputbox";
-import { ChatHistory } from "./rootui";
 import { Scene } from "three";
 
 // Future feature expansions (as of 03/19/2023):
@@ -29,7 +28,7 @@ interface Props {
     color: string;
     opacity: string | number;
     // Context fields.
-    chatHistory?: ChatHistory;
+    chatHistory?: ChatMessageData[];
     chatFocused?: boolean;
 }
 

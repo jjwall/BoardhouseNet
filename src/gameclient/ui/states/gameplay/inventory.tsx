@@ -10,7 +10,6 @@ import { ItemData } from "../../../../packets/data/itemdata";
 import { chatSlice } from "../../store/features/chatslice";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
-import { ClientInventory } from "./rootui";
 import { Scene } from "three";
 
 // Refactor TODO:
@@ -44,7 +43,7 @@ interface Props {
     color: string
     opacity: string | number
     // Context props:
-    clientInventory?: ClientInventory
+    clientInventory?: ItemData[]
     inventoryViewToggle?: boolean
     onItemEquip?: (newInventory?: ItemData[]) => void
 }
@@ -106,7 +105,8 @@ export class Inventory extends Component<Props, State> {
         let validEquip = true
 
         if (validEquip) {
-            // Buffer item equip so clientInventory can evaluate before sending to server.
+            // Current implementation: Buffer item equip so clientInventory can evaluate before sending to server.
+            // TODO: Evaluate clientInventory via awaiting a promise so we don't have to rely on a browser's setTimeout implementation.
             setTimeout(() => {
                 this.props.onItemEquip(this.props.clientInventory)
             }, 1)

@@ -1,13 +1,13 @@
 import { presetEmptyInventory } from "../../../../database/inventory/preset_emptyinventory";
 import { NotificationData } from "../../../../packets/data/notificationdata";
-import { ChatHistory, ClientInventory } from "../../states/gameplay/rootui"; // prob define these elsewhere
+import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
 import { ItemData } from "../../../../packets/data/itemdata";
 
 export interface GlobalGameState {
     // Misc
     notificationMessage: NotificationData
     // Inventory
-    clientInventory: ClientInventory
+    clientInventory: ItemData[]
     inventoryViewToggle: boolean
     inventoryTop: string | number
     // HUD
@@ -22,7 +22,7 @@ export interface GlobalGameState {
     chatCurrentKeystroke: string[]; // single string value
     chatInputBoxContents: string;
     chatFocused: boolean;
-    chatHistory: ChatHistory;
+    chatHistory: ChatMessageData[];
     onChatSubmit: (contents: string) => void
     onItemEquip: (newInventory: ItemData[]) => void
 }

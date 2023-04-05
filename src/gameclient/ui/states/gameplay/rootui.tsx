@@ -1,7 +1,5 @@
-import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
 import { GlobalGameState } from "../../store/context/globalgamecontext";
 import { createJSXElement } from "../../core/createjsxelement";
-import { ItemData } from "../../../../packets/data/itemdata";
 import { NotificationWidget } from "./notificationwidget";
 import { renderWidget } from "../../core/renderwidget";
 import { JSXElement } from "../../core/interfaces";
@@ -11,9 +9,6 @@ import { Inventory } from "./inventory";
 import { Scene } from "three";
 import { Chat } from "./chat";
 import { HUD } from "./hud";
-
-export type ClientInventory = Array<ItemData | undefined>
-export type ChatHistory = Array<ChatMessageData>
 
 export function renderGamePlayUi(scene: Scene, rootWidget: Widget, props: Props): GameplayRoot {
     let rootInstance = renderWidget(<GameplayRoot { ...props }/>, rootWidget, scene);
