@@ -2,6 +2,7 @@ import { NetMessageCreateEntities, NetMessageDestroyEntities, NetMessageUpdateEn
 import { changeSequence, setAnimation } from "../components/animation";
 import { setNameplateComponent } from "../components/nameplate";
 import { ClientEntity } from "../clientengine/cliententity";
+import { HUDSlice } from "../ui/store/features/hudslice";
 import { setHitboxGraphic } from "../components/hitbox";
 import { setPosition } from "../components/position";
 import { setSprite } from "../components/sprite";
@@ -54,15 +55,13 @@ export function createEntities(message: NetMessageCreateEntities, client: Client
                         client.currentPlayerEntity.pos.loc.z++;
 
                         // Set UI values.
-                        client.rootComponent.updateStats({
-                            level: entData.stats.level, 
-                            currentHp: entData.stats.currentHp,
-                            maxHp: entData.stats.maxHp,
-                            currentMp: entData.stats.currentMp,
-                            maxMp: entData.stats.maxMp,
-                            currentXp: entData.stats.currentXp,
-                            maxXp: entData.stats.maxXp,
-                        });
+                        HUDSlice.updateLevel(entData.stats.level)
+                        HUDSlice.updateCurrentHP(entData.stats.currentHp)
+                        HUDSlice.updateMaxHP(entData.stats.maxHp)
+                        HUDSlice.updateCurrentMP(entData.stats.currentMp)
+                        HUDSlice.updateMaxMP(entData.stats.maxMp)
+                        HUDSlice.updateCurrentXP(entData.stats.currentXp)
+                        HUDSlice.updateMaxXP(entData.stats.maxXp)
                     }
                 }
 
@@ -96,26 +95,14 @@ export function updateEntities(message: NetMessageUpdateEntities, client: Client
                 // Update current player's HUD Nameplate UI.
                 if (clientEnt.player) {
                     if (client.currentClientId === entData.player.id) {
-                        if (client.rootComponent.getState().level !== entData.stats.level)
-                            client.rootComponent.updateStats({ level: entData.stats.level })
-
-                        if (client.rootComponent.getState().currentHP !== entData.stats.currentHp)
-                            client.rootComponent.updateStats({ currentHp: entData.stats.currentHp })
-                        
-                        if (client.rootComponent.getState().maxHP !== entData.stats.maxHp)
-                            client.rootComponent.updateStats({ maxHp: entData.stats.maxHp })
-
-                        if (client.rootComponent.getState().currentMP !== entData.stats.currentMp)
-                            client.rootComponent.updateStats({ currentMp: entData.stats.currentMp })
-                        
-                        if (client.rootComponent.getState().maxMP !== entData.stats.maxMp)
-                            client.rootComponent.updateStats({ maxMp: entData.stats.maxMp })
-
-                        if (client.rootComponent.getState().currentXP !== entData.stats.currentXp)
-                            client.rootComponent.updateStats({ currentXp: entData.stats.currentXp })
-                        
-                        if (client.rootComponent.getState().maxXP !== entData.stats.maxXp)
-                            client.rootComponent.updateStats({ maxXp: entData.stats.maxXp })
+                        // Do we want to check context stats to entData stats before updating?
+                        HUDSlice.updateLevel(entData.stats.level)
+                        HUDSlice.updateCurrentHP(entData.stats.currentHp)
+                        HUDSlice.updateMaxHP(entData.stats.maxHp)
+                        HUDSlice.updateCurrentMP(entData.stats.currentMp)
+                        HUDSlice.updateMaxMP(entData.stats.maxMp)
+                        HUDSlice.updateCurrentXP(entData.stats.currentXp)
+                        HUDSlice.updateMaxXP(entData.stats.maxXp)
                     }
                 }
 

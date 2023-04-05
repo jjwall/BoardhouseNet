@@ -1,26 +1,56 @@
+import { GlobalGameState } from "../../store/context/globalgamecontext";
 import { createJSXElement } from "../../core/createjsxelement";
 import { ProgressBar } from "../../basecomponents/progressbar";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
 import { Text } from "../../basecomponents/text";
-import { Scene } from "THREE";
+import { Scene } from "three";
 
 interface Props {
-    top?: string | number;
-    left?: string | number;
-    level: number;
-    maxHP: number;
-    currentHP: number;
-    maxMP: number;
-    currentMP: number;
-    maxXP: number;
-    currentXP: number;
+    // Component props.
+    top: string | number;
+    left: string | number;
+    // Context props.
+    level?: number;
+    maxHP?: number;
+    currentHP?: number;
+    maxMP?: number;
+    currentMP?: number;
+    maxXP?: number;
+    currentXP?: number;
 }
 
 export class HUD extends Component<Props, {}> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
     }
+
+    mapContextToProps(context: GlobalGameState): Partial<GlobalGameState> {
+        return {
+            level: context.level,
+            currentHP: context.currentHP,
+            maxHP: context.maxHP,
+            currentMP: context.currentMP,
+            maxMP: context.maxMP,
+            currentXP: context.currentXP,
+            maxXP: context.maxXP,
+        }
+    }
+
+    // componentDidUpdate(prevProps: Props): void {
+        // if (prevProps.currentHP !== this.props.currentHP) {
+        //     console.log(this.props.currentHP)
+        // }
+        // if (prevProps.maxHP !== this.props.maxHP) {
+        //     console.log(this.props.maxHP)
+        // }
+        // if (prevProps.currentMP !== this.props.currentMP) {
+        //     console.log(this.props.currentMP)
+        // }
+        // if (prevProps.maxXP !== this.props.maxXP) {
+        //     console.log(this.props.maxXP)
+        // }
+    // }
 
     render(): JSXElement {
         return (
@@ -43,7 +73,7 @@ export class HUD extends Component<Props, {}> {
                     fontColor="#c9424a"
                 />
                 <Text
-                    contents={this.props.currentHP.toString()}
+                    contents={this.props?.currentHP ? this.props?.currentHP.toString() : "0"}
                     top={29}
                     left={132}
                     fontSize={11}
@@ -66,7 +96,7 @@ export class HUD extends Component<Props, {}> {
                     fontColor="#1baac1"
                 />
                 <Text
-                    contents={this.props.currentMP.toString()}
+                    contents={this.props?.currentMP ? this.props?.currentMP.toString() : "0"}
                     top={49}
                     left={132}
                     fontSize={11}

@@ -327,11 +327,6 @@ export class Client {
         }
     }
 
-    /** @deprecated */
-    public getUIState(): GlobalState {
-        return this.rootComponent.getState()
-    }
-
     public handleEvent(e: Event) : void {
         switch(e.type) {
             case EventTypes.POINTER_DOWN:

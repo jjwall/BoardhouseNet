@@ -10,8 +10,8 @@ import { Scene } from "three";
 // -> (Done) Chat
 // -> (Done) ChatInputBox
 // -> (Done) Inventory
-// -> HUD
-// -> NotificationWidget
+// -> HUD - next
+// -> (Done) NotificationWidget
 // Todo: (Done) Rename "initialState" with (this) globalGameState OR globalGameContext.
 // Todo: Remove all setState methods that were purely used for application state
 // -> Keep component state methods using setState

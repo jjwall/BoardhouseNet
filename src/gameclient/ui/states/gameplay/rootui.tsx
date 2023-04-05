@@ -83,42 +83,42 @@ export class GameplayRoot extends Component<Props, GlobalState> {
         return this.state
     }
 
-    updateStats = (params: StatsStateParams) => {
-        if (params.level)
-            this.setState({
-                level: params.level
-            })
+    // updateStats = (params: StatsStateParams) => {
+    //     if (params.level)
+    //         this.setState({
+    //             level: params.level
+    //         })
 
-        if (params.currentHp)
-            this.setState({
-                currentHP: params.currentHp
-            })
+    //     if (params.currentHp)
+    //         this.setState({
+    //             currentHP: params.currentHp
+    //         })
 
-        if (params.maxHp)
-            this.setState({
-                maxHP: params.maxHp
-            })
+    //     if (params.maxHp)
+    //         this.setState({
+    //             maxHP: params.maxHp
+    //         })
         
-        if (params.currentMp)
-            this.setState({
-                currentMP: params.currentMp
-            })
+    //     if (params.currentMp)
+    //         this.setState({
+    //             currentMP: params.currentMp
+    //         })
 
-        if (params.maxMp)
-            this.setState({
-                maxMP: params.maxMp
-            })
+    //     if (params.maxMp)
+    //         this.setState({
+    //             maxMP: params.maxMp
+    //         })
 
-        if (params.currentXp)
-            this.setState({
-                currentXP: params.currentXp
-            })
+    //     if (params.currentXp)
+    //         this.setState({
+    //             currentXP: params.currentXp
+    //         })
 
-        if (params.maxXp)
-            this.setState({
-                maxXP: params.maxXp
-            })
-    }
+    //     if (params.maxXp)
+    //         this.setState({
+    //             maxXP: params.maxXp
+    //         })
+    // }
 
     // setHUDState -> split into multiple parts?
 
@@ -130,13 +130,8 @@ export class GameplayRoot extends Component<Props, GlobalState> {
                     left="440"
                 />
                 <HUD
-                    level={this.state.level}
-                    maxHP={this.state.maxHP}
-                    currentHP={this.state.currentHP}
-                    maxMP={this.state.maxMP}
-                    currentMP={this.state.currentMP}
-                    maxXP={this.state.maxXP}
-                    currentXP={this.state.currentXP}
+                    top="0"
+                    left="0"
                 />
                 <Chat
                     top="271"
@@ -145,7 +140,7 @@ export class GameplayRoot extends Component<Props, GlobalState> {
                     opacity="0.5"
                 />
                 <Inventory
-                    top={456}//{this.state.inventoryTop}
+                    top="456"
                     left="975"
                     color="#282828"
                     opacity="0.5"
