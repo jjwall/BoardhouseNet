@@ -129,6 +129,7 @@ function layoutLabelAttributes(widget: Widget, client: Client) {
     const fontUrl = widget.attr("font") || "./assets/fonts/helvetiker_regular_typeface.json";
     const font_size = Number(widget.attr("font_size") || 16);
     const contents = widget.attr("contents") || "";
+    const opacity = Number(widget.attr("opacity")) || 1
 
     if (!widget.text) {
         const geom = client.getTextGeometry(contents, fontUrl, font_size);
@@ -136,6 +137,7 @@ function layoutLabelAttributes(widget: Widget, client: Client) {
         const material = new MeshBasicMaterial({
             color: color,
             transparent: true,
+            opacity: opacity,
         });
 
         const text = new Mesh(geom, material);
@@ -151,5 +153,6 @@ function layoutLabelAttributes(widget: Widget, client: Client) {
         }
 
         (widget.text.material as MeshBasicMaterial).color.setStyle(color);
+        (widget.text.material as MeshBasicMaterial).opacity = opacity
     }
 }

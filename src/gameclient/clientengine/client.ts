@@ -10,6 +10,7 @@ import { UIStateTypes } from "../../packets/enums/gameserverstatetypes";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
+import { renderMainMenuUi } from "../ui/states/mainmenu/rootui";
 import { SceneTransition } from "../renders/scenetransitions";
 import { WorldTypes } from "../../packets/enums/worldtypes";
 import { createWidget, Widget } from "../ui/core/widget";
@@ -140,7 +141,7 @@ export class Client {
     /// ^^^ old configs ^^^
     public currentContext: any = null
     public currentRootRender: any
-    public rootComponent: GameplayRoot //any TODO: Change this to any when we start swapping out. This should have limited references
+    public rootComponent: any
     public rootWidget: Widget;
 
     public screenWidth: number;
@@ -314,8 +315,9 @@ export class Client {
 
         switch (uiState) {
             case UIStateTypes.MAIN_MENU:
-                console.log("main menu")
-                // this.rootComponent = renderMainMenuUi(this.uiScene, this.rootWidget, {});
+                this.currentRootRender = renderMainMenuUi
+                this.currentContext = globalGameContext
+                this.rootComponent = this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
                 break;
             case UIStateTypes.GAMEPLAY:
                 this.currentRootRender = renderGamePlayUi
