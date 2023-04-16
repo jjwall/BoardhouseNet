@@ -298,7 +298,7 @@ export class Client {
         this.uiScene.add(this.rootWidget);
 
         // Initialize UI State.
-        this.initializeUIState(UIStateTypes.TITLE_SCREEN);
+        this.setUIState(UIStateTypes.TITLE_SCREEN);
     }
 
     public setUIGameContext(data: any) {
@@ -313,7 +313,7 @@ export class Client {
         return this.currentContext
     }
 
-    private initializeUIState(uiState: UIStateTypes) {
+    private setUIState(uiState: UIStateTypes) {
         this.uiState = uiState
 
         switch (uiState) {
@@ -348,7 +348,7 @@ export class Client {
 
     private handleTitleScreenEvent(e: Event) {
         if (e.type === EventTypes.KEY_DOWN) {
-            this.initializeUIState(UIStateTypes.GAMEPLAY) // UIStateTypes.MAINMENU
+            this.setUIState(UIStateTypes.GAMEPLAY) // UIStateTypes.MAINMENU
         }
     }
 
