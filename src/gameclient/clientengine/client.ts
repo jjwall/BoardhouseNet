@@ -337,9 +337,15 @@ export class Client {
             // case UIStateTypes.MAIN_MENU:
             //     this.handleMainMenuEvent(e);
             //     break;
-            // case UIStateTypes.TITLE_SCREEN:
-            //     this.handleTitleScreenEvent(e);
-            //     break;
+            case UIStateTypes.TITLE_SCREEN:
+                this.handleTitleScreenEvent(e);
+                break;
+        }
+    }
+
+    private handleTitleScreenEvent(e: Event) {
+        if (e.type === EventTypes.KEY_DOWN) {
+            this.initializeUIState(UIStateTypes.GAMEPLAY) // UIStateTypes.MAINMENU
         }
     }
 
