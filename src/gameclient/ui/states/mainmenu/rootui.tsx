@@ -1,10 +1,10 @@
 import { createJSXElement } from "../../core/createjsxelement";
 import { renderWidget } from "../../core/renderwidget";
 import { JSXElement } from "../../core/interfaces";
+import { Text } from "../../basecomponents/text";
 import { Component } from "../../core/component";
 import { Widget } from "../../core/widget";
 import { Scene } from "three";
-import { Text } from "../../basecomponents/text";
 
 // Todo: Swap out main menu / gameplay ui and test
 // *** MainMenu design ***
@@ -70,7 +70,7 @@ export class MainMenuRoot extends Component<Props, State> {
                 />
                 <Text
                     top="425"
-                    left="523"
+                    left="525"
                     fontSize="24"
                     contents="-Press Any Key-"
                     opacity={this.state.pressKeyOpacity}
