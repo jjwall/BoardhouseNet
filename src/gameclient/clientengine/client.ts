@@ -276,7 +276,7 @@ export class Client {
     /**
      * Initialize Game Client
      */
-    public initializeClient() {
+    public initializeClient(uiState: UIStateTypes) {
         console.log("initializing client");
 
         // Set up game scene.
@@ -296,6 +296,9 @@ export class Client {
         // Set up ui widget and instance.
         this.rootWidget = createWidget("root");
         this.uiScene.add(this.rootWidget);
+
+        // Initialize UI State.
+        this.initializeUIState(UIStateTypes.TITLE_SCREEN);
     }
 
     public setUIGameContext(data: any) {
@@ -310,7 +313,7 @@ export class Client {
         return this.currentContext
     }
 
-    public initializeUIState(uiState: UIStateTypes) {
+    private initializeUIState(uiState: UIStateTypes) {
         this.uiState = uiState
 
         switch (uiState) {

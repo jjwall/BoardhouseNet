@@ -96,12 +96,7 @@ client.connection.onopen = function() {
 }
 
 client.loadAssets().then(() => {
-    client.initializeClient();
-
-    // This might should go into initializeClient
-    client.initializeUIState(UIStateTypes.TITLE_SCREEN);
-    // client.initializeUIState(UIStateTypes.GAMEPLAY);
-    
+    client.initializeClient(UIStateTypes.TITLE_SCREEN);
     main(<HTMLElement>document.getElementById("canvasContainer"));
 });
 
