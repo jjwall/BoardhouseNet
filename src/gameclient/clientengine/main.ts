@@ -99,8 +99,8 @@ client.loadAssets().then(() => {
     client.initializeClient();
 
     // This might should go into initializeClient
-    client.initializeUIState(UIStateTypes.TITLE_SCREEN);
-    // client.initializeUIState(UIStateTypes.GAMEPLAY);
+    // client.initializeUIState(UIStateTypes.TITLE_SCREEN);
+    client.initializeUIState(UIStateTypes.GAMEPLAY);
     
     main(<HTMLElement>document.getElementById("canvasContainer"));
 });

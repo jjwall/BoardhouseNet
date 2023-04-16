@@ -330,6 +330,20 @@ export class Client {
     }
 
     public handleEvent(e: Event) : void {
+        switch (this.uiState) {
+            case UIStateTypes.GAMEPLAY:
+                this.handleGamePlayEvent(e);
+                break;
+            // case UIStateTypes.MAIN_MENU:
+            //     this.handleMainMenuEvent(e);
+            //     break;
+            // case UIStateTypes.TITLE_SCREEN:
+            //     this.handleTitleScreenEvent(e);
+            //     break;
+        }
+    }
+
+    private handleGamePlayEvent(e: Event) {
         switch(e.type) {
             case EventTypes.POINTER_DOWN:
                 if (this.role === ClientRoleTypes.PLAYER) // spectator will have POINTER_DOWN access eventually
