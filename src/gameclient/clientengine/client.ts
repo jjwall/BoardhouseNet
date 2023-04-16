@@ -10,7 +10,7 @@ import { UIStateTypes } from "../../packets/enums/gameserverstatetypes";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
-import { renderMainMenuUi } from "../ui/states/mainmenu/rootui";
+import { renderTitleScreenUi } from "../ui/states/titlescreen/rootui";
 import { SceneTransition } from "../renders/scenetransitions";
 import { WorldTypes } from "../../packets/enums/worldtypes";
 import { createWidget, Widget } from "../ui/core/widget";
@@ -314,8 +314,8 @@ export class Client {
         this.uiState = uiState
 
         switch (uiState) {
-            case UIStateTypes.MAIN_MENU:
-                this.currentRootRender = renderMainMenuUi
+            case UIStateTypes.TITLE_SCREEN:
+                this.currentRootRender = renderTitleScreenUi
                 this.currentContext = globalGameContext
                 this.rootComponent = this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
                 break;

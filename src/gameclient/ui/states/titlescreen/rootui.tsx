@@ -6,9 +6,9 @@ import { Component } from "../../core/component";
 import { Widget } from "../../core/widget";
 import { Scene } from "three";
 
-// Todo: Swap out main menu / gameplay ui and test
+// Todo: (Done) Swap out main menu / gameplay ui and test
 // *** MainMenu design ***
-// Todo: -Press Start- flashes under the logo
+// Todo: (Done) -Press Start- flashes under the logo
 // Todo: Basic class select screen?
 // Todo: Refresh Spectator code
 // Todo: Automatically force a client to join as a spectator -> THEN they can join as a player later on.
@@ -17,10 +17,10 @@ import { Scene } from "three";
 // Todo: General branch cleanup, commented out code, structure etc.
 // Todo: Consider chatHistory max message count with new redux refactor.
 
-export function renderMainMenuUi(scene: Scene, rootWidget: Widget, props: Props): MainMenuRoot {
-    let rootInstance = renderWidget(<MainMenuRoot { ...props }/>, rootWidget, scene);
+export function renderTitleScreenUi(scene: Scene, rootWidget: Widget, props: Props): TitleScreenRoot {
+    let rootInstance = renderWidget(<TitleScreenRoot { ...props }/>, rootWidget, scene);
 
-    return rootInstance.component as MainMenuRoot;
+    return rootInstance.component as TitleScreenRoot;
 }
 
 interface Props {}
@@ -30,7 +30,7 @@ interface State {
     pressKeyOpacityIncrease: boolean
 }
 
-export class MainMenuRoot extends Component<Props, State> {
+export class TitleScreenRoot extends Component<Props, State> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
