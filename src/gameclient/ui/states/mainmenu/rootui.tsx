@@ -37,7 +37,8 @@ export class MainMenuRoot extends Component<Props, State> {
     render(): JSXElement {
         return(
             <panel>
-
+                {/* <label content="testtttttttttt"></label> */}
+                <Text top="50" left="50" contents="testttttttttttt"></Text>
             </panel>
         )
     }

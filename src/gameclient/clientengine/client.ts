@@ -11,6 +11,7 @@ import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
 import { renderTitleScreenUi } from "../ui/states/titlescreen/rootui";
+import { renderMainMenuUi } from "../ui/states/mainmenu/rootui";
 import { SceneTransition } from "../renders/scenetransitions";
 import { WorldTypes } from "../../packets/enums/worldtypes";
 import { createWidget, Widget } from "../ui/core/widget";
@@ -329,6 +330,11 @@ export class Client {
                 this.currentContext.onItemEquip = this.onItemEquip
                 this.rootComponent = this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
                 break;
+            case UIStateTypes.MAIN_MENU:
+                this.currentRootRender = renderMainMenuUi
+                this.currentContext = globalGameContext
+                this.rootComponent = this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
+                break;
         }
     }
 
@@ -337,18 +343,22 @@ export class Client {
             case UIStateTypes.GAMEPLAY:
                 this.handleGamePlayEvent(e);
                 break;
-            // case UIStateTypes.MAIN_MENU:
-            //     this.handleMainMenuEvent(e);
-            //     break;
+            case UIStateTypes.MAIN_MENU:
+                this.handleMainMenuEvent(e);
+                break;
             case UIStateTypes.TITLE_SCREEN:
                 this.handleTitleScreenEvent(e);
                 break;
         }
     }
 
+    private handleMainMenuEvent(e: Event) {
+        // ...
+    }
+
     private handleTitleScreenEvent(e: Event) {
         if (e.type === EventTypes.KEY_DOWN) {
-            this.setUIState(UIStateTypes.GAMEPLAY) // UIStateTypes.MAINMENU
+            this.setUIState(UIStateTypes.MAIN_MENU) // UIStateTypes.GAMEPLAY
         }
     }
 
