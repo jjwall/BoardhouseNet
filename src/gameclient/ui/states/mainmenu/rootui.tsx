@@ -5,6 +5,7 @@ import { Text } from "../../basecomponents/text";
 import { Component } from "../../core/component";
 import { Widget } from "../../core/widget";
 import { Scene } from "three";
+import { Button } from "../../basecomponents/button";
 
 // Todo: (Done) Swap out main menu / gameplay ui and test
 // *** MainMenu design ***
@@ -37,7 +38,15 @@ export class MainMenuRoot extends Component<Props, State> {
     render(): JSXElement {
         return(
             <panel>
-                {/* <label content="testtttttttttt"></label> */}
+                <Button
+                    top={100}
+                    left={100}
+                    height={100}
+                    width={250}
+                    pressedLayout="#018786"
+                    unpressedLayout="#03DAC6"
+                    submit={() => console.log("hi")}
+                />
                 <Text top="50" left="50" contents="testttttttttttt"></Text>
             </panel>
         )

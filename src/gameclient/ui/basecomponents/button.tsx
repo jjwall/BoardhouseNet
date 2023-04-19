@@ -1,8 +1,7 @@
-// /** @jsx createJSXElement */
 import { createJSXElement } from "../core/createjsxelement";
 import { JSXElement } from "../core/interfaces";
-import { Scene } from "THREE";
 import { Component } from "../core/component";
+import { Scene } from "three";
 
 // TODO: Bug -> Button -> think on release is misaligned
 

@@ -353,7 +353,17 @@ export class Client {
     }
 
     private handleMainMenuEvent(e: Event) {
-        // ...
+        switch(e.type) {
+            case EventTypes.POINTER_DOWN:
+                handlePointerDownEvent(this.rootWidget, e as PointerEvent);
+                break;
+            case EventTypes.POINTER_UP:
+                handlePointerUpEvent(e as PointerEvent);
+                break;
+            case EventTypes.POINTER_MOVE:
+                handlePointerMoveEvent(e as PointerEvent);
+                break;
+        }
     }
 
     private handleTitleScreenEvent(e: Event) {
