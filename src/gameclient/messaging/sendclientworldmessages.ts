@@ -2,6 +2,8 @@ import { ClientWorldEventTypes, ClientMessagePlayerWorldJoin, ClientMessageSpect
 import { WorldTransitionData } from "../../packets/data/worldtransitiondata";
 import { ChatMessageData } from "../../packets/data/chatmessagedata";
 import { MessageTypes } from "../../packets/messages/message";
+import { chatSlice } from "../ui/store/features/chatslice";
+import { ItemData } from "../../packets/data/itemdata";
 import { Client } from "../clientengine/client";
 
 export function sendPlayerWorldJoinMessage(client: Client) {
@@ -27,7 +29,7 @@ export function sendPlayerWorldJoinMessage(client: Client) {
             chatMessage: "Welcome to the game.",
             chatFontColor: "#00DCDC"
         }
-        client.rootComponent.appendChatHistory(systemWelcomeMessage);
+        chatSlice.appendHistory(systemWelcomeMessage);
     }, 5000)
 }
 
@@ -58,14 +60,14 @@ export function sendSpectatorWorldJoinMessage(client: Client) {
     client.connection.send(JSON.stringify(message));
 }
 
-export function sendPlayerInventoryEventMessage(client: Client) {
+export function sendPlayerInventoryEventMessage(client: Client, updatedInventory: ItemData[]) {
     const message: ClientMessagePlayerInventoryEvent = {
         messageType: MessageTypes.CLIENT_WORLD_MESSAGE,
         eventType: ClientWorldEventTypes.PLAYER_INVENTORY_EVENT,
         data: {
             clientId: client.currentClientId,
             worldType: client.worldType,
-            inventory: client.getUIState().clientInventory
+            inventory: updatedInventory,
         }
     }
 
@@ -73,7 +75,7 @@ export function sendPlayerInventoryEventMessage(client: Client) {
     client.connection.send(JSON.stringify(message));
 }
 
-export function sendPlayerChatMessage(client: Client) {
+export function sendPlayerChatMessage(client: Client, contents: string) {
     const message: ClientMessagePlayerChatMessage = {
         messageType: MessageTypes.CLIENT_WORLD_MESSAGE,
         eventType: ClientWorldEventTypes.PLAYER_CHAT_MESSAGE,
@@ -81,7 +83,7 @@ export function sendPlayerChatMessage(client: Client) {
             clientId: client.currentClientId,
             clientUsername: client.username,
             worldType: client.worldType,
-            chatMessage: client.getUIState().chatInputBoxContents.trim(),
+            chatMessage: contents.trim(),
             chatFontColor: "#FFFFFF"
         }
     }

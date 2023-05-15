@@ -1,25 +1,41 @@
 import { BufferGeometry, ShapeGeometry, WebGLRenderer, Audio, AudioListener, Scene, Camera, Color, OrthographicCamera, Vector3, Mesh } from "three";
 import { handlePointerDownEvent, handlePointerMoveEvent, handlePointerUpEvent } from "../events/pointerevents";
 import { sendPlayerChatMessage, sendPlayerInventoryEventMessage } from "../messaging/sendclientworldmessages";
-import { GlobalState, renderGamePlayUi, Root } from "../ui/states/gameplay/rootui";
+import { globalGameContext, GlobalGameState } from "../ui/store/context/globalgamecontext";
 import { UrlToTextureMap, UrlToFontMap, UrlToAudioBufferMap } from "./interfaces";
-import { GameServerStateTypes } from "../../packets/enums/gameserverstatetypes";
 import { handleKeyDownEvent, handleKeyUpEvent } from "../events/keyboardevents";
-import { presetEmptyInventory } from "../../database/inventory/preset_emptyinventory";
+import { renderGamePlayUi, GameplayRoot } from "../ui/states/gameplay/rootui";
+import { chatInputBoxSlice } from "../ui/store/features/chatinputboxslice";
+import { UIStateTypes } from "../../packets/enums/gameserverstatetypes";
 import { PlayerClassTypes } from "../../packets/enums/playerclasstypes";
 import { loadFonts, loadTextures, loadAudioBuffers } from "./loaders";
 import { ClientRoleTypes } from "../../packets/enums/clientroletypes";
-import { UIEventTypes } from "../../packets/enums/uieventtypes";
+import { renderTitleScreenUi } from "../ui/states/titlescreen/rootui";
+import { renderMainMenuUi } from "../ui/states/mainmenu/rootui";
 import { SceneTransition } from "../renders/scenetransitions";
 import { WorldTypes } from "../../packets/enums/worldtypes";
 import { createWidget, Widget } from "../ui/core/widget";
 import { ClientRender } from "../renders/clientrender";
 import { animationSystem } from "../systems/animation";
 import { layoutWidget } from "../ui/core/layoutwidget";
+import { ItemData } from "../../packets/data/itemdata";
 import { EventTypes } from "../events/eventtypes";
 import { NetIdToEntityMap } from "./interfaces";
 import { centerCameraOnPlayer } from "./camera";
 import { ClientEntity } from "./cliententity";
+
+// let currentContext = null;
+// let currentRootComponent = MainMenu;
+
+// function setUIGameContext(data) {
+//     currentContext = data;
+//     react.render(<currentRootComponent gameContext={currentContext} />);
+// }
+
+// function switchRoot(component) {
+//     currentRootComponent = component;
+//     react.render(<currentRootComponent gameContext={currentContext} />;
+// }
 
 export interface ClientConfig {
     /// state stuff ///
@@ -87,6 +103,7 @@ export class Client {
     }
 
     /// state stuff
+    public uiState: UIStateTypes;
     public currentPlayerEntity: ClientEntity; // just a reference
     public role: ClientRoleTypes;
     public playerClass: PlayerClassTypes;
@@ -123,7 +140,9 @@ export class Client {
     chatKeyPressed: boolean;
 
     /// ^^^ old configs ^^^
-    public rootComponent: Root;
+    public currentContext: any = null
+    public currentRootRender: any
+    public rootComponent: any
     public rootWidget: Widget;
 
     public screenWidth: number;
@@ -256,77 +275,104 @@ export class Client {
     }
 
     /**
-     * Initialize Game Client state based on Game Server state.
-     * @param gameServerState
+     * Initialize Game Client
      */
-    public initializeState(gameServerState: GameServerStateTypes) {
-        switch (gameServerState) {
-            case GameServerStateTypes.GAMEPLAY:
-                // do stuff based on game server state
-                console.log("initializing client for game play state");
-                // Set up game scene.
-                this.gameScene = new Scene();
-                // this.gameScene.background = new Color("#FFFFFF");
-                this.gameScene.background = new Color("#547e64");
+    public initializeClient(uiState: UIStateTypes) {
+        console.log("initializing client");
 
-                // Set up game camera.
-                this.gameCamera = new OrthographicCamera(0, this.screenWidth, this.screenHeight, 0, -1000, 1000);
+        // Set up game scene.
+        this.gameScene = new Scene();
+        // this.gameScene.background = new Color("#FFFFFF");
+        this.gameScene.background = new Color("#547e64");
 
-                // Set up ui scene.
-                this.uiScene = new Scene();
+        // Set up game camera.
+        this.gameCamera = new OrthographicCamera(0, this.screenWidth, this.screenHeight, 0, -1000, 1000);
 
-                // Set up ui camera.
-                this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
+        // Set up ui scene.
+        this.uiScene = new Scene();
 
-                // Set up ui widget and instance.
-                this.rootWidget = createWidget("root");
-                this.uiScene.add(this.rootWidget);
+        // Set up ui camera.
+        this.uiCamera = new OrthographicCamera(0, this.screenWidth, 0, -this.screenHeight, -1000, 1000);
 
-                this.rootComponent = renderGamePlayUi(this.uiScene, this.rootWidget, {
-                    // TODO: Thinking about this more... if we ever want to "unload" ui
-                    // in the midst of someone's gameplay, this initial state will be invalid
-                    // we would have to pass around a ui state object through
-                    // player world transition messages and what not
-                    initialState: {
-                        // Using preset client inventory for now.
-                        // In future pull from database or pre-set data set.
-                        // Todo: Load from playerJoinData ? - yes - yes
+        // Set up ui widget and instance.
+        this.rootWidget = createWidget("root");
+        this.uiScene.add(this.rootWidget);
 
-                        // Misc
-                        uiEvents: [],
-                        notificationMessage: {
-                            milliseconds: 0,
-                            color: "",
-                            clientId: "", // unnecessary
-                            notification: ""
-                        },
-                        // Inventory
-                        clientInventory: presetEmptyInventory,
-                        inventoryViewToggle: true,
-                        inventoryTop: 456,
-                        // HUD
-                        level: 0,
-                        maxHP: 0,
-                        currentHP: 0,
-                        maxMP: 0,
-                        currentMP: 0,
-                        maxXP: 0,
-                        currentXP: 0,
-                        // Chat
-                        chatInputBoxContents: " ",
-                        chatFocused: false,
-                        chatHistory: [],
-                    }
-                });
+        // Initialize UI State.
+        this.setUIState(UIStateTypes.TITLE_SCREEN);
+    }
+
+    public setUIGameContext(data: any) {
+        this.currentContext = data;
+        // this.uiScene.remove(this.rootWidget); // good for swapping
+        // this.uiScene.add(this.rootWidget);
+        this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
+    }
+
+    /** Note: This really shouldn't be used... */
+    public getUIGameContext(): GlobalGameState {
+        return this.currentContext
+    }
+
+    private setUIState(uiState: UIStateTypes) {
+        this.uiState = uiState
+
+        switch (uiState) {
+            case UIStateTypes.TITLE_SCREEN:
+                this.currentRootRender = renderTitleScreenUi
+                this.currentContext = globalGameContext
+                this.rootComponent = this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
+                break;
+            case UIStateTypes.GAMEPLAY:
+                this.currentRootRender = renderGamePlayUi
+                this.currentContext = globalGameContext
+                this.currentContext.onChatSubmit = this.onChatSubmit // Note: Might be a better way to do this...
+                this.currentContext.onItemEquip = this.onItemEquip
+                this.rootComponent = this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
+                break;
+            case UIStateTypes.MAIN_MENU:
+                this.currentRootRender = renderMainMenuUi
+                this.currentContext = globalGameContext
+                this.rootComponent = this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
                 break;
         }
     }
 
-    public getUIState(): GlobalState {
-        return this.rootComponent.getState()
+    public handleEvent(e: Event) : void {
+        switch (this.uiState) {
+            case UIStateTypes.GAMEPLAY:
+                this.handleGamePlayEvent(e);
+                break;
+            case UIStateTypes.MAIN_MENU:
+                this.handleMainMenuEvent(e);
+                break;
+            case UIStateTypes.TITLE_SCREEN:
+                this.handleTitleScreenEvent(e);
+                break;
+        }
     }
 
-    public handleEvent(e: Event) : void {
+    private handleMainMenuEvent(e: Event) {
+        switch(e.type) {
+            case EventTypes.POINTER_DOWN:
+                handlePointerDownEvent(this.rootWidget, e as PointerEvent);
+                break;
+            case EventTypes.POINTER_UP:
+                handlePointerUpEvent(e as PointerEvent);
+                break;
+            case EventTypes.POINTER_MOVE:
+                handlePointerMoveEvent(e as PointerEvent);
+                break;
+        }
+    }
+
+    private handleTitleScreenEvent(e: Event) {
+        if (e.type === EventTypes.KEY_DOWN) {
+            this.setUIState(UIStateTypes.MAIN_MENU) // UIStateTypes.GAMEPLAY
+        }
+    }
+
+    private handleGamePlayEvent(e: Event) {
         switch(e.type) {
             case EventTypes.POINTER_DOWN:
                 if (this.role === ClientRoleTypes.PLAYER) // spectator will have POINTER_DOWN access eventually
@@ -342,10 +388,12 @@ export class Client {
                 break;
             case EventTypes.KEY_DOWN:
                 if (this.role === ClientRoleTypes.PLAYER) {
-                    if (!this.rootComponent.getState().chatFocused)
+                    if (!this.getUIGameContext().chatFocused)
                         handleKeyDownEvent(this, e as KeyboardEvent);
                     else
-                        this.rootComponent.updateChatInputBoxContents((e as KeyboardEvent).key);
+                        chatInputBoxSlice.setKeystroke((e as KeyboardEvent).key)
+
+                        // this.rootComponent.updateChatInputBoxContents((e as KeyboardEvent).key);
                     
                     // Edge case for handling chat focus key.
                     if ((e as KeyboardEvent).code === 'Enter')
@@ -353,7 +401,7 @@ export class Client {
                 }
                 break;
             case EventTypes.KEY_UP:
-                if (this.role === ClientRoleTypes.PLAYER && !this.rootComponent.getState().chatFocused)
+                if (this.role === ClientRoleTypes.PLAYER && !this.getUIGameContext().chatFocused)
                     handleKeyUpEvent(this, e as KeyboardEvent);
 
                 // Edge case for handling chat focus key.
@@ -488,32 +536,12 @@ export class Client {
         }
     }
 
-    private processUIEvents() {
-        if (this.getUIState().uiEvents.length > 0) {
-            this.getUIState().uiEvents.forEach(uiEvent => {
-                switch(uiEvent) {
-                    case UIEventTypes.ITEM_EQUIP_EVENT:
-                        sendPlayerInventoryEventMessage(this);
-                        break;
-                    case UIEventTypes.SEND_CHAT_MESSAGE:
-                        // Remove text cursor for pending chat message if it's there.
-                        if (this.rootComponent.lastCharIsTextCursor())
-                            this.rootComponent.backspaceChatInputBoxContents();
+    public onChatSubmit = (contents: string) => {
+        sendPlayerChatMessage(this, contents);
+    }
 
-                        if (this.rootComponent.getState().chatInputBoxContents.length > 1) {
-                            sendPlayerChatMessage(this);
-                            // Clear chat input box contents.
-                            this.rootComponent.setState({
-                                chatInputBoxContents: " "
-                            })
-                        }
-                        break;
-                }
-            })
-
-            // UI events have been processed, reset the state.
-            this.rootComponent.setUIEvents([])
-        }
+    public onItemEquip = (newInventory: ItemData[]) => {
+        sendPlayerInventoryEventMessage(this, newInventory);
     }
 
     public render() : void {
@@ -529,10 +557,7 @@ export class Client {
         this.renderer.clearDepth();
         this.renderer.render(this.uiScene, this.uiCamera);
 
-        // Render UI updates. // -> set up later
+        // Render UI updates.
         layoutWidget(this.rootWidget, this);
-
-        // Process UI Events.
-        this.processUIEvents()
     }
 }

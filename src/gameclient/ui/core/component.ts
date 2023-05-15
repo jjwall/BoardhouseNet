@@ -21,6 +21,8 @@ export abstract class Component<Props, State> {
 
     public componentDidUpdate?(prevProps: Props, prevState: State): void
 
+    public mapContextToProps?(context: any): any
+
     abstract render(): JSXElement;
 }
 

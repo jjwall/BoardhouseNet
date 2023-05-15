@@ -1,13 +1,24 @@
 import { InventorySlotMetaData, inventorySlotsMetaData, processItemSlotSwap } from "../utils/inventoryutils";
 import { NotificationData } from "../../../../packets/data/notificationdata";
 import { ChatMessageData } from "../../../../packets/data/chatmessagedata";
-import { UIEventTypes } from "../../../../packets/enums/uieventtypes";
+import { notificationSlice } from "../../store/features/notificationslice";
+import { GlobalGameState } from "../../store/context/globalgamecontext";
+import { inventorySlice } from "../../store/features/inventoryslice";
 import { InventorySlot, DraggedItemData } from "./inventoryslot";
 import { createJSXElement } from "../../core/createjsxelement";
-import { ClientInventory, UIEvents } from "./rootui";
+import { ItemData } from "../../../../packets/data/itemdata";
+import { chatSlice } from "../../store/features/chatslice";
 import { JSXElement } from "../../core/interfaces";
 import { Component } from "../../core/component";
 import { Scene } from "three";
+
+// Refactor TODO:
+// TODO: Find better solution to lazy evaluate clientInventory before sending to server.
+// -> Currently using setTimeout to kick onItemEquip down the event line.
+// -> Idea: Check clientInventory props changes in componentDidUpdate THEN call onItemEquip.
+// TODO: (Done) Add slice changes for newInventory
+// -> This should be it honestly.
+// TODO: (Done) fix bug with inventory context - maybe not rendering in correct order?
 
 // IDEA: Do I need to refactor and set equip slots to indexes 0-3? :thinking:
 // -> Decided against this since I'm finding first available null value when picking up an item. Don't want that to automatically equip. 
@@ -26,16 +37,15 @@ import { Scene } from "three";
 // KNOWN BUG: Putting inventory away (pressing I while dragging an item) causes the item to get stuck wherever it was dragged to.
 
 interface Props {
+    // Component props:
     top: string | number
     left: string | number
     color: string
     opacity: string | number
-    draggingDisabled: boolean
-    clientInventory: ClientInventory
-    setUIEvents: (newUIEvents: UIEvents) => void
-    setClientInventory: (newClientInventory: ClientInventory) => void
-    setNotificationMessage: (newNotificationMessage: NotificationData) => void
-    appendChatHistory: (newChatMessage: ChatMessageData) => void
+    // Context props:
+    clientInventory?: ItemData[]
+    inventoryViewToggle?: boolean
+    onItemEquip?: (newInventory?: ItemData[]) => void
 }
 
 /**
@@ -58,6 +68,27 @@ export class Inventory extends Component<Props, State> {
         }
     }
 
+    mapContextToProps(context: GlobalGameState): Partial<GlobalGameState> {
+        return {
+            clientInventory: context.clientInventory,
+            inventoryViewToggle: context.inventoryViewToggle,
+            onItemEquip: context.onItemEquip,
+        }
+    }
+
+    componentDidUpdate(prevProps: Props, prevState: State): void {
+        if (prevProps?.inventoryViewToggle !== this.props?.inventoryViewToggle) {
+            if (this.props.inventoryViewToggle)
+                this.setState({
+                    top: 456
+                })
+            else
+                this.setState({
+                    top: 639
+                })
+            }
+    }
+
     /**
      * Checks if current item can be equipped in designated equipment slot.
      * @param pendingEquipItemData 
@@ -74,7 +105,11 @@ export class Inventory extends Component<Props, State> {
         let validEquip = true
 
         if (validEquip) {
-            this.props.setUIEvents([UIEventTypes.ITEM_EQUIP_EVENT])
+            // Current implementation: Buffer item equip so clientInventory can evaluate before sending to server.
+            // TODO: Evaluate clientInventory via awaiting a promise so we don't have to rely on a browser's setTimeout implementation.
+            setTimeout(() => {
+                this.props.onItemEquip(this.props.clientInventory)
+            }, 1)
         }
         return validEquip
     }
@@ -87,7 +122,7 @@ export class Inventory extends Component<Props, State> {
             color: "#FF0000",
             milliseconds: 3500
         }
-        this.props.setNotificationMessage(notificationData)
+        notificationSlice.update(notificationData)
 
         // Set chat history system message.
         const systemNotificationMessage: ChatMessageData = {
@@ -97,7 +132,7 @@ export class Inventory extends Component<Props, State> {
             chatFontColor: "#FF0000",
         }
 
-        this.props.appendChatHistory(systemNotificationMessage)
+        chatSlice.appendHistory(systemNotificationMessage)
     }
 
     /**
@@ -146,7 +181,7 @@ export class Inventory extends Component<Props, State> {
                     dragEquippedItemToOccupiedInventorySlot()
                 } else {
                     // A regular unequip event occurs.
-                    this.props.setUIEvents([UIEventTypes.ITEM_EQUIP_EVENT])
+                    this.props.onItemEquip(this.props.clientInventory)
                 }
             }
         }
@@ -177,12 +212,20 @@ export class Inventory extends Component<Props, State> {
         }
 
         // Update client inventory state with slot changes.
-        this.props.setClientInventory(this.props.clientInventory)
+        inventorySlice.update(this.props.clientInventory)
     }
+
+    getItemAtIndex = (inventoryIndex: number) => {
+        // TODO: Check inventory max here.
+        if (this.props?.clientInventory?.length > 0)
+            return this.props.clientInventory[inventoryIndex]
+        else
+            return null
+    } 
 
     render(): JSXElement {
         return (
-            <panel left={this.props.left} top={this.props.top} height="237" width="281" color={this.props.color} opacity={this.props.opacity}>
+            <panel left={this.props.left} top={this.state.top} height="237" width="281" color={this.props.color} opacity={this.props.opacity}>
                 {this.state.slotsMetadata.map((slot, index) =>
                     <InventorySlot
                         top={slot.top}
@@ -193,8 +236,8 @@ export class Inventory extends Component<Props, State> {
                         opacity={this.props.opacity}
                         inventorySlotIndex={index}
                         reconcileInventory={this.reconcileInventory}
-                        item={this.props.clientInventory[index]}
-                        draggingDisabled={this.props.draggingDisabled}
+                        item={this.getItemAtIndex(index)}
+                        draggingDisabled={!this.props.inventoryViewToggle}
                     />
                 )}
             </panel>

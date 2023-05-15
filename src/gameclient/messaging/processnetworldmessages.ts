@@ -1,8 +1,11 @@
 import { NetMessageLoadWorld, NetMessagePlayerChatMessage, NetMessagePlayerItemPickup, NetMessagePlayerNotification, NetMessagePlayerReconcileInventory, NetMessagePlayerWorldTransition } from "../../packets/messages/networldmessage";
 import { renderSceneFadeIn, renderSceneFadeOut } from "../renders/scenetransitions";
 import { sendPlayerWorldTransitionMessage } from "./sendclientworldmessages";
+import { notificationSlice } from "../ui/store/features/notificationslice";
 import { ChatMessageData } from "../../packets/data/chatmessagedata";
+import { inventorySlice } from "../ui/store/features/inventoryslice";
 import { renderWorldMap } from "../clientengine/renderworldmap";
+import { chatSlice } from "../ui/store/features/chatslice";
 import { Client } from "../clientengine/client";
 
 export function loadWorld(message: NetMessageLoadWorld, client: Client) {
@@ -73,19 +76,19 @@ export function transitionPlayerClientToNewWorld(message: NetMessagePlayerWorldT
 
 export function playerPickupItem(message: NetMessagePlayerItemPickup, client: Client) {
     if (client.currentClientId === message.data.pickupClientId) {
-        const clientState = client.getUIState()
-        const firstAvailableSlotIndex = clientState.clientInventory.findIndex(element => !element);
+        const gameContext = client.getUIGameContext()
+        const firstAvailableSlotIndex = gameContext.clientInventory.findIndex(element => !element);
 
         // Note: this check shouldn't be necessary since this logic should be run on server.
         // Message data could include things like, slot index to render item at.
         if (firstAvailableSlotIndex > -1) {
             // There's available space for item, place in first available slot.
-            clientState.clientInventory[firstAvailableSlotIndex] = {
+            gameContext.clientInventory[firstAvailableSlotIndex] = {
                 spriteUrl: message.data.item.spriteUrl,
                 onDragSpriteUrl: message.data.item.onDragSpriteUrl
             }
 
-            client.rootComponent.setClientInventory(clientState.clientInventory)
+            inventorySlice.update(gameContext.clientInventory)
         } else {
             console.log("Render: not enough space")
         }
@@ -94,7 +97,7 @@ export function playerPickupItem(message: NetMessagePlayerItemPickup, client: Cl
 
 export function playerReconcileInventory(message: NetMessagePlayerReconcileInventory, client: Client) {
     if (client.currentClientId === message.data.clientId) {
-        client.rootComponent.setClientInventory(message.data.inventory);
+        inventorySlice.update(message.data.inventory);
     }
 }
 
@@ -102,7 +105,7 @@ export function playerReconcileInventory(message: NetMessagePlayerReconcileInven
 export function notifyPlayer(message: NetMessagePlayerNotification, client: Client) {
     if (client.currentClientId === message.data.clientId) {
         // Set notification widget message.
-        client.rootComponent.setNotificationMessage(message.data)
+        notificationSlice.update(message.data)
 
         // Set chat history system message.
         const systemNotificationMessage: ChatMessageData = {
@@ -113,13 +116,13 @@ export function notifyPlayer(message: NetMessagePlayerNotification, client: Clie
             chatFontColor: message.data.color,
         }
 
-        client.rootComponent.appendChatHistory(systemNotificationMessage)
+        chatSlice.appendHistory(systemNotificationMessage)
     }
 }
 
 export function appendPlayerChatMessage(message: NetMessagePlayerChatMessage, client: Client) {
     if (message.data.worldType === client.worldType) {
         // Perhaps we only append playerId if a default username is chosen.
-        client.rootComponent.appendChatHistory(message.data);
+        chatSlice.appendHistory(message.data)
     }
 }

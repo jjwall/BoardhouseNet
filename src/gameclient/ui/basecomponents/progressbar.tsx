@@ -1,7 +1,7 @@
 import { createJSXElement } from "../core/createjsxelement";
 import { JSXElement } from "../core/interfaces";
 import { Component } from "../core/component";
-import { Scene } from "THREE";
+import { Scene } from "three";
 
 interface Props {
     top?: string | number;

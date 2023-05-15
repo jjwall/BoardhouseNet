@@ -1,4 +1,6 @@
 export const textureUrls = [
+    // Logos
+    "./assets/textures/logos/quest_for_the_kingmaker.png",
     // Misc
     "./assets/textures/misc/empty_texture.png",
     // Tilesets

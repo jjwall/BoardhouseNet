@@ -64,11 +64,12 @@ function processMovementInputs(ent: Readonly<Entity>, movementDirection: Vector3
             movementDirection.setY(0);
             ent.vel.positional.add(movementDirection.multiplyScalar(ent.vel.acceleration));
             ent.pos.flipX = true;
-            // ent.status.level += 1;
-            // ent.status.currentHp -= 5;
-            // ent.status.maxHp += 10;
-            // ent.status.currentXp -=3;
-            // ent.status.currentMp -= 2;
+            // ent.stats.level += 1;
+            // ent.stats.currentHp -= 5;
+            // ent.stats.maxHp += 10;
+            // ent.stats.maxXp += 3;
+            // ent.stats.currentXp -=5
+            // ent.stats.maxMp += 2;
 
             // updatePlayerEnt = true;
         }
