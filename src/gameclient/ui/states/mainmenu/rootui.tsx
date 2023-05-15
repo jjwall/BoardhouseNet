@@ -17,6 +17,7 @@ import { Button } from "../../basecomponents/button";
 // -> Future spectate branch will create some spectate UI / controls
 // Todo: General branch cleanup, commented out code, structure etc.
 // Todo: Consider chatHistory max message count with new redux refactor.
+// Todo (Bug): Button -> on release is misaligned. Need h/w + 1/2 treatment
 
 export function renderMainMenuUi(scene: Scene, rootWidget: Widget, props: Props): MainMenuRoot {
     let rootInstance = renderWidget(<MainMenuRoot { ...props }/>, rootWidget, scene);
