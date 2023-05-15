@@ -1,11 +1,12 @@
+import { GlobalGameState } from "../../store/context/globalgamecontext";
 import { createJSXElement } from "../../core/createjsxelement";
 import { renderWidget } from "../../core/renderwidget";
+import { Button } from "../../basecomponents/button";
 import { JSXElement } from "../../core/interfaces";
 import { Text } from "../../basecomponents/text";
 import { Component } from "../../core/component";
 import { Widget } from "../../core/widget";
 import { Scene } from "three";
-import { Button } from "../../basecomponents/button";
 
 // Todo: (Done) Swap out main menu / gameplay ui and test
 // *** MainMenu design ***
@@ -17,7 +18,7 @@ import { Button } from "../../basecomponents/button";
 // -> Future spectate branch will create some spectate UI / controls
 // Todo: General branch cleanup, commented out code, structure etc.
 // Todo: Consider chatHistory max message count with new redux refactor.
-// Todo (Bug): Button -> on release is misaligned. Need h/w + 1/2 treatment
+// Todo (Done) (Bug): Button -> on release is misaligned. Need h/w + 1/2 treatment
 
 export function renderMainMenuUi(scene: Scene, rootWidget: Widget, props: Props): MainMenuRoot {
     let rootInstance = renderWidget(<MainMenuRoot { ...props }/>, rootWidget, scene);
@@ -25,17 +26,21 @@ export function renderMainMenuUi(scene: Scene, rootWidget: Widget, props: Props)
     return rootInstance.component as MainMenuRoot;
 }
 
-interface Props {}
+interface Props {
+    onPlay?: () => void
+}
 
-interface State {}
-
-export class MainMenuRoot extends Component<Props, State> {
+export class MainMenuRoot extends Component<Props> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
-        this.state = {
-        }
-
     }
+
+    mapContextToProps(context: GlobalGameState): Partial<GlobalGameState> {
+        return { 
+            onPlay: context.onPlay
+        }
+    }
+
     render(): JSXElement {
         return(
             <panel>
@@ -46,7 +51,7 @@ export class MainMenuRoot extends Component<Props, State> {
                     width={250}
                     pressedLayout="#018786"
                     unpressedLayout="#03DAC6"
-                    submit={() => console.log("hi")}
+                    submit={() => this.props.onPlay()}
                 />
                 <Text top="50" left="50" contents="testttttttttttt"></Text>
             </panel>

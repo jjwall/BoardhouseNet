@@ -20,7 +20,7 @@ interface Props {
     globalGameState: GlobalGameState
 }
 
-export class GameplayRoot extends Component<Props, {}> {
+export class GameplayRoot extends Component<Props> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
     }
