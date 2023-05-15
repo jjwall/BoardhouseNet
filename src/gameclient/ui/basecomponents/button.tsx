@@ -3,8 +3,6 @@ import { JSXElement } from "../core/interfaces";
 import { Component } from "../core/component";
 import { Scene } from "three";
 
-// TODO: Bug -> Button -> think on release is misaligned
-
 interface Props {
     /** Color or img url */
     pressedLayout: string;

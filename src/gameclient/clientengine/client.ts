@@ -372,6 +372,7 @@ export class Client {
             case EventTypes.KEY_DOWN:
             case EventTypes.POINTER_DOWN:
                 this.setUIState(UIStateTypes.MAIN_MENU)
+                // this.setUIState(UIStateTypes.GAMEPLAY)
                 break
         }
     }
