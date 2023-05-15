@@ -368,7 +368,8 @@ export class Client {
 
     private handleTitleScreenEvent(e: Event) {
         if (e.type === EventTypes.KEY_DOWN) {
-            this.setUIState(UIStateTypes.MAIN_MENU) // UIStateTypes.GAMEPLAY
+            this.setUIState(UIStateTypes.MAIN_MENU)
+            // this.setUIState(UIStateTypes.GAMEPLAY)
         }
     }
 

@@ -76,15 +76,24 @@ export function handlePointerDownEvent(widget: Widget, e: PointerEvent) {
 // Currently can really only handle pressing one button at a time. Unpress will be triggered on all buttons
 export function handlePointerUpEvent(e: PointerEvent) {
     for (let i = 0; i < pressedWidgets.length; i++) {
-        const halfWidth = Number(pressedWidgets[0].attr("width"))/2;
-        const halfHeight = Number(pressedWidgets[0].attr("height"))/2;
+        let halfWidth = Number(pressedWidgets[0].attr("width"))/2;
+        let halfHeight = Number(pressedWidgets[0].attr("height"))/2;
         const position = new Vector3();
+        let notCenteredOffsetX = 0
+        let notCenteredOffsetY = 0
         pressedWidgets[0].getWorldPosition(position);
 
+        if(!pressedWidgets[i].attr('center')) {
+            notCenteredOffsetX = halfWidth * 2
+            notCenteredOffsetY = halfHeight * 2
+            halfWidth *= 2
+            halfHeight *= 2
+        }
+
         // TODO: use sweep & prune alg instead of AABB
-        if (e.offsetY > -position.y - halfHeight
+        if (e.offsetY - notCenteredOffsetY > -position.y - halfHeight
             && e.offsetY - halfHeight < -position.y
-            && e.offsetX > position.x - halfWidth
+            && e.offsetX - notCenteredOffsetX > position.x - halfWidth
             && e.offsetX - halfWidth < position.x)
         {
             // TODO: Make sure only top most widget's submit event is triggered.
