@@ -9,19 +9,28 @@ import { Component } from "../../core/component";
 import { Widget } from "../../core/widget";
 import { Scene } from "three";
 
+// *** General ***
 // Todo: (Done) Swap out main menu / gameplay ui and test
-// *** MainMenu design ***
-// Todo: (Done) -Press Start- flashes under the logo
-// Todo: Basic class select screen?
 // Todo: Refresh Spectator code
 // Todo: Automatically force a client to join as a spectator -> THEN they can join as a player later on.
 // -> They are able to join as a player or continue spectating
 // -> Future spectate branch will create some spectate UI / controls
 // Todo: General branch cleanup, commented out code, structure etc.
 // Todo: Consider chatHistory max message count with new redux refactor.
-// Todo (Done) (Bug): Button -> on release is misaligned. Need h/w + 1/2 treatment
 // Todo: Spectate / Play button is disabled until world is "loaded"
 // Todo: Pulse state / context updates upon clicking Play
+
+// *** MainMenu design ***
+// Todo: Cycle through classes with label and class image changing
+// Todo: Implement input box handling for this ui screen
+// Todo: Implement checkbox (generic component?)
+// -> Change "Play" button label to "Spectate" when checked
+// Todo: Cleanup mock to have a slimmer (less wide) component / panel
+// Todo: Make mocked code into a "customize" component
+// Todo: Specate / play has their own component
+// Todo: Custom arrows for class select
+// Todo: Custom checkmark
+// Todo: Custom Play Button
 
 export function renderMainMenuUi(scene: Scene, rootWidget: Widget, props: Props): MainMenuRoot {
     let rootInstance = renderWidget(<MainMenuRoot { ...props }/>, rootWidget, scene);
