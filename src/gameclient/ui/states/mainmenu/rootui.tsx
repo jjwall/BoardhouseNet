@@ -44,7 +44,8 @@ interface Props {
 }
 
 interface State {
-    currentClassTypeIndex: number
+    classTypeIndex: number
+    classDisplayImage: string
 }
 
 export class MainMenuRoot extends Component<Props, State> {
@@ -52,7 +53,8 @@ export class MainMenuRoot extends Component<Props, State> {
     constructor(props: Props, scene: Scene) {
         super(props, scene);
         this.state = {
-            currentClassTypeIndex: 0,
+            classTypeIndex: 3,
+            classDisplayImage: "./assets/textures/knight/idle/Heroine_idle_04.png"
         }
     }
 
@@ -63,18 +65,39 @@ export class MainMenuRoot extends Component<Props, State> {
     }
 
     incrementClassTypeIndex() {
-        if (this.state.currentClassTypeIndex < this.classTypes.length - 1) {
-            this.setState({ currentClassTypeIndex: this.state.currentClassTypeIndex + 1 })
+        if (this.state.classTypeIndex < this.classTypes.length - 1) {
+            this.setState({ classTypeIndex: this.state.classTypeIndex + 1 })
         } else {
-            this.setState({ currentClassTypeIndex: 0 })
+            this.setState({ classTypeIndex: 0 })
         }
+
+        this.updateClassImageDisplay(this.classTypes[this.state.classTypeIndex])
     }
 
     decrementClassTypeIndex() {
-        if (this.state.currentClassTypeIndex > 0) {
-            this.setState({ currentClassTypeIndex: this.state.currentClassTypeIndex - 1 })
+        if (this.state.classTypeIndex > 0) {
+            this.setState({ classTypeIndex: this.state.classTypeIndex - 1 })
         } else {
-            this.setState({ currentClassTypeIndex: this.classTypes.length - 1 })
+            this.setState({ classTypeIndex: this.classTypes.length - 1 })
+        }
+
+        this.updateClassImageDisplay(this.classTypes[this.state.classTypeIndex])
+    }
+
+    updateClassImageDisplay(classType: PlayerClassTypes) {
+        switch(classType) {
+            case PlayerClassTypes.KNIGHT:
+                this.setState({ classDisplayImage: "./assets/textures/knight/idle/Heroine_idle_04.png"})
+                break
+            case PlayerClassTypes.RANGER:
+                this.setState({ classDisplayImage: "./assets/textures/ranger/idle/Heroine_ranger_idle_04.png"})
+                break
+            case PlayerClassTypes.PAGE:
+                this.setState({ classDisplayImage: "./assets/textures/page/idle/Heroine_page_idle_04.png"})
+                break
+            case PlayerClassTypes.WIZARD:
+                this.setState({ classDisplayImage: "./assets/textures/wizard/idle/Heroine_wizard_idle_04.png"})
+                break
         }
     }
 
@@ -105,10 +128,18 @@ export class MainMenuRoot extends Component<Props, State> {
                     left="470"
                     opacity="0.5"
                 />
+                <panel 
+                    img={this.state.classDisplayImage}
+                    top="115"
+                    width="64" 
+                    height="64"
+                    left="445"
+                    pixel-ratio="4"
+                />
                 {/* Class select text */}
                 <Text top="375" left="500" contents="Class select:"></Text>
                 {/* Class display text */}
-                <Text top="395" left="520" contents={this.classTypes[this.state.currentClassTypeIndex]}></Text>
+                <Text top="395" left="520" contents={this.classTypes[this.state.classTypeIndex]}></Text>
                 {/* Left Arrow */}
                 <Button
                     top={380}
