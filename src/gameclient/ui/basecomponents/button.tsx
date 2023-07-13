@@ -2,6 +2,7 @@ import { createJSXElement } from "../core/createjsxelement";
 import { JSXElement } from "../core/interfaces";
 import { Component } from "../core/component";
 import { Scene } from "three";
+import { Text } from "./text";
 
 interface Props {
     /** Color or img url */
@@ -21,6 +22,7 @@ interface Props {
     fontLeft?: string | number;
     font?: string;
     backgroundColor?: string;
+    imgPixelRatio?: number
     submit: () => void,
 }
 
@@ -50,7 +52,7 @@ export class Button extends Component<Props, State> {
 
     render(): JSXElement {
         // case: colored button (placeholder)
-        if (this.props.pressedLayout.substr(0, 1) === "#") {
+        if (this.props.pressedLayout.substring(0, 1) === "#") {
             return (
                 <panel
                     color={this.state.pressed ? this.props.pressedLayout : this.props.unpressedLayout}
@@ -63,14 +65,14 @@ export class Button extends Component<Props, State> {
                     onSubmit={() => this.props.submit()}
                     opacity={this.props.opacity}
                 >
-                    <label
-                        color={this.state.pressed ? this.props.pressedFontColor : this.props.unpressedFontColor}
+                    <Text
+                        fontColor={this.state.pressed ? this.props.pressedFontColor : this.props.unpressedFontColor}
                         top={this.props.fontTop}
                         left={this.props.fontLeft}
                         contents={this.props.contents}
                         font={this.props.font}
-                        font_size={this.props.fontSize}>
-                    </label>
+                        fontSize={this.props.fontSize}>
+                    </Text>
                 </panel>
             )
         }
@@ -86,6 +88,7 @@ export class Button extends Component<Props, State> {
                     onPress={() => this.press()}
                     onUnpress={() => this.unpress()}
                     onSubmit={() => this.props.submit()}
+                    pixel-ratio={this.props.imgPixelRatio ?? 4}
                 >
                 </panel>
             )

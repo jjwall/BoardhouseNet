@@ -88,11 +88,14 @@ export class MainMenuRoot extends Component<Props> {
                 <Button
                     top={380}
                     left={500}
-                    height={15}
-                    width={15}
+                    height={20}
+                    width={20}
                     opacity={1}
-                    pressedLayout="#018786"
-                    unpressedLayout="#03DAC6"
+                    fontTop={17}
+                    fontLeft={4}
+                    contents="<"
+                    pressedLayout="#222034"
+                    unpressedLayout="#3f3f74"
                     submit={() => console.log("change class")}
                 >
                 </Button>
@@ -100,11 +103,14 @@ export class MainMenuRoot extends Component<Props> {
                 <Button
                     top={380}
                     left={600}
-                    height={15}
-                    width={15}
+                    height={20}
+                    width={20}
                     opacity={1}
-                    pressedLayout="#018786"
-                    unpressedLayout="#03DAC6"
+                    fontTop={17}
+                    fontLeft={5}
+                    contents=">"
+                    pressedLayout="#222034"
+                    unpressedLayout="#3f3f74"
                     submit={() => console.log("change class")}
                 >
                 </Button>
