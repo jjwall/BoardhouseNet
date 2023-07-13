@@ -1,3 +1,4 @@
+import { PlayerClassTypes } from "../../../../packets/enums/playerclasstypes";
 import { GlobalGameState } from "../../store/context/globalgamecontext";
 import { createJSXElement } from "../../core/createjsxelement";
 import { InputBox } from "../../basecomponents/inputbox";
@@ -42,14 +43,38 @@ interface Props {
     onPlay?: () => void
 }
 
-export class MainMenuRoot extends Component<Props> {
+interface State {
+    currentClassTypeIndex: number
+}
+
+export class MainMenuRoot extends Component<Props, State> {
+    classTypes = Object.values(PlayerClassTypes)
     constructor(props: Props, scene: Scene) {
         super(props, scene);
+        this.state = {
+            currentClassTypeIndex: 0,
+        }
     }
 
     mapContextToProps(context: GlobalGameState): Partial<GlobalGameState> {
         return { 
             onPlay: context.onPlay
+        }
+    }
+
+    incrementClassTypeIndex() {
+        if (this.state.currentClassTypeIndex < this.classTypes.length - 1) {
+            this.setState({ currentClassTypeIndex: this.state.currentClassTypeIndex + 1 })
+        } else {
+            this.setState({ currentClassTypeIndex: 0 })
+        }
+    }
+
+    decrementClassTypeIndex() {
+        if (this.state.currentClassTypeIndex > 0) {
+            this.setState({ currentClassTypeIndex: this.state.currentClassTypeIndex - 1 })
+        } else {
+            this.setState({ currentClassTypeIndex: this.classTypes.length - 1 })
         }
     }
 
@@ -83,7 +108,7 @@ export class MainMenuRoot extends Component<Props> {
                 {/* Class select text */}
                 <Text top="375" left="500" contents="Class select:"></Text>
                 {/* Class display text */}
-                <Text top="395" left="520" contents="Knight"></Text>
+                <Text top="395" left="520" contents={this.classTypes[this.state.currentClassTypeIndex]}></Text>
                 {/* Left Arrow */}
                 <Button
                     top={380}
@@ -96,7 +121,7 @@ export class MainMenuRoot extends Component<Props> {
                     contents="<"
                     pressedLayout="#222034"
                     unpressedLayout="#3f3f74"
-                    submit={() => console.log("change class")}
+                    submit={() => this.decrementClassTypeIndex()}
                 >
                 </Button>
                 {/* Right Arrow */}
@@ -111,7 +136,7 @@ export class MainMenuRoot extends Component<Props> {
                     contents=">"
                     pressedLayout="#222034"
                     unpressedLayout="#3f3f74"
-                    submit={() => console.log("change class")}
+                    submit={() => this.incrementClassTypeIndex()}
                 >
                 </Button>
                 {/* Username text */}
