@@ -22,7 +22,7 @@ import { Scene } from "three";
 // Todo: Pulse state / context updates upon clicking Play
 
 // *** MainMenu design ***
-// Todo: Cycle through classes with label and class image changing
+// Todo: (Done) Cycle through classes with label and class image changing
 // Todo: Implement input box handling for this ui screen
 // Todo: Implement checkbox (generic component?)
 // -> Change "Play" button label to "Spectate" when checked
@@ -46,6 +46,9 @@ interface Props {
 interface State {
     classTypeIndex: number
     classDisplayImage: string
+    spectateToggleBoolean: boolean
+    spectateToggleContents: string
+    playSpectateButtonContents: string
 }
 
 export class MainMenuRoot extends Component<Props, State> {
@@ -54,7 +57,10 @@ export class MainMenuRoot extends Component<Props, State> {
         super(props, scene);
         this.state = {
             classTypeIndex: 3,
-            classDisplayImage: "./assets/textures/knight/idle/Heroine_idle_04.png"
+            classDisplayImage: "./assets/textures/knight/idle/Heroine_idle_04.png",
+            spectateToggleBoolean: false,
+            spectateToggleContents: " ",
+            playSpectateButtonContents: "Play",
         }
     }
 
@@ -101,6 +107,21 @@ export class MainMenuRoot extends Component<Props, State> {
         }
     }
 
+    toggleSpectate() {
+        if (this.state.spectateToggleBoolean)
+            this.setState({ 
+                spectateToggleBoolean: false, 
+                spectateToggleContents: " ",
+                playSpectateButtonContents: "Play",
+            })
+        else
+            this.setState({ 
+                spectateToggleBoolean: true, 
+                spectateToggleContents: "x",
+                playSpectateButtonContents: "Spectate"
+            })
+    }
+
     render(): JSXElement {
         return(
             <panel
@@ -128,6 +149,7 @@ export class MainMenuRoot extends Component<Props, State> {
                     left="470"
                     opacity="0.5"
                 />
+                {/* Player class display */}
                 <panel 
                     img={this.state.classDisplayImage}
                     top="115"
@@ -186,17 +208,21 @@ export class MainMenuRoot extends Component<Props, State> {
                 {/* Spectate text */}
                 <Text top="470" left="505" contents="Spectate:"></Text>
                 {/* Spectate checkbox stub */}
-                <panel 
-                    color="#A9A9A9"
+                <Button
+                    pressedLayout="#A9A9A9"
+                    unpressedLayout="#A9A9A9"
+                    contents={this.state.spectateToggleContents}
                     top="480"
+                    left="500"
+                    fontTop={17}
+                    fontLeft={5}
                     width="15" 
                     height="15"
-                    left="500"
                     opacity="0.5"
+                    submit={() => this.toggleSpectate()}
                 />
-
                 {/* Button text */}
-                <Text top="545" left="525" contents="Play"></Text>
+                <Text top="545" left="525" contents={this.state.playSpectateButtonContents}></Text>
                 {/* Play Button */}
                 <Button
                     top={515}
