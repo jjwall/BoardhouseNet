@@ -7,6 +7,10 @@ export const textureUrls = [
     "./assets/textures/tilesets/raven_fantasy_green_forest_16x16.png",
     "./assets/textures/tilesets/colored_packed.png",
     // Icons
+    "./assets/textures/icons/arrow-r.png",
+    "./assets/textures/icons/arrow-l.png",
+    "./assets/textures/icons/arrow-r-pressed.png",
+    "./assets/textures/icons/arrow-l-pressed.png",
     "./assets/textures/icons/d17.png",
     "./assets/textures/icons/d49.png",
     "./assets/textures/icons/d20.png",

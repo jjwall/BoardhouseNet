@@ -1,8 +1,8 @@
 import { ComponentInstance, JSXElement } from "./interfaces";
 import { reconcile } from "./reconcile";
-import { Scene } from "THREE";
+import { Scene } from "three";
 
-export abstract class Component<Props, State> {
+export abstract class Component<Props = {}, State = {}> {
     public state: State;
     public props: Readonly<Props>;
     public prevState: Readonly<State> = null;

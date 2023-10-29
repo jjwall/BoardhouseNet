@@ -3,5 +3,4 @@ export enum PlayerClassTypes {
     RANGER = "RANGER",
     WIZARD = "WIZARD",
     KNIGHT = "KNIGHT",
-    NULL = "NULL",
 }

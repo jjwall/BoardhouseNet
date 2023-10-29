@@ -57,13 +57,13 @@ function joinEvent (element:HTMLElement, port:String, globalLobby: IGlobalLobby)
 function spectateEvent (element:HTMLElement, port:String, globalLobby: IGlobalLobby) {
     element.onclick = function() {
         const worldSelection = worldSelectRadioValue(globalLobby);
-        window.location.href = `/playgame?port=${port}&clientId=${globalLobby.currentClientId}&clientRole=${ClientRoleTypes.SPECTATOR}&playerClass=${PlayerClassTypes.NULL}&worldType=${worldSelection}&username=${globalLobby.usernameInput.value}`
+        window.location.href = `/playgame?port=${port}&clientId=${globalLobby.currentClientId}&clientRole=${ClientRoleTypes.SPECTATOR}&playerClass=${PlayerClassTypes.KNIGHT}&worldType=${worldSelection}&username=${globalLobby.usernameInput.value}`
         console.log(port);
     }
 }
 
 function classSelectRadioValue (globalLobby: IGlobalLobby): [string, PlayerClassTypes] {
-    let playerClassSelection = PlayerClassTypes.NULL;
+    let playerClassSelection = PlayerClassTypes.KNIGHT;
     let defaultDisplayUsername;
     for (var i = 0, length = globalLobby.classSelectRadioElements.length; i < length; i++) {
         if ((globalLobby.classSelectRadioElements[i] as HTMLInputElement).checked) {

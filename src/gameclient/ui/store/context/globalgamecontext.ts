@@ -25,6 +25,8 @@ export interface GlobalGameState {
     chatHistory: ChatMessageData[];
     onChatSubmit: (contents: string) => void
     onItemEquip: (newInventory: ItemData[]) => void
+    onPlay: () => void
+    // onSpectate: () => void
 }
 
 // TODO: Thinking about this more... if we ever want to "unload" ui
@@ -62,4 +64,5 @@ export const globalGameContext: GlobalGameState = {
     chatHistory: [],
     onChatSubmit: undefined,
     onItemEquip: undefined,
+    onPlay: undefined
 }

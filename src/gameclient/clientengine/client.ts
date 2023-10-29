@@ -333,6 +333,7 @@ export class Client {
             case UIStateTypes.MAIN_MENU:
                 this.currentRootRender = renderMainMenuUi
                 this.currentContext = globalGameContext
+                this.currentContext.onPlay = this.onPlay
                 this.rootComponent = this.currentRootRender(this.uiScene, this.rootWidget, { globalGameState: this.currentContext })
                 break;
         }
@@ -367,8 +368,12 @@ export class Client {
     }
 
     private handleTitleScreenEvent(e: Event) {
-        if (e.type === EventTypes.KEY_DOWN) {
-            this.setUIState(UIStateTypes.MAIN_MENU) // UIStateTypes.GAMEPLAY
+        switch(e.type) {
+            case EventTypes.KEY_DOWN:
+            case EventTypes.POINTER_DOWN:
+                // this.setUIState(UIStateTypes.MAIN_MENU) // TODO: Flesh main menu out. Current lobby system is fine for development for now.
+                this.setUIState(UIStateTypes.GAMEPLAY)
+                break
         }
     }
 
@@ -534,6 +539,10 @@ export class Client {
                 transition = undefined;
             }
         }
+    }
+
+    public onPlay = () => {
+        this.setUIState(UIStateTypes.GAMEPLAY)
     }
 
     public onChatSubmit = (contents: string) => {
