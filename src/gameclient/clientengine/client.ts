@@ -371,8 +371,8 @@ export class Client {
         switch(e.type) {
             case EventTypes.KEY_DOWN:
             case EventTypes.POINTER_DOWN:
-                this.setUIState(UIStateTypes.MAIN_MENU)
-                // this.setUIState(UIStateTypes.GAMEPLAY)
+                // this.setUIState(UIStateTypes.MAIN_MENU) // TODO: Flesh main menu out. Current lobby system is fine for development for now.
+                this.setUIState(UIStateTypes.GAMEPLAY)
                 break
         }
     }
