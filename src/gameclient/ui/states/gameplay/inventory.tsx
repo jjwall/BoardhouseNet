@@ -204,6 +204,7 @@ export class Inventory extends Component<Props, State> {
             // Item has been dragged to no man's land. Re-render to original slot state.
             // Todo: Render item drop prompt.
             this.props.clientInventory[draggedItemData.index] = draggedItemData.item
+            console.log("dropped item")
         } else if (newSlotIndex === draggedItemData.index) {
             // Item has been dragged to original slot. Re-render original slot state.
             this.props.clientInventory[newSlotIndex] = draggedItemData.item

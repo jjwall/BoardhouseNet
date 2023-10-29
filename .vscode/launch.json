@@ -1,0 +1,38 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "command": "npm start",
+            "name": "Run Start",
+            "request": "launch",
+            "type": "node-terminal",
+        },
+        {
+            "command": "npm run build-game-client-start",
+            "name": "Run Build Game & Start",
+            "request": "launch",
+            "type": "node-terminal",
+        },
+        {
+            "command": "npm run build-game-server-start",
+            "name": "Run Build Game Server & Start",
+            "request": "launch",
+            "type": "node-terminal",
+        },
+        {
+            "command": "npm run build-game-client-start",
+            "name": "Run Build Game Client & Start",
+            "request": "launch",
+            "type": "node-terminal",
+        },
+        {
+            "command": "npm run build-start",
+            "name": "Run Build & Start",
+            "request": "launch",
+            "type": "node-terminal",
+        },
+    ]
+}

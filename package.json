@@ -4,8 +4,9 @@
   "description": "A full-stack environment for the boardhouse game framework.",
   "main": "index.js",
   "scripts": {
-    "start": "cd dist && node lobby.js",
+    "start": "npm run open && cd dist && node lobby.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "open": "start http://localhost:8080",
     "build": "npm run build-lobby && npm run build-game",
     "build-client": "npm run build-lobby-client && npm run build-game-client",
     "build-server": "npm run build-lobby-server && npm run build-game-server",
@@ -14,7 +15,11 @@
     "build-lobby-server": "webpack --config config/webpack-lobby-server.config.js",
     "build-lobby-client": "webpack --config config/webpack-lobby-client.config.js",
     "build-game-server": "webpack --config config/webpack-game-server.config.js",
-    "build-game-client": "webpack --config config/webpack-game-client.config.js"
+    "build-game-client": "webpack --config config/webpack-game-client.config.js",
+    "build-game-server-start": "npm run build-game-server && npm start",
+    "build-game-client-start": "npm run build-game-client && npm start",
+    "build-game-start": "npm run build-game && npm start",
+    "build-start": "npm run build && npm start"
   },
   "repository": {
     "type": "git",

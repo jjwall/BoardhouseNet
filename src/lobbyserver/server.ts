@@ -12,7 +12,7 @@ import { requestConnections } from './requestconnections';
 
 const app = express();
 const server = createServer(app);
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8080; // 0
 const wss = new WebSocket.Server({ server });
 
 // Global server variable.
@@ -95,5 +95,5 @@ app.post('/creategameroom', function(req: any, res: Response) {
 });
 
 server.listen(PORT, function () {
-    console.log(`app listening on port ${PORT}`);
+    console.log(`app listening on port ${(server.address() as WebSocket.AddressInfo).port}`);
 });
